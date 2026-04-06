@@ -1,0 +1,138 @@
+import 'package:get/get.dart';
+import 'package:gr_flutter/views/admin_views/page_of_main/admin_home_screen.dart';
+import 'package:gr_flutter/views/admin_views/page_of_main/main_screen__admin.dart';
+import 'package:gr_flutter/views/patient_views/pages_of_main/main_screen_patient.dart';
+import 'package:gr_flutter/views/test/home_screen.dart';
+
+import 'views/admin_views/request_and_courses/add_course_page.dart';
+import 'views/admin_views/request_and_courses/add_treatment_page.dart';
+import 'views/admin_views/request_and_courses/view_courses_page.dart';
+import 'views/admin_views/request_and_courses/view_treatments_page.dart';
+import 'views/admin_views/submit_verify_student.dart';
+import 'views/admin_views/users/add_over_seer_page.dart';
+import 'views/admin_views/users/view_over_seers_page.dart';
+import 'views/admin_views/users/view_patientes_page.dart';
+import 'views/admin_views/users/view_students_page.dart';
+import 'views/admin_views/users/view_verify_students_page.dart';
+import 'views/auth/login.dart';
+import 'views/auth/register.dart';
+import 'views/notifications_view.dart';
+import 'views/overseer_views/page_of_main/main_screen_overseer.dart';
+import 'views/patient_views/patient_show_profile.dart';
+import 'views/patient_views/patient_update_profile.dart';
+import 'views/student_views/main_screen_student.dart';
+import 'views/student_views/page_of_main/student_home_screen.dart';
+import 'views/student_views/show_owned_student_request.dart';
+import 'views/student_views/student_profile_info_screen.dart';
+import 'views/student_views/view_verify_page.dart';
+import 'views/test/test.dart';
+
+List<GetPage<dynamic>>? routes = [
+  // GetPage(
+  //     name: "/", page: () => const Register(), middlewares: [MyMiddleWere()]),
+  GetPage(name: "/", page: () => Register()),
+
+  // GetPage(
+  // name: AppRroute.homeScreen,
+  // page: () => HomeScreen()),
+  // all
+  // GetPage(name: AppRroute.homeScreenAll, page: () => HomeScreen()),
+  GetPage(name: AppRroute.notificationsView, page: () => NotificationsView()),
+  // admin
+  GetPage(name: AppRroute.mainScreenAdmin, page: () => MainScreenAdmin()),
+  GetPage(name: AppRroute.adminHomeScreen, page: () => AdminHomeScreen()),
+  GetPage(name: AppRroute.addOverSeer, page: () => AddOverSeerPage()),
+  GetPage(name: AppRroute.viewOverSeers, page: () => ViewOverSeersPage()),
+  GetPage(name: AppRroute.viewStudents, page: () => ViewStudentsPage()),
+  GetPage(name: AppRroute.viewPatientes, page: () => ViewPatientesPage()),
+  GetPage(name: AppRroute.verifyStudents, page: () => ViewVerifyStudentsPage()),
+  GetPage(
+      name: AppRroute.submitVerifyStudent,
+      page: () => SubmitVerifyStudent(studentModel: Get.arguments)),
+  GetPage(name: AppRroute.addCourse, page: () => AddCoursePage()),
+  GetPage(name: AppRroute.addTreatment, page: () => AddTreatmentPage()),
+  GetPage(name: AppRroute.viewCourses, page: () => ViewCoursesPage()),
+  GetPage(name: AppRroute.viewTreatments, page: () => ViewTreatmentsPage()),
+
+  // student
+  GetPage(name: AppRroute.mainScreenStudent, page: () => MainScreenStudent()),
+  GetPage(name: AppRroute.homeScreenStudent, page: () => StudentHomeScreen()),
+  GetPage(
+      name: AppRroute.studentProfileInfoScreen,
+      page: () => StudentProfileInfoScreen()),
+  GetPage(
+      name: AppRroute.showOwnedStudentRequest,
+      page: () => ShowOwnedStudentRequest()),
+  GetPage(name: AppRroute.viewVerify, page: () => ViewVerifyPage()),
+  // patient
+  GetPage(name: AppRroute.mainScreenPatient, page: () => MainScreenPatient()),
+  GetPage(name: AppRroute.patientShowProfile, page: () => PatientShowProfile()),
+  GetPage(
+      name: AppRroute.patientUpdateProfile, page: () => PatientUpdateProfile()),
+  // overseer
+  GetPage(name: AppRroute.mainScreenOverseer, page: () => MainScreenOverseer()),
+  // //
+  GetPage(name: AppRroute.login, page: () => Login()),
+  GetPage(name: AppRroute.register, page: () => Register()),
+  // GetPage(name: AppRroute.patientPage, page: () => PatientPage()),
+
+  //        admin
+  //        patient
+  //        student
+
+  // //
+  // GetPage(name: AppRroute.homeScreen, page: () =>  HomeScreen()),
+  // GetPage(name: AppRroute.chat, page: () =>  Chat()),
+  // GetPage(name: AppRroute.notifications, page: () =>  Notifications()),
+  // GetPage(name: AppRroute.profile, page: () =>  Profile()),
+  // GetPage(name: AppRroute.gptProfile, page: () =>  GptProfile()),
+];
+
+class AppRroute {
+  // home
+  static const String home = "/home";
+  // auth
+  static const String login = "/login";
+  static const String register = "/register";
+
+// all
+  static const String homeScreenAll = "/homeScreenAll";
+  static const String notificationsView = "/notifications";
+
+  // admin
+  static const String mainScreenAdmin = "/mainScreenAdmin";
+  static const String adminHomeScreen = "/adminHomeScreen";
+  static const String addOverSeer = "/addOverSeer";
+  static const String viewOverSeers = "/viewOverSeers";
+  static const String viewStudents = "/viewStudents";
+  static const String viewPatientes = "/viewPatientes";
+  static const String verifyStudents = "/verifyStudents";
+  static const String submitVerifyStudent = "/submitVerifyStudent";
+  static const String addCourse = "/addCourse";
+  static const String addTreatment = "/addTreatment";
+  static const String viewCourses = "/viewCourses";
+  static const String viewTreatments = "/viewTreatments";
+  // student
+  static const String mainScreenStudent = "/mainScreenStudent";
+  static const String homeScreenStudent = "/homeScreenStudent";
+  static const String studentProfileInfoScreen = "/studentProfileInfoScreen";
+  static const String showOwnedStudentRequest = "/showOwnedStudentRequest";
+  static const String viewVerify = "/viewVerify";
+
+  // patient
+  static const String mainScreenPatient = "/mainScreenPatient";
+  static const String homeScreenPatient = "/homeScreenPatient";
+  static const String patientPage = "/patientPage";
+  static const String patientShowProfile = "/patientShowProfile";
+  static const String patientUpdateProfile = "/patientUpdateProfile";
+
+  // overseer
+  static const String mainScreenOverseer = "/mainScreenOverseer";
+
+  // home screen
+  static const String homeScreen = "/homeScreen";
+  static const String chat = "/chat";
+  static const String notifications = "/notifications";
+  static const String profile = "/profile";
+  static const String gptProfile = "/gptProfile";
+}
