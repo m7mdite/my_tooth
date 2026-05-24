@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controller/student_home_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
@@ -40,6 +41,44 @@ class StudentHomeScreen extends StatelessWidget {
                 ),
               );
             },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Center(
+            child: InkWell(
+              onTap: () {
+                
+                controller.toAiChatPage();
+              },
+              child: Container(
+                // height: 50,
+                // width: 150,
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue, width: 1,strokeAlign: 15),
+                  borderRadius: BorderRadius.only(
+                topLeft: Radius.elliptical(100, 10),
+                bottomLeft: Radius.elliptical(10, 100),
+                topRight: Radius.elliptical(10, 100),
+                bottomRight: Radius.elliptical(100, 10),
+              ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    
+                    FaIcon(FontAwesomeIcons.userDoctor,color: Colors.blue,),
+                    SizedBox(width: 30,),
+                    Text("إسأل خبير ...",style: TextStyle(color: Colors.blue,fontSize: 16),)
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

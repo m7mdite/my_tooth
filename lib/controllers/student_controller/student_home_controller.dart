@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class StudentHomeController extends GetxController {}
+abstract class StudentHomeController extends GetxController {
+  toAiChatPage();
+}
 
 class StudentHomeControllerImp extends StudentHomeController {
+
   List<String> listImages = [
     "A Dental Assistant is Working on a Dental Implant Model.jpeg",
     "44b285f8-cd06-45ae-a262-9ae11f6e6d55.jpeg",
@@ -49,5 +52,11 @@ class StudentHomeControllerImp extends StudentHomeController {
     _autoScrollTimer?.cancel();
     pageController.dispose();
     super.onClose();
+  }
+   @override
+  toAiChatPage() {
+    Get.toNamed("/aiChat", arguments: {
+      "role": "student"
+    });
   }
 }

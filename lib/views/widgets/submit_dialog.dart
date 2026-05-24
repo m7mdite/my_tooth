@@ -4,13 +4,22 @@ import 'package:get/get.dart';
 class SubmitDialog extends StatelessWidget {
   final String title;
   final String question;
+  final String cancelBottonTitle;
+  final String agreeBottontitle;
   final void Function()? onTapSubmit;
+  final void Function()? onTapCansel;
+  final List<Widget>? children;
 
-  const SubmitDialog(
-      {super.key,
-      this.title = "العنوان",
-      this.question = "هل انت متأكد؟",
-      this.onTapSubmit});
+  const SubmitDialog({
+    super.key,
+    this.children = const <Widget>[],
+    this.title = "العنوان",
+    this.question = "",
+    this.onTapSubmit,
+    this.onTapCansel,
+    this.cancelBottonTitle = "إلغاء",
+    this.agreeBottontitle = "تأكيد",
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,37 +43,36 @@ class SubmitDialog extends StatelessWidget {
             // color: const Color.fromARGB(90, 255, 255, 255),
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(
-                    "images/images_asnan/a73e4065-5ddb-48a0-abdb-07db5334d9e9.jpeg",
-                  ),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.linearToSrgbGamma(),
-                  opacity: 0.8,),
+                image: AssetImage(
+                  "images/images_asnan/a73e4065-5ddb-48a0-abdb-07db5334d9e9.jpeg",
+                ),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.linearToSrgbGamma(),
+                opacity: 0.8,
+              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
-                  
                   title,
                   style: TextStyle(
-                    
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
-                    
                   ),
                   textAlign: TextAlign.center,
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 20,top: 10),
+                  margin: EdgeInsets.only(bottom: 20, top: 10),
                   height: 2,
                   color: Colors.white,
                   width: 200,
                 ),
-                Flexible(
+                if(question!="") Flexible(
                   child: Text(
-                    
                     question,
                     // maxLines: 3,
                     style: TextStyle(
@@ -74,6 +82,7 @@ class SubmitDialog extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                 ),
+                ...children!,
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 10),
                   height: 2,
@@ -86,6 +95,8 @@ class SubmitDialog extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         Get.back();
+                        if(onTapCansel!=null) onTapCansel!();
+                        // Get.back();
                       },
                       child: Container(
                         padding:
@@ -101,7 +112,7 @@ class SubmitDialog extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          "إلغاء",
+                          cancelBottonTitle,
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
@@ -122,7 +133,7 @@ class SubmitDialog extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          "تأكيد",
+                          agreeBottontitle,
                           style: TextStyle(color: Colors.green),
                         ),
                       ),

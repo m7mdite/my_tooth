@@ -21,8 +21,8 @@ class ViewTreatmentsPage extends StatelessWidget {
               itemCount:  controller.treatments.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(controller.treatments[index].treatmentCase ?? "اسم المعالجة غير متوفر"),
-                  subtitle: Text(controller.treatments[index].course!.courseName ?? "اسم الكورس غير متوفر"),
+                  title: Text(controller.treatments[index].caseType!.caseType ?? "اسم المعالجة غير متوفر"),
+                  // subtitle: Text(controller.treatments[index].course!.courseName ?? "اسم الكورس غير متوفر"),
                 );
               },
             );

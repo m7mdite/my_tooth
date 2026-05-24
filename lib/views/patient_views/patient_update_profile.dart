@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/patient_controller/patient_profile_controller.dart';
+import 'package:gr_flutter/controllers/patient_controller/patient_setting_controller.dart';
 import '../../utils/app_constants/status_request.dart';
 
 class PatientUpdateProfile extends StatelessWidget {
-  final PatientProfileControllerImp controller = Get.find();
+  final PatientSettingControllerImp controller = Get.find();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
   // Text editing controllers
@@ -260,7 +260,7 @@ class PatientUpdateProfile extends StatelessWidget {
                     SizedBox(height: 40),
                     
                     // زر الحفظ - استخدام GetBuilder بدلاً من Obx
-                    GetBuilder<PatientProfileControllerImp>(
+                    GetBuilder<PatientSettingControllerImp>(
                       builder: (controller) {
                         return Container(
                           width: double.infinity,

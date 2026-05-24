@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class HomePatientController extends GetxController {}
+abstract class HomePatientController extends GetxController {
+  toAiChatPage();
+}
 
 class HomePatientControllerImp extends HomePatientController {
   List<String> listImages = [
@@ -49,5 +51,12 @@ class HomePatientControllerImp extends HomePatientController {
     _autoScrollTimer?.cancel();
     pageController.dispose();
     super.onClose();
+  }
+  
+  @override
+  toAiChatPage() {
+    Get.toNamed("/aiChat", arguments: {
+      "role": "patient"
+    });
   }
 }

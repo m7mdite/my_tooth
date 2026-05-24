@@ -1,30 +1,34 @@
+import 'package:gr_flutter/models/admin/course_model.dart';
+
 class ProfileModel {
-   String id;
-   String user;
- String firstName;
-   String lastName;
-   String email;
-   String? universityNumber;
-   String? bio;
-   String? phoneNumber;
-   String? gender;
-   int? age;
-   ProfilePhoto? profilePhoto; // صورة
+  //  String id;
+  String user;
+  String firstName;
+  String lastName;
+  String fatherName;
+  String role;
+  String? universityNumber;
+  String? bio;
+  String? phoneNumber;
+  String? gender;
+  int? age;
+  ProfilePhoto? profilePhoto; // صورة
+  Category? category; // تخصص الطالب
 
-
-  ProfileModel({
-    this.profilePhoto,
-    this.phoneNumber,
-    this.gender,
-    this.age,
-    required this.bio,
-    required this.id,
-    required this.user,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    this.universityNumber,
-  });
+  ProfileModel(
+      {this.profilePhoto,
+      this.phoneNumber,
+      this.gender,
+      this.age,
+      required this.bio,
+      // required this.id,
+      required this.user,
+      required this.firstName,
+      required this.lastName,
+      required this.fatherName,
+      required this.role,
+      this.universityNumber,
+      this.category});
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     return ProfileModel(
@@ -32,13 +36,16 @@ class ProfileModel {
       phoneNumber: json['phone_number'],
       gender: json['gender'],
       age: json['age'],
-
-      email: json['email'],
+      bio: json['bio'] ?? '',
+      role: json['role'] ?? 'patient',
       firstName: json['first_name'] ?? 'first_name',
       lastName: json['last_name'] ?? 'last_name',
-      id: json['_id'],
-      user: json['user'], bio: json['bio'],
-
+      fatherName: json['father_name'] ?? 'father_name',
+      // id: json['_id'],
+      user: json['user'],
+      universityNumber: json['university_number'],
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
     );
   }
 
@@ -48,12 +55,12 @@ class ProfileModel {
       'phone_number': phoneNumber,
       'gender': gender,
       'age': age,
-
-      "email": email,
+      "role": role,
       'first_name': firstName,
       'last_name': lastName,
-      'bio':bio,
+      'bio': bio,
       'university_number': universityNumber,
+      'category': category?.toJson(),
     };
   }
 
@@ -83,6 +90,29 @@ class ProfilePhoto {
     return {
       'publicId': publicId,
       'url': url,
+    };
+  }
+}
+
+class Category {
+  String? id;
+  String? category;
+
+  Category({
+    this.id,
+    this.category,
+  });
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      category: json['category'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category,
     };
   }
 }

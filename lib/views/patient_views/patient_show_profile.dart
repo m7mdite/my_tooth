@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/patient_controller/patient_profile_controller.dart';
+import 'package:gr_flutter/controllers/patient_controller/patient_setting_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../utils/app_constants/app_constants.dart';
 import '../widgets/profile/item_profile.dart';
 
 class PatientShowProfile extends StatelessWidget {
-  final PatientProfileControllerImp controller = Get.find();
+  final PatientSettingControllerImp controller = Get.find();
   
   PatientShowProfile({super.key});
 
@@ -23,7 +23,7 @@ class PatientShowProfile extends StatelessWidget {
           ),
         ],
       ),
-      body: GetBuilder<PatientProfileControllerImp>(builder: (_) {
+      body: GetBuilder<PatientSettingControllerImp>(builder: (_) {
         return RefreshIndicator(
           onRefresh: () => controller.refreshData(),
           child: ListView(

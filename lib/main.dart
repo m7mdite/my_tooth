@@ -8,8 +8,8 @@ import 'controllers/notification_controller.dart';
 import 'services/crud.dart';
 // import 'services/my_services.dart';
 import 'services/shared/auth_service.dart';
+import 'services/websocket_service11.dart';
 import 'services/websocket_service.dart';
-import 'services/websocket_service1.dart';
 
 Future<void> main() async {
   Get.put(Crud());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(NotificationController());
-  Get.put(WebSocketService1());
+  Get.put(WebSocketService());
     // Get.put(WebSocketService(), permanent: true);
     
     Get.put(AuthService(), permanent: true);

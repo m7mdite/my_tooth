@@ -1,17 +1,15 @@
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/auth/login_controller.dart';
-import 'package:gr_flutter/controllers/auth/register_controller.dart';
-import 'package:gr_flutter/controllers/patient_controller/main_patient_controller.dart';
-import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
-import 'package:gr_flutter/controllers/fill_request_controller.dart';
+import 'package:gr_flutter/controllers/all/public_controller.dart';
+import 'package:gr_flutter/controllers/auth_controller/login_controller.dart';
+import 'package:gr_flutter/controllers/auth_controller/register_controller.dart';
 
-import 'admin_controller/main_admin_controller.dart';
 
 class ControllersBinding extends Bindings {
   @override
   void dependencies() {
     // سيتم تهيئة الـ controllers مرة واحدة عند بدء التطبيق
     Get.lazyPut<LoginControllerImp>(() => LoginControllerImp(), fenix: true);
+    Get.lazyPut<PublicController>(() => PublicController(), fenix: true);
     Get.put<RegisterControllerImp>(RegisterControllerImp());
 
     // patient 

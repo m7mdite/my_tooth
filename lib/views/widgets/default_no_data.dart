@@ -6,7 +6,7 @@ class DefaultNoData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool i=true;
+    // bool i=true;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -16,7 +16,9 @@ class DefaultNoData extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("لا يوجد بيانات هنا  "),
-              FaIcon(FontAwesomeIcons.sadTear)
+              FaIcon(
+                FontAwesomeIcons.sadTear,
+              ),
             ],
           ),
         ),

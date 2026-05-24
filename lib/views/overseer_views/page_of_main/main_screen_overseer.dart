@@ -3,17 +3,18 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/overseer_controller/main_overseer_controller.dart';
 
 import '../../widgets/app_bar/app_bar_tooth_admin.dart';
+import '../../widgets/app_bar/app_bar_tooth_over_seer.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenOverseer extends StatelessWidget {
-  final MainOverseerControllerImp controller = Get.put(  MainOverseerControllerImp());
+  final MainOverseerControllerImp controller = Get.put(MainOverseerControllerImp());
       // Get.find<MainOverseerControllerImp>();
   MainScreenOverseer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarToothAdmin(title: controller.titleAppBar,),
+      appBar: AppBarToothOverseer(title: controller.titleAppBar,),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {

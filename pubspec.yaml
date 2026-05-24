@@ -73,6 +73,7 @@ dependencies:
   permission_handler: ^12.0.1
   dotted_decoration: ^2.0.0
   equatable: ^2.0.8
+  google_generative_ai: ^0.4.7
 
 dev_dependencies:
   flutter_test:

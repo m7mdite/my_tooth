@@ -1,8 +1,9 @@
-import '../../models/request_model.dart';
+import 'package:gr_flutter/models/pending_request_model.dart';
 
-List<RequestReceiveModel> filterRequestWithConditions(
-  List<RequestReceiveModel> requests,
-  List<bool Function(RequestReceiveModel)> conditions,
+
+List<PendingRequestModel> filterRequestWithConditions(
+  List<PendingRequestModel> requests,
+  List<bool Function(PendingRequestModel)> conditions,
 ) {
   return requests.where((request) {
     for (var condition in conditions) {

@@ -16,23 +16,13 @@ class PatientProfileRemote {
   Crud crud;
   PatientProfileRemote(this.crud);
   updateProfileData(Map data) async {
-    final String? token = await authModel.getToken();
 
-    var response = await crud.putData(ApiLink.servere, data, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },"users");
+    var response = await crud.putData(ApiLink.servere, data, "users");
     return response.fold((l) => l, (r) => r);
   }
 
   fetchingData() async {
-    final String? token = await authModel.getToken();
-    var response =await crud.getData(ApiLink.profile, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
+    var response =await crud.getData(ApiLink.profile, );
     return response.fold((l) => l, (r) => r);
   }
 

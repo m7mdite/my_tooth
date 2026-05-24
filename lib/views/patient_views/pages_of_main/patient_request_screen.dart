@@ -7,8 +7,9 @@ import 'package:gr_flutter/views/patient_views/modified_request.dart';
 import 'package:gr_flutter/views/patient_views/dialog_submit_request.dart';
 import 'package:gr_flutter/views/widgets/bottom_controller.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
+import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
 
-import '../../widgets/request_container.dart';
+import '../../widgets/requests/request_container.dart';
 
 // import 'request_details_screen.dart';
 // import 'requests_list_screen.dart';
@@ -185,12 +186,29 @@ class PatientRequestScreen extends StatelessWidget {
                       ? ListView.builder(
                           itemCount: controller.getListRequest().length,
                           itemBuilder: (context, index) {
-                            return RequestContainer(
-                              onTap: () {
-                                controller.showRequest(index);
-                              },
-                              requestModel: controller.getListRequest()[index],
-                            );
+                            return controller.currentPageFilter == 0
+                                ? RequestContainer(
+                                    onTap: () {
+                                      controller.showRequest(controller
+                                          .requestListPending[index]);
+                                    },
+                                    requestModel:
+                                        controller.getListRequest()[index],
+                                  )
+                                : controller.currentPageFilter == 1
+                                    ? CardRequestProcessing(
+                                        requestModel: controller
+                                            .requestListProcessing[index],
+                                        onTap: () {
+                                          controller.showProcessingRequest(controller
+                                            .requestListProcessing[index]);
+                                        },
+                                      )
+                                    : CardRequestProcessing(
+                                        requestModel: controller
+                                            .requestListCompleted[index],
+                                        onTap: () {},
+                                      );
                           },
                         )
                       : DefaultNoData();

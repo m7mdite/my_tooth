@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/api_link.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:gr_flutter/controllers/fill_request_controller.dart';
-import 'package:gr_flutter/models/request_model.dart';
+import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
+import 'package:gr_flutter/models/accept_request_model.dart';
 import 'package:gr_flutter/services/functions/show_tooth_location_map.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/bottom_controller.dart';
@@ -18,6 +19,8 @@ import '../widgets/select_one_option.dart';
 class ModifiedRequest extends StatelessWidget {
   final FillRequestControllerImp controller =
       Get.put(FillRequestControllerImp());
+  final PatientRequestControllerImp patientRequestControllerImp =
+      Get.find<PatientRequestControllerImp>();
   final Widget? bottomNavigationBar;
   ModifiedRequest({
     super.key,
@@ -92,12 +95,24 @@ class ModifiedRequest extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: SelectFromItems(
-                      items: ToothConstants.caseTypeAr,
-                      value: controller.requestSendModel.caseType,
+                    // child: SelectFromItemsMap(
+                    //   items: patientRequestControllerImp.treatments,
+                    //   selectedId: patientRequestControllerImp.treatments[0]['id'],
+                    //   title: "  إختر نوع المعالجة:   ",
+                    //   onChanged: (value) {
+                    //     controller.requestSendModel.caseType = value!;
+                    //     controller.update();
+                    //   },
+                    // ),
+                    child: SelectFromItemsMap(
+                      items: patientRequestControllerImp.treatments,
+                      selectedId:
+                          patientRequestControllerImp.treatments.isNotEmpty
+                              ? patientRequestControllerImp.treatments[0]['id']
+                              : null,
                       title: "  إختر نوع المعالجة:   ",
                       onChanged: (value) {
-                        controller.requestSendModel.caseType = value!;
+                        controller.pendingRequestModel.caseType!.sId = value!;
                         controller.update();
                       },
                     ),
@@ -108,23 +123,23 @@ class ModifiedRequest extends StatelessWidget {
                     child: SelectFromItems(
                       items: ToothConstants.painSeverityList,
                       value:
-                          controller.requestSendModel.painSeverity.toString(),
+                          controller.pendingRequestModel.requestion!.painSeverity!.toString(),
                       title: "  حدد شدة الألم  :   ",
                       onChanged: (value) {
-                        controller.requestSendModel.painSeverity =
+                        controller.pendingRequestModel.requestion!.painSeverity =
                             int.tryParse(value!)!;
                         controller.update();
                       },
                     ),
                   ),
                   BreakContainer(),
-                  if (controller.requestSendModel.painSeverity != 0) ...[
+                  if (controller.pendingRequestModel.requestion!.painSeverity != 0) ...[
                     RowContainerWithTitle(
                       title: "متى يحصل الألم؟ ",
-                      text: controller.requestSendModel.painTime,
+                      text: controller.pendingRequestModel.requestion!.painTime,
                       onChanged: (p0) {
-                        controller.requestSendModel.painTime = p0;
-                        
+                        controller.pendingRequestModel.requestion!.painTime = p0;
+
                         // controller.update();
                       },
                     ),
@@ -139,18 +154,18 @@ class ModifiedRequest extends StatelessWidget {
                           SelectOneOption(
                             title: "ذكر",
                             selectOption:
-                                controller.requestSendModel.gender == "male",
+                                controller.pendingRequestModel.requestion!.gender == "male",
                             onTap: () {
-                              controller.requestSendModel.gender = "male";
+                              controller.pendingRequestModel.requestion!.gender = "male";
                               controller.update();
                             },
                           ),
                           SelectOneOption(
                             title: "أنثى",
                             selectOption:
-                                controller.requestSendModel.gender == "female",
+                                controller.pendingRequestModel.requestion!.gender == "female",
                             onTap: () {
-                              controller.requestSendModel.gender = "female";
+                              controller.pendingRequestModel.requestion!.gender = "female";
                               controller.update();
                             },
                           ),
@@ -159,7 +174,7 @@ class ModifiedRequest extends StatelessWidget {
                     ],
                   ),
                   BreakContainer(),
-                  if (controller.requestSendModel.gender == "female") ...[
+                  if (controller.pendingRequestModel.requestion!.gender == "female") ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -169,10 +184,10 @@ class ModifiedRequest extends StatelessWidget {
                             BottomContainer(
                               body: "لا",
                               selected:
-                                  controller.requestSendModel.isPregnant ==
+                                  controller.pendingRequestModel.requestion!.isPregnant ==
                                       false,
                               onTap: () {
-                                controller.requestSendModel.isPregnant = false;
+                                controller.pendingRequestModel.requestion!.isPregnant  = false;
                                 controller.update();
                               },
                             ),
@@ -182,10 +197,10 @@ class ModifiedRequest extends StatelessWidget {
                             BottomContainer(
                               body: "نعم",
                               selected:
-                                  controller.requestSendModel.isPregnant ==
+                                  controller.pendingRequestModel.requestion!.isPregnant ==
                                       true,
                               onTap: () {
-                                controller.requestSendModel.isPregnant = true;
+                                controller.pendingRequestModel.requestion!.isPregnant = true;
                                 controller.update();
                               },
                             ),
@@ -197,9 +212,9 @@ class ModifiedRequest extends StatelessWidget {
                   ],
                   RowContainerWithTitle(
                     title: "ادخل عمر المريض : ",
-                    text: controller.requestSendModel.age,
+                    text: controller.pendingRequestModel.requestion!.age,
                     onChanged: (p0) {
-                      controller.requestSendModel.age = p0;
+                      controller.pendingRequestModel.requestion!.age = p0;
                       // controller.update();
                     },
                   ),
@@ -232,9 +247,9 @@ class ModifiedRequest extends StatelessWidget {
                   ),
                   RowContainerWithTitle(
                     title: "رقم السن :  ",
-                    text: controller.requestSendModel.toothLocation,
+                    text: controller.pendingRequestModel.requestion!.toothLocation,
                     onChanged: (p0) {
-                      controller.requestSendModel.toothLocation = p0;
+                      controller.pendingRequestModel.requestion!.toothLocation = p0;
                       // controller.update();
                     },
                   ),
@@ -255,13 +270,13 @@ class ModifiedRequest extends StatelessWidget {
                           await controller.uploadReguestPicture();
                           controller.update();
                         },
-                        child: controller.requestSendModel.photo != null &&
-                                controller.requestSendModel.photo!.url != ""
+                        child: controller.pendingRequestModel.requestion!.photo != null &&
+                                controller.pendingRequestModel.requestion!.photo!.url != ""
                             ? SizedBox(
                                 height: 80,
                                 width: 80,
                                 child: Image.network(
-                                  "http://localhost:5000/${controller.requestSendModel.photo!.url!}",
+                                  "http://localhost:5000/${controller.pendingRequestModel.requestion!.photo!.url!}",
                                   fit: BoxFit.cover,
                                 ),
                               )
@@ -289,7 +304,7 @@ class ModifiedRequest extends StatelessWidget {
                       Text("هل تعاني من أمراض مزمنة؟  "),
                       BottomContainer(
                         body: "نعم",
-                        selected:controller.chronicDiseases == true,
+                        selected: controller.chronicDiseases == true,
                         onTap: () {
                           controller.chronicDiseases = true;
                           controller.update();
@@ -313,10 +328,10 @@ class ModifiedRequest extends StatelessWidget {
                       title: "اذكر اسم المرض  ",
                       onChanged: (p0) {
                         controller
-                            .requestSendModel.moreDetails!.chronicDiseases = p0;
+                            .pendingRequestModel.requestion!.moreDetails!.chronicDiseases = p0;
                       },
                       text: controller
-                          .requestSendModel.moreDetails!.chronicDiseases,
+                          .pendingRequestModel.requestion!.moreDetails!.chronicDiseases,
                     ),
                   ],
                   BreakContainer(),
@@ -349,9 +364,9 @@ class ModifiedRequest extends StatelessWidget {
                     ColumnContainerWithTitle(
                       title: "اذكر اسم الدواء او المكمل    ",
                       onChanged: (p0) {
-                        controller.requestSendModel.moreDetails!.medicines = p0;
+                        controller.pendingRequestModel.requestion!.moreDetails!.medicines = p0;
                       },
-                      text: controller.requestSendModel.moreDetails!.medicines,
+                      text: controller.pendingRequestModel.requestion!.moreDetails!.medicines,
                     ),
                   ],
                   BreakContainer(),
@@ -364,7 +379,7 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == false,
                         onTap: () {
                           controller.previousTreatment = false;
-                          controller.requestSendModel.moreDetails!
+                          controller.pendingRequestModel.requestion!.moreDetails!
                               .previousTreatment = false;
                           controller.update();
                         },
@@ -374,7 +389,7 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == true,
                         onTap: () {
                           controller.previousTreatment = true;
-                          controller.requestSendModel.moreDetails!
+                          controller.pendingRequestModel.requestion!.moreDetails!
                               .previousTreatment = true;
                           controller.update();
                         },
@@ -384,9 +399,9 @@ class ModifiedRequest extends StatelessWidget {
                   BreakContainer(),
                   ColumnContainerWithTitle(
                     title: "هل لديك ملاحظات تود إضافتها؟  ",
-                    text: controller.requestSendModel.moreDetails!.notes,
+                    text: controller.pendingRequestModel.requestion!.moreDetails!.notes,
                     onChanged: (p0) {
-                      controller.requestSendModel.moreDetails!.notes = p0;
+                      controller.pendingRequestModel.requestion!.moreDetails!.notes = p0;
                       // controller.update();
                     },
                   ),
@@ -538,6 +553,212 @@ class SelectFromItems extends StatelessWidget {
             onChanged: (s) {
               onChanged!(s);
             },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// class SelectFromItemsMap extends StatelessWidget {
+//   final String? selectedId; // ✅ التغيير: نستخدم ID بدلاً من value
+//   final String? title;
+//   final List<Map<String, String>> items; // ✅ التغيير: قائمة من الخرائط {id, treatment_case}
+//   final void Function(String?)? onChanged; // ✅ سيرسل ID
+
+//   const SelectFromItemsMap({
+//     super.key,
+//     this.selectedId,
+//     this.title,
+//     this.onChanged,
+//     required this.items,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // ✅ استخراج القائمة المعروضة للمستخدم
+//     final displayItems = items.map((item) => item['treatment_case'] ?? '').toList();
+
+//     // ✅ البحث عن العنصر المحدد
+//     String? selectedDisplayValue;
+//     if (selectedId != null) {
+//       final selectedItem = items.firstWhere(
+//         (item) => item['id'] == selectedId,
+//         orElse: () => {},
+//       );
+//       selectedDisplayValue = selectedItem['treatment_case'];
+//     }
+
+//     if (items.isEmpty) {
+//       return Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Center(
+//           child: Text(
+//             "لا توجد معالجات متاحة",
+//             style: TextStyle(color: Colors.red),
+//           ),
+//         ),
+//       );
+//     }
+
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         Flexible(
+//           flex: 1,
+//           child: Text(
+//             title ?? "",
+//             style: const TextStyle(fontSize: 14),
+//           ),
+//         ),
+//         const SizedBox(width: 8),
+//         Flexible(
+//           flex: 2,
+//           child: DropdownButtonFormField<String>(
+//             dropdownColor: Colors.white,
+//             focusColor: Colors.white,
+//             alignment: Alignment.center,
+//             isExpanded: true,
+//             icon: FaIcon(
+//               FontAwesomeIcons.tooth,
+//               color: Colors.blue,
+//               size: 16,
+//             ),
+//             menuMaxHeight: Get.height * 0.5,
+//             borderRadius: BorderRadius.circular(30),
+//             decoration: InputDecoration(
+//               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+//               border: OutlineInputBorder(
+//                 gapPadding: 10,
+//                 borderRadius: BorderRadius.circular(20),
+//                 borderSide: BorderSide.none,
+//               ),
+//               filled: true,
+//               fillColor: Colors.white,
+//             ),
+//             value: selectedDisplayValue,
+//             items: displayItems.map((String displayValue) {
+//               return DropdownMenuItem<String>(
+//                 alignment: Alignment.center,
+//                 value: displayValue,
+//                 child: Text(
+//                   displayValue,
+//                   style: const TextStyle(fontSize: 14),
+//                   overflow: TextOverflow.ellipsis,
+//                   maxLines: 1,
+//                 ),
+//               );
+//             }).toList(),
+//             onChanged: (selectedDisplayValue) {
+//               if (onChanged != null && selectedDisplayValue != null) {
+//                 // ✅ إرجاع الـ ID المناسب للعنصر المختار
+//                 final selectedItem = items.firstWhere(
+//                   (item) => item['treatment_case'] == selectedDisplayValue,
+//                   orElse: () => {},
+//                 );
+//                 onChanged!(selectedItem['id']);
+//               }
+//             },
+//             hint: const Text('اختر نوع المعالجة'),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+class SelectFromItemsMap extends StatelessWidget {
+  final String? selectedId;
+  final String? title;
+  final List<Map<String, String>> items;
+  final void Function(String?)? onChanged;
+
+  const SelectFromItemsMap({
+    super.key,
+    this.selectedId,
+    this.title,
+    this.onChanged,
+    required this.items,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(
+            "لا توجد  بيانات",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+    }
+
+    // ✅ بناء DropdownMenuItem باستخدام ID كقيمة
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    String? currentValue;
+    
+    for (var item in items) {
+      String id = item['id'] ?? '';
+      String treatmentCase = item['case_type'] ?? '';
+      
+      if (id.isNotEmpty && treatmentCase.isNotEmpty) {
+        dropdownItems.add(
+          DropdownMenuItem<String>(
+            value: id,  // ✅ استخدام الـ ID كقيمة
+            child: Text(treatmentCase),
+          ),
+        );
+        
+        // ✅ تعيين القيمة الحالية إذا تطابق الـ ID
+        if (selectedId == id) {
+          currentValue = id;
+        }
+      }
+    }
+
+    // ✅ إذا لم يتم العثور على تطابق، استخدم أول عنصر كقيمة افتراضية
+    if (currentValue == null && dropdownItems.isNotEmpty) {
+      currentValue = dropdownItems.first.value;
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          flex: 1,
+          child: Text(
+            title ?? "",
+            style: const TextStyle(fontSize: 14),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          flex: 2,
+          child: DropdownButtonFormField<String>(
+            value: currentValue,  // ✅ الآن القيمة هي ID وليس null
+            items: dropdownItems,
+            onChanged: onChanged,
+            dropdownColor: Colors.white,
+            isExpanded: true,
+            icon: FaIcon(
+              FontAwesomeIcons.tooth,
+              color: Colors.blue,
+              size: 16,
+            ),
+            menuMaxHeight: Get.height * 0.5,
+            borderRadius: BorderRadius.circular(30),
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              border: OutlineInputBorder(
+                gapPadding: 10,
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+            hint: const Text('اختر نوع المعالجة'),
           ),
         ),
       ],

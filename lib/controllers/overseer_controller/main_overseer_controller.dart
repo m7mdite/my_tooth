@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/views/conversations_screen.dart';
 
-import '../../views/overseer_views/page_of_main/overseer_ads_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_home_screen.dart';
-import '../../views/overseer_views/page_of_main/overseer_profile_screen.dart';
+import '../../views/overseer_views/page_of_main/overseer_setting_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_request_screen.dart';
 
 abstract class MainOverseerController extends GetxController {}
@@ -31,12 +31,12 @@ class MainOverseerControllerImp extends MainOverseerController {
     {
       "title": "الاعلانات",
       "icon": Icons.note_alt,
-      "page": OverseerAdsScreen()
+      "page": ConversationsScreen( )
     },
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": OverseerProfileScreen()
+      "page": OverseerSettingScreen()
     },
   ];
 

@@ -4,12 +4,15 @@ import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/models/overseer/profile_overseer_model.dart';
 import 'package:gr_flutter/models/patient_model/patient_profile_model.dart';
 import 'package:gr_flutter/models/student_model/student_profile_model.dart';
+import 'package:gr_flutter/services/functions/show_snack.dart';
 import 'package:gr_flutter/views/admin_views/submit_verify_student.dart';
 import 'package:gr_flutter/views/widgets/submit_dialog.dart';
 import '../../models/student_model/veify_student_model.dart';
 import '../../services/functions/handling_data.dart';
+import '../../services/gimini_service.dart';
 import '../../services/remote/admin_remote.dart';
 import '../../utils/app_constants/status_request.dart';
+import '../../views/admin_views/users/admin_reports_screen.dart';
 
 abstract class AdminUsersController extends GetxController {
   toAddOverSeerPage();
@@ -17,6 +20,7 @@ abstract class AdminUsersController extends GetxController {
   toViewStudentsPage();
   toViewPatientesPage();
   toViewVerifyStudentsPage();
+  toReportsPage();
   acceptVerifyStudent(String studentId);
   addOverSeer();
   getAllOverSeers();
@@ -27,6 +31,14 @@ abstract class AdminUsersController extends GetxController {
 }
 
 class AdminUsersControllerImpl extends AdminUsersController {
+  RxBool isLoading = false.obs;
+  final geminiService = GeminiService();
+
+  // x () async {
+  //   String userMessage = "Hello, how are you?";
+  //   String response = await geminiService.sendMessage(userMessage);
+  //   print("Gemini Response: $response");
+  // }
   List<ProfileOverseerModel> overSeers = [];
   List<StudentProfileModel> students = [];
   List<PatientProfileModel> patients = [];
@@ -34,6 +46,9 @@ class AdminUsersControllerImpl extends AdminUsersController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController fatherNameController = TextEditingController();
   AdminRemote adminRemote = AdminRemote(Get.find());
   late StatusRequest statusRequest;
 
@@ -43,26 +58,29 @@ class AdminUsersControllerImpl extends AdminUsersController {
   }
 
   @override
-  addOverSeer() {
+  addOverSeer() async{
+    isLoading.value = true;
     Map data = {
       "email": emailController.text,
       "password": passwordController.text,
+      "first_name": firstNameController.text,
+      "last_name": lastNameController.text,
+      "father_name": fatherNameController.text,
     };
     if (formKey.currentState!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
-      adminRemote.addOverSeer(data).then(
-        (response) {
-          statusRequest = handlingData(response);
-          if (statusRequest == StatusRequest.success) {
-            Get.snackbar("Success", "OverSeer added successfully");
-            Get.back();
-          } else {
-            Get.snackbar("Error", "Failed to add OverSeer");
-          }
-          update();
-        },
-      );
+      var response =await adminRemote.addOverSeer(data);
+      statusRequest = handlingData(response);
+      if (statusRequest == StatusRequest.success) {
+        showsnack(
+            title: response['status'], message: response['message'] ?? '');
+        // Get.back();
+      } else {
+        showsnack(title: response['status'], message: response['message']);
+      }
+      update();
+      isLoading.value = false;
     }
   }
 
@@ -88,7 +106,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
       }
       print("${overSeers.length} OverSeers fetched successfully");
     } else {
-      Get.snackbar("Error", "Failed to fetch OverSeers");
+      showsnack(title: response['status'], message: response['message']);
     }
     update();
   }
@@ -110,7 +128,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
         }
         print("${students.length} Students fetched successfully");
       } else {
-        Get.snackbar("Error", "Failed to fetch Students");
+        showsnack(title: response['status'], message: response['message']);
       }
       update();
     });
@@ -176,6 +194,10 @@ class AdminUsersControllerImpl extends AdminUsersController {
     ));
     // Get.toNamed(AppRroute.submitVerifyStudent, arguments: student);
   }
+  @override
+  void toReportsPage() {
+  Get.to(() => AdminReportsScreen());
+}
 
   @override
   acceptVerifyStudent(String studentId) {
@@ -203,4 +225,20 @@ class AdminUsersControllerImpl extends AdminUsersController {
       ),
     );
   }
+
+  // داخل AdminUsersControllerImpl
+Future<void> deleteOverSeer(String id) async {
+  statusRequest = StatusRequest.loading;
+  update();
+  var response = await adminRemote.deleteOverSeer(id);
+  statusRequest = handlingData(response);
+  if (statusRequest == StatusRequest.success) {
+    // إزالة المشرف من القائمة المحلية
+    overSeers.removeWhere((overSeer) => overSeer.sId == id);
+    showsnack(title: 'نجاح', message: response['message'] ?? 'تم حذف المشرف بنجاح');
+  } else {
+    showsnack(title: 'خطأ', message: response['message'] ?? 'فشل حذف المشرف');
+  }
+  update();
+}
 }

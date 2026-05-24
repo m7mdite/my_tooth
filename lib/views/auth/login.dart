@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/auth/login_controller.dart';
+import 'package:gr_flutter/controllers/auth_controller/login_controller.dart';
+import 'package:gr_flutter/views/widgets/bottom_controller.dart';
 import '../widgets/auth_text_form_field.dart';
 
 class Login extends GetView<LoginControllerImp> {
@@ -81,36 +82,25 @@ class Login extends GetView<LoginControllerImp> {
 
                   // زر التسجيل
                   SizedBox(height: 20),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(100, 10),
-                        bottomLeft: Radius.elliptical(10, 100),
-                        topRight: Radius.elliptical(10, 100),
-                        bottomRight: Radius.elliptical(100, 10),
-                      ),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
+
+                  Center(
+                    child: BottomContainer(
+                      color: Colors.black,
+                      fontSize: 18,
+                      paddingHorizontal: 20,
+                      paddingVertical: 4,
+                      body: "تسجيل",
+                      onTap: () {
                         controller.login();
                       },
-                      child: Text(
-                        "تسجيل",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
                     ),
                   ),
+
                   SizedBox(height: 20),
                   Text("ليس لديك حساب ؟ "),
                   TextButton(
                       onPressed: () {
-                          controller.goToRegister();
-                        
+                        controller.goToRegister();
                       },
                       child: Text("إنشاء حساب"))
                 ],

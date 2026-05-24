@@ -84,14 +84,19 @@ class NotificationController extends GetxController {
   }
 
   void navigateToNotification(Map<String, dynamic> payload) {
+    print("$payload");
     // TODO: التنقل حسب نوع الإشعار
     switch (payload['type']) {
       case 'requestAccepted':
         Get.toNamed('/appointment-details', arguments: payload);
+        print("============================accept");
         break;
       case 'VerifyAccepted':
         Get.toNamed('/profile');
         break;
+        case 'updatecasetype':
+        // Get.dialog(Text("data"));
+        print("update+++++++++++++ ");
       default:
         Get.toNamed('/notifications');
     }

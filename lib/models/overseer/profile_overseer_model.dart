@@ -1,6 +1,7 @@
 class ProfileOverseerModel {
   bool? isVerified;
   String? sId;
+  String? email;
   String? user;
   String? firstName;
   String? fatherName;
@@ -10,6 +11,7 @@ class ProfileOverseerModel {
 
   ProfileOverseerModel(
       {this.isVerified,
+      this.email,
       this.sId,
       this.user,
       this.firstName,
@@ -21,6 +23,7 @@ class ProfileOverseerModel {
   ProfileOverseerModel.fromJson(Map<String, dynamic> json) {
     isVerified = json['is_verified'];
     sId = json['_id'];
+    email = json['email'];
     user = json['user'];
     firstName = json['first_name'];
     fatherName = json['father_name'];

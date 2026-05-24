@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:gr_flutter/views/patient_views/pages_of_main/patient_ads_screen.dart';
+import 'package:gr_flutter/views/conversations_screen.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_home_screen.dart';
-import 'package:gr_flutter/views/patient_views/pages_of_main/patient_profile_screen.dart';
+import 'package:gr_flutter/views/patient_views/pages_of_main/patient_setting_screen.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_request_screen.dart';
 
 abstract class MainPatientController extends GetxController {}
@@ -25,14 +24,14 @@ class MainPatientControllerImp extends MainPatientController {
       "page": PatientRequestScreen()
     },
     {
-      "title": "الاعلانات",
+      "title": "المحادثات",
       "icon": Icons.note_alt,
-      "page": PatientAdsScreen()
+      "page": ConversationsScreen()
     },
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": PatientProfileScreen()
+      "page": PatientSettingScreen()
     },
   ];
 

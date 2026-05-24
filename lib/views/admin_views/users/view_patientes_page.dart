@@ -1,74 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/api_link.dart';
-
 import '../../../controllers/admin_controller/admin_users_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
 
 class ViewPatientesPage extends StatelessWidget {
-  final AdminUsersControllerImpl controller = Get.put(AdminUsersControllerImpl());
-   ViewPatientesPage({super.key});
+  final AdminUsersControllerImpl controller = Get.find<AdminUsersControllerImpl>();
+
+  ViewPatientesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("عرض المرضى")),
-      body: GetBuilder<AdminUsersControllerImpl>(
-        init: AdminUsersControllerImpl(),
-        initState: (_) => Get.find<AdminUsersControllerImpl>().getAllPatientes(),
-        builder: (controller) {
-          if (controller.statusRequest == StatusRequest.loading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (controller.patients.isEmpty) {
-            return Center(child: Text("لا يوجد مرضى"));
-          }
-          return ListView.builder(
-            itemCount: controller.patients.length,
-            itemBuilder: (context, index) {
-              var patient  = controller.patients[index];
-              return Container(
-                margin: EdgeInsets.all(10),
-                
-                child: ListTile(
-                  iconColor: Colors.blue,
-                  horizontalTitleGap: 10,
+      appBar: AppBar(
+        title: const Text("المرضى"),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => controller.getAllPatientes(),
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () => controller.getAllPatientes(),
+        child: GetBuilder<AdminUsersControllerImpl>(
+          builder: (controller) {
+            if (controller.statusRequest == StatusRequest.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (controller.patients.isEmpty) {
+              return const Center(child: Text("لا يوجد مرضى"));
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: controller.patients.length,
+              itemBuilder: (context, index) {
+                final patient = controller.patients[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  elevation: 3,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.blue),
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  trailing: Icon(Icons.person),
-                  leading:  patient.profilePhoto != null && patient.profilePhoto!.url != null
-                    ? Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage("http://localhost:5000/${patient.profilePhoto!.url!}"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
-                      // child: Image.network("http://localhost:5000/${patient.profilePhoto!.url!}", fit: BoxFit.cover))
-                    : Icon(Icons.person),
-                  textColor: Colors.blue,
-                  title: Text(
-                    "${patient.firstName ?? ''} ${patient.lastName ?? ''}".trim().isEmpty
-                      ? "No Name"
-                      : "${patient.firstName ?? ''} ${patient.lastName ?? ''}"),
-                  subtitle: Row(
-                    children: [
-                      Text("Email: ${patient.isVerified ?? 'No Email'}"),
-                      SizedBox(width: 10),
-                      Text("Bio: ${patient.bio ?? 'No Bio'}"),
-                    ],
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      backgroundImage: (patient.profilePhoto != null &&
+                              patient.profilePhoto!.url != null &&
+                              patient.profilePhoto!.url!.isNotEmpty)
+                          ? NetworkImage("http://localhost:5000/${patient.profilePhoto!.url!}")
+                          : null,
+                      child: (patient.profilePhoto == null ||
+                              patient.profilePhoto!.url == null ||
+                              patient.profilePhoto!.url!.isEmpty)
+                          ? Text(
+                              patient.firstName?.isNotEmpty == true
+                                  ? patient.firstName![0].toUpperCase()
+                                  : "?",
+                              style: const TextStyle(color: Colors.white),
+                            )
+                          : null,
+                    ),
+                    title: Text(
+                      "${patient.firstName ?? ''} ${patient.fatherName ?? ''} ${patient.lastName ?? ''}".trim(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        // Text("البريد: ${patient.email ?? 'غير متوفر'}"),
+                        if (patient.bio != null && patient.bio!.isNotEmpty)
+                          Text("نبذة: ${patient.bio}"),
+                      ],
+                    ),
+                    isThreeLine: true,
                   ),
-                ),
-              );
-            },
-          );
-        }
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

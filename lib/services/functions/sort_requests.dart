@@ -1,8 +1,9 @@
-import '../../models/request_model.dart';
+import 'package:gr_flutter/models/pending_request_model.dart';
 
-List<RequestReceiveModel> sortRequest<T extends Comparable>(
-  List<RequestReceiveModel> request,
-  Comparable Function(RequestReceiveModel) getField, {
+
+List<PendingRequestModel> sortRequest<T extends Comparable>(
+  List<PendingRequestModel> request,
+  Comparable Function(PendingRequestModel) getField, {
   bool asc = true,
 }) {
   return List.from(request)

@@ -24,6 +24,12 @@ class AuthService {
     await _box.write('${_prefix}phone_number', phoneNumber);
   }
   
+  Future<void> saveIsVerified(bool isVerified) async {
+    await _box.write('${_prefix}is_verified', isVerified);
+  }
+  bool isVerified() {
+    return _box.read('${_prefix}is_verified') ?? false;
+  }
   String? getPhoneNumber() {
     return _box.read('${_prefix}phone_number');
   }

@@ -2,11 +2,18 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/admin_home_screen.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/main_screen__admin.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/main_screen_patient.dart';
-import 'package:gr_flutter/views/test/home_screen.dart';
 
+import 'models/conversation_model.dart';
+import 'views/admin_views/request_and_courses/add_category_page.dart';
 import 'views/admin_views/request_and_courses/add_course_page.dart';
+import 'views/admin_views/request_and_courses/add_lessons_page.dart';
 import 'views/admin_views/request_and_courses/add_treatment_page.dart';
+import 'views/admin_views/request_and_courses/view_categorys_page.dart';
 import 'views/admin_views/request_and_courses/view_courses_page.dart';
+import 'views/admin_views/request_and_courses/view_finished_requests_page.dart';
+import 'views/admin_views/request_and_courses/view_in_processing_requests_page.dart';
+import 'views/admin_views/request_and_courses/view_pending_requests_page.dart';
+import 'views/admin_views/request_and_courses/view_rejected_requests_page.dart';
 import 'views/admin_views/request_and_courses/view_treatments_page.dart';
 import 'views/admin_views/submit_verify_student.dart';
 import 'views/admin_views/users/add_over_seer_page.dart';
@@ -16,6 +23,8 @@ import 'views/admin_views/users/view_students_page.dart';
 import 'views/admin_views/users/view_verify_students_page.dart';
 import 'views/auth/login.dart';
 import 'views/auth/register.dart';
+import 'views/chat_screen.dart';
+import 'views/conversations_screen.dart';
 import 'views/notifications_view.dart';
 import 'views/overseer_views/page_of_main/main_screen_overseer.dart';
 import 'views/patient_views/patient_show_profile.dart';
@@ -25,7 +34,8 @@ import 'views/student_views/page_of_main/student_home_screen.dart';
 import 'views/student_views/show_owned_student_request.dart';
 import 'views/student_views/student_profile_info_screen.dart';
 import 'views/student_views/view_verify_page.dart';
-import 'views/test/test.dart';
+import 'views/widgets/ai/chat_gimini.dart';
+import 'views/widgets/view_other_profile.dart';
 
 List<GetPage<dynamic>>? routes = [
   // GetPage(
@@ -51,8 +61,23 @@ List<GetPage<dynamic>>? routes = [
       page: () => SubmitVerifyStudent(studentModel: Get.arguments)),
   GetPage(name: AppRroute.addCourse, page: () => AddCoursePage()),
   GetPage(name: AppRroute.addTreatment, page: () => AddTreatmentPage()),
+  GetPage(name: AppRroute.addLessons, page: () => AddLessonsPage()),
+  GetPage(name: AppRroute.addCategory, page: () => AddCategoryPage()),
   GetPage(name: AppRroute.viewCourses, page: () => ViewCoursesPage()),
   GetPage(name: AppRroute.viewTreatments, page: () => ViewTreatmentsPage()),
+  GetPage(name: AppRroute.viewCategorys, page: () => ViewCategorysPage()),
+  GetPage(
+      name: AppRroute.viewPendingRequests,
+      page: () => ViewPendingRequestsPage()),
+  GetPage(
+      name: AppRroute.viewInProcessingRequests,
+      page: () => ViewInProcessingRequestsPage()),
+  GetPage(
+      name: AppRroute.viewFinishedRequests,
+      page: () => ViewFinishedRequestsPage()),
+  GetPage(
+      name: AppRroute.viewRejectedRequests,
+      page: () => ViewRejectedRequestsPage()),
 
   // student
   GetPage(name: AppRroute.mainScreenStudent, page: () => MainScreenStudent()),
@@ -69,6 +94,7 @@ List<GetPage<dynamic>>? routes = [
   GetPage(name: AppRroute.patientShowProfile, page: () => PatientShowProfile()),
   GetPage(
       name: AppRroute.patientUpdateProfile, page: () => PatientUpdateProfile()),
+  GetPage(name: AppRroute.aiChat, page: () => ChatScreen()),
   // overseer
   GetPage(name: AppRroute.mainScreenOverseer, page: () => MainScreenOverseer()),
   // //
@@ -86,6 +112,21 @@ List<GetPage<dynamic>>? routes = [
   // GetPage(name: AppRroute.notifications, page: () =>  Notifications()),
   // GetPage(name: AppRroute.profile, page: () =>  Profile()),
   // GetPage(name: AppRroute.gptProfile, page: () =>  GptProfile()),
+  GetPage(
+      name: AppRroute.conversations, page: () => const ConversationsScreen()),
+  GetPage(name: AppRroute.viewOtherProfile, page: () => ViewOtherProfile()),
+  GetPage(
+      name: AppRroute.chat,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>;
+        return ChatScreenn(
+          otherProfilePhotoUrl:
+              (args['otherParty'] as OtherPartyModel).profilePhoto?['url'],
+          otherUserId: (args['otherParty'] as OtherPartyModel).userId,
+          conversationId: args['conversationId'],
+          otherPartyName: (args['otherParty'] as OtherPartyModel).fullName,
+        );
+      }),
 ];
 
 class AppRroute {
@@ -98,6 +139,9 @@ class AppRroute {
 // all
   static const String homeScreenAll = "/homeScreenAll";
   static const String notificationsView = "/notifications";
+  static const String chat = "/chat";
+  static const String conversations = "/conversations";
+  static const String viewOtherProfile = "/viewOtherProfile";
 
   // admin
   static const String mainScreenAdmin = "/mainScreenAdmin";
@@ -110,8 +154,16 @@ class AppRroute {
   static const String submitVerifyStudent = "/submitVerifyStudent";
   static const String addCourse = "/addCourse";
   static const String addTreatment = "/addTreatment";
+  static const String addLessons = "/addLessons";
+  static const String addCategory = "/addCategory";
+
   static const String viewCourses = "/viewCourses";
   static const String viewTreatments = "/viewTreatments";
+  static const String viewCategorys = "/viewCategorys";
+  static const String viewPendingRequests = "/viewPendingRequests";
+  static const String viewInProcessingRequests = "/viewInProcessingRequests";
+  static const String viewFinishedRequests = "/viewFinishedRequests";
+  static const String viewRejectedRequests = "/viewRejectedRequests";
   // student
   static const String mainScreenStudent = "/mainScreenStudent";
   static const String homeScreenStudent = "/homeScreenStudent";
@@ -125,13 +177,14 @@ class AppRroute {
   static const String patientPage = "/patientPage";
   static const String patientShowProfile = "/patientShowProfile";
   static const String patientUpdateProfile = "/patientUpdateProfile";
+  static const String aiChat = "/aiChat";
 
   // overseer
   static const String mainScreenOverseer = "/mainScreenOverseer";
 
   // home screen
   static const String homeScreen = "/homeScreen";
-  static const String chat = "/chat";
+  // static const String chat = "/chat";
   static const String notifications = "/notifications";
   static const String profile = "/profile";
   static const String gptProfile = "/gptProfile";

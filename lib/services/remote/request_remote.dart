@@ -13,57 +13,103 @@ class RequestRemote {
 
   Crud crud;
   RequestRemote(this.crud);
-  fetchingData() async {
-    final String? token = await authModel.getToken();
-    var response = await crud.getData(ApiLink.requests, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
-    return response.fold((l) => l, (r) => r);
-  }
-  fetchingSpecialData() async {
-    final String? token = await authModel.getToken();
-    var response = await crud.getData(ApiLink.ownedStudentRequest, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
+  getTreatments() async {
+    var response = await crud.getData(
+      ApiLink.treatments,
+    );
     return response.fold((l) => l, (r) => r);
   }
 
-  acceptRequestData(Map data, String id) async {
-    final String? token = await authModel.getToken();
+  getTreatmentRequestsForOverseer() async {
+    var response = await crud.getData(
+      ApiLink.treatmentRequestsForOverseer,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  fetchingData() async {
+    var response = await crud.getData(
+      ApiLink.requests,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  getOverSeerForCourse(String id) async {
+    var response = await crud.getData(
+      "${ApiLink.getOverSeerForCourse}/$id",
+    );
+    print("$response");
+    return response.fold((l) => l, (r) => r);
+  }
+
+  fetchingSpecialData() async {
+    var response = await crud.getData(
+      ApiLink.ownedStudentRequest,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  acceptRequestData(Map data, String idR, String idO) async {
     print(ApiLink.acceptRequest);
-    var response = await crud.postData("${ApiLink.acceptRequest}/$id", data, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
+    var response = await crud.postData(
+      "${ApiLink.acceptRequest}/$idR/$idO",
+      data,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  dunningOverseerData(Map data, String idR, String idO) async {
+    print(ApiLink.acceptRequest);
+    var response =
+        await crud.putData("${ApiLink.dunningOverseer}/$idR", data, idO);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  changeCaseRequestData(Map data, String idR, String idC) async {
+    var response =
+        await crud.putData("${ApiLink.changeCaseRequest}/$idR", data, idC);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  rejectRequestData(Map data, String id) async {
+    var response = await crud.putData(ApiLink.rejectRequest, data, id);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  complateRequestData(Map data, String id) async {
+    var response = await crud.putData(ApiLink.complateRequest, data, id);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  addEvaluationRequestData(Map data, String id) async {
+    var response = await crud.putData(ApiLink.addEvaluationRequest, data, id);
     return response.fold((l) => l, (r) => r);
   }
 
   deleteRequest(String id) async {
-    final String? token = await authModel.getToken();
-    var response = await crud.deleteData(
-        ApiLink.requests,
-        {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        id);
-        print("$response");
-        return response.fold((l) => l, (r) => r);
+    var response = await crud.deleteData(ApiLink.requests, id);
+    print("$response");
+    return response.fold((l) => l, (r) => r);
   }
 
-  fetchingMyData() async {
-    final String? token = await authModel.getToken();
-    var response = await crud.getData(ApiLink.myRequests, {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
+  getPendingPatientRequest() async {
+    var response = await crud.getData(
+      ApiLink.pendingPatientRequest,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  getInProcessingPatientRequest() async {
+    var response = await crud.getData(
+      ApiLink.inProcessingPatientRequest,
+    );
+    return response.fold((l) => l, (r) => r);
+  }
+
+  getCompletedPatientRequest() async {
+    var response = await crud.getData(
+      ApiLink.completedPatientRequest,
+    );
     return response.fold((l) => l, (r) => r);
   }
 
@@ -79,7 +125,7 @@ class RequestRemote {
   //   return response.fold((l) => l, (r) => r);
   // }
   // دالة التحديث مع إمكانية رفع صورة
-  updateRequestData(Map<String, dynamic> data, File? image,String id) async {
+  updateRequestData(Map<String, dynamic> data, File? image, String id) async {
     var uri = Uri.parse("${ApiLink.requests}/$id");
     var request = http.MultipartRequest('PUT', uri);
 
@@ -91,47 +137,43 @@ class RequestRemote {
     request.headers['Accept'] = 'application/json';
     if (image == null) {
       // بدون صورة - إرسال JSON عادي
-      var response = await crud.putData(ApiLink.requests, data, {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },id);
+      var response = await crud.putData(ApiLink.requests, data, id);
       return response.fold((l) => l, (r) => r);
-    }
-    else {
-    // مع صورة - إرسال Multipart
-    // return await _uploadWithImage(data, image, token);
-
-    var pic = await http.MultipartFile.fromPath(
-      'photo',
-      image.path,
-      // filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg'
-    );
-    data.forEach((key, value) {
-      if (value != null) {
-        request.fields[key] = value.toString();
-      }
-    });
-    request.files.add(pic);
-    var response = await request.send();
-    var responseData = await response.stream.bytesToString();
-
-    print('📥 كود الاستجابة: ${response.statusCode}');
-    print('📄 بيانات الاستجابة: $responseData');
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      try {
-        var jsonResponse = json.decode(responseData);
-        return {'status': 'success', 'data': jsonResponse};
-      } catch (e) {
-        return {'status': 'success', 'data': responseData};
-      }
     } else {
-      print('❌ خطأ في الاستجابة: ${response.statusCode}');
-      return StatusRequest.serverFailure;
-    }
+      // مع صورة - إرسال Multipart
+      // return await _uploadWithImage(data, image, token);
+
+      var pic = await http.MultipartFile.fromPath(
+        'photo',
+        image.path,
+        // filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg'
+      );
+      data.forEach((key, value) {
+        if (value != null) {
+          request.fields[key] = value.toString();
+        }
+      });
+      request.files.add(pic);
+      var response = await request.send();
+      var responseData = await response.stream.bytesToString();
+
+      print('📥 كود الاستجابة: ${response.statusCode}');
+      print('📄 بيانات الاستجابة: $responseData');
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        try {
+          var jsonResponse = json.decode(responseData);
+          return {'status': 'success', 'data': jsonResponse};
+        } catch (e) {
+          return {'status': 'success', 'data': responseData};
+        }
+      } else {
+        print('❌ خطأ في الاستجابة: ${response.statusCode}');
+        return StatusRequest.serverFailure;
       }
+    }
   }
+
   sendRequestData(Map<String, dynamic> data, File? image) async {
     var uri = Uri.parse(ApiLink.requests);
     var request = http.MultipartRequest('POST', uri);
@@ -144,11 +186,10 @@ class RequestRemote {
     request.headers['Accept'] = 'application/json';
     if (image == null) {
       // بدون صورة - إرسال JSON عادي
-      var response = await crud.postData(ApiLink.requests, data, {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      });
+      var response = await crud.postData(
+        ApiLink.requests,
+        data,
+      );
       return response.fold((l) => l, (r) => r);
     }
     // else {
@@ -163,12 +204,12 @@ class RequestRemote {
     data.forEach((key, value) {
       if (value != null) {
         if (key == 'more_details') {
-            // حول moreDetails إلى JSON string وأرسله باسم more_details
-            request.fields['more_details'] = jsonEncode(value);
-            print("reeeeeeee ${jsonEncode(value).runtimeType}");
-          } else {
-            request.fields[key] = value.toString();
-          }
+          // حول moreDetails إلى JSON string وأرسله باسم more_details
+          request.fields['more_details'] = jsonEncode(value);
+          print("reeeeeeee ${jsonEncode(value).runtimeType}");
+        } else {
+          request.fields[key] = value.toString();
+        }
         // request.fields[key] = value.toString();
       }
     });
@@ -190,7 +231,7 @@ class RequestRemote {
       print('❌ خطأ في الاستجابة: ${response.statusCode}');
       return StatusRequest.serverFailure;
     }
-      // }
+    // }
   }
 
   // دالة خاصة للرفع مع الصورة

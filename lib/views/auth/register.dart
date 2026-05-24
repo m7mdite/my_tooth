@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/auth/register_controller.dart';
+import 'package:gr_flutter/controllers/auth_controller/register_controller.dart';
 import 'package:gr_flutter/views/widgets/select_one_option.dart';
 
 import '../widgets/auth_text_form_field.dart';

@@ -24,6 +24,13 @@ class AppBarToothAdmin extends StatelessWidget
           },
           icon: const Icon(Icons.notifications_active ,color: Colors.white,),
         ),
+        IconButton(
+          onPressed: () {
+            Get.toNamed("/notifications");
+          },
+          icon: const Icon(Icons.settings ,color: Colors.white,),
+        ),
+        
       ],
       elevation: 6,
       shadowColor: Colors.black,

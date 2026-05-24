@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/views/chat_screen.dart';
+import 'package:gr_flutter/views/conversations_screen.dart';
 import 'package:gr_flutter/views/student_views/page_of_main/student_home_screen.dart';
 
 import '../../views/student_views/page_of_main/student_ads_screen.dart';
-import '../../views/student_views/page_of_main/student_profile_screen.dart';
+import '../../views/student_views/page_of_main/student_setting_screen.dart';
 import '../../views/student_views/page_of_main/student_requests_screen.dart';
 
 abstract class MainStudentController extends GetxController {}
@@ -27,14 +29,14 @@ class MainStudentControllerImp extends MainStudentController {
       "page": StudentRequestsScreen()
     },
     {
-      "title": "الاعلانات",
+      "title": "المحادثات",
       "icon": Icons.note_alt,
-      "page": StudentAdsScreen()
+      "page": ConversationsScreen()
     },
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": StudentProfileScreen()
+      "page": StudentSettingScreen()
     },
   ];
 
