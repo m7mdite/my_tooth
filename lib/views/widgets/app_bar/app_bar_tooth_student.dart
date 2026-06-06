@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/student_controller/main_student_controller.dart';
+import '../../conversations_screen.dart';
+import '../../posts/feed_screen.dart';
 
 class AppBarToothStudent extends StatelessWidget implements PreferredSizeWidget {
   final MainStudentControllerImp controller =
@@ -22,6 +24,13 @@ class AppBarToothStudent extends StatelessWidget implements PreferredSizeWidget 
           },
           icon: const Icon(Icons.notifications_active ,color: Colors.black,),
         ),
+        IconButton(
+          onPressed: () {
+            Get.to(() => ConversationsScreen());
+          },
+          icon: const Icon(Icons.chat_outlined ,color: Colors.black,),
+        ),
+
       ],
       elevation: 6,
       shadowColor: Colors.black,

@@ -5,6 +5,7 @@ import 'package:gr_flutter/views/conversations_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_home_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_setting_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_request_screen.dart';
+import '../../views/posts/feed_screen.dart';
 
 abstract class MainOverseerController extends GetxController {}
 
@@ -29,9 +30,9 @@ class MainOverseerControllerImp extends MainOverseerController {
       "page": OverseerRequestScreen()
     },
     {
-      "title": "الاعلانات",
-      "icon": Icons.note_alt,
-      "page": ConversationsScreen( )
+      "title": "المنشورات",
+      "icon": Icons.post_add_sharp,
+      "page": FeedScreen()
     },
     {
       "title": "الملف الشخصي",

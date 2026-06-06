@@ -4,6 +4,7 @@ import 'package:gr_flutter/views/chat_screen.dart';
 import 'package:gr_flutter/views/conversations_screen.dart';
 import 'package:gr_flutter/views/student_views/page_of_main/student_home_screen.dart';
 
+import '../../views/posts/feed_screen.dart';
 import '../../views/student_views/page_of_main/student_ads_screen.dart';
 import '../../views/student_views/page_of_main/student_setting_screen.dart';
 import '../../views/student_views/page_of_main/student_requests_screen.dart';
@@ -29,9 +30,9 @@ class MainStudentControllerImp extends MainStudentController {
       "page": StudentRequestsScreen()
     },
     {
-      "title": "المحادثات",
-      "icon": Icons.note_alt,
-      "page": ConversationsScreen()
+      "title": "المنشورات",
+      "icon": Icons.post_add_sharp,
+      "page": FeedScreen()
     },
     {
       "title": "الملف الشخصي",

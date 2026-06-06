@@ -23,11 +23,16 @@ class PendingRequestModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (sId != null) data['_id'] = sId;
-    if (patient != null) data['patient'] = patient!.toJson();
     if (caseType != null) data['case_type'] = caseType!.toJson();
-    if (courseInfo != null) data['course_info'] = courseInfo!.toJson();
-    if (requestion != null) data['Requestion'] = requestion!.toJson();
+    if (requestion!.painSeverity != null) data['pain_severity'] = requestion!.painSeverity;
+    if (requestion!.painTime != null) data['pain_time'] = requestion!.painTime;
+    if (requestion!.toothLocation != null) data['tooth_location'] = requestion!.toothLocation;
+    if (requestion!.gender != null) data['gender'] = requestion!.gender;
+    if (requestion!.isPregnant != null && requestion!.gender == "female") data['is_pregnant'] = requestion!.isPregnant;
+    if (requestion!.moreDetails != null) data['more_details'] = requestion!.moreDetails!.toJson();
+    if (requestion!.age != null) data['age'] = requestion!.age;
+    if (requestion!.photo != null) data['photo'] = requestion!.photo!.toJson();
+
     return data;
   }
 }
@@ -110,8 +115,6 @@ class RequestionModel {
     if (moreDetails != null) data['more_details'] = moreDetails!.toJson();
     data['age'] = age;
     if (photo != null) data['photo'] = photo!.toJson();
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -130,11 +133,8 @@ class CaseType {
     caseType = json['case_type'];
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': sId,
-      'case_type': caseType,
-    };
+  String toJson() {
+    return sId ?? '';
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:gr_flutter/views/conversations_screen.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_home_screen.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_setting_screen.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_request_screen.dart';
+import 'package:gr_flutter/views/posts/feed_screen.dart';
 
 abstract class MainPatientController extends GetxController {}
 
@@ -24,9 +25,9 @@ class MainPatientControllerImp extends MainPatientController {
       "page": PatientRequestScreen()
     },
     {
-      "title": "المحادثات",
-      "icon": Icons.note_alt,
-      "page": ConversationsScreen()
+      "title": "المنشورات",
+      "icon": Icons.post_add_sharp,
+      "page": FeedScreen()
     },
     {
       "title": "الملف الشخصي",

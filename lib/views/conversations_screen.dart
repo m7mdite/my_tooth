@@ -12,10 +12,10 @@ class ConversationsScreen extends StatelessWidget {
     final controller = Get.put(ConversationsController());
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('المحادثات'),
-      //   centerTitle: true,
-      // ),
+      appBar: AppBar(
+        title: const Text('المحادثات'),
+        centerTitle: true,
+      ),
       body: RefreshIndicator(
         onRefresh: ()async {
           controller.fetchConversations();

@@ -326,13 +326,19 @@ class PatientRequestControllerImp extends PatientRequestController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       showsnack(message: "تم جلب العلاجات بنجاح");
-      for (var item in response['data']) {
-        print("=============== ${item} ==================");
-        treatments.add({
-          'id': item['_id'].toString(),
-          'case_type': item['case_type'].toString(),
-        });
-      }
+      treatments= (response['data'] as List)
+          .map((item) => {
+                'id': item['_id'].toString(),
+                'case_type': item['case_type'].toString(),
+              })
+          .toList(); 
+      // for (var item in response['data']) {
+      //   print("=============== ${item} ==================");
+      //   treatments.add({
+      //     'id': item['_id'].toString(),
+      //     'case_type': item['case_type'].toString(),
+      //   });
+      // }
       // treatments = response['data'];
     }
   }

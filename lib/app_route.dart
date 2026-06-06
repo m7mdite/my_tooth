@@ -29,6 +29,9 @@ import 'views/notifications_view.dart';
 import 'views/overseer_views/page_of_main/main_screen_overseer.dart';
 import 'views/patient_views/patient_show_profile.dart';
 import 'views/patient_views/patient_update_profile.dart';
+import 'views/posts/create_post_screen.dart';
+import 'views/posts/feed_screen.dart';
+import 'views/posts/post_detail_screen.dart';
 import 'views/student_views/main_screen_student.dart';
 import 'views/student_views/page_of_main/student_home_screen.dart';
 import 'views/student_views/show_owned_student_request.dart';
@@ -47,6 +50,9 @@ List<GetPage<dynamic>>? routes = [
   // page: () => HomeScreen()),
   // all
   // GetPage(name: AppRroute.homeScreenAll, page: () => HomeScreen()),
+  GetPage(name: AppRroute.feed, page: () => FeedScreen()),
+GetPage(name: AppRroute.createPost, page: () => CreatePostScreen()),
+GetPage(name: AppRroute.postDetail, page: () => PostDetailScreen(postId: Get.arguments)),
   GetPage(name: AppRroute.notificationsView, page: () => NotificationsView()),
   // admin
   GetPage(name: AppRroute.mainScreenAdmin, page: () => MainScreenAdmin()),
@@ -142,6 +148,10 @@ class AppRroute {
   static const String chat = "/chat";
   static const String conversations = "/conversations";
   static const String viewOtherProfile = "/viewOtherProfile";
+  static const String feed = '/feed';
+static const String createPost = '/create_post';
+static const String postDetail = '/post_detail';
+
 
   // admin
   static const String mainScreenAdmin = "/mainScreenAdmin";

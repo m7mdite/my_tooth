@@ -248,9 +248,10 @@ class FillRequestControllerImp extends FillRequestController {
               medicines: "",
               previousTreatment: null,
             ),
-
           ),
+          caseType: CaseType(sId: "", caseType: ""),
     );
+    
     image = null;
     update();
   }

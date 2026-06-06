@@ -112,7 +112,7 @@ class ModifiedRequest extends StatelessWidget {
                               : null,
                       title: "  إختر نوع المعالجة:   ",
                       onChanged: (value) {
-                        controller.pendingRequestModel.caseType!.sId = value!;
+                        controller.pendingRequestModel.caseType!.sId = value;
                         controller.update();
                       },
                     ),

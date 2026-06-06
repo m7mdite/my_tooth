@@ -12,8 +12,10 @@ class ApiLink {
   static const String reportUser = '$servere/reports';
   static const String supportMessage = "$servere/support";
   static const String requests = '$servere/request';
+  static const String posts = "$servere/posts";
+static const String comments = "$servere/posts/comments";
   static const String changePassword =
-      "$servere/auth/change_password"; 
+      "$servere/auth/change-password"; 
   // =========================== patient
   static const String pendingPatientRequest = '$servere/request/my';
   static const String inProcessingPatientRequest =

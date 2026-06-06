@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/patient_controller/main_patient_controller.dart';
+import '../../conversations_screen.dart';
 
 class AppBarToothPatient extends StatelessWidget
     implements PreferredSizeWidget {
@@ -22,6 +23,12 @@ class AppBarToothPatient extends StatelessWidget
             Get.toNamed("/notifications");
           },
           icon: const Icon(Icons.notifications_active ,color: Colors.white,),
+        ),
+        IconButton(
+          onPressed: () {
+            Get.to(() => ConversationsScreen());
+          },
+          icon: const Icon(Icons.chat_outlined ,color: Colors.black,),
         ),
       ],
       elevation: 6,

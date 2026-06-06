@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/overseer_controller/main_overseer_controller.dart';
 import '../../../controllers/patient_controller/main_patient_controller.dart';
+import '../../conversations_screen.dart';
 
 class AppBarToothOverseer extends StatelessWidget
     implements PreferredSizeWidget {
@@ -27,9 +28,9 @@ class AppBarToothOverseer extends StatelessWidget
         ),
         IconButton(
           onPressed: () {
-            Get.toNamed("/notifications");
+            Get.to(() => ConversationsScreen());
           },
-          icon: const Icon(Icons.settings ,color: Colors.white,),
+          icon: const Icon(Icons.chat_outlined ,color: Colors.black,),
         ),
         
       ],
