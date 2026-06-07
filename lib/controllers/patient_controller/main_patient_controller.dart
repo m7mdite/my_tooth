@@ -6,6 +6,8 @@ import 'package:gr_flutter/views/patient_views/pages_of_main/patient_setting_scr
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_request_screen.dart';
 import 'package:gr_flutter/views/posts/feed_screen.dart';
 
+import '../../views/settings/unified_setting_screen.dart';
+  
 abstract class MainPatientController extends GetxController {}
 
 class MainPatientControllerImp extends MainPatientController {
@@ -32,7 +34,7 @@ class MainPatientControllerImp extends MainPatientController {
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": PatientSettingScreen()
+      "page": UnifiedSettingScreen()
     },
   ];
 

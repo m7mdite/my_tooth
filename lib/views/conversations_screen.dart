@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../controllers/conversations_controller.dart';
 import '../../models/conversation_model.dart';
+import '../services/functions/show_image_preview.dart';
 
 class ConversationsScreen extends StatelessWidget {
   const ConversationsScreen({super.key});
@@ -17,7 +18,7 @@ class ConversationsScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: RefreshIndicator(
-        onRefresh: ()async {
+        onRefresh: () async {
           controller.fetchConversations();
         },
         child: Obx(() {
@@ -56,16 +57,26 @@ class ConversationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildConversationTile(ConversationModel conversation, ConversationsController controller) {
+  Widget _buildConversationTile(
+      ConversationModel conversation, ConversationsController controller) {
     final other = conversation.otherParty;
     return ListTile(
-      leading: _buildAvatar(other),
+      leading: InkWell(
+        onTap: () {
+          if (other.profilePhoto != null &&
+              other.profilePhoto!['url'] != null &&
+              other.profilePhoto!['url']!.isNotEmpty) {
+            showImagePreview("http://localhost:5000/${other.profilePhoto!['url']}");
+          }
+        },
+        child: _buildAvatar(other),
+      ),
       title: Row(
         children: [
           Expanded(
             child: Text(
               other.fullName,
-              style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -80,7 +91,8 @@ class ConversationsScreen extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: Text("",
+      trailing: Text(
+        "",
         // _formatDate(conversation.updatedAt),
         style: const TextStyle(fontSize: 12, color: Colors.grey),
       ),
@@ -90,8 +102,11 @@ class ConversationsScreen extends StatelessWidget {
 
   Widget _buildAvatar(OtherPartyModel other) {
     return CircleAvatar(
-      backgroundImage: other.profilePhoto!['url'] != null && other.profilePhoto!.isNotEmpty && other.profilePhoto!['url'] != ""
-          ? CachedNetworkImageProvider("http://localhost:5000/${other.profilePhoto!['url']}")
+      backgroundImage: other.profilePhoto!['url'] != null &&
+              other.profilePhoto!.isNotEmpty &&
+              other.profilePhoto!['url'] != ""
+          ? CachedNetworkImageProvider(
+              "http://localhost:5000/${other.profilePhoto!['url']}")
           : null,
       child: other.profilePhoto!['url'] == null || other.profilePhoto!.isEmpty
           ? Text(other.fullName.isNotEmpty ? other.fullName[0] : '?')
@@ -128,7 +143,7 @@ class ConversationsScreen extends StatelessWidget {
       default:
         color = Colors.grey;
         icon = Icons.person;
-        // label = 'مستخدم';
+      // label = 'مستخدم';
     }
 
     return Container(

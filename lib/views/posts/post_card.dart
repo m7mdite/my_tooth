@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/posts/post_detail_screen.dart';
 
+import '../../services/functions/show_image_preview.dart';
+
 class PostCard extends StatelessWidget {
   final PostModel post;
   final VoidCallback onLike;
@@ -33,11 +35,18 @@ class PostCard extends StatelessWidget {
             // رأس البوست: الصورة والاسم
             Row(
               children: [
-                CircleAvatar(
-                  backgroundImage: post.publisher.profilePhoto != null
-                      ? NetworkImage('http://localhost:5000${post.publisher.profilePhoto}')
-                      : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
-                  radius: 20,
+                InkWell(
+                  onTap: () {
+                    showImagePreview(post.publisher.profilePhoto != null
+                        ? 'http://localhost:5000/${post.publisher.profilePhoto}'
+                        : AppConstants.defaultBackgroundImage);
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: post.publisher.profilePhoto != null
+                        ? NetworkImage('http://localhost:5000/${post.publisher.profilePhoto}')
+                        : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                    radius: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -76,14 +85,19 @@ class PostCard extends StatelessWidget {
                   itemBuilder: (context, i) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: CachedNetworkImage(
-                          imageUrl: 'http://localhost:5000${post.images[i]}',
-                          fit: BoxFit.cover,
-                          width: 150,
-                          placeholder: (context, url) => Container(color: Colors.grey[200]),
-                          errorWidget: (context, url, error) => const Icon(Icons.broken_image),
+                      child: InkWell(
+                        onTap: () {
+                          showImagePreview('http://localhost:5000${post.images[i]}');
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CachedNetworkImage(
+                            imageUrl: 'http://localhost:5000${post.images[i]}',
+                            fit: BoxFit.cover,
+                            width: 150,
+                            placeholder: (context, url) => Container(color: Colors.grey[200]),
+                            errorWidget: (context, url, error) => const Icon(Icons.broken_image),
+                          ),
                         ),
                       ),
                     );

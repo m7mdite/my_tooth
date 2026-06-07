@@ -5,15 +5,17 @@ import 'package:get_storage/get_storage.dart';
 import 'app_route.dart';
 import 'controllers/controllers_binding.dart';
 import 'controllers/notification_controller.dart';
+import 'services/shared/auth_model.dart';
 import 'services/crud.dart';
 // import 'services/my_services.dart';
+import 'services/remote/unified_profile_remote.dart';
 import 'services/shared/auth_service.dart';
 import 'services/websocket_service.dart';
 
 Future<void> main() async {
   Get.put(Crud());
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // await initialServices();
   await GetStorage.init();
 
@@ -27,9 +29,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(NotificationController());
-  Get.put(WebSocketService());
+    Get.put(AuthModel(), permanent: true); 
+    Get.put(WebSocketService());
     // Get.put(WebSocketService(), permanent: true);
-    
+    Get.put(UnifiedProfileRemote(Get.find()), permanent: true);
     Get.put(AuthService(), permanent: true);
     return GetMaterialApp(
       locale: Locale('ar'),

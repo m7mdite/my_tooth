@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/admin_home_screen.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/main_screen__admin.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/main_screen_patient.dart';
+import 'package:gr_flutter/views/settings/unified_profile_screen.dart';
+import 'package:gr_flutter/views/widgets/change_password_screen.dart';
+import 'package:gr_flutter/views/widgets/contact_support_screen.dart';
+import 'package:gr_flutter/views/widgets/privacy_policy_screen.dart';
 
 import 'models/conversation_model.dart';
 import 'views/admin_views/request_and_courses/add_category_page.dart';
@@ -27,11 +31,10 @@ import 'views/chat_screen.dart';
 import 'views/conversations_screen.dart';
 import 'views/notifications_view.dart';
 import 'views/overseer_views/page_of_main/main_screen_overseer.dart';
-import 'views/patient_views/patient_show_profile.dart';
-import 'views/patient_views/patient_update_profile.dart';
 import 'views/posts/create_post_screen.dart';
 import 'views/posts/feed_screen.dart';
 import 'views/posts/post_detail_screen.dart';
+import 'views/settings/unified_edit_profile_screen.dart';
 import 'views/student_views/main_screen_student.dart';
 import 'views/student_views/page_of_main/student_home_screen.dart';
 import 'views/student_views/show_owned_student_request.dart';
@@ -75,6 +78,13 @@ GetPage(name: AppRroute.postDetail, page: () => PostDetailScreen(postId: Get.arg
   GetPage(
       name: AppRroute.viewPendingRequests,
       page: () => ViewPendingRequestsPage()),
+      GetPage(
+      name: AppRroute.changePassword,page: () => ChangePasswordScreen()),
+      GetPage(
+      name: AppRroute.privacyPolicy,page: () => PrivacyPolicyScreen()),
+      GetPage(
+      name: AppRroute.contactSupport,page: () => ContactSupportScreen()),
+       
   GetPage(
       name: AppRroute.viewInProcessingRequests,
       page: () => ViewInProcessingRequestsPage()),
@@ -84,22 +94,25 @@ GetPage(name: AppRroute.postDetail, page: () => PostDetailScreen(postId: Get.arg
   GetPage(
       name: AppRroute.viewRejectedRequests,
       page: () => ViewRejectedRequestsPage()),
-
+  GetPage(
+      name: AppRroute.unifiedProfileScreen,
+      page: () => UnifiedProfileScreen()),
+      
   // student
   GetPage(name: AppRroute.mainScreenStudent, page: () => MainScreenStudent()),
   GetPage(name: AppRroute.homeScreenStudent, page: () => StudentHomeScreen()),
-  GetPage(
-      name: AppRroute.studentProfileInfoScreen,
-      page: () => StudentProfileInfoScreen()),
+  // GetPage(
+  //     name: AppRroute.studentProfileInfoScreen,
+  //     page: () => StudentProfileInfoScreen()),
   GetPage(
       name: AppRroute.showOwnedStudentRequest,
       page: () => ShowOwnedStudentRequest()),
   GetPage(name: AppRroute.viewVerify, page: () => ViewVerifyPage()),
   // patient
   GetPage(name: AppRroute.mainScreenPatient, page: () => MainScreenPatient()),
-  GetPage(name: AppRroute.patientShowProfile, page: () => PatientShowProfile()),
-  GetPage(
-      name: AppRroute.patientUpdateProfile, page: () => PatientUpdateProfile()),
+  // GetPage(name: AppRroute.patientShowProfile, page: () => PatientShowProfile()),
+  // GetPage(
+  //     name: AppRroute.patientUpdateProfile, page: () => PatientUpdateProfile()),
   GetPage(name: AppRroute.aiChat, page: () => ChatScreen()),
   // overseer
   GetPage(name: AppRroute.mainScreenOverseer, page: () => MainScreenOverseer()),
@@ -118,6 +131,7 @@ GetPage(name: AppRroute.postDetail, page: () => PostDetailScreen(postId: Get.arg
   // GetPage(name: AppRroute.notifications, page: () =>  Notifications()),
   // GetPage(name: AppRroute.profile, page: () =>  Profile()),
   // GetPage(name: AppRroute.gptProfile, page: () =>  GptProfile()),
+  GetPage(name: AppRroute.unifiedEditProfile, page: () => UnifiedEditProfileScreen()),
   GetPage(
       name: AppRroute.conversations, page: () => const ConversationsScreen()),
   GetPage(name: AppRroute.viewOtherProfile, page: () => ViewOtherProfile()),
@@ -151,7 +165,14 @@ class AppRroute {
   static const String feed = '/feed';
 static const String createPost = '/create_post';
 static const String postDetail = '/post_detail';
-
+static const String unifiedSetting = '/unified_setting';
+static const String unifiedProfile = '/unified_profile';
+// static const String unifiedEditProfile = '/unified_edit_profile';
+static const String changePassword = '/change_password';
+static const String privacyPolicy = '/privacy_policy';
+static const String contactSupport = '/contact_support';
+static const String unifiedProfileScreen = '/unifiedProfileScreen';
+static const String unifiedEditProfile = '/unified_edit_profile';
 
   // admin
   static const String mainScreenAdmin = "/mainScreenAdmin";

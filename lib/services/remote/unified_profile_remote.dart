@@ -1,18 +1,41 @@
+// services/remote/unified_profile_remote.dart
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:gr_flutter/services/crud.dart';
+import 'package:gr_flutter/api_link.dart';
 import 'package:gr_flutter/services/shared/auth_model.dart';
+
 import 'package:http/http.dart' as http;
-import '../../api_link.dart';
 import '../../utils/app_constants/status_request.dart';
-import '../crud.dart';
 
-class StudentRemote {
-  final AuthModel authModel = AuthModel();
+class UnifiedProfileRemote {
+  final Crud crud;
+  AuthModel authModel =AuthModel();
+  UnifiedProfileRemote(this.crud);
 
-  Crud crud;
-  StudentRemote(this.crud);
-  
+  getMyProfile() async {
+    var response = await crud.getData(ApiLink.profile);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  updateProfile(Map<String, dynamic> data) async {
+    var response = await crud.putData(ApiLink.profile, data, '');
+    return response.fold((l) => l, (r) => r);
+  }
+
+  uploadProfilePicture(File image) async {
+    final result = await crud.putDataWithFiles(
+      ApiLink.photo, // تأكد أن ApiLink.photo = '/api/users/photo'
+      {},
+      [image.path],
+      'profile_photo',
+    );
+    return result.fold(
+      (status) => {'status': 'error', 'message': 'فشل الاتصال'},
+      (data) => data,
+    );
+  }
+
   Future<dynamic> sendVerifyDocument(File image) async {
     String? token = await authModel.getToken();
     try {

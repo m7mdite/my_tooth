@@ -5,6 +5,7 @@ import 'package:gr_flutter/views/conversations_screen.dart';
 import 'package:gr_flutter/views/student_views/page_of_main/student_home_screen.dart';
 
 import '../../views/posts/feed_screen.dart';
+import '../../views/settings/unified_setting_screen.dart';
 import '../../views/student_views/page_of_main/student_ads_screen.dart';
 import '../../views/student_views/page_of_main/student_setting_screen.dart';
 import '../../views/student_views/page_of_main/student_requests_screen.dart';
@@ -37,7 +38,7 @@ class MainStudentControllerImp extends MainStudentController {
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": StudentSettingScreen()
+      "page": UnifiedSettingScreen()
     },
   ];
 
