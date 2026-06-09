@@ -1,18 +1,14 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/all/public_controller.dart';
-import 'package:gr_flutter/controllers/conversations_controller.dart';
-import 'package:gr_flutter/models/pending_request_model.dart';
-import 'package:gr_flutter/models/treatment_request_processing_s_model.dart';
+import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
+import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
+import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/tooth_constants.dart';
-import '../../../controllers/patient_controller/patient_request_controller.dart';
-import '../../../models/accept_request_model.dart';
 import '../row_item_request.dart';
-import '../view_other_profile.dart';
+import '../../public_views/view_other_profile.dart';
 
 class ShowRequestProcessing extends StatelessWidget {
   // final PatientRequestControllerImp controller = Get.find();

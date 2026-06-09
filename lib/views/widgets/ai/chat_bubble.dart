@@ -1,8 +1,7 @@
 // widgets/chat_bubble.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../controllers/ai_controller/ai_chat_controller.dart';
+import '../../../controllers/ai_controllers/ai_chat_controller.dart';
 
 class ChatBubble extends StatelessWidget {
   final ChatMessage message;

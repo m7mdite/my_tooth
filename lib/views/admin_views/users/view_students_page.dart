@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controllers/admin_controller/admin_users_controller.dart';
+import '../../../controllers/admin_controllers/admin_users_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
 
 class ViewStudentsPage extends StatelessWidget {

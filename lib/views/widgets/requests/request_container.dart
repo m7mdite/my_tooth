@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gr_flutter/models/pending_request_model.dart';
+import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
-import '../../../models/accept_request_model.dart';
 import '../../../utils/app_constants/tooth_constants.dart';
 
 class RequestContainer extends StatelessWidget {

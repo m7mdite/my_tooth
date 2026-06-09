@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:gr_flutter/models/treatment_request_processing_s_model.dart';
+import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
 import '../../../utils/app_constants/tooth_constants.dart';
 
 class CardRequestProcessing extends StatelessWidget {

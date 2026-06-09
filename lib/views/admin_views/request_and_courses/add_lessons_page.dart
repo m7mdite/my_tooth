@@ -1,13 +1,12 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:gr_flutter/controllers/admin_controller/admin_request_controller.dart';
-import 'package:gr_flutter/models/overseer/profile_overseer_model.dart';
+import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
+import 'package:gr_flutter/views/widgets/botton_controller.dart';
 
-import '../../patient_views/modified_request.dart';
+import '../../../models/public_models/profile_model.dart';
+import '../../request_views/modified_request.dart';
 
 class AddLessonsPage extends StatelessWidget {
   final AdminRequestControllerImpl controller =
@@ -103,7 +102,7 @@ class AddLessonsPage extends StatelessWidget {
               ),
               // ✅ الاختيار المتعدد للمشرفين
               Center(
-                child: DropdownSearch<ProfileOverseerModel>.multiSelection(
+                child: DropdownSearch<ProfileModel>.multiSelection(
                   // دالة items للبحث والتصفية
                   items: (filter, infiniteScrollProps) {
                     if (controller.overSeers.isEmpty) {
@@ -124,10 +123,10 @@ class AddLessonsPage extends StatelessWidget {
                   },
                 
                   // مقارنة العناصر
-                  compareFn: (item1, item2) => item1.sId == item2.sId,
+                  compareFn: (item1, item2) => item1.user == item2.user,
                 
                   // التعامل مع التغيير (قائمة من العناصر المختارة)
-                  onChanged: (List<ProfileOverseerModel>? selectedItems) {
+                  onChanged: (List<ProfileModel>? selectedItems) {
                     if (selectedItems != null) {
                       controller.selectedOverseers = selectedItems;
                       print("تم اختيار ${selectedItems.length} مشرف");
@@ -152,7 +151,7 @@ class AddLessonsPage extends StatelessWidget {
                   },
                 
                   // كيفية عرض كل عنصر في القائمة
-                  itemAsString: (ProfileOverseerModel? overseer) =>
+                  itemAsString: (ProfileModel? overseer) =>
                       "${overseer!.firstName} ${overseer.lastName}",
                 
                   // إعدادات القائمة المنبثقة للاختيار المتعدد
@@ -208,7 +207,7 @@ class AddLessonsPage extends StatelessWidget {
                 height: 20,
               ),
               Center(
-                child: BottomContainer(
+                child: BottonContainer(
                   body: "اضافة",
                   onTap: () {
                     controller.addLesson();

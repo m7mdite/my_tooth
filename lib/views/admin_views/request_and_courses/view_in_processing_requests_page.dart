@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 
-import '../../../controllers/admin_controller/admin_request_controller.dart';
+import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../widgets/requests/card_request_processing.dart';
 
 class ViewInProcessingRequestsPage extends StatelessWidget {

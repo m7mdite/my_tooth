@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/student_controller/student_requests_controller.dart';
-import 'package:gr_flutter/models/pending_request_model.dart';
-import 'package:gr_flutter/services/functions/show_snack.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
-
-import '../../../controllers/student_controller/student_under_show_request.dart';
-import '../../../models/accept_request_model.dart';
-import '../../../models/treatment_request_processing_s_model.dart';
-import '../auth_text_form_field.dart';
-import '../bottom_controller.dart';
-import '../submit_dialog.dart';
+import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
+import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
+import '../botton_controller.dart';
+import '../dialog/submit_dialog.dart';
 import 'show_request.dart';
 
 class StudentDunningRequest extends StatelessWidget {
@@ -31,7 +23,7 @@ class StudentDunningRequest extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BottomContainer(
+              BottonContainer(
                 paddingVertical: 5,
                 paddingHorizontal: 15,
                 body: "المطالبة بالحالة",
@@ -111,7 +103,7 @@ class StudentSelectOverseer extends StatelessWidget {
               value: controller.selectOverseer == ""
                   ? null
                   : controller.selectOverseer,
-              items: controller.overseersCourse!.map((item) {
+              items: controller.overseersCourse.map((item) {
                 return DropdownMenuItem<String>(
                   value: item['user'],
                   child: Text("${item['first_name']} ${item['last_name']}"),

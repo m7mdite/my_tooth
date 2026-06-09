@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/ai_controller/ai_chat_controller.dart';
+import 'package:gr_flutter/controllers/ai_controllers/ai_chat_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'chat_bubble.dart';
 import 'typing_indicator.dart';

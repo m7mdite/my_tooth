@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
-import 'package:gr_flutter/models/comment_model.dart';
-import 'package:gr_flutter/services/remote/comment_remote.dart';
-import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import 'package:gr_flutter/models/posts_models/comment_model.dart';
+import 'package:gr_flutter/services/remote/public_remotes/comment_remote.dart';
 
 class CommentController extends GetxController {
   final CommentRemote remote = CommentRemote(Get.find());

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/all/unified_setting_controller.dart';
-import 'package:gr_flutter/controllers/student_controller/student_setting_controller.dart';
+import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 class ViewVerifyPage extends StatelessWidget {

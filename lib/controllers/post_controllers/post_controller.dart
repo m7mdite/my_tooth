@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:gr_flutter/models/post_model.dart';
-import 'package:gr_flutter/services/remote/post_remote.dart';
+import 'package:gr_flutter/models/posts_models/post_model.dart';
+import 'package:gr_flutter/services/remote/public_remotes/post_remote.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 
-import '../../models/comment_model.dart';
+import '../../models/posts_models/comment_model.dart';
 import '../../services/functions/handling_data.dart';
 
 class PostController extends GetxController {

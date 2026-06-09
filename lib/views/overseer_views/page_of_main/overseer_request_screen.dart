@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/overseer_controller/overseer_requests_controller.dart';
+import 'package:gr_flutter/controllers/overseer_controllers/overseer_requests_controller.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
 
-import '../../../controllers/student_controller/student_requests_controller.dart';
 import '../../widgets/default_no_data.dart';
-import '../../widgets/requests/request_container.dart';
 
 class OverseerRequestScreen extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =

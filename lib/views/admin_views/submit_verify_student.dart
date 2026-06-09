@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/admin_controller/admin_users_controller.dart';
+import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
-import '../../models/student_model/veify_student_model.dart';
+import '../../models/admin_models/veify_student_model.dart';
 
 // يرجى التأكد من أنك أضفت الكلاس VeifyStudentModel وجميع الكلاسات التابعة له هنا.
 

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/fill_request_controller.dart';
-import 'package:gr_flutter/models/pending_request_model.dart';
-import 'package:gr_flutter/models/treatment_request_processing_s_model.dart';
+import 'package:gr_flutter/controllers/requests_controllers/fill_request_controller.dart';
+import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
+import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/services/functions/show_snack.dart';
 import 'package:gr_flutter/views/patient_views/dialog_request/dialog_update_request.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
-import 'package:gr_flutter/views/widgets/submit_dialog.dart';
+import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 
 import '../../services/functions/handling_data.dart';
-import '../../services/remote/request_remote.dart';
-import '../../services/shared/auth_model.dart';
+import '../../services/remote/public_remotes/request_remote.dart';
 import '../../utils/app_constants/status_request.dart';
-import '../../views/widgets/bottom_controller.dart';
+import '../../views/widgets/botton_controller.dart';
 
 abstract class PatientRequestController extends GetxController {
   refreshData();
@@ -39,11 +38,9 @@ abstract class PatientRequestController extends GetxController {
 }
 
 class PatientRequestControllerImp extends PatientRequestController {
-  // FillRequestControllerImp fillRequestControllerImp =Get.find<FillRequestControllerImp>();
-  // FillRequestControllerImp fillRequestControllerImp =Get.put(FillRequestControllerImp());
   late final FillRequestControllerImp fillRequestController;
   bool isUpdate = false;
-  AuthModel authModel = AuthModel();
+  // final localStorage = Get.find<LocalUserStorage>();
   late PendingRequestModel selectedRequest;
   List<PendingRequestModel> requestListPending = <PendingRequestModel>[];
   List<TreatmentRequestProcessingSModel> requestListProcessing =
@@ -152,7 +149,7 @@ class PatientRequestControllerImp extends PatientRequestController {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              BottomContainer(
+              BottonContainer(
                 body: "حذف",
                 onTap: () {
                   Get.dialog(
@@ -168,7 +165,7 @@ class PatientRequestControllerImp extends PatientRequestController {
                   );
                 },
               ),
-              BottomContainer(
+              BottonContainer(
                 body: "تعديل",
                 onTap: () {
                   Get.snackbar(

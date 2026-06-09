@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controllers/admin_controller/admin_users_controller.dart';
+import '../../../controllers/admin_controllers/admin_users_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
 
 class ViewOverSeersPage extends StatelessWidget {
@@ -69,7 +69,7 @@ class ViewOverSeersPage extends StatelessWidget {
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      onPressed: () => _confirmDelete(overSeer.sId!),
+                      onPressed: () => _confirmDelete(overSeer.user!),
                     ),
                     isThreeLine: true,
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 showToothLocationMap() {
   Get.dialog(
@@ -11,12 +12,7 @@ showToothLocationMap() {
           decoration: BoxDecoration(
             color: Colors.black,
             border: Border.all(color: Colors.black, width: 2, strokeAlign: 7),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.elliptical(100, 10),
-              bottomLeft: Radius.elliptical(10, 100),
-              topRight: Radius.elliptical(10, 100),
-              bottomRight: Radius.elliptical(100, 10),
-            ),
+            borderRadius: AppThemeConstants.borderRadius
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/admin_controller/admin_request_controller.dart';
+import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 
 class AddCategoryPage extends StatelessWidget {

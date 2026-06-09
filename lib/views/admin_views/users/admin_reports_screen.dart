@@ -1,8 +1,8 @@
 // views/admin/admin_reports_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/admin_controller/admin_reports_controller.dart';
-import 'package:gr_flutter/models/admin/report_model.dart';
+import 'package:gr_flutter/controllers/admin_controllers/admin_reports_controller.dart';
+import 'package:gr_flutter/models/admin_models/report_model.dart';
 
 class AdminReportsScreen extends StatelessWidget {
   final AdminReportsController controller = Get.put(AdminReportsController());

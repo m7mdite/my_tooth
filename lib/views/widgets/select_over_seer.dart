@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/student_controller/student_requests_controller.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
+import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
+import 'package:gr_flutter/views/widgets/botton_controller.dart';
 
-import '../patient_views/modified_request.dart';
 
 class SelectOverSeer extends StatelessWidget {
   final StudentRequestsControllerImp controller =
@@ -71,7 +70,7 @@ class SelectOverSeer extends StatelessWidget {
                       value: controller.selectOverseer == ""
                           ? null
                           : controller.selectOverseer,
-                      items: controller.overseersCourse!.map((item) {
+                      items: controller.overseersCourse.map((item) {
                         return DropdownMenuItem<String>(
                           value: item['user'],
                           child: Text("${item['first_name']} ${item['last_name']}"),
@@ -90,7 +89,7 @@ class SelectOverSeer extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                BottomContainer(
+                BottonContainer(
                   body: "تأكيد",
                   onTap: () {
                     onTap!();

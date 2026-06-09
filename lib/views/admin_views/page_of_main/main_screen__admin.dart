@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/admin_controller/main_admin_controller.dart';
+import 'package:gr_flutter/controllers/admin_controllers/main_admin_controller.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
-import '../../widgets/app_bar/app_bar_tooth_admin.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenAdmin extends StatelessWidget {
@@ -13,7 +13,7 @@ class MainScreenAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarToothAdmin(title: controller.titleAppBar,),
+      appBar: CustomAppBar(title: controller.titleAppBar,),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {

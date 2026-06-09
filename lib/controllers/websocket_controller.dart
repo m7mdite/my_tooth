@@ -2,23 +2,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:gr_flutter/services/shared/auth_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart' as io;
 import 'dart:convert';
+
+import '../services/local_storge/local_user_storage.dart';
 
 class WebSocketController extends GetxController {
   WebSocketChannel? _channel;
   final RxBool _isConnected = false.obs;
   final RxList<Map<String, dynamic>> _notifications = <Map<String, dynamic>>[].obs;
-  // AuthModel authModel = AuthModel();
-  AuthService authService =AuthService();
+  final localStorage = Get.find<LocalUserStorage>();
   bool get isConnected => _isConnected.value;
   List<Map<String, dynamic>> get notifications => _notifications;
   
   // توصيل WebSocket
   void connect() async{
-    final String? id =  authService.getId();
+    final String? id =  localStorage.getId();
 
     try {
       final url = 'https://localhost:5000';

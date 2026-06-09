@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/auth_text_form_field.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
-import 'package:gr_flutter/views/widgets/submit_dialog.dart';
+import 'package:gr_flutter/views/widgets/botton_controller.dart';
+import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 
-import '../../../controllers/overseer_controller/overseer_requests_controller.dart';
+import '../../../controllers/overseer_controllers/overseer_requests_controller.dart';
 
 class OverseerManageRequest extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =
@@ -118,7 +118,7 @@ class OverseerManageRequest extends StatelessWidget {
                     children: [
                       if (controller.selectRequest.stageEvaluations!.isNotEmpty ) ...[
                         Center(
-                          child: BottomContainer(
+                          child: BottonContainer(
                             body: "عرض التقييمات السابقة",
                             fontSize: 12,
                             onTap: () {

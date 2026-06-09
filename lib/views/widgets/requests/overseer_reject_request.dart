@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/overseer_controller/overseer_requests_controller.dart';
-import 'package:gr_flutter/models/treatment_model.dart';
+import 'package:gr_flutter/controllers/overseer_controllers/overseer_requests_controller.dart';
+import 'package:gr_flutter/models/requests_models/treatment_model.dart';
 
 import '../auth_text_form_field.dart';
 

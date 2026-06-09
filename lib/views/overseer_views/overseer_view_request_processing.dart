@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
+import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 
-import '../../controllers/overseer_controller/overseer_requests_controller.dart';
-import '../../models/treatment_request_processing_s_model.dart';
+import '../../controllers/overseer_controllers/overseer_requests_controller.dart';
+import '../../models/requests_models/treatment_request_processing_s_model.dart';
 
 class OverseerViewRequestProcessing extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =
@@ -30,14 +29,14 @@ class OverseerViewRequestProcessing extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              BottomContainer(
+              BottonContainer(
                 body: "رفض",
                 color: Colors.red,
                 onTap: () {
                   controller.toRejectRequest(requestModel);
                 },
               ),
-              BottomContainer(body: "إدارة",onTap: () {
+              BottonContainer(body: "إدارة",onTap: () {
                 controller.toManageRequest(requestModel);
               },),
             ],

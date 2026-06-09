@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/patient_controller/main_patient_controller.dart';
-import '../../widgets/app_bar/app_bar_tooth_patient.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class MainScreenPatient extends StatelessWidget {
   final MainPatientControllerImp controller = Get.put(  MainPatientControllerImp());
@@ -13,7 +13,11 @@ class MainScreenPatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarToothPatient(title: controller.titleAppBar,),
+     appBar: CustomAppBar(
+  title: controller.titleAppBar,
+  // actions: [Icon(Icons.add_ic_call)],
+  // يمكن تمرير actions إضافية هنا إذا لزم الأمر
+),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/student_controller/student_home_controller.dart';
+import 'package:gr_flutter/controllers/student_controllers/student_home_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../widgets/container_images_home_inbording.dart';

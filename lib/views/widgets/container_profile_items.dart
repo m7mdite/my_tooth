@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 class ContainerProfileItems extends StatelessWidget {
   final Widget? child;
@@ -25,12 +26,7 @@ class ContainerProfileItems extends StatelessWidget {
           right: BorderSide(color: Colors.blueAccent),
           top: BorderSide(color: Colors.blueAccent),
         ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(100, 10),
-          bottomLeft: Radius.elliptical(10, 100),
-          topRight: Radius.elliptical(10, 100),
-          bottomRight: Radius.elliptical(100, 10),
-        ),
+        borderRadius: AppThemeConstants.borderRadius
       ),
       child: child,
     );

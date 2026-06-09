@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/patient_controller/main_patient_controller.dart';
-import '../../controllers/student_controller/main_student_controller.dart';
-import '../widgets/app_bar/app_bar_tooth_patient.dart';
-import '../widgets/app_bar/app_bar_tooth_student.dart';
+import '../../controllers/student_controllers/main_student_controller.dart';
 import '../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenStudent extends StatelessWidget {
@@ -15,9 +12,10 @@ class MainScreenStudent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarToothStudent(title: controller.titleAppBar,),
+      
+      // appBar: AppBarToothStudent(title: controller.titleAppBar,),
       bottomNavigationBar: GetBuilder(
-        init: controller,
+        init: MainStudentControllerImp(),
         builder: (_) {
           return Container(
             decoration: BoxDecoration(
@@ -26,8 +24,8 @@ class MainScreenStudent extends StatelessWidget {
                   Colors.white,
                   Colors.white54,
                   Colors.lightBlueAccent,
-                  // const Color.fromARGB(147, 233, 30, 98),
                   Colors.blueAccent,
+                  Colors.blue,
                   // Colors.pinkAccent,
                 ],
                 begin: Alignment.topCenter,

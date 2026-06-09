@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
-import 'package:gr_flutter/controllers/fill_request_controller.dart';
+import 'package:gr_flutter/controllers/requests_controllers/fill_request_controller.dart';
 import 'package:gr_flutter/views/patient_views/dialog_request/dialog_send_request.dart';
-import 'package:gr_flutter/views/patient_views/modified_request.dart';
-import 'package:gr_flutter/views/patient_views/dialog_submit_request.dart';
-import 'package:gr_flutter/views/widgets/bottom_controller.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
 

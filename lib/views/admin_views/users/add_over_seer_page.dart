@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/admin_controller/admin_users_controller.dart';
+import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
 class AddOverSeerPage extends StatelessWidget {
   final AdminUsersControllerImpl controller = Get.put(AdminUsersControllerImpl());
