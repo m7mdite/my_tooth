@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gr_flutter/controllers/post_controllers/post_controller.dart';
 
@@ -44,8 +45,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('نشر منشور جديد'),
+      appBar: CustomAppBar(
+        title: 'نشر منشور جديد',
         centerTitle: true,
         actions: [
           Obx(() => TextButton(
@@ -108,7 +109,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     onPressed: pickImages,
                     icon: const Icon(Icons.photo_library),
                     label: const Text('إضافة صور'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[200], foregroundColor: Colors.black),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.black),
                   ),
                 ],
               ),

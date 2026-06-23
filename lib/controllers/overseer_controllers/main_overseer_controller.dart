@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
+import 'package:gr_flutter/views/public_views/settings/unified_setting_screen.dart';
 
 import '../../views/overseer_views/page_of_main/overseer_home_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_request_screen.dart';
@@ -32,7 +32,7 @@ class MainOverseerControllerImp extends MainOverseerController {
     {
       "title": "الملف الشخصي",
       "icon": Icons.account_circle,
-      "page": UnifiedSettingController()
+      "page": UnifiedSettingScreen()
     },
   ];
 

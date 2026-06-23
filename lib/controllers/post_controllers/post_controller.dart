@@ -9,6 +9,11 @@ import '../../services/functions/handling_data.dart';
 class PostController extends GetxController {
   final PostRemote remote = PostRemote(Get.find());
   RxList<PostModel> posts = <PostModel>[].obs;
+  RxInt currentPage = 1.obs;
+  RxInt totalPages = 1.obs;
+  RxBool hasMore = true.obs;
+  RxBool isLoadingMore = false.obs;
+  String? currentFilter; // يمكنك لاحقاً ربطها بواجهة فلترة
   RxBool isLoading = false.obs;
   RxBool isCreating = false.obs;
   Rx<StatusRequest> statusRequest = StatusRequest.none.obs;
@@ -16,23 +21,81 @@ class PostController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchPosts();
+    fetchPosts(refresh: true);
+    // fetchPosts();
   }
 
-  Future<void> fetchPosts() async {
-    isLoading.value = true;
+
+Future<void> fetchPosts({bool refresh = false}) async {
+    if (refresh) {
+      currentPage.value = 1;
+      posts.clear();
+      hasMore.value = true;
+      isLoadingMore.value = false;
+    }
+    if (isLoadingMore.value || !hasMore.value) return;
+
+    isLoadingMore.value = true;
     statusRequest.value = StatusRequest.loading;
-    var response = await remote.getAllPosts();
+    update();
+
+    final response = await remote.getAllPosts(
+      page: currentPage.value,
+      limit: 10, // عدد البوستات في كل طلب
+      filter: currentFilter,
+    );
+
     statusRequest.value = handlingData(response);
     if (statusRequest.value == StatusRequest.success) {
-      List<dynamic> data = response['data'] ?? [];
-      posts.value = data.map((json) => PostModel.fromJson(json)).toList();
+      final List<dynamic> data = response['data'] ?? [];
+      final newPosts = data.map((json) => PostModel.fromJson(json)).toList();
+
+      if (refresh) {
+        posts.value = newPosts;
+      } else {
+        posts.addAll(newPosts);
+      }
+
+      // تحديث معلومات الصفحات
+      totalPages.value = response['pagination']['total_pages'] ?? 1;
+      hasMore.value = currentPage.value < totalPages.value;
+      if (hasMore.value) currentPage.value++;
+      
+      posts.refresh();
     } else {
       Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل البوستات');
     }
-    isLoading.value = false;
-    
+    isLoadingMore.value = false;
+    statusRequest.value = StatusRequest.success;
+    update();
   }
+
+Future<void> loadMorePosts() async {
+    if (hasMore.value && !isLoadingMore.value) {
+      await fetchPosts(refresh: false);
+    }
+  }
+
+  void setFilter(String? filter) {
+    currentFilter = filter;
+    fetchPosts(refresh: true);
+  }
+
+
+  // Future<void> fetchPosts() async {
+  //   isLoading.value = true;
+  //   statusRequest.value = StatusRequest.loading;
+  //   var response = await remote.getAllPosts();
+  //   statusRequest.value = handlingData(response);
+  //   if (statusRequest.value == StatusRequest.success) {
+  //     List<dynamic> data = response['data'] ?? [];
+  //     posts.value = data.map((json) => PostModel.fromJson(json)).toList();
+  //   } else {
+  //     Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل البوستات');
+  //   }
+  //   isLoading.value = false;
+    
+  // }
 
   Future<void> createPost(String content, List<String> imagePaths) async {
     isCreating.value = true;
@@ -52,13 +115,13 @@ class PostController extends GetxController {
     print('Like Response: $response'); // طباعة الرد للتحقق
     if (handlingData(response) == StatusRequest.success) {
       // تحديث محلي (زيادة/نقصان)
-      int index = posts.indexWhere((p) => p.id == postId);
+      int index = posts.indexWhere((p) => p.sId == postId);
 
       if (index != -1) {
         // استخدم update لتعديل القائمة مباشرة
-        posts[index].likesCount = response['data']['count_likes'];
-        posts[index].dislikesCount = response['data']['count_dislikes'];
-        print("+++++++${posts[index].likesCount}");
+        posts[index].countLikes = response['data']['count_likes'];
+        posts[index].countDislikes = response['data']['count_dislikes'];
+        print("+++++++${posts[index].countLikes}");
         posts.refresh(); // إعادة بناء الواجهة
       }
     }
@@ -67,12 +130,12 @@ class PostController extends GetxController {
   Future<void> dislikePost(String postId) async {
     var response = await remote.dislikePost(postId);
     if (handlingData(response) == StatusRequest.success) {
-      int index = posts.indexWhere((p) => p.id == postId);
+      int index = posts.indexWhere((p) => p.sId == postId);
       if (index != -1) {
         // استخدم update لتعديل القائمة مباشرة
-        posts[index].likesCount = response['data']['count_likes'];
-        posts[index].dislikesCount = response['data']['count_dislikes'];
-        print("+++++++${posts[index].likesCount}");
+        posts[index].countLikes = response['data']['count_likes'];
+        posts[index].countDislikes = response['data']['count_dislikes'];
+        print("+++++++${posts[index].countLikes}");
         posts.refresh(); // إعادة بناء الواجهة
       }
     }

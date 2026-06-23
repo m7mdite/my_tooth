@@ -48,6 +48,10 @@ class RequestRemote {
     var response = await crud.getData(ApiLink.completedPatientRequest);
     return response.fold((l) => l, (r) => r);
   }
+  getRejectedPatientRequest() async {
+    var response = await crud.getData(ApiLink.completedPatientRequest);
+    return response.fold((l) => l, (r) => r);
+  }
 
   // ========== دوال POST / PUT / DELETE ==========
   acceptRequestData(Map data, String idR, String idO) async {

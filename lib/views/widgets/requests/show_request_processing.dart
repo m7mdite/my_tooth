@@ -117,7 +117,7 @@ class ShowRequestProcessing extends StatelessWidget {
                               ? null
                               : DecorationImage(
                                   image: NetworkImage(
-                                      "http://localhost:5000/${requestModel.requestion!.photo!.url}"),
+                                      "${requestModel.requestion!.photo!.url}"),
                                   fit: BoxFit.cover,
                                 ),
                           borderRadius: BorderRadius.only(
@@ -141,7 +141,7 @@ class ShowRequestProcessing extends StatelessWidget {
                                 ),
                         )
                         // :
-                        // Image.network("http://localhost:5000/${requestModel.photo!.url}",fit: BoxFit.cover,),
+                        // Image.network("${requestModel.photo!.url}",fit: BoxFit.cover,),
                         ),
                     Container(
                       color: Colors.white,

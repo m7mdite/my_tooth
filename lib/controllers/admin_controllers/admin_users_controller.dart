@@ -20,6 +20,7 @@ abstract class AdminUsersController extends GetxController {
   toViewVerifyStudentsPage();
   toReportsPage();
   acceptVerifyStudent(String studentId);
+  rejectVerifyStudent(String studentId);
   addOverSeer();
   getAllOverSeers();
   getAllStudents();
@@ -47,6 +48,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController fatherNameController = TextEditingController();
+  TextEditingController rejectReasonController = TextEditingController(text: "خطأ بالمعلومات ");
   AdminRemote adminRemote = AdminRemote(Get.find());
   late StatusRequest statusRequest;
 
@@ -56,7 +58,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
   }
 
   @override
-  addOverSeer() async{
+  addOverSeer() async {
     isLoading.value = true;
     Map data = {
       "email": emailController.text,
@@ -68,7 +70,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
     if (formKey.currentState!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
-      var response =await adminRemote.addOverSeer(data);
+      var response = await adminRemote.addOverSeer(data);
       statusRequest = handlingData(response);
       if (statusRequest == StatusRequest.success) {
         showsnack(
@@ -95,8 +97,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       overSeers = response['data']
-          .map<ProfileModel>(
-              (json) => ProfileModel.fromJson(json))
+          .map<ProfileModel>((json) => ProfileModel.fromJson(json))
           .toList();
       for (var overSeer in overSeers) {
         print(
@@ -110,26 +111,27 @@ class AdminUsersControllerImpl extends AdminUsersController {
   }
 
   @override
-  getAllStudents() {
+  getAllStudents() async {
     statusRequest = StatusRequest.loading;
     update();
-    adminRemote.getAllStudents().then((response) {
-      statusRequest = handlingData(response);
-      if (statusRequest == StatusRequest.success) {
-        students = response['data']
-            .map<ProfileModel>(
-                (json) => ProfileModel.fromJson(json))
-            .toList();
-        for (var student in students) {
-          print(
-              "Student: ${student.firstName} ${student.lastName}, Email: ${student.universityNumber}, Bio: ${student.bio}");
-        }
-        print("${students.length} Students fetched successfully");
-      } else {
-        showsnack(title: response['status'], message: response['message']);
+    var response = await adminRemote.getAllStudents();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      students = response['data']
+          .map<ProfileModel>((json) => ProfileModel.fromJson(json))
+          .toList();
+      for (var student in students) {
+        print(
+            "Student: ${student.firstName} ${student.lastName}, Email: ${student.universityNumber}, Bio: ${student.bio}");
       }
-      update();
-    });
+      print("${students.length} Students fetched successfully");
+    } else {
+      showsnack(title: response['status'], message: response['message']);
+    }
+    update();
+
+    // .then((response) {
+    //   statusRequest = handlingData(response);
   }
 
   @override
@@ -145,8 +147,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       patients = response['data']
-          .map<ProfileModel>(
-              (json) => ProfileModel.fromJson(json))
+          .map<ProfileModel>((json) => ProfileModel.fromJson(json))
           .toList();
 
       print("${patients.length} Patients fetched successfully");
@@ -192,10 +193,11 @@ class AdminUsersControllerImpl extends AdminUsersController {
     ));
     // Get.toNamed(AppRroute.submitVerifyStudent, arguments: student);
   }
+
   @override
   void toReportsPage() {
-  Get.to(() => AdminReportsScreen());
-}
+    Get.to(() => AdminReportsScreen());
+  }
 
   @override
   acceptVerifyStudent(String studentId) {
@@ -203,40 +205,60 @@ class AdminUsersControllerImpl extends AdminUsersController {
       SubmitDialog(
         title: "تأكيد التوثيق",
         question: "هل أنت متأكد أنك تريد توثيق هذا الطالب؟",
-        onTapSubmit: () {
+        onTapSubmit: () async {
           statusRequest = StatusRequest.loading;
           update();
-          adminRemote.acceptVerifyStudent(studentId).then(
-            (response) {
-              statusRequest = handlingData(response);
-              if (statusRequest == StatusRequest.success) {
-                Get.snackbar("Success", "Student verified successfully");
-                getAllVerifyStudents();
-                Get.close(2);
-              } else {
-                Get.snackbar("Error", "Failed to verify Student");
-              }
-              update();
-            },
-          );
+          var response =await adminRemote.acceptVerifyStudent(studentId);
+          statusRequest = handlingData(response);
+
+          if (statusRequest == StatusRequest.success) {
+            Get.snackbar(response['status']??"تم", response['message']);
+            getAllVerifyStudents();
+            Get.close(2);
+          } else {
+            Get.snackbar("Error", "Failed to verify Student");
+          }
+          update();
         },
       ),
     );
   }
+  @override
+  rejectVerifyStudent(String studentId) async{
+    if(rejectReasonController.text==""){
+      Get.snackbar("فشل", "ادخل سبب الرفض");
+      return;
+    }
+          statusRequest = StatusRequest.loading;
+          update();
+          var response =await adminRemote.rejectVerifyStudent(studentId,data: {"reject_reason":rejectReasonController.text});
+          statusRequest = handlingData(response);
+
+          if (statusRequest == StatusRequest.success) {
+            Get.snackbar(response['status']??"تم", response['message']);
+            getAllVerifyStudents();
+            Get.close(2);
+          } else {
+            Get.snackbar("خطأ", "حدث خطأ ما ");
+          }
+          update();
+        
+  }
 
   // داخل AdminUsersControllerImpl
-Future<void> deleteOverSeer(String id) async {
-  statusRequest = StatusRequest.loading;
-  update();
-  var response = await adminRemote.deleteOverSeer(id);
-  statusRequest = handlingData(response);
-  if (statusRequest == StatusRequest.success) {
-    // إزالة المشرف من القائمة المحلية
-    overSeers.removeWhere((overSeer) => overSeer.user == id);
-    showsnack(title: 'نجاح', message: response['message'] ?? 'تم حذف المشرف بنجاح');
-  } else {
-    showsnack(title: 'خطأ', message: response['message'] ?? 'فشل حذف المشرف');
+  Future<void> deleteOverSeer(String id) async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await adminRemote.deleteOverSeer(id);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      // إزالة المشرف من القائمة المحلية
+      overSeers.removeWhere((overSeer) => overSeer.user == id);
+      showsnack(
+          title: 'نجاح', message: response['message'] ?? 'تم حذف المشرف بنجاح');
+    } else {
+      showsnack(title: 'خطأ', message: response['message'] ?? 'فشل حذف المشرف');
+    }
+    update();
   }
-  update();
-}
 }

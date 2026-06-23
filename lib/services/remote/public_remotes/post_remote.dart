@@ -5,9 +5,31 @@ class PostRemote {
   final Crud crud;
   PostRemote(this.crud);
 
-  getAllPosts() async {
-    var response = await crud.getData(ApiLink.posts);
-    return response.fold((l) => l, (r) => r);
+  // getAllPosts() async {
+  //   var response = await crud.getData(ApiLink.posts);
+  //   return response.fold((l) => l, (r) => r);
+  // }
+   getAllPosts({
+    int page = 1,
+    int limit = 10,
+    String? filter,   // 'student', 'patient', 'overseer', 'admin'
+    String sort = 'createdAt',
+    String order = 'desc',
+  }) async {
+    final queryParams = <String, String>{
+      'page': page.toString(),
+      'limit': limit.toString(),
+      'sort': sort,
+      'order': order,
+    };
+    if (filter != null) queryParams['filter'] = filter;
+
+    final uri = Uri.parse(ApiLink.posts).replace(queryParameters: queryParams);
+    final response = await crud.getData(uri.toString());
+    return response.fold(
+      (status) => {'status': 'error', 'message': 'فشل الاتصال'},
+      (data) => data,
+    );
   }
 
   createPost(String content, List<String> imagePaths) async {

@@ -20,7 +20,12 @@ class AdminRemote {
 
   acceptVerifyStudent(String studentId) async {
     var response = await crud.postData(
-        "${ApiLink.acceptVerifyStudent}/$studentId", {'studentId': studentId});
+        "${ApiLink.acceptVerifyStudent}/$studentId", {});
+    return response.fold((l) => l, (r) => r);
+  }
+  rejectVerifyStudent(String studentId,{Map? data}) async {
+    var response = await crud.postData(
+        "${ApiLink.rejectVerifyStudent}/$studentId", data??{"reject_reason":"خطأ بالبيانات!"});
     return response.fold((l) => l, (r) => r);
   }
 

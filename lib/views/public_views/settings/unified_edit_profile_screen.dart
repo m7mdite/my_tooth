@@ -5,6 +5,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'dart:io';
 
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class UnifiedEditProfileScreen extends StatefulWidget {
   const UnifiedEditProfileScreen({super.key});
@@ -69,6 +70,20 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
     bool disableNameAndUniversity = (role == 'student' || role == 'overseer') && isVerified;
 
     return Scaffold(
+      appBar: CustomAppBar(
+        title: "تعديل الملف الشخصي",
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: _save,
+            child: Text('حفظ', style: TextStyle(color: Colors.white, fontSize: 16)),
+          ),
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -81,28 +96,7 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
           child: Column(
             children: [
               // Header with back button and title
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                      onPressed: () => Get.back(),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'تعديل الملف الشخصي',
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: _save,
-                      child: Text('حفظ', style: TextStyle(color: Colors.white, fontSize: 16)),
-                    ),
-                  ],
-                ),
-              ),
+              
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -119,7 +113,7 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                           borderRadius: BorderRadius.circular(100),
                           image: DecorationImage(
                             image: controller.profilePicture.value.isNotEmpty
-                                ? NetworkImage("http://localhost:5000/${controller.profilePicture.value}")
+                                ? NetworkImage("${controller.profilePicture.value}")
                                 : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
                             fit: BoxFit.cover,
                           ),

@@ -10,12 +10,12 @@ import 'package:gr_flutter/views/public_views/privacy_policy_screen.dart';
 
 import 'bindings/feed_binding.dart';
 import 'bindings/login_binding.dart';
+import 'bindings/main_overseer_binding.dart';
 import 'bindings/main_patient_binding.dart';
 import 'bindings/main_student_binding.dart';
 import 'bindings/register_binding.dart';
 import 'bindings/student_requests_binding.dart';
 import 'bindings/unified_setting_binding.dart';
-import 'models/conversations_models/conversation_model.dart';
 import 'views/admin_views/request_and_courses/add_category_page.dart';
 import 'views/admin_views/request_and_courses/add_course_page.dart';
 import 'views/admin_views/request_and_courses/add_lessons_page.dart';
@@ -52,12 +52,18 @@ import 'views/student_views/view_verify_page.dart';
 import 'views/widgets/ai/chat_gimini.dart';
 import 'views/public_views/view_other_profile.dart';
 
+
+
 List<GetPage<dynamic>> routes = [
+
+
+
+
   // ========== AUTH ==========
   GetPage(
     name: "/",
     page: () => RegisterScreen(),
-    binding: RegisterBinding()
+    binding: RegisterBinding()  
   ),
   GetPage( 
     name: AppRroute.login,
@@ -106,11 +112,8 @@ List<GetPage<dynamic>> routes = [
     page: () {
       final args = Get.arguments as Map<String, dynamic>;
       return ChatScreenn(
-        otherProfilePhotoUrl:
-            (args['otherParty'] as OtherPartyModel).profilePhoto?['url'],
-        otherUserId: (args['otherParty'] as OtherPartyModel).userId,
+        otherPartyProfile: args['otherPartyProfile'],
         conversationId: args['conversationId'],
-        otherPartyName: (args['otherParty'] as OtherPartyModel).fullName,
       );
     },
   ),
@@ -200,6 +203,7 @@ List<GetPage<dynamic>> routes = [
   GetPage(
     name: AppRroute.mainScreenOverseer,
     page: () => MainScreenOverseer(),
+    binding: MainOverseerBinding()
   ),
 
   // ========== ADMIN ==========

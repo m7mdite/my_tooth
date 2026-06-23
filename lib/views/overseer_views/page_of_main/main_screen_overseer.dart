@@ -6,14 +6,16 @@ import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenOverseer extends StatelessWidget {
-  final MainOverseerControllerImp controller = Get.put(MainOverseerControllerImp());
+  // final MainOverseerControllerImp controller = Get.put(MainOverseerControllerImp());
+  final controller = Get.find<MainOverseerControllerImp>();
+
       // Get.find<MainOverseerControllerImp>();
   MainScreenOverseer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: controller.titleAppBar,),
+      // appBar: CustomAppBar(title: controller.titleAppBar,),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {

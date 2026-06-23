@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 class ReportUserDialog extends StatefulWidget {
   final String reportedUserId;
@@ -53,12 +54,7 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.elliptical(100, 10),
-            bottomLeft: Radius.elliptical(10, 100),
-            topRight: Radius.elliptical(10, 100),
-            bottomRight: Radius.elliptical(100, 10),
-          ),
+          borderRadius: AppThemeConstants.borderRadius,
           border: Border.all(color: Colors.redAccent, width: 1.5, strokeAlign: 10),
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
         ),

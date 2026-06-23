@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
+import '../../widgets/custom_icon_app_bar.dart';
 import 'unified_edit_profile_screen.dart';
 
 class UnifiedProfileScreen extends StatelessWidget {
@@ -16,12 +18,16 @@ class UnifiedProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("الملف الشخصي"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+      appBar: CustomAppBar(
+        title: "الملف الشخصي",
+        showVerifiedBadge: true,
         actions: [
-          IconButton(onPressed: (){Get.to(() => UnifiedEditProfileScreen());}, icon: Icon(Icons.edit_note_sharp))
+          CustomIconAppBar(
+            iconData: Icons.edit_outlined,
+            onTap: () {
+              Get.to(() => UnifiedEditProfileScreen());
+            },
+          ),
         ],
       ),
       body: Obx(() {
@@ -40,8 +46,10 @@ class UnifiedProfileScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image: controller.profilePicture.value.isNotEmpty
-                        ? NetworkImage("http://localhost:5000/${controller.profilePicture.value}")
-                        : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                        ? NetworkImage(
+                            "${controller.profilePicture.value}")
+                        : AssetImage(AppConstants.defaultBackgroundImage)
+                            as ImageProvider,
                     fit: BoxFit.cover,
                   ),
                   border: Border.all(color: Colors.white, width: 2),
@@ -68,20 +76,29 @@ class UnifiedProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 24),
             // بيانات مشتركة
-            _buildInfoTile(Icons.phone, "رقم الهاتف", controller.phoneNumber.value),
+            _buildInfoTile(
+                Icons.phone, "رقم الهاتف", controller.phoneNumber.value),
             if (controller.bio.value.isNotEmpty)
               _buildInfoTile(Icons.description, "نبذة", controller.bio.value),
             // بيانات المريض
             if (controller.role.value == 'patient') ...[
-              _buildInfoTile(Icons.cake, "العمر", "${controller.age.value} سنة"),
-              _buildInfoTile(Icons.people, "الجنس", controller.gender.value == 'male' ? 'ذكر' : 'أنثى'),
+              _buildInfoTile(
+                  Icons.cake, "العمر", "${controller.age.value} سنة"),
+              _buildInfoTile(Icons.people, "الجنس",
+                  controller.gender.value == 'male' ? 'ذكر' : 'أنثى'),
             ],
             // بيانات الطالب
             if (controller.role.value == 'student') ...[
-              _buildInfoTile(Icons.numbers, "الرقم الجامعي", controller.universityNumber.value),
-              _buildInfoTile(Icons.category, "الفئة", controller.category.value),
-              _buildInfoTile(Icons.check_circle, "حالة التوثيق",
-                  controller.localStorage.isVerified() == true ? "موثق" : "غير موثق"),
+              _buildInfoTile(Icons.numbers, "الرقم الجامعي",
+                  controller.universityNumber.value),
+              _buildInfoTile(
+                  Icons.category, "الفئة", controller.category.value),
+              _buildInfoTile(
+                  Icons.check_circle,
+                  "حالة التوثيق",
+                  controller.localStorage.isVerified() == true
+                      ? "موثق"
+                      : "غير موثق"),
               _buildStatsRow(),
             ],
             // بيانات المشرف
@@ -116,9 +133,12 @@ class UnifiedProfileScreen extends StatelessWidget {
               padding: EdgeInsets.all(12),
               child: Column(
                 children: [
-                  Text("الحالات المكتملة", style: TextStyle(color: Colors.green)),
+                  Text("الحالات المكتملة",
+                      style: TextStyle(color: Colors.green)),
                   SizedBox(height: 8),
-                  Text(controller.completedCases.value.toString(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text(controller.completedCases.value.toString(),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -131,9 +151,12 @@ class UnifiedProfileScreen extends StatelessWidget {
               padding: EdgeInsets.all(12),
               child: Column(
                 children: [
-                  Text("الحالات قيد المعالجة", style: TextStyle(color: Colors.orange)),
+                  Text("الحالات قيد المعالجة",
+                      style: TextStyle(color: Colors.orange)),
                   SizedBox(height: 8),
-                  Text(controller.inProgressCases.value.toString(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text(controller.inProgressCases.value.toString(),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),

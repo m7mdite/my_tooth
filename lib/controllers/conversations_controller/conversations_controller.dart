@@ -52,7 +52,7 @@ class ConversationsController extends GetxController {
     // isLoading.value = false;
   }
 
-  void goToChat(String conversationId, OtherPartyModel otherParty) {
+  void goToChat(String conversationId, OtherPartyProfile otherParty) {
     Get.toNamed(AppRroute.chat, arguments: {
       'conversationId': conversationId,
       'otherParty': otherParty,
@@ -65,7 +65,7 @@ class ConversationsController extends GetxController {
     if(statusRequest == StatusRequest.success){
       newConversation = ConversationModel.fromJson(response['data']);
       // fetchConversations();
-      goToChat(newConversation!.conversationId,newConversation!.otherParty);
+      goToChat(newConversation!.conversationId!,newConversation!.otherPartyProfile!);
     }
   }
   Future<void> refreshConversations() async {

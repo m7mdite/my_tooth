@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/public_views/notifications_view.dart';
+import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 
 import '../../services/local_storge/local_user_storage.dart';
 import '../../utils/app_constants/app_theme.dart'; // تأكد من المسار
@@ -9,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
   final bool automaticallyImplyLeading;
+  final bool notifacation;
   final VoidCallback? onLeadingPressed;
   final Color? backgroundColor;
   final LinearGradient? backgroundGradient;
@@ -23,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool useLargeTitle; // تأثير العنوان الكبير (كما في iOS)
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.actions,
     this.automaticallyImplyLeading = true,
@@ -39,7 +41,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleSize = 20,
     this.titleShadows,
     this.useLargeTitle = false,
-  }) : super(key: key);
+    this.notifacation = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     // اختيار التدرج المناسب (يمكن تمريره من الخارج أو اختياره ديناميكياً حسب الدور)
     final effectiveGradient =
-        backgroundGradient ?? AppGradients.arcticFrostGradient ;
+        backgroundGradient ?? AppGradients.arcticFrostGradient;
 
     return AppBar(
+      titleTextStyle: TextStyle(
+        color: titleColor ?? Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: titleSize,
+        shadows: titleShadows ??
+            [
+              const BoxShadow(
+                color: Colors.black,
+                blurRadius: 10,
+                // offset: Offset(0, 2),
+              ),
+            ],
+      ),
       title: useLargeTitle
           ? Padding(
               padding: const EdgeInsets.only(top: 12),
@@ -59,13 +75,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: titleColor ?? Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: titleSize,
-                          shadows: titleShadows,
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: titleColor ?? Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: titleSize,
+                            shadows: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 10,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       if (showVerifiedBadge && isStudent && isVerified) ...[
@@ -128,7 +152,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : null),
-      actions: actions ?? _defaultActions(context, isStudent, isVerified),
+      actions: notifacation && actions == null
+          ? _defaultActions(context, isStudent, isVerified)
+          : actions,
+      // actions: actions ==null && notifacation  ? _defaultActions(context, isStudent, isVerified),
       // تأثير شفافية للخلفية عند التمرير (اختياري)
       scrolledUnderElevation: 0,
     );
@@ -137,15 +164,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   List<Widget> _defaultActions(
       BuildContext context, bool isStudent, bool isVerified) {
     return [
-      // زر الإشعارات مع شارة (اختياري)
-      Stack(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: Colors.white),
-            onPressed: () => Get.to(() => const NotificationsView()),
-          ),
-          // يمكن إضافة شارة حمراء للإشعارات غير المقروءة هنا
-        ],
+      CustomIconAppBar(
+        iconData: Icons.notifications_none_outlined,
+        onTap: () {
+          () => Get.to(() => const NotificationsView());
+        },
       ),
       if (isStudent && !isVerified)
         IconButton(

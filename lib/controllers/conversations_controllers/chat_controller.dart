@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/models/conversations_models/conversation_model.dart';
 import 'package:gr_flutter/services/functions/handling_data.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,7 @@ import '../../services/notification/websocket_service.dart';
 
 class ChatController extends GetxController {
   final String conversationId;
-  final String otherUserId;
+  final OtherPartyProfile otherPartyProfile;
   final ChatRemote _chatRemote = ChatRemote();
   final WebSocketService _webSocketService = Get.find<WebSocketService>();
 
@@ -19,13 +20,13 @@ class ChatController extends GetxController {
   final TextEditingController textController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
-  ChatController({required this.conversationId, required this.otherUserId});
+  ChatController({required this.conversationId, required this.otherPartyProfile});
   late StatusRequest statusRequest;
   @override
   void onInit() {
     super.onInit();
     // scrollController = scrollController.jumpTo(scrollController.position.maxScrollExtent);
-    fetchMessages(otherUserId);
+    fetchMessages(otherPartyProfile.userId!);
     _listenForNewMessages();
   }
 
@@ -34,20 +35,15 @@ class ChatController extends GetxController {
     statusRequest = StatusRequest.loading;
     var response = await _chatRemote.getConversationMessages(otherUserId);
     print("++++++++++$response");
-    handlingData(response);
-    // if (statusRequest == StatusRequest.success) {
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
     print("5555555555");
-    messages.value = (response['data']['messages'] as List)
+     messages.value = (response['data']['messages'] as List)
         .map((item) => MessageModel.fromJson(item))
         .toList();
-    // }
+    }
     messages.value =messages.reversed.toList();
-    // print("$messages");
-    // final result = await _chatService.getConversationMessages();
-    // result.fold(
-    //   (status) => Get.snackbar('خطأ', 'فشل تحميل الرسائل'),
-    //   (msgList) => messages.assignAll(msgList),
-    // );
+    
     isLoading.value = false;
     // scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
@@ -81,27 +77,27 @@ class ChatController extends GetxController {
     final text = textController.text.trim();
     if (text.isEmpty) return;
     textController.clear();
-
-    final result = await _chatRemote.sendTextMessage(conversationId, text);
-    result.fold(
-      (status) => Get.snackbar('خطأ', 'فشل الإرسال'),
-      (newMessage) => 
-        messages.insert(0, newMessage),
-        // scrollController.jumpTo(scrollController.position.maxScrollExtent)
-      
-    );
+statusRequest = StatusRequest.loading;
+    final response = await _chatRemote.sendTextMessage(conversationId, text);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      final newMessage = MessageModel.fromJson(response['data']);
+      messages.insert(0, newMessage);
+    }
   }
 
   Future<void> pickAndSendImage() async {
+    statusRequest = StatusRequest.loading;
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      final result = await _chatRemote.sendFileMessage(
-          conversationId, File(pickedFile.path));
-      result.fold(
-        (status) => Get.snackbar('خطأ', 'فشل إرسال الصورة'),
-        (newMessage) => messages.insert(0, newMessage),
-      );
+      final file = File(pickedFile.path);
+      final response = await _chatRemote.sendFileMessage(conversationId, file);
+      statusRequest = handlingData(response);
+      if (statusRequest == StatusRequest.success) {
+        final newMessage = MessageModel.fromJson(response['data']);
+        messages.insert(0, newMessage);
+      }
     }
   }
 

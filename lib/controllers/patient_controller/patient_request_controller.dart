@@ -47,10 +47,12 @@ class PatientRequestControllerImp extends PatientRequestController {
       <TreatmentRequestProcessingSModel>[];
   List<TreatmentRequestProcessingSModel> requestListCompleted =
       <TreatmentRequestProcessingSModel>[];
+  List<TreatmentRequestProcessingSModel> requestListRejected =
+      <TreatmentRequestProcessingSModel>[];
   List<List> requestList = [];
 
   // List<PendingRequestModel> currentListRequest = <PendingRequestModel>[];
-  List typeStatus = ['pending', 'processing', 'done', 'rejected'];
+  // List typeStatus = ['pending', 'processing', 'done', 'rejected'];
   late StatusRequest statusRequest;
   late PageController pageController;
   int currentPageFilter = 0;
@@ -66,7 +68,7 @@ class PatientRequestControllerImp extends PatientRequestController {
     getInProcessingRequest();
     getCompletedRequest();
     getRejectedRequest();
-    requestList =[requestListPending,requestListProcessing,requestListCompleted];
+    requestList =[requestListPending,requestListProcessing,requestListCompleted,requestListRejected];
     super.onInit();
   }
 
@@ -111,6 +113,7 @@ class PatientRequestControllerImp extends PatientRequestController {
     getPendingRequest();
     getInProcessingRequest();
     getCompletedRequest();
+    getRejectedRequest();
     // fetchFilterItems();
     requestList =[requestListPending,requestListProcessing,requestListCompleted];
     update();
@@ -301,8 +304,11 @@ class PatientRequestControllerImp extends PatientRequestController {
       return requestListPending;
     } else if (currentPageFilter == 1) {
       return requestListProcessing;
-    } else {
+    } else if(currentPageFilter ==2){
       return requestListCompleted;
+    }else{
+      return requestListRejected; 
+    
     }
   }
 
@@ -386,8 +392,18 @@ class PatientRequestControllerImp extends PatientRequestController {
   }
 
   @override
-  getRejectedRequest() {
-    
+  getRejectedRequest()async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await requestRemote.getRejectedPatientRequest();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      print("$response");
+      requestListRejected = (response['data'] as List)
+          .map((item) => TreatmentRequestProcessingSModel.fromJson(item))
+          .toList();
+    }
+    update();
   }
   
   @override

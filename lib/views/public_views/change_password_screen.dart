@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../controllers/public_controllers/public_controller.dart';
 
@@ -15,6 +16,7 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(title: "تغيير كلمة المرور"),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -30,16 +32,7 @@ class ChangePasswordScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               children: [
                 // زر العودة
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () => Get.back(),
-                      icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
+                
                 // أيقونة القفل
                 Center(
                   child: Container(

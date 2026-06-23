@@ -3,14 +3,17 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
 import '../../models/admin_models/veify_student_model.dart';
+import '../widgets/auth_text_form_field.dart';
+import '../widgets/dialog/submit_dialog.dart';
 
 // يرجى التأكد من أنك أضفت الكلاس VeifyStudentModel وجميع الكلاسات التابعة له هنا.
 
 class SubmitVerifyStudent extends StatelessWidget {
-  final AdminUsersControllerImpl controller =Get.find<AdminUsersControllerImpl>();
+  final AdminUsersControllerImpl controller =
+      Get.find<AdminUsersControllerImpl>();
   final VeifyStudentModel? studentModel;
 
-   SubmitVerifyStudent({super.key, this.studentModel});
+  SubmitVerifyStudent({super.key, this.studentModel});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class SubmitVerifyStudent extends StatelessWidget {
               backgroundColor: Colors.grey[200],
               backgroundImage: profile.profilePhoto!.url != null
                   ? NetworkImage(
-                      "http://localhost:5000/${profile.profilePhoto!.url!}")
+                      profile.profilePhoto!.url!)
                   : null,
               child: profile.profilePhoto?.url == null
                   ? const Icon(Icons.person, size: 48)
@@ -73,7 +76,7 @@ class SubmitVerifyStudent extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    "http://localhost:5000/${studentModel!.document!}",
+                    "${studentModel!.document!}",
                     fit: BoxFit.cover,
                     height: 160,
                     errorBuilder: (context, error, stackTrace) =>
@@ -98,20 +101,39 @@ class SubmitVerifyStudent extends StatelessWidget {
                   ),
                   child: const Text("توثيق"),
                 ),
+                // ElevatedButton(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.green,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //   ),
+                //   child: const Text("تعديل"),
+                // ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.dialog(
+                      SubmitDialog(
+                        title: "رفض التوثيق",
+                        question: "هل أنت متأكد أنك تريد رفض توثيق هذا الطالب؟",
+                        children: [
+                          Flexible(
+                            child: AuthTextFormField(
+                              label: "سبب الرفض",
+                              textEditingController:
+                                  controller.rejectReasonController,
+                            ),
+                          ),
+                        ],
+                        onTapSubmit: () {
+                          controller.rejectVerifyStudent(studentModel!.sId!);
+                        },
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text("تعديل"),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.redAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

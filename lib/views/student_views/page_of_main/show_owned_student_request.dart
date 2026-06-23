@@ -4,6 +4,8 @@ import 'package:gr_flutter/controllers/student_controllers/student_requests_cont
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
 
+import '../../widgets/custom_app_bar.dart';
+
 class ShowOwnedStudentRequest extends StatelessWidget {
   final StudentRequestsControllerImp controller =
       Get.find<StudentRequestsControllerImp>();
@@ -12,7 +14,7 @@ class ShowOwnedStudentRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CustomAppBar(title: "طلباتي", automaticallyImplyLeading: true),
       body: RefreshIndicator(
         onRefresh: () async {
           await controller.getOwnedStudentRequest();
@@ -38,3 +40,7 @@ class ShowOwnedStudentRequest extends StatelessWidget {
     );
   }
 }
+
+
+
+

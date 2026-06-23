@@ -41,7 +41,7 @@ class CommentUser {
     return CommentUser(
       id: json['_id'] ?? '',
       fullName: json['full_name'] ?? '',
-      profilePhoto: json['profile_photo'] != null ? json['profile_photo']['url'] : null,
+      profilePhoto: json['profile_photo'] ,
       isVerified: json['is_verified'] ?? false,
     );
   }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:gr_flutter/services/local_storge/local_user_storage.dart';
+import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../controllers/conversations_controllers/conversations_controller.dart';
 import '../../models/conversations_models/conversation_model.dart';
 import '../../services/functions/show_image_preview.dart';
+import '../widgets/custom_app_bar.dart';
 
 class ConversationsScreen extends StatelessWidget {
   const ConversationsScreen({super.key});
@@ -13,80 +16,108 @@ class ConversationsScreen extends StatelessWidget {
     final controller = Get.put(ConversationsController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('المحادثات'),
+      appBar: CustomAppBar(
+        title: 'المحادثات',
         centerTitle: true,
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          controller.fetchConversations();
-        },
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (controller.errorMessage.isNotEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(controller.errorMessage.value),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => controller.refreshConversations(),
-                    child: const Text('إعادة المحاولة'),
-                  ),
-                ],
-              ),
-            );
-          }
-          if (controller.conversations.isEmpty) {
-            return const Center(
-              child: Text('لا توجد محادثات بعد'),
-            );
-          }
-          return ListView.builder(
-            itemCount: controller.conversations.length,
-            itemBuilder: (context, index) {
-              final conversation = controller.conversations[index];
-              return _buildConversationTile(conversation, controller);
+      body: Column(
+        children: [
+          InkWell(
+            onTap: () async {
+              final localStorage = Get.find<LocalUserStorage>();
+              final role = await localStorage.getRole();
+              Get.toNamed("/aiChat", arguments: {"role": role});
             },
-          );
-        }),
+            child: ListTile(
+              leading: CircleAvatar(
+                  backgroundImage:
+                      AssetImage(AppConstants.defaultBackgroundImage)),
+              title: Text(
+                "ذكاء اصطناعي",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              subtitle: Text("مرحبا كيف حالك؟"),
+              trailing: Text(
+                "12:30",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                controller.fetchConversations();
+              },
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.errorMessage.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(controller.errorMessage.value),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => controller.refreshConversations(),
+                          child: const Text('إعادة المحاولة'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                if (controller.conversations.isEmpty) {
+                  return const Center(
+                    child: Text('لا توجد محادثات بعد'),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: controller.conversations.length,
+                  itemBuilder: (context, index) {
+                    final conversation = controller.conversations[index];
+                    return _buildConversationTile(conversation, controller);
+                  },
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildConversationTile(
       ConversationModel conversation, ConversationsController controller) {
-    final other = conversation.otherParty;
+    final other = conversation.otherPartyProfile;
     return ListTile(
       leading: InkWell(
         onTap: () {
           if (other.profilePhoto != null &&
-              other.profilePhoto!['url'] != null &&
-              other.profilePhoto!['url']!.isNotEmpty) {
-            showImagePreview("http://localhost:5000/${other.profilePhoto!['url']}");
+              other.profilePhoto!.url != null &&
+              other.profilePhoto!.url!.isNotEmpty) {
+            showImagePreview(
+                "${other.profilePhoto!.url}");
           }
         },
-        child: _buildAvatar(other),
+        child: _buildAvatar(other!),
       ),
       title: Row(
         children: [
           Expanded(
             child: Text(
-              other.fullName,
+              other.fullName!,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 8),
-          _buildRoleChip(other.role),
+          _buildRoleChip(other.role!),
         ],
       ),
       subtitle: Text(
-        conversation.lastMessage.isNotEmpty
-            ? conversation.lastMessage
+        conversation.lastMessage != null
+            ? conversation.lastMessage!
             : 'لا توجد رسائل',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -96,20 +127,20 @@ class ConversationsScreen extends StatelessWidget {
         // _formatDate(conversation.updatedAt),
         style: const TextStyle(fontSize: 12, color: Colors.grey),
       ),
-      onTap: () => controller.goToChat(conversation.conversationId, other),
+      onTap: () => controller.goToChat(conversation.conversationId!, other),
     );
   }
 
-  Widget _buildAvatar(OtherPartyModel other) {
+  Widget _buildAvatar(OtherPartyProfile other) {
     return CircleAvatar(
-      backgroundImage: other.profilePhoto!['url'] != null &&
-              other.profilePhoto!.isNotEmpty &&
-              other.profilePhoto!['url'] != ""
+      backgroundImage: other.profilePhoto!.url != null &&
+              other.profilePhoto != null &&
+              other.profilePhoto!.url != ""
           ? CachedNetworkImageProvider(
-              "http://localhost:5000/${other.profilePhoto!['url']}")
+              "${other.profilePhoto!.url}")
           : null,
-      child: other.profilePhoto!['url'] == null || other.profilePhoto!.isEmpty
-          ? Text(other.fullName.isNotEmpty ? other.fullName[0] : '?')
+      child: other.profilePhoto!.url == null || other.profilePhoto == null
+          ? Text(other.fullName != null ? other.fullName![0] : '?')
           : null,
     );
   }

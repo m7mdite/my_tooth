@@ -37,13 +37,13 @@ class PostCard extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    showImagePreview(post.publisher.profilePhoto != null
-                        ? 'http://localhost:5000/${post.publisher.profilePhoto}'
+                    showImagePreview(post.publisher!.profilePhoto != null
+                        ? '${post.publisher!.profilePhoto}'
                         : AppConstants.defaultBackgroundImage);
                   },
                   child: CircleAvatar(
-                    backgroundImage: post.publisher.profilePhoto != null
-                        ? NetworkImage('http://localhost:5000/${post.publisher.profilePhoto}')
+                    backgroundImage: post.publisher!.profilePhoto != null
+                        ? NetworkImage('${post.publisher!.profilePhoto}')
                         : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
                     radius: 20,
                   ),
@@ -54,11 +54,11 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.publisher.fullName,
+                        post.publisher!.fullName??"اسم اول",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        _getRoleName(post.publisherRole),
+                        _getRoleName(post.publisherRole!),
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
@@ -66,33 +66,33 @@ class PostCard extends StatelessWidget {
                 ),
                 Text(
                   // _formatDate(post.createdAt),
-                  post.createdAt,
+                  post.createdAt!,
                   style: TextStyle(fontSize: 12, color: Colors.grey[500]),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             // المحتوى النصي
-            Text(post.content, style: const TextStyle(fontSize: 15)),
+            Text(post.content!, style: const TextStyle(fontSize: 15)),
             const SizedBox(height: 8),
             // الصور إن وجدت
-            if (post.images.isNotEmpty)
+            if (post.images!.isNotEmpty)
               SizedBox(
                 height: 200,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: post.images.length,
+                  itemCount: post.images!.length,
                   itemBuilder: (context, i) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: InkWell(
                         onTap: () {
-                          showImagePreview('http://localhost:5000${post.images[i]}');
+                          showImagePreview('${post.images![i].url}');
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: CachedNetworkImage(
-                            imageUrl: 'http://localhost:5000${post.images[i]}',
+                            imageUrl: '${post.images![i].url}',
                             fit: BoxFit.cover,
                             width: 150,
                             placeholder: (context, url) => Container(color: Colors.grey[200]),
@@ -111,20 +111,20 @@ class PostCard extends StatelessWidget {
               children: [
                 _actionButton(
                   icon: Icons.thumb_up_outlined,
-                  count: post.likesCount,
+                  count: post.countLikes!,
                   onTap: onLike,
                   color: Colors.blue,
                 ),
                 _actionButton(
                   icon: Icons.thumb_down_outlined,
-                  count: post.dislikesCount,
+                  count: post.countDislikes!,
                   onTap: onDislike,
                   color: Colors.red,
                 ),
                 _actionButton(
                   icon: Icons.comment_outlined,
-                  count: post.commentsCount,
-                  onTap: onComment ?? () => Get.to(() => PostDetailScreen(postId: post.id)),
+                  count: post.countComments!,
+                  onTap: onComment ?? () => Get.to(() => PostDetailScreen(postId: post.sId!)),
                   color: Colors.grey,
                 ),
               ],

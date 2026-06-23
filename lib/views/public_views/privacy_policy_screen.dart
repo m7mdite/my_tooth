@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../widgets/custom_app_bar.dart';
+
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CustomAppBar(
+        title: "سياسة الخصوصية",
+        automaticallyImplyLeading: true,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {},
         child: Container(
@@ -20,7 +25,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
           ),
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20,),
             children: [
               // زر العودة (اختياري) أو يمكنك الاعتماد على زر الرجوع في الـ AppBar
               Row(

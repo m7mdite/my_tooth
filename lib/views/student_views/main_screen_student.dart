@@ -21,11 +21,18 @@ class MainScreenStudent extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.white,
-                  Colors.white54,
-                  Colors.lightBlueAccent,
+                  // Colors.white,
+                  // Colors.white54,
+                  // Colors.lightBlueAccent,
+                  // Colors.blueAccent,
+                  // Colors.blue,
+
+                  // Colors.blue,
                   Colors.blueAccent,
-                  Colors.blue,
+                  Colors.lightBlueAccent,
+                  Colors.white70,
+                  Colors.white,
+
                   // Colors.pinkAccent,
                 ],
                 begin: Alignment.topCenter,

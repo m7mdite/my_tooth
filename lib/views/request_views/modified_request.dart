@@ -273,7 +273,7 @@ class ModifiedRequest extends StatelessWidget {
                                 height: 80,
                                 width: 80,
                                 child: Image.network(
-                                  "http://localhost:5000/${controller.pendingRequestModel.requestion!.photo!.url!}",
+                                  "${controller.pendingRequestModel.requestion!.photo!.url!}",
                                   fit: BoxFit.cover,
                                 ),
                               )

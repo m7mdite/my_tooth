@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/ai_controllers/ai_chat_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import '../custom_app_bar.dart';
+import '../custom_icon_app_bar.dart';
 import 'chat_bubble.dart';
 import 'typing_indicator.dart';
 
@@ -16,45 +18,23 @@ class ChatScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.green.shade600, Colors.blue.shade600],
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const FaIcon(FontAwesomeIcons.userDoctor,
-                  color: Colors.white, size: 15),
-            ),
-            const SizedBox(width: 12),
-            const Text(
-              'دكتور ع البركة',
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-            ),
-          ],
-        ),
+      appBar: CustomAppBar(
+        title: "دكتور افتراضي",
         centerTitle: false,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+        automaticallyImplyLeading: true,
+        
         actions: [
-          // زر مسح المحادثة
-          IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => _showClearDialog(controller),
+          CustomIconAppBar(
+            iconData: Icons.delete_outline,
+            reverseColors: true,
+            onTap: () => _showClearDialog(controller),
           ),
-          // زر الإعدادات
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => _showSettingsSheet(controller),
-            // onPressed: () {
-            //   controller.getRoleFromArguments();
-            // },
+          
+          CustomIconAppBar(
+            iconData: Icons.settings_outlined,
+            onTap: () => _showSettingsSheet(controller),
           ),
+          
         ],
       ),
       body: Container(

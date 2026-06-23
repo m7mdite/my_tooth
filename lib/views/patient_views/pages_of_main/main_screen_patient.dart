@@ -13,11 +13,11 @@ class MainScreenPatient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: CustomAppBar(
-  title: controller.titleAppBar,
-  // actions: [Icon(Icons.add_ic_call)],
-  // يمكن تمرير actions إضافية هنا إذا لزم الأمر
-),
+//      appBar: CustomAppBar(
+//   title: controller.titleAppBar,
+//   // actions: [Icon(Icons.add_ic_call)],
+//   // يمكن تمرير actions إضافية هنا إذا لزم الأمر
+// ),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {
@@ -25,12 +25,18 @@ class MainScreenPatient extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.white,
-                  Colors.white54,
-                  Colors.lightBlueAccent,
-                  // const Color.fromARGB(147, 233, 30, 98),
-                  Colors.blueAccent,
+                  // Colors.white,
+                  // Colors.white54,
+                  // Colors.lightBlueAccent,
+                  // // const Color.fromARGB(147, 233, 30, 98),
+                  // Colors.blueAccent,
                   // Colors.pinkAccent,
+                  Colors.blueAccent,
+                  Colors.lightBlueAccent,
+                  Colors.white54,
+                  Colors.white,
+
+
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

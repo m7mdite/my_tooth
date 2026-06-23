@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/notifications_controllers/notification_controller.dart';
 import '../../models/public_models/notification_model.dart';
+import '../widgets/custom_app_bar.dart';
 
 class NotificationsView extends GetView<NotificationController> {
   const NotificationsView({Key? key}) : super(key: key);
@@ -10,7 +11,65 @@ class NotificationsView extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: CustomAppBar(
+        title: "الإشعارات",
+        actions: [
+          Obx(() => Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications_active),
+                onPressed: () {},
+              ),
+              if (controller.unreadCount.value > 0)
+                Positioned(
+                  right: 5,
+                  top: 5,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      '${controller.unreadCount.value}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          )),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              switch (value) {
+                case 'mark_all_read':
+                  controller.markAllAsRead();
+                  break;
+                case 'delete_all':
+                  _showDeleteAllDialog();
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'mark_all_read',
+                child: Text('تحديد الكل كمقروء'),
+              ),
+              const PopupMenuItem(
+                value: 'delete_all',
+                child: Text('حذف الكل'),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());

@@ -8,6 +8,7 @@ import 'package:gr_flutter/services/remote/public_remotes/auth_remote.dart';
 
 import '../../services/functions/handling_data.dart';
 import '../../utils/app_constants/status_request.dart';
+import '../../utils/validators/register_validator.dart';
 
 abstract class RegisterController extends GetxController {
   register();
@@ -45,6 +46,7 @@ class RegisterControllerImp extends RegisterController {
 
   @override
   register() async {
+    if (!validateFormManually()) return;
     data = RegisterModel(
       gender: gender,
       fatherName: fatherName.text,
@@ -105,4 +107,70 @@ class RegisterControllerImp extends RegisterController {
     }
     update();
   }
+
+  // داخل RegisterControllerImp
+
+bool validateFormManually() {
+  // تحقق من الحقول واحداً واحداً
+  final firstNameError = RegisterValidator.name(firstName.text, 'الاسم الأول');
+  if (firstNameError != null) {
+    _showSnackbarAndFocus(firstNameError, firstName);
+    return false;
+  }
+
+  final fatherNameError = RegisterValidator.name(fatherName.text, 'اسم الأب');
+  if (fatherNameError != null) {
+    _showSnackbarAndFocus(fatherNameError, fatherName);
+    return false;
+  }
+
+  final lastNameError = RegisterValidator.name(lastName.text, 'الكنية');
+  if (lastNameError != null) {
+    _showSnackbarAndFocus(lastNameError, lastName);
+    return false;
+  }
+
+  final emailError = RegisterValidator.email(email.text);
+  if (emailError != null) {
+    _showSnackbarAndFocus(emailError, email);
+    return false;
+  }
+
+  final passwordError = RegisterValidator.password(password.text);
+  if (passwordError != null) {
+    _showSnackbarAndFocus(passwordError, password);
+    return false;
+  }
+
+  final confirmError = RegisterValidator.confirmPassword(confirmPassword.text, password.text);
+  if (confirmError != null) {
+    _showSnackbarAndFocus(confirmError, confirmPassword);
+    return false;
+  }
+
+  if (role == 'student') {
+    final uniError = RegisterValidator.universityNumber(universityNumber.text, true);
+    if (uniError != null) {
+      _showSnackbarAndFocus(uniError, universityNumber);
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void _showSnackbarAndFocus(String message, TextEditingController controller) {
+  Get.snackbar(
+    'تنبيه',
+    message,
+    snackPosition: SnackPosition.TOP,
+    backgroundColor: const Color.fromARGB(117, 255, 255, 255),
+    colorText: Colors.red,
+    duration: const Duration(seconds: 3),
+  );
+  // طلب التركيز على الحقل المخالف
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    FocusScope.of(Get.context!).requestFocus(FocusNode()); // نعيد التركيز على الحقل
+  });
+}
 }

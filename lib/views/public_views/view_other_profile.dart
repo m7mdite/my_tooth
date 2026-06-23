@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
 import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
+import 'package:gr_flutter/services/functions/show_image_preview.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../models/public_models/profile_model.dart';
@@ -32,26 +33,45 @@ class ViewOtherProfile extends StatelessWidget {
               height: 5,
             ),
             Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                padding: EdgeInsets.all(5),
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.blue, blurRadius: 20, spreadRadius: 1)
-                  ],
-                  borderRadius: BorderRadius.circular(100),
-                  image: DecorationImage(
-                      image: AssetImage(
-                        AppConstants.defaultBackgroundImage,
-                      ),
-                      fit: BoxFit.cover),
-                  border: Border.all(
-                    color: Colors.white,
-                    strokeAlign: 5,
-                    width: 2,
+              child: InkWell(
+                onTap: () {
+                  if (profile!.profilePhoto!.url != null &&
+                      profile!.profilePhoto!.url!.isNotEmpty) {
+                    showImagePreview(
+                        "http://127.0.0.1:5000/${profile!.profilePhoto!.url}");
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.all(5),
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.blue, blurRadius: 20, spreadRadius: 1)
+                    ],
+                    borderRadius: BorderRadius.circular(100),
+                    image: DecorationImage(
+                        image: AssetImage(
+                          AppConstants.defaultBackgroundImage,
+                        ),
+                        fit: BoxFit.cover),
+                    border: Border.all(
+                      color: Colors.white,
+                      strokeAlign: 5,
+                      width: 2,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: Colors.grey[200],
+                    backgroundImage: (profile!.profilePhoto!.url != null &&
+                            profile!.profilePhoto!.url!.isNotEmpty)
+                        ? NetworkImage(
+                            "http://127.0.0.1:5000/${profile!.profilePhoto!.url}")
+                        : const AssetImage(AppConstants.defaultBackgroundImage)
+                            as ImageProvider,
                   ),
                 ),
               ),
@@ -252,26 +272,30 @@ class ViewOtherProfile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.outlet_rounded,
-                          color: Colors.blueAccent, size: 16),
-                      Text(
-                        "العمر: ",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text(
-                        " ${profile!.phoneNumber ?? 'غير محدد'} ",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                    ],
+                  Flexible(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.outlet_rounded,
+                            color: Colors.blueAccent, size: 16),
+                        Text(
+                          "العمر: ",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Flexible(
+                          child: Text(
+                            " ${profile!.phoneNumber ?? 'غير محدد'} ",
+                            style: TextStyle(fontSize: 12, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
                     width: 1,
@@ -315,41 +339,41 @@ class ViewOtherProfile extends StatelessWidget {
                 height: 10,
               ),
             ],
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.elliptical(1, 10),
-                  topRight: Radius.elliptical(10, 1),
-                  bottomLeft: Radius.elliptical(10, 1),
-                  bottomRight: Radius.elliptical(1, 10),
+            if (profile!.bio != null && profile!.bio!.isNotEmpty)
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(1, 10),
+                    topRight: Radius.elliptical(10, 1),
+                    bottomLeft: Radius.elliptical(10, 1),
+                    bottomRight: Radius.elliptical(1, 10),
+                  ),
+                  border: Border.all(
+                      color: Colors.blueAccent, width: 1, strokeAlign: 3),
                 ),
-                border: Border.all(
-                    color: Colors.blueAccent, width: 1, strokeAlign: 3),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    profile!.bio ?? 'لا يوجد نبذة',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[700],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "نبذة عن العضو",
+                      style: TextStyle(fontSize: 8),
+                      textAlign: TextAlign.end,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text("نبذة عني",
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                ],
+                    Text(
+                      profile!.bio ?? 'لا يوجد نبذة',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
               ),
-            ),
             SizedBox(
               height: 10,
             ),

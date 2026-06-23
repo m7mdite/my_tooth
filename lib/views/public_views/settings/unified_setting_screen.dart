@@ -12,6 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../services/functions/upload_picture.dart';
 import '../../widgets/custom_app_bar.dart';
+import '../../widgets/custom_icon_app_bar.dart';
+import '../conversations_screen.dart';
+import '../notifications_view.dart';
 
 class UnifiedSettingScreen extends StatelessWidget {
   final UnifiedSettingController controller =
@@ -34,6 +37,22 @@ class UnifiedSettingScreen extends StatelessWidget {
       appBar: CustomAppBar(
         title: "الاعدادات",
         automaticallyImplyLeading: false,
+        notifacation: false,
+         showVerifiedBadge: true,
+         actions: [
+          CustomIconAppBar(
+              iconData: Icons.chat,
+              onTap: () {
+                Get.to(() => ConversationsScreen());
+              }),
+          CustomIconAppBar(
+            iconData: Icons.notifications,
+            onTap: () {
+              Get.to(() => NotificationsView());
+            },
+            reverseColors: true,
+          ),
+        ],
         // يمكن تمرير actions إضافية هنا إذا لزم الأمر
       ),
       body: Container(
@@ -73,7 +92,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                         image: DecorationImage(
                           image: controller.profilePicture.value.isNotEmpty
                               ? NetworkImage(
-                                  "http://localhost:5000/${controller.profilePicture.value}")
+                                  "${controller.profilePicture.value}")
                               : AssetImage(AppConstants.defaultBackgroundImage)
                                   as ImageProvider,
                           fit: BoxFit.cover,

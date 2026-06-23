@@ -21,6 +21,7 @@ static const String comments = "$servere/posts/comments";
   static const String inProcessingPatientRequest =
       '$servere/request/processing';
   static const String completedPatientRequest = '$servere/request/finished';
+  static const String rejectedPatientRequest = '$servere/request/rejected';
   static const String treatments = '$servere/admin/treatment';
   // =========================== student
   static const String acceptRequest = '$servere/request/accept';
@@ -48,7 +49,9 @@ static const String comments = "$servere/posts/comments";
   static const String getAllRequests = '$servere/admin/requests';
   static const String getAllVerifyStudents = '$servere/admin/verify';
   static const String acceptVerifyStudent =
-      '$servere/admin/verification/accept';
+      '$servere/admin/verify/accept';
+  static const String rejectVerifyStudent =
+      '$servere/admin/verify/reject';
   static const String addCourse = '$servere/admin/course';
   static const String addTreatment = '$servere/admin/treatment';
   static const String addCategory = '$servere/admin/category';

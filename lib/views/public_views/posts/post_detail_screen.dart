@@ -4,6 +4,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 
 import '../../../controllers/post_controllers/post_controller.dart';
 import '../../../models/posts_models/comment_model.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final String postId;
@@ -26,10 +27,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('التفاصيل'),
+      appBar:CustomAppBar(
+        title: "تفاصيل المنشور",
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
       ),
       body: Obx(() {
         if (controller.isLoadingDetails.value && controller.selectedPost.value == null) {
@@ -44,8 +44,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 children: [
                   PostCard(
                     post: post,
-                    onLike: () => controller.likePost(post.id),
-                    onDislike: () => controller.dislikePost(post.id),
+                    onLike: () => controller.likePost(post.sId!),
+                    onDislike: () => controller.dislikePost(post.sId!),
                     onComment: null, // منع فتح الشاشة مرة أخرى
                   ),
                   const Divider(thickness: 1, height: 1),
@@ -78,7 +78,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: comment.user.profilePhoto != null
-            ? NetworkImage('http://localhost:5000${comment.user.profilePhoto}')
+            ? NetworkImage('${comment.user.profilePhoto}')
             : null,
         child: const Icon(Icons.person),
       ),
@@ -195,7 +195,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 //                   return ListTile(
 //                     leading: CircleAvatar(
 //                       backgroundImage: comment.userInfo.profilePhoto != null
-//                           ? NetworkImage('http://localhost:5000${comment.userInfo.profilePhoto}')
+//                           ? NetworkImage('${comment.userInfo.profilePhoto}')
 //                           : null,
 //                       child: const Icon(Icons.person),
 //                     ),

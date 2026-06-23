@@ -4,6 +4,8 @@ import 'package:gr_flutter/views/patient_views/pages_of_main/patient_home_screen
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_request_screen.dart';
 import 'package:gr_flutter/views/public_views/posts/feed_screen.dart';
 
+import '../../views/patient_views/pages_of_main/home_screen_example.dart';
+import '../../views/patient_views/pages_of_main/home_screen_pro1.dart';
 import '../../views/public_views/settings/unified_setting_screen.dart';
   
 abstract class MainPatientController extends GetxController {}
@@ -17,7 +19,7 @@ class MainPatientControllerImp extends MainPatientController {
     {
       "title": "الصفحة الرئيسية",
       "icon": Icons.home,
-      "page": PatientHomeScreen()
+      "page": HomeScreenPro1()
     },
     {
       "title": "الطلبات",

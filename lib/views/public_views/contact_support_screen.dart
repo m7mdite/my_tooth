@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/support_controller.dart'; // سننشئه
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class ContactSupportScreen extends StatelessWidget {
   final SupportController controller = Get.put(SupportController());
@@ -11,7 +12,7 @@ class ContactSupportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CustomAppBar(title: "مراسلة الدعم", automaticallyImplyLeading: true),
       body: RefreshIndicator(
         onRefresh: () async {},
         child: Container(
@@ -27,16 +28,7 @@ class ContactSupportScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               children: [
                 // زر العودة
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () => Get.back(),
-                      icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
+                
                 // أيقونة الدعم
                 Center(
                   child: Container(

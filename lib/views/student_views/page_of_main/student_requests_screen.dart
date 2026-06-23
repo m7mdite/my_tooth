@@ -3,12 +3,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 
+import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../controllers/student_controllers/student_requests_controller.dart';
+import '../../public_views/conversations_screen.dart';
+import '../../public_views/notifications_view.dart';
+import '../../public_views/settings/unified_profile_screen.dart';
+import '../../widgets/custom_app_bar.dart';
+import '../../widgets/custom_icon_app_bar.dart';
+import '../../widgets/custom_photo_app_bar.dart';
 import '../../widgets/requests/request_container.dart';
 
 class StudentRequestsScreen extends StatelessWidget {
   final StudentRequestsControllerImp controller =
       Get.put(StudentRequestsControllerImp());
+      final UnifiedSettingController settingController =
+      Get.find<UnifiedSettingController>();
   StudentRequestsScreen({super.key});
 
   @override
@@ -16,6 +25,34 @@ class StudentRequestsScreen extends StatelessWidget {
     return GetBuilder<StudentRequestsControllerImp>(
       builder: (_) {
         return Scaffold(
+          appBar: CustomAppBar(
+            title: "طلبات المعالجة",
+            automaticallyImplyLeading: false,
+            actions: [
+          CustomIconAppBar(
+              iconData: Icons.chat,
+              onTap: () {
+                Get.to(() => ConversationsScreen());
+              }),
+          CustomIconAppBar(
+            iconData: Icons.notifications,
+            onTap: () {
+              Get.to(() => NotificationsView());
+            },
+            reverseColors: true,
+          ),
+        ],
+        leading: Obx(() {
+          final pic = settingController.profilePicture.value;
+          return InkWell(
+            onTap: () {
+              // هنا يمكنك إضافة وظيفة عند الضغط على الصورة الشخصية
+              Get.to(() => UnifiedProfileScreen());
+            },
+            child: CustomPhotoAppBar(pic: pic),
+          );
+        }),
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: InkWell(

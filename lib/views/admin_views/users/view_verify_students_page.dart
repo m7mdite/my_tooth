@@ -49,12 +49,12 @@ class ViewVerifyStudentsPage extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: NetworkImage("http://localhost:5000/${student.document}"),
+                            image: NetworkImage("${student.document}"),
                             fit: BoxFit.cover,
                           ),
                         ),
                       )
-                        // child: Image.network("http://localhost:5000/${student.profilePhoto!.url!}", fit: BoxFit.cover))
+                        // child: Image.network("${student.profilePhoto!.url!}", fit: BoxFit.cover))
                       : Icon(Icons.person),
                     textColor: Colors.blue,
                     title: Text(

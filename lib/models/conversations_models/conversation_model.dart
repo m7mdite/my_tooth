@@ -1,59 +1,84 @@
 class ConversationModel {
-  final String conversationId;
-  final String lastMessage;
-  final OtherPartyModel otherParty;
-  // final DateTime updatedAt;
+  String? conversationId;
+  OtherPartyProfile? otherPartyProfile;
+  int? count;
+  List<Map>? messages;
+  String? lastMessage;
 
-  ConversationModel({
-    required this.conversationId,
-    required this.lastMessage,
-    required this.otherParty,
-    // required this.updatedAt,
-  });
+  ConversationModel(
+      {this.conversationId, this.otherPartyProfile, this.count, this.messages,this.lastMessage});
 
-  factory ConversationModel.fromJson(Map<String, dynamic> json) {
-    return ConversationModel(
-      conversationId: json['conversationId'],
-      lastMessage: json['last_message'] ?? '',
-      otherParty: OtherPartyModel.fromJson(json['otherPartyProfile']),
-      // updatedAt: DateTime.parse(json['updatedAt']),
-    );
+  ConversationModel.fromJson(Map<String, dynamic> json) {
+    lastMessage= json['last_message'] ?? "";
+    conversationId = json['conversationId'];
+    otherPartyProfile = json['otherPartyProfile'] != null
+        ? OtherPartyProfile.fromJson(json['otherPartyProfile'])
+        : null;
+    count = json['count'];
+    if (json['messages'] != null) {
+      messages = <Map>[];
+      json['messages'].forEach((v) {
+        messages!.add(v);
+      });
+    }
+
   }
 
-  Map<String, dynamic> toJson() => {
-    'conversationId': conversationId,
-    'last_message': lastMessage,
-    'otherParty': otherParty.toJson(),
-    // 'updatedAt': updatedAt.toIso8601String(),
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['conversationId'] = conversationId;
+    if (otherPartyProfile != null) {
+      data['otherPartyProfile'] = otherPartyProfile!.toJson();
+    }
+    data['count'] = count;
+    if (messages != null) {
+      data['messages'] = messages!.map((v) => v).toList();
+    }
+    return data;
+  }
 }
 
-class OtherPartyModel {
-  final String userId;
-  final String fullName;
-  final Map<String, dynamic>? profilePhoto;
-  final String role; // 'student', 'patient', 'overseer', 'admin'
+class OtherPartyProfile {
+  String? userId;
+  String? fullName;
+  ProfilePhoto? profilePhoto;
+  String? role;
 
-  OtherPartyModel({
-    required this.userId,
-    required this.fullName,
-    this.profilePhoto,
-    required this.role,
-  });
+  OtherPartyProfile({this.userId, this.fullName, this.profilePhoto, this.role});
 
-  factory OtherPartyModel.fromJson(Map<String, dynamic> json) {
-    return OtherPartyModel(
-      userId: json['userId'],
-      fullName: json['full_name'] ?? 'مستخدم',
-      profilePhoto: json['profile_photo'],
-      role: json['role'] ?? 'unknown',
-    );
+  OtherPartyProfile.fromJson(Map<String, dynamic> json) {
+    userId = json['userId'];
+    fullName = json['full_name'];
+    profilePhoto = json['profile_photo'] != null
+        ? ProfilePhoto.fromJson(json['profile_photo'])
+        : null;
+    role = json['role'];
   }
 
-  Map<String, dynamic> toJson() => {
-    'userId': userId,
-    'full_name': fullName,
-    'profile_photo': profilePhoto,
-    'role': role,
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['userId'] = userId;
+    data['full_name'] = fullName;
+    if (profilePhoto != null) {
+      data['profile_photo'] = profilePhoto!.toJson();
+    }
+    data['role'] = role;
+    return data;
+  }
+}
+
+class ProfilePhoto {
+  String? url;
+
+  ProfilePhoto({this.url});
+
+  ProfilePhoto.fromJson(Map<String, dynamic> json) {
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    return data;
+  }
 }
