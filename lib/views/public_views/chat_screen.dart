@@ -68,7 +68,7 @@ class ChatScreenn extends StatelessWidget {
                 backgroundImage: (otherPartyProfile.profilePhoto != null &&
                         otherPartyProfile.profilePhoto!.url != null)
                     ? NetworkImage(
-                        "http://127.0.0.1:5000/${otherPartyProfile.profilePhoto!.url}")
+                        "${otherPartyProfile.profilePhoto!.url}")
                     : AssetImage(AppConstants.defaultBackgroundImage)
                         as ImageProvider,
               ),
@@ -145,7 +145,7 @@ class ChatScreenn extends StatelessWidget {
               backgroundImage: (otherPartyProfile.profilePhoto != null &&
                       otherPartyProfile.profilePhoto!.url != null)
                   ? NetworkImage(
-                      "http://127.0.0.1:5000/${otherPartyProfile.profilePhoto!.url}")
+                      "${otherPartyProfile.profilePhoto!.url}")
                   : AssetImage(AppConstants.defaultBackgroundImage)
                       as ImageProvider,
             ),

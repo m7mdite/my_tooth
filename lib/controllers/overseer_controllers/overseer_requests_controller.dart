@@ -27,11 +27,6 @@ abstract class OverseerRequestsController extends GetxController {
 }
 
 class OverseerRequestsControllerImpl extends OverseerRequestsController {
-  List<String> rejectCase = [
-    "كبسة",
-    "مندي",
-    "كريستيانو",
-  ];
   List<TreatmentRequestProcessingSModel> requestList =
       <TreatmentRequestProcessingSModel>[];
   TreatmentRequestProcessingSModel selectRequest =
@@ -41,25 +36,27 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   late StatusRequest statusRequest;
   late TextEditingController textEditingControllerReject;
   late TextEditingController textEditingControllerFeedback;
-  late TextEditingController textEditingControllerRating;
+  // late TextEditingController textEditingControllerRating;
   late TextEditingController textEditingControllerNote;
   late TextEditingController textEditingControllerAddEvaluation;
 
   bool rejectBool = false;
   bool finishBool = false;
   TreatmentModel? selectnewTreatment;
-  formatTextEditing(){
-    textEditingControllerAddEvaluation =TextEditingController();
-    textEditingControllerFeedback =TextEditingController();
-    textEditingControllerNote =TextEditingController();
-    textEditingControllerRating =TextEditingController();
-    textEditingControllerReject =TextEditingController();
+  RxInt selectedRating = 1.obs;
+  formatTextEditing() {
+    textEditingControllerAddEvaluation = TextEditingController();
+    textEditingControllerFeedback = TextEditingController();
+    textEditingControllerNote = TextEditingController();
+    // textEditingControllerRating =TextEditingController();
+    textEditingControllerReject = TextEditingController();
   }
+
   @override
   void onInit() {
     formatTextEditing();
     getAllTreatment();
-    
+
     getTreatmentRequests();
     update();
     super.onInit();
@@ -73,6 +70,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     update();
     var response = await requestRemote.getTreatmentRequestsForOverseer();
     statusRequest = handlingData(response);
+    print("++++++++++++++++++++ $response");
     if (statusRequest == StatusRequest.success) {
       requestList = (response['data'] as List)
           .map((e) => TreatmentRequestProcessingSModel.fromJson(e))
@@ -152,7 +150,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
       // انتهاء الحالة
       finishRequest(request);
       onInit();
-
     } else {
       addEvaluationRequest(request);
       onInit();
@@ -166,7 +163,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     var response = await requestRemote.changeCaseRequestData(
         {"note": textEditingControllerNote.text},
         request.sId!,
-        selectnewTreatment!.caseType!.sId ?? "69e8f1f661485d1812ce0046");
+        selectnewTreatment!.caseType!.sId!);
     statusRequest = handlingData(response);
     print("===============$response");
     if (statusRequest == StatusRequest.success) {
@@ -193,7 +190,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
       treatments = (response['data'] as List)
           .map((item) => TreatmentModel.fromJson(item))
           .toList();
-          selectnewTreatment =treatments[0];
+      selectnewTreatment = treatments[0];
     }
     update();
   }
@@ -215,13 +212,13 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
       getTreatmentRequests();
     } else {
       showsnack(
-        title: 
-        // response['status'] ?? 
-        "no",
-        message: 
-        // response['message']
-        //  ??
-         "now",
+        title:
+            // response['status'] ??
+            "no",
+        message:
+            // response['message']
+            //  ??
+            "now",
       );
     }
     update();
@@ -232,7 +229,8 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.complateRequestData({
-      "rating": textEditingControllerRating.text,
+      // "rating": textEditingControllerRating.text,
+      "rating": selectedRating.value.toString(),
       "feedback": textEditingControllerFeedback.text,
     }, request.sId!);
     statusRequest = handlingData(response);
@@ -250,5 +248,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
         message: response['message'] ?? "now",
       );
     }
+    update();
   }
 }

@@ -70,7 +70,7 @@ class LoginControllerImp extends LoginController {
         print("${response.runtimeType}");
         statusRequest = handlingData(response);
         if (statusRequest == StatusRequest.success) {
-          toHome(response);
+        await  toHome(response);
           print("id ${response['data']['_id']}");
         webSocketService1.connect(response['data']['_id']);
 
@@ -105,14 +105,14 @@ class LoginControllerImp extends LoginController {
   }
 
   @override
-  toHome(Map<String, dynamic> response) {
+  toHome(Map<String, dynamic> response) async {
     print(  "Response in toHome: ${response.runtimeType}");
     if (response.containsKey('status') && response['status'] == "success") {
       if (response['data'].containsKey('is_admin') && response['data']['is_admin'] == true) {
-        storage.saveEmail(response['data']['email']);
-        storage.saveToken(response['token']);
+        await  storage.saveAllFromJson(response['data']);
+        await  storage.saveToken(response['token']);
         print(response['token']);
-        storage.saveRole('admin');
+        await  storage.saveRole('admin');
         Get.snackbar('  نجاح التسجيل', 'اهلا بك مديري',
             backgroundColor: Colors.green, colorText: Colors.white);
         Get.offAndToNamed(
@@ -123,8 +123,9 @@ class LoginControllerImp extends LoginController {
         print(response['token']);
 
         // student or patient or super
-        storage.saveToken(response['token']);
-        storage.saveAllFromJson(response['data']);
+        await  storage.saveAllFromJson(response['data']);
+        await  storage.saveToken(response['token']);
+
         if (response['data']['role'] == 'student') {
           // authService.saveIsVerified(response['data']['is_verified']);
           print("$response");
@@ -138,7 +139,7 @@ class LoginControllerImp extends LoginController {
             backgroundColor: Colors.green, colorText: Colors.white);
         
         
-        storage.saveRole(response['data']['role']);
+        // storage.saveRole(response['data']['role']);
       }
     } else {
       String errorMessage = response['message'] ?? 'حدث خطأ غير معروف';

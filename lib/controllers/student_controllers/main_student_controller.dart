@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/student_views/page_of_main/student_home_screen.dart';
 
+import '../../views/home_dashboard_screen.dart';
 import '../../views/public_views/posts/feed_screen.dart';
 import '../../views/public_views/settings/unified_setting_screen.dart';
 import '../../views/student_views/page_of_main/student_requests_screen.dart';
@@ -22,7 +23,7 @@ void refreshData() {
     {
       "title": "الصفحة الرئيسية",
       "icon": Icons.home,
-      "page": StudentHomeScreen()
+      "page": HomeDashboardScreen()
     },
     {
       "title": "الطلبات",

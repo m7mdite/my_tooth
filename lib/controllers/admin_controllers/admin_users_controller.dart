@@ -7,6 +7,7 @@ import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 import '../../models/public_models/profile_model.dart';
 import '../../models/admin_models/veify_student_model.dart';
 import '../../services/functions/handling_data.dart';
+import '../../services/local_storge/local_user_storage.dart';
 import '../../services/remote/public_remotes/gimini_remote.dart';
 import '../../services/remote/admin_remotes/admin_remote.dart';
 import '../../utils/app_constants/status_request.dart';
@@ -27,6 +28,7 @@ abstract class AdminUsersController extends GetxController {
   getAllPatientes();
   getAllVerifyStudents();
   toSubmitVerifyStudentPage(VeifyStudentModel student);
+  logout();
 }
 
 class AdminUsersControllerImpl extends AdminUsersController {
@@ -48,7 +50,8 @@ class AdminUsersControllerImpl extends AdminUsersController {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController fatherNameController = TextEditingController();
-  TextEditingController rejectReasonController = TextEditingController(text: "خطأ بالمعلومات ");
+  TextEditingController rejectReasonController =
+      TextEditingController(text: "خطأ بالمعلومات ");
   AdminRemote adminRemote = AdminRemote(Get.find());
   late StatusRequest statusRequest;
 
@@ -208,11 +211,11 @@ class AdminUsersControllerImpl extends AdminUsersController {
         onTapSubmit: () async {
           statusRequest = StatusRequest.loading;
           update();
-          var response =await adminRemote.acceptVerifyStudent(studentId);
+          var response = await adminRemote.acceptVerifyStudent(studentId);
           statusRequest = handlingData(response);
 
           if (statusRequest == StatusRequest.success) {
-            Get.snackbar(response['status']??"تم", response['message']);
+            Get.snackbar(response['status'] ?? "تم", response['message']);
             getAllVerifyStudents();
             Get.close(2);
           } else {
@@ -223,26 +226,27 @@ class AdminUsersControllerImpl extends AdminUsersController {
       ),
     );
   }
+
   @override
-  rejectVerifyStudent(String studentId) async{
-    if(rejectReasonController.text==""){
+  rejectVerifyStudent(String studentId) async {
+    if (rejectReasonController.text == "") {
       Get.snackbar("فشل", "ادخل سبب الرفض");
       return;
     }
-          statusRequest = StatusRequest.loading;
-          update();
-          var response =await adminRemote.rejectVerifyStudent(studentId,data: {"reject_reason":rejectReasonController.text});
-          statusRequest = handlingData(response);
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await adminRemote.rejectVerifyStudent(studentId,
+        data: {"reject_reason": rejectReasonController.text});
+    statusRequest = handlingData(response);
 
-          if (statusRequest == StatusRequest.success) {
-            Get.snackbar(response['status']??"تم", response['message']);
-            getAllVerifyStudents();
-            Get.close(2);
-          } else {
-            Get.snackbar("خطأ", "حدث خطأ ما ");
-          }
-          update();
-        
+    if (statusRequest == StatusRequest.success) {
+      Get.snackbar(response['status'] ?? "تم", response['message']);
+      getAllVerifyStudents();
+      Get.close(2);
+    } else {
+      Get.snackbar("خطأ", "حدث خطأ ما ");
+    }
+    update();
   }
 
   // داخل AdminUsersControllerImpl
@@ -260,5 +264,22 @@ class AdminUsersControllerImpl extends AdminUsersController {
       showsnack(title: 'خطأ', message: response['message'] ?? 'فشل حذف المشرف');
     }
     update();
+  }
+
+  @override
+  logout() async {
+    Get.dialog(
+      SubmitDialog(
+        title: "تسجيل الخروج",
+        question: "هل أنت متأكد من رغبتك بتسجيل الخروج؟",
+        onTapSubmit: () async {
+          await Get.find<LocalUserStorage>().deleteToken();
+          await Get.find<LocalUserStorage>().deleteRole();
+          await Get.find<LocalUserStorage>().clearAll();
+          Get.offAllNamed(AppRroute.register);
+          // Get.close(2);
+        },
+      ),
+    );
   }
 }

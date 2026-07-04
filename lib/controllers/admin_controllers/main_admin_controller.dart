@@ -5,6 +5,8 @@ import 'package:gr_flutter/views/admin_views/page_of_main/admin_request_screen.d
 import 'package:gr_flutter/views/admin_views/page_of_main/admin_users_screen.dart';
 import 'package:gr_flutter/views/public_views/posts/feed_screen.dart';
 
+import '../../views/home_dashboard_screen.dart';
+
 abstract class MainAdminController extends GetxController {}
 
 class MainAdminControllerImp extends MainAdminController {
@@ -18,7 +20,7 @@ class MainAdminControllerImp extends MainAdminController {
     {
       "title": "الصفحة الرئيسية",
       "icon": Icons.home,
-      "page": AdminHomeScreen()
+      "page": HomeDashboardScreen()
     },
     {
       "title": "الطلبات",

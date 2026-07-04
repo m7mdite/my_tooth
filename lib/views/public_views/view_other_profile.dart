@@ -38,7 +38,7 @@ class ViewOtherProfile extends StatelessWidget {
                   if (profile!.profilePhoto!.url != null &&
                       profile!.profilePhoto!.url!.isNotEmpty) {
                     showImagePreview(
-                        "http://127.0.0.1:5000/${profile!.profilePhoto!.url}");
+                        "${profile!.profilePhoto!.url}");
                   }
                 },
                 child: Container(
@@ -69,7 +69,7 @@ class ViewOtherProfile extends StatelessWidget {
                     backgroundImage: (profile!.profilePhoto!.url != null &&
                             profile!.profilePhoto!.url!.isNotEmpty)
                         ? NetworkImage(
-                            "http://127.0.0.1:5000/${profile!.profilePhoto!.url}")
+                            "${profile!.profilePhoto!.url}")
                         : const AssetImage(AppConstants.defaultBackgroundImage)
                             as ImageProvider,
                   ),

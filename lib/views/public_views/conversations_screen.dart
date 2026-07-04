@@ -96,8 +96,7 @@ class ConversationsScreen extends StatelessWidget {
           if (other.profilePhoto != null &&
               other.profilePhoto!.url != null &&
               other.profilePhoto!.url!.isNotEmpty) {
-            showImagePreview(
-                "${other.profilePhoto!.url}");
+            showImagePreview("${other.profilePhoto!.url}");
           }
         },
         child: _buildAvatar(other!),
@@ -133,13 +132,12 @@ class ConversationsScreen extends StatelessWidget {
 
   Widget _buildAvatar(OtherPartyProfile other) {
     return CircleAvatar(
-      backgroundImage: other.profilePhoto!.url != null &&
-              other.profilePhoto != null &&
+      backgroundImage: other.profilePhoto != null &&
+              other.profilePhoto!.url != null &&
               other.profilePhoto!.url != ""
-          ? CachedNetworkImageProvider(
-              "${other.profilePhoto!.url}")
+          ? CachedNetworkImageProvider("${other.profilePhoto!.url}")
           : null,
-      child: other.profilePhoto!.url == null || other.profilePhoto == null
+      child: other.profilePhoto == null ||other.profilePhoto!.url == null
           ? Text(other.fullName != null ? other.fullName![0] : '?')
           : null,
     );

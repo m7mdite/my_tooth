@@ -4,25 +4,36 @@ import 'package:gr_flutter/models/posts_models/post_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/public_views/posts/post_detail_screen.dart';
+import 'package:gr_flutter/views/public_views/posts/edit_post_screen.dart'; // سننشئها لاحقاً
 
 import '../../../services/functions/show_image_preview.dart';
+import '../../../services/local_storge/local_user_storage.dart';
 
 class PostCard extends StatelessWidget {
   final PostModel post;
   final VoidCallback onLike;
   final VoidCallback onDislike;
   final VoidCallback? onComment;
-
+  final VoidCallback? onEdit;    // ← جديد
+  final VoidCallback? onDelete; // ← جديد
+   _getRole() async {
+    final storage = Get.find<LocalUserStorage>();
+    final role = await storage.getRole();
+    return role!;
+  }
   const PostCard({
     super.key,
     required this.post,
     required this.onLike,
     required this.onDislike,
-     this.onComment,
+    this.onComment,
+    this.onEdit,
+    this.onDelete,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
+    final role = _getRole();
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       elevation: 2,
@@ -32,19 +43,28 @@ class PostCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // رأس البوست: الصورة والاسم
+            // ===== رأس البوست =====
             Row(
               children: [
+                // صورة المستخدم (تعطيل النقر إذا كان المنشور للمستخدم نفسه)
                 InkWell(
-                  onTap: () {
-                    showImagePreview(post.publisher!.profilePhoto != null
-                        ? '${post.publisher!.profilePhoto}'
-                        : AppConstants.defaultBackgroundImage);
-                  },
+                  onTap: post.isForMe == true 
+                      ? null // ❌ تعطيل النقر على صورة المستخدم إذا كان صاحب المنشور
+                      : () {
+                          // ✅ فتح الملف الشخصي للمستخدم الآخر (من خلال PublicController)
+                          // Get.toNamed(AppRroute.viewOtherProfile, arguments: post.publisher?.sId);
+                          // أو عرض الصورة كما في السابق:
+                          showImagePreview(
+                            post.publisher?.profilePhoto != null
+                                ? '${post.publisher!.profilePhoto}'
+                                : AppConstants.defaultBackgroundImage,
+                          );
+                        },
                   child: CircleAvatar(
-                    backgroundImage: post.publisher!.profilePhoto != null
+                    backgroundImage: post.publisher?.profilePhoto != null
                         ? NetworkImage('${post.publisher!.profilePhoto}')
-                        : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                        : const AssetImage(AppConstants.defaultBackgroundImage)
+                            as ImageProvider,
                     radius: 20,
                   ),
                 ),
@@ -54,7 +74,7 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.publisher!.fullName??"اسم اول",
+                        post.publisher?.fullName ?? "اسم غير معروف",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
@@ -64,18 +84,31 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
-                  // _formatDate(post.createdAt),
-                  post.createdAt!,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-                ),
+                // إذا كان المنشور للمستخدم نفسه → عرض قائمة الإجراءات
+                if (post.isForMe == true || role == 'admin')
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == 'edit') {
+                        // ✅ فتح شاشة التعديل
+                        Get.to(() => EditPostScreen(post: post));
+                      } else if (value == 'delete') {
+                        // ✅ تأكيد الحذف
+                        _showDeleteConfirmation(context);
+                      }
+                    },
+                    icon: const Icon(Icons.more_vert),
+                    itemBuilder: (context) => const [
+                      PopupMenuItem(value: 'edit', child: Text('تعديل')),
+                      PopupMenuItem(value: 'delete', child: Text('حذف')),
+                    ],
+                  ),
               ],
             ),
             const SizedBox(height: 12),
-            // المحتوى النصي
+            // ===== المحتوى النصي =====
             Text(post.content!, style: const TextStyle(fontSize: 15)),
             const SizedBox(height: 8),
-            // الصور إن وجدت
+            // ===== الصور =====
             if (post.images!.isNotEmpty)
               SizedBox(
                 height: 200,
@@ -95,8 +128,10 @@ class PostCard extends StatelessWidget {
                             imageUrl: '${post.images![i].url}',
                             fit: BoxFit.cover,
                             width: 150,
-                            placeholder: (context, url) => Container(color: Colors.grey[200]),
-                            errorWidget: (context, url, error) => const Icon(Icons.broken_image),
+                            placeholder: (context, url) =>
+                                Container(color: Colors.grey[200]),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.broken_image),
                           ),
                         ),
                       ),
@@ -105,7 +140,7 @@ class PostCard extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 12),
-            // أزرار التفاعل
+            // ===== أزرار التفاعل =====
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -124,7 +159,8 @@ class PostCard extends StatelessWidget {
                 _actionButton(
                   icon: Icons.comment_outlined,
                   count: post.countComments!,
-                  onTap: onComment ?? () => Get.to(() => PostDetailScreen(postId: post.sId!)),
+                  onTap: onComment ??
+                      () => Get.to(() => PostDetailScreen(postId: post.sId!)),
                   color: Colors.grey,
                 ),
               ],
@@ -135,9 +171,16 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Widget _actionButton({required IconData icon, required int count, required VoidCallback onTap, required Color color}) {
+  // ===== دوال مساعدة =====
+
+  Widget _actionButton({
+    required IconData icon,
+    required int count,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
     return InkWell(
-      onTap: (){onTap();},
+      onTap: onTap,
       borderRadius: BorderRadius.circular(30),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -153,22 +196,42 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final diff = now.difference(date);
-    if (diff.inDays > 0) return 'منذ ${diff.inDays} يوم';
-    if (diff.inHours > 0) return 'منذ ${diff.inHours} ساعة';
-    if (diff.inMinutes > 0) return 'منذ ${diff.inMinutes} دقيقة';
-    return 'الآن';
-  }
-
   String _getRoleName(String role) {
     switch (role) {
-      case 'student': return 'طالب';
-      case 'patient': return 'مريض';
-      case 'overseer': return 'مشرف';
-      case 'admin': return 'مدير';
-      default: return role;
+      case 'student':
+        return 'طالب';
+      case 'patient':
+        return 'مريض';
+      case 'overseer':
+        return 'مشرف';
+      case 'admin':
+        return 'مدير';
+      default:
+        return role;
     }
+  }
+
+  // ===== تأكيد الحذف =====
+  void _showDeleteConfirmation(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('تأكيد الحذف'),
+        content: const Text('هل أنت متأكد من حذف هذا المنشور؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+              onDelete?.call();
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('حذف'),
+          ),
+        ],
+      ),
+    );
   }
 }

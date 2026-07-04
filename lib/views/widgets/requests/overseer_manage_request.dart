@@ -98,10 +98,40 @@ class OverseerManageRequest extends StatelessWidget {
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      AuthTextFormField(
-                        label: "تقييم",
-                        textEditingController:
-                            controller.textEditingControllerRating,
+                      // AuthTextFormField(
+                      //   label: "تقييم",
+                      //   textEditingController:
+                      //       controller.textEditingControllerRating,
+                      // ),
+                      Column(
+                        children: [
+                          Text(
+                            "التقييم",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 8),
+                          RatingBar.builder(
+                            initialRating: controller.selectedRating.value.toDouble(),
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              controller.selectedRating.value = rating.round();
+                            },
+                            updateOnDrag: true,
+                          ),
+                          SizedBox(height: 4),
+                          Obx(() => Text(
+                            "التقييم: ${controller.selectedRating.value}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                        ],
                       ),
                       SizedBox(
                         height: 10,

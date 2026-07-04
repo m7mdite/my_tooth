@@ -4,6 +4,7 @@ class ApiLink {
   // ========================auth
   static const String login = '$servere/auth/login';
   static const String register = '$servere/auth/register';
+  static const String logout = "$servere/auth/logout";
   // ===========================all user
   static const String profile = '$servere/profile';
   static const String photo = '$servere/users/photo';
@@ -16,6 +17,9 @@ class ApiLink {
 static const String comments = "$servere/posts/comments";
   static const String changePassword =
       "$servere/auth/change-password"; 
+  static const String dashboard =
+      "$servere/dashboard"; 
+
   // =========================== patient
   static const String pendingPatientRequest = '$servere/request/my';
   static const String inProcessingPatientRequest =
@@ -55,7 +59,7 @@ static const String comments = "$servere/posts/comments";
   static const String addCourse = '$servere/admin/course';
   static const String addTreatment = '$servere/admin/treatment';
   static const String addCategory = '$servere/admin/category';
-  static const String addLesson = '$servere/admin/practical-lessons';
+  static const String weeklySchedule = '$servere/admin/practical-lessons';
   static const String getAllCourses = '$servere/admin/course';
   static const String getAllTreatments = '$servere/admin/treatment';
   static const String getAllCategory = '$servere/admin/category';
@@ -64,8 +68,10 @@ static const String comments = "$servere/posts/comments";
       '$servere/request/Processing';
   static const String getAllFinishedRequests = '$servere/request/finished';
   static const String getAllRejectedRequests = '$servere/request/rejected';
+  static const String advertisements = '$servere/advertisements';
   static const String adminReports = "$servere/reports";
   static String reviewReport(String id) => "$servere/reports/$id";
   static const String deleteOverSeer = "$servere/admin/overseer/delete";
   static const String categories = "$servere/admin/categories";
+
 }

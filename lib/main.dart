@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       locale: Locale('ar'),
       initialBinding: GeneralBinding(),
+       initialRoute: AppRroute.splash,
       getPages: routes,
       debugShowCheckedModeBanner: false,
       title: 'final',

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../api_link.dart';
 import '../crud.dart';
 
@@ -19,13 +21,15 @@ class AdminRemote {
   }
 
   acceptVerifyStudent(String studentId) async {
-    var response = await crud.postData(
-        "${ApiLink.acceptVerifyStudent}/$studentId", {});
+    var response =
+        await crud.postData("${ApiLink.acceptVerifyStudent}/$studentId", {});
     return response.fold((l) => l, (r) => r);
   }
-  rejectVerifyStudent(String studentId,{Map? data}) async {
+
+  rejectVerifyStudent(String studentId, {Map? data}) async {
     var response = await crud.postData(
-        "${ApiLink.rejectVerifyStudent}/$studentId", data??{"reject_reason":"خطأ بالبيانات!"});
+        "${ApiLink.rejectVerifyStudent}/$studentId",
+        data ?? {"reject_reason": "خطأ بالبيانات!"});
     return response.fold((l) => l, (r) => r);
   }
 
@@ -116,7 +120,7 @@ class AdminRemote {
 
   addLesson(Map data) async {
     var response = await crud.postData(
-      ApiLink.addLesson,
+      ApiLink.weeklySchedule,
       data,
     );
     return response.fold((l) => l, (r) => r);
@@ -129,8 +133,44 @@ class AdminRemote {
     );
     return response.fold((l) => l, (r) => r);
   }
-   deleteCategory(String id) async {
-  var response = await crud.postData('${ApiLink.categories}/$id/delete', {});
-  return response.fold((l) => l, (r) => r);
-}
+
+  deleteCategory(String id) async {
+    var response = await crud.postData('${ApiLink.categories}/$id/delete', {});
+    return response.fold((l) => l, (r) => r);
+  }
+
+  // اعلانات
+  getAllAdvertisements() async {
+    var response = await crud.getData(ApiLink.advertisements);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  createAdvertisement({
+    required String content,
+    required File imageFile,
+  }) async {
+    final response = await crud.postDataWithFiles(
+      ApiLink.advertisements,
+      {'content': content},
+      [imageFile.path],
+      'image', // ✅ اسم الحقل كما هو متوقع في الباك إند (upload.single('image'))
+    );
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+   deleteAdvertisement(String id) async {
+    final response = await crud.deleteData(ApiLink.advertisements, id);
+    return response.fold((l) => l, (r) => r);
+    // return result.fold(
+    //   (status) => {'status': 'error', 'message': 'فشل الحذف'},
+    //   (data) => data,
+    // );
+  }
+
+
+   getWeeklySchedule() async {
+    final result = await crud.getData(ApiLink.weeklySchedule);
+    return result.fold((l) => l, (r) => r);
+  }
 }

@@ -27,6 +27,7 @@ import 'views/admin_views/request_and_courses/view_in_processing_requests_page.d
 import 'views/admin_views/request_and_courses/view_pending_requests_page.dart';
 import 'views/admin_views/request_and_courses/view_rejected_requests_page.dart';
 import 'views/admin_views/request_and_courses/view_treatments_page.dart';
+import 'views/admin_views/request_and_courses/weekly_schedule_screen.dart';
 import 'views/admin_views/submit_verify_student.dart';
 import 'views/admin_views/users/add_over_seer_page.dart';
 import 'views/admin_views/users/view_over_seers_page.dart';
@@ -44,6 +45,7 @@ import 'views/public_views/posts/feed_screen.dart';
 import 'views/public_views/posts/post_detail_screen.dart';
 import 'views/public_views/settings/unified_edit_profile_screen.dart';
 import 'views/public_views/settings/unified_setting_screen.dart';
+import 'views/splash_screen.dart';
 import 'views/student_views/main_screen_student.dart';
 import 'views/student_views/page_of_main/student_home_screen.dart';
 import 'views/student_views/page_of_main/student_requests_screen.dart';
@@ -62,8 +64,8 @@ List<GetPage<dynamic>> routes = [
   // ========== AUTH ==========
   GetPage(
     name: "/",
-    page: () => RegisterScreen(),
-    binding: RegisterBinding()  
+    page: () => SplashScreen(),
+    // binding: RegisterBinding()  
   ),
   GetPage( 
     name: AppRroute.login,
@@ -77,6 +79,7 @@ List<GetPage<dynamic>> routes = [
   ),
 
   // ========== GENERAL ==========
+  GetPage(name: AppRroute.splash, page: () => const SplashScreen()),
   GetPage(
     name: AppRroute.notificationsView,
     page: () => NotificationsView(),
@@ -268,6 +271,10 @@ List<GetPage<dynamic>> routes = [
     page: () => ViewCategorysPage(),
   ),
   GetPage(
+    name: AppRroute.viewLessons,
+    page: () => WeeklyScheduleScreen(),
+  ),
+  GetPage(
     name: AppRroute.viewPendingRequests,
     page: () => ViewPendingRequestsPage(),
   ),
@@ -300,6 +307,7 @@ class AppRroute {
   static const String changePassword = "/change_password";
   static const String privacyPolicy = "/privacy_policy";
   static const String contactSupport = "/contact_support";
+  static const String splash = "/splash";
 
   // ========== POSTS ==========
   static const String feed = "/feed";
@@ -345,6 +353,7 @@ class AppRroute {
   static const String viewCourses = "/viewCourses";
   static const String viewTreatments = "/viewTreatments";
   static const String viewCategorys = "/viewCategorys";
+  static const String viewLessons = "/viewLessons";
   static const String viewPendingRequests = "/viewPendingRequests";
   static const String viewInProcessingRequests = "/viewInProcessingRequests";
   static const String viewFinishedRequests = "/viewFinishedRequests";

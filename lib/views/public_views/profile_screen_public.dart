@@ -86,7 +86,7 @@ class PublicProfileScreen extends StatelessWidget {
                                   radius: 70,
                                   backgroundColor: Colors.grey[200],
                                   backgroundImage: (profile.profilePhoto != null && profile.profilePhoto!.url!.isNotEmpty)
-                                      ? NetworkImage("http://127.0.0.1:5000/${profile.profilePhoto!.url}")
+                                      ? NetworkImage("${profile.profilePhoto!.url}")
                                       : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
                                 ),
                               ),

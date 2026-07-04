@@ -1,45 +1,77 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'secure_storage_service.dart';
 
 class LocalUserStorage extends GetxService {
   static const String _profilePrefix = 'profile_';
+  static const String _tokenKey = 'token';
+  static const String _roleKey = 'role';
   final GetStorage _box = GetStorage();
   final SecureStorageService _secureStorage = Get.find<SecureStorageService>();
   String? _cachedToken;
   String? _cachedRole;
 
+  bool get _useSecureStorage => !kIsWeb && !Platform.isWindows;
+
   // ============ التوكن والدور (تخزين آمن مع كاش) ============
   Future<void> saveToken(String token) async {
     _cachedToken = token;
-    await _secureStorage.saveToken(token);
+    if (_useSecureStorage) {
+      await _secureStorage.saveToken(token);
+    } else {
+      await _box.write(_tokenKey, token);
+    }
   }
 
   Future<String?> getToken() async {
     if (_cachedToken != null) return _cachedToken;
-    _cachedToken = await _secureStorage.getToken();
+    if (_useSecureStorage) {
+      _cachedToken = await _secureStorage.getToken();
+    } else {
+      _cachedToken = _box.read(_tokenKey);
+    }
     return _cachedToken;
   }
 
   Future<void> deleteToken() async {
-    _cachedToken = null;
-    await _secureStorage.deleteToken();
+   _cachedToken = null;
+    if (_useSecureStorage) {
+      await _secureStorage.deleteToken();
+    } else {
+      await _box.remove(_tokenKey);
+    }
   }
 
   Future<void> saveRole(String role) async {
     _cachedRole = role;
-    await _secureStorage.saveRole(role);
+    if (_useSecureStorage) {
+      await _secureStorage.saveRole(role);
+    } else {
+      await _box.write(_roleKey, role);
+    }
   }
 
   Future<String?> getRole() async {
     if (_cachedRole != null) return _cachedRole;
-    _cachedRole = await _secureStorage.getRole();
+    if (_useSecureStorage) {
+      _cachedRole = await _secureStorage.getRole();
+    } else {
+      _cachedRole = _box.read(_roleKey);
+    }
     return _cachedRole;
+
   }
 
   Future<void> deleteRole() async {
     _cachedRole = null;
-    await _secureStorage.deleteRole();
+    if (_useSecureStorage) {
+      await _secureStorage.deleteRole();
+    } else {
+      await _box.remove(_roleKey);
+    }
   }
 
   // ============ بيانات المستخدم (تخزين عادي) ============

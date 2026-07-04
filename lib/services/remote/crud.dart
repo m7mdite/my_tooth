@@ -55,6 +55,7 @@ class Crud {
   Future<Either<StatusRequest, Map>> getData(String linkurl,
       {Map<String, String>? header}) async {
     final String? token = await localStorage.getToken();
+
     try {
       var response = await http.get(Uri.parse(linkurl),
           headers: header ??

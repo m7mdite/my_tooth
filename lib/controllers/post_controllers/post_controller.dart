@@ -201,4 +201,50 @@ Future<void> likeComment(String commentId) async {
   //   if (response['status'] == 'success') return StatusRequest.success;
   //   return StatusRequest.failure;
   // }
+
+
+  // ===== في PostController =====
+
+// ✅ حذف المنشور
+Future<void> deletePost(String postId) async {
+  isLoading.value = true;
+  final response = await remote.deletePost(postId);
+  if (handlingData(response) == StatusRequest.success) {
+    posts.removeWhere((p) => p.sId == postId);
+    posts.refresh();
+    Get.snackbar('نجاح', 'تم حذف المنشور');
+  } else {
+    Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
+  }
+  isLoading.value = false;
+}
+
+// ✅ تعديل المنشور (سيتم استدعاؤها من شاشة التعديل)
+Future<void> updatePost({
+  required String postId,
+  required String newContent,
+  List<String>? newImagePaths,
+  List<String>? deleteImageIds,
+}) async {
+  isLoading.value = true;
+  final response = await remote.updatePost(
+    postId: postId,
+    content: newContent,
+    newImagePaths: newImagePaths,
+    deleteImageIds: deleteImageIds,
+  );
+  if (handlingData(response) == StatusRequest.success) {
+    // تحديث البوست في القائمة
+    final index = posts.indexWhere((p) => p.sId == postId);
+    if (index != -1) {
+      posts[index] = PostModel.fromJson(response['data']);
+      posts.refresh();
+    }
+    Get.back(); // إغلاق شاشة التعديل
+    Get.snackbar('نجاح', 'تم تحديث المنشور');
+  } else {
+    Get.snackbar('خطأ', response['message'] ?? 'فشل التعديل');
+  }
+  isLoading.value = false;
+}
 }

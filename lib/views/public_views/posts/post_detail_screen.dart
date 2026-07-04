@@ -5,6 +5,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import '../../../controllers/post_controllers/post_controller.dart';
 import '../../../models/posts_models/comment_model.dart';
 import '../../widgets/custom_app_bar.dart';
+import 'edit_post_screen.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final String postId;
@@ -27,12 +28,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:CustomAppBar(
+      appBar: CustomAppBar(
         title: "تفاصيل المنشور",
         centerTitle: true,
       ),
       body: Obx(() {
-        if (controller.isLoadingDetails.value && controller.selectedPost.value == null) {
+        if (controller.isLoadingDetails.value &&
+            controller.selectedPost.value == null) {
           return const Center(child: CircularProgressIndicator());
         }
         final post = controller.selectedPost.value;
@@ -47,12 +49,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     onLike: () => controller.likePost(post.sId!),
                     onDislike: () => controller.dislikePost(post.sId!),
                     onComment: null, // منع فتح الشاشة مرة أخرى
+                    onEdit: () => Get.to(() => EditPostScreen(post: post)),
+                    onDelete: () => controller.deletePost(post.sId!),
                   ),
                   const Divider(thickness: 1, height: 1),
                   if (controller.postComments.isEmpty)
                     const Padding(
                       padding: EdgeInsets.all(20),
-                      child: Center(child: Text('لا توجد تعليقات بعد، كن أول من يعلق')),
+                      child: Center(
+                          child: Text('لا توجد تعليقات بعد، كن أول من يعلق')),
                     )
                   else
                     ListView.builder(

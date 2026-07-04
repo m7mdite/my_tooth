@@ -32,13 +32,13 @@ class UnifiedSettingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadLocalData();       // عرض البيانات المخزنة محليًا أولاً
-    fetchProfileData();    // ثم جلب أحدث البيانات من السيرفر
+    loadLocalData(); // عرض البيانات المخزنة محليًا أولاً
+    // fetchProfileData(); // ثم جلب أحدث البيانات من السيرفر
   }
 
-  void loadLocalData()async {
+  void loadLocalData() async {
     fullName.value = localStorage.getFullName();
-    role.value =await localStorage.getRole() ?? "";
+    role.value = await localStorage.getRole() ?? "";
     profilePicture.value = localStorage.getProfilePicture() ?? "";
     phoneNumber.value = localStorage.getPhoneNumber() ?? "";
     bio.value = localStorage.getBio() ?? "";
@@ -60,9 +60,11 @@ class UnifiedSettingController extends GetxController {
     statusRequest.value = StatusRequest.loading;
     var response = await remote.getMyProfile();
     statusRequest.value = handlingData(response);
-    if (statusRequest.value == StatusRequest.success && response['data'] != null) {
+    if (statusRequest.value == StatusRequest.success &&
+        response['data'] != null) {
       final data = response['data'];
-      fullName.value = "${data['first_name'] ?? ''} ${data['father_name'] ?? ''} ${data['last_name'] ?? ''}";
+      fullName.value =
+          "${data['first_name'] ?? ''} ${data['father_name'] ?? ''} ${data['last_name'] ?? ''}";
       profilePicture.value = data['profile_photo']?['url'] ?? "";
       phoneNumber.value = data['phone_number'] ?? "";
       bio.value = data['bio'] ?? "";
@@ -104,7 +106,8 @@ class UnifiedSettingController extends GetxController {
     update();
     var response = await remote.uploadProfilePicture(image);
     statusRequest.value = handlingData(response);
-    if (statusRequest.value == StatusRequest.success && response['data'] != null) {
+    if (statusRequest.value == StatusRequest.success &&
+        response['data'] != null) {
       profilePicture.value = response['data']['profile_photo']?['url'] ?? "";
       await localStorage.saveProfilePicture(profilePicture.value);
       Get.snackbar('نجاح', 'تم تحديث الصورة');
@@ -168,22 +171,28 @@ class UnifiedSettingController extends GetxController {
   }
 
   void confirmLogOut() {
-    Get.dialog(SubmitDialog(
-      title: "تسجيل الخروج",
-      question: "هل أنت متأكد من رغبتك بتسجيل الخروج؟",
-      onTapSubmit: () async {
-        await localStorage.clearAll();    // مسح كل البيانات (توكن، دور، بروفايل)
-        Get.offAllNamed(AppRroute.register);
-      },
-    ));
+    Get.dialog(
+      SubmitDialog(
+        title: "تسجيل الخروج",
+        question: "هل أنت متأكد من رغبتك بتسجيل الخروج؟",
+        onTapSubmit: () async {
+          await localStorage.clearAll(); // مسح كل البيانات (توكن، دور، بروفايل)
+          Get.offAllNamed(AppRroute.register);
+        },
+      ),
+    );
   }
 
   String getRoleTitle() {
     switch (role.value) {
-      case 'student': return 'طالب';
-      case 'patient': return 'مريض';
-      case 'overseer': return 'مشرف';
-      default: return role.value;
+      case 'student':
+        return 'طالب';
+      case 'patient':
+        return 'مريض';
+      case 'overseer':
+        return 'مشرف';
+      default:
+        return role.value;
     }
   }
 
@@ -192,9 +201,11 @@ class UnifiedSettingController extends GetxController {
     update();
     var response = await remote.updateProfile(updatedData);
     statusRequest.value = handlingData(response);
-    if (statusRequest.value == StatusRequest.success && response['data'] != null) {
+    if (statusRequest.value == StatusRequest.success &&
+        response['data'] != null) {
       final data = response['data'];
-      fullName.value = "${data['first_name'] ?? ''} ${data['father_name'] ?? ''} ${data['last_name'] ?? ''}";
+      fullName.value =
+          "${data['first_name'] ?? ''} ${data['father_name'] ?? ''} ${data['last_name'] ?? ''}";
       phoneNumber.value = data['phone_number'] ?? '';
       bio.value = data['bio'] ?? '';
       if (role.value == 'student') {
@@ -211,7 +222,8 @@ class UnifiedSettingController extends GetxController {
       await localStorage.saveLastName(data['last_name']);
       await localStorage.savePhoneNumber(phoneNumber.value);
       await localStorage.saveBio(bio.value);
-      if (role.value == 'student') await localStorage.saveUniversityNumber(universityNumber.value);
+      if (role.value == 'student')
+        await localStorage.saveUniversityNumber(universityNumber.value);
       if (role.value == 'patient') {
         await localStorage.saveAge(age.value);
         await localStorage.saveGender(gender.value);

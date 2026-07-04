@@ -82,4 +82,42 @@ class PostRemote {
         await crud.postData('${ApiLink.comments}/comments/$commentId/like', {});
     return response.fold((l) => l, (r) => r);
   }
+
+
+  // ===== في PostRemote =====
+
+ deletePost(String postId) async {
+  final response = await crud.deleteData(ApiLink.posts, postId);
+  // return result.fold(
+  //   (status) => {'status': 'error', 'message': 'فشل الحذف'},
+  //   (data) => data,
+  // );
+  return response.fold((l) => l, (r) => r);
+}
+
+ updatePost({
+  required String postId,
+  required String content,
+  List<String>? newImagePaths,
+  List<String>? deleteImageIds,
+}) async {
+  // إرسال بيانات التعديل (نص + صور جديدة + معرفات الصور المراد حذفها)
+  final Map<String, dynamic> data = {
+    'content': content,
+    'deleteImages': deleteImageIds ?? [],
+  };
+  // إضافة الصور الجديدة عبر multipart
+  final response = await crud.putDataWithFiles(
+    '${ApiLink.posts}/$postId',
+    data.map((k, v) => MapEntry(k, v.toString())),
+    newImagePaths ?? [],
+    'images',
+  );
+  // return result.fold(
+  //   (status) => {'status': 'error', 'message': 'فشل التعديل'},
+  //   (data) => data,
+  // );
+
+  return response.fold((l) => l, (r) => r);
+}
 }

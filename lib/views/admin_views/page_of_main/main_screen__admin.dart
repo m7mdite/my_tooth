@@ -13,7 +13,7 @@ class MainScreenAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: controller.titleAppBar,),
+      // appBar: CustomAppBar(title: controller.titleAppBar,),
       bottomNavigationBar: GetBuilder(
         init: controller,
         builder: (_) {

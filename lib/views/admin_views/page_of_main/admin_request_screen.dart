@@ -11,7 +11,6 @@ class AdminRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: RefreshIndicator(
         onRefresh: () async {
           controller.onInit();
@@ -57,12 +56,21 @@ class AdminRequestScreen extends StatelessWidget {
               const SizedBox(height: 24),
               _buildSectionTitle("الدروس", Icons.video_library),
               const SizedBox(height: 12),
-              _buildCard(
-                title: "    إضافة درس    ",
-                icon: Icons.add,
-                color: Colors.orange,
-                onTap: () => controller.toAddLessonsPage(),
-                fullWidth: true,
+              _buildTwoCardsGrid(
+                first: _buildCard(
+                  title: "    إضافة درس    ",
+                  icon: Icons.add,
+                  color: Colors.orange,
+                  onTap: () => controller.toAddLessonsPage(),
+                  fullWidth: true,
+                ),
+                second: _buildCard(
+                  title: "عرض البرنامج ",
+                  icon: Icons.visibility,
+                  color: Colors.orange,
+                  onTap: () => controller.toViewLessons(),
+                  fullWidth: true,
+                ),
               ),
               const SizedBox(height: 24),
               _buildSectionTitle("الفئات", Icons.category),

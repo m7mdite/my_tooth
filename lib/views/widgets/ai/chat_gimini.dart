@@ -19,7 +19,7 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: CustomAppBar(
-        title: "دكتور افتراضي",
+        title: "المساعد الذكي",
         centerTitle: false,
         automaticallyImplyLeading: true,
         

@@ -7,6 +7,7 @@ import 'package:gr_flutter/models/requests_models/treatment_request_processing_s
 import 'package:gr_flutter/services/functions/show_snack.dart';
 
 import '../../models/admin_models/course_model.dart';
+import '../../models/admin_models/lesson_model.dart';
 import '../../models/public_models/profile_model.dart';
 import '../../models/requests_models/treatment_model.dart';
 import '../../services/functions/handling_data.dart';
@@ -17,7 +18,9 @@ abstract class AdminRequestController extends GetxController {
   toAddCoursePage();
   toAddTreatmentPage();
   toAddLessonsPage();
+  getSchedule();
   toAddCategoryPage();
+  toViewLessons();
   toViewTreatmentsPage();
   toViewCoursesPage();
   toViewCategorysPage();
@@ -48,20 +51,27 @@ class AdminRequestControllerImpl extends AdminRequestController {
   List<TreatmentModel> treatments = [];
   List<CourseModel> courses = [];
   List<ProfileModel> overSeers = [];
-  List lessons = [];
+  // List lessons = [];
   List<Map<String, String>> categorys = [];
-  List<PendingRequestModel> pendingRequests =[];
-  List<TreatmentRequestProcessingSModel> inProcessingRequests =[];
-  List<TreatmentRequestProcessingSModel> finishedRequests =[];
-  List<TreatmentRequestProcessingSModel> rejectedRequests =[];
+  List<PendingRequestModel> pendingRequests = [];
+  List<TreatmentRequestProcessingSModel> inProcessingRequests = [];
+  List<TreatmentRequestProcessingSModel> finishedRequests = [];
+  List<TreatmentRequestProcessingSModel> rejectedRequests = [];
   Map category = {};
   Map<String, dynamic> lesson = {};
+  RxList<LessonModel> lessons = <LessonModel>[].obs;
+  RxList<LessonModel> allLessons = <LessonModel>[].obs;
+  RxList<LessonModel> filteredLessons = <LessonModel>[].obs;
+  RxList<LessonModel> year4Lessons = <LessonModel>[].obs;
+  RxList<LessonModel> year5Lessons = <LessonModel>[].obs;
   List<ProfileModel> selectedOverseers = <ProfileModel>[];
   CourseModel? selectedCourse;
   String selectedCourseId = "";
   String selectedCategoryId = "";
   String selectedDay = "";
   // String time ="$";
+
+  RxBool isLoading = false.obs;
 
   TextEditingController courseNameController = TextEditingController();
   TextEditingController treatmentCaseController = TextEditingController();
@@ -71,11 +81,218 @@ class AdminRequestControllerImpl extends AdminRequestController {
   String periodLesson = "";
   String hall = "";
 
+  RxString selectedYear = 'الكل'.obs;
+  final List<String> years = ['الكل', '4', '5'];
+  final List<String> daysOrder = [
+    'الأحد',
+    'الإثنين',
+    'الثلاثاء',
+    'الأربعاء',
+    'الخميس'
+  ];
+  final List<String> periods = [
+    'الفترة الأولى',
+    'الفترة الثانية'
+  ]; // ضبط حسب وقتك
+
   @override
   void onInit() {
     getAllCourses();
     super.onInit();
   }
+
+  @override
+  Future<void> getSchedule() async {
+    isLoading.value = true;
+    statusRequest = StatusRequest.loading;
+    final response = await adminRemote.getWeeklySchedule();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      final List<dynamic> data = response['data'] ?? [];
+      allLessons.value =
+          data.map((json) => LessonModel.fromJson(json)).toList();
+      _filterByYear();
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل الجدول');
+    }
+    isLoading.value = false;
+  }
+
+  // دالة لجلب جميع القاعات من جميع الدروس (للسنة الحالية أو الكل)
+  List<String> getAllHalls() {
+    final Set<String> halls = {};
+    for (var lesson in allLessons) {
+      if (lesson.hall != null && lesson.hall!.isNotEmpty) {
+        halls.add(lesson.hall!);
+      }
+    }
+    return halls.toList()..sort();
+  }
+
+// دالة للحصول على الأيام الفريدة من قائمة الدروس (مرتبة)
+  List<String> getDays(List<LessonModel> lessons) {
+    final Set<String> days = {};
+    for (var lesson in lessons) {
+      if (lesson.day.isNotEmpty) {
+        days.add(lesson.day);
+      }
+    }
+    final order = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+    return days.toList()
+      ..sort((a, b) => order.indexOf(a).compareTo(order.indexOf(b)));
+  }
+
+// دالة للحصول على درس في خلية محددة (يوم + قاعة)
+  LessonModel? getLessonForCell(
+      List<LessonModel> lessons, String day, String hall) {
+    try {
+      return lessons.firstWhere(
+        (lesson) => lesson.day == day && lesson.hall == hall,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // تصفية الدروس حسب السنة
+  void _filterByYear() {
+    year4Lessons.value = allLessons.where((lesson) {
+      final cat = lesson.category?.category ?? '';
+      return cat.startsWith('4.');
+    }).toList();
+
+    year5Lessons.value = allLessons.where((lesson) {
+      final cat = lesson.category?.category ?? '';
+      return cat.startsWith('5.');
+    }).toList();
+  }
+
+  // الحصول على قائمة القاعات الفريدة من الدروس
+  List<String> getHalls(List<LessonModel> lessons) {
+    final Set<String> halls = {};
+    for (var lesson in lessons) {
+      if (lesson.hall != null && lesson.hall!.isNotEmpty) {
+        halls.add(lesson.hall!);
+      }
+    }
+    return halls.toList()..sort();
+  }
+
+  // الحصول على قائمة الأيام الفريدة من الدروس (مرتبة)
+  // List<String> getDays(List<LessonModel> lessons) {
+  //   final Set<String> days = {};
+  //   for (var lesson in lessons) {
+  //     if (lesson.day.isNotEmpty) {
+  //       days.add(lesson.day);
+  //     }
+  //   }
+  //   // ترتيب حسب daysOrder
+  //   return days.toList()..sort((a, b) => daysOrder.indexOf(a).compareTo(daysOrder.indexOf(b)));
+  // }
+
+  // الحصول على الدرس في خلية محددة (يوم + قاعة)
+  // LessonModel? getLessonForCell(List<LessonModel> lessons, String day, String hall) {
+  //   try {
+  //     return lessons.firstWhere(
+  //       (lesson) => lesson.day == day && lesson.hall == hall,
+  //     );
+  //   } catch (_) {
+  //     return null;
+  //   }
+  // }
+
+  void applyFilter() {
+    if (selectedYear.value == 'الكل') {
+      filteredLessons.value = allLessons;
+    } else {
+      filteredLessons.value = allLessons.where((lesson) {
+        final cat = lesson.category?.category ?? '';
+        return cat.startsWith(selectedYear.value);
+      }).toList();
+    }
+  }
+
+  void setYear(String year) {
+    selectedYear.value = year;
+    applyFilter();
+  }
+
+  // دالة للحصول على الدرس في خلية محددة
+  LessonModel? getLesson(String day, String period) {
+    try {
+      return filteredLessons.firstWhere(
+        (lesson) => lesson.day == day && lesson.period == period,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // استخراج قائمة الفترات الفعلية من البيانات (اختياري)
+  List<String> get actualPeriods {
+    final Set<String> periodsSet = {};
+    for (var lesson in filteredLessons) {
+      if (lesson.period.isNotEmpty) periodsSet.add(lesson.period);
+    }
+    return periodsSet.toList()..sort();
+  }
+
+  // استخراج قائمة الأيام الفعلية من البيانات (اختياري)
+  // List<String> get actualDays {
+  //   final Set<String> daysSet = {};
+  //   for (var lesson in filteredLessons) {
+  //     if (lesson.day.isNotEmpty) daysSet.add(lesson.day);
+  //   }
+  //   return daysSet.toList()..sort((a, b) => days.indexOf(a).compareTo(days.indexOf(b)));
+  // }
+  // List<String> getAllHalls() {
+  //   final Set<String> halls = {};
+  //   for (var lesson in allLessons) {
+  //     if (lesson.hall != null && lesson.hall!.isNotEmpty) {
+  //       halls.add(lesson.hall!);
+  //     }
+  //   }
+  //   return halls.toList()..sort();
+  // }
+
+  // void applyFilter() {
+  //   if (selectedYear.value == 'الكل') {
+  //     filteredLessons.value = allLessons;
+  //   } else {
+  //     filteredLessons.value = allLessons.where((lesson) {
+  //       final cat = lesson.category ?? '';
+  //       // final cat = lesson.category?.categoryName ?? '';
+  //       return cat.startsWith(selectedYear.value);
+  //     }).toList();
+  //   }
+  // }
+
+  // void setYear(String year) {
+  //   selectedYear.value = year;
+  //   applyFilter();
+  // }
+
+  List<LessonModel> getLessonsForDay(String day) {
+    return filteredLessons.where((lesson) => lesson.day == day).toList();
+  }
+
+  // دالة للحصول على الدرس في خلية معينة (اليوم، الوقت)
+  // LessonModel? getLesson(String day, String period) {
+  //   try {
+  //     return lessons.firstWhere(
+  //       (lesson) {
+  //         if (lesson.time == null) return false;
+  //         final parts = lesson.time!.split('-');
+  //         if (parts.length != 2) return false;
+  //         final lessonDay = parts[0].trim();
+  //         final lessonTime = parts[1].trim();
+  //         return lessonDay == day && lessonTime == period;
+  //       },
+  //     );
+  //   } catch (_) {
+  //     return null;
+  //   }
+  // }
 
   @override
   toAddCoursePage() {
@@ -101,6 +318,12 @@ class AdminRequestControllerImpl extends AdminRequestController {
   toViewTreatmentsPage() {
     getAllTreatments();
     Get.toNamed(AppRroute.viewTreatments);
+  }
+
+  @override
+  toViewLessons() {
+    getSchedule();
+    Get.toNamed(AppRroute.viewLessons);
   }
 
   @override
@@ -301,9 +524,9 @@ class AdminRequestControllerImpl extends AdminRequestController {
     getAllRejectedRequests();
     Get.toNamed(AppRroute.viewRejectedRequests);
   }
-  
+
   @override
-  getAllFinishedRequests() async{
+  getAllFinishedRequests() async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await adminRemote.getAllFinishedRequests();
@@ -314,14 +537,15 @@ class AdminRequestControllerImpl extends AdminRequestController {
           .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
           .toList();
       // print("${response['data']}");
-      print(" ${finishedRequests.length} in-processing requests loaded successfully");
+      print(
+          " ${finishedRequests.length} in-processing requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
   }
-  
+
   @override
-  getAllInProcessingRequests()async {
+  getAllInProcessingRequests() async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await adminRemote.getAllInProcessingRequests();
@@ -332,14 +556,15 @@ class AdminRequestControllerImpl extends AdminRequestController {
           .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
           .toList();
       // print("${response['data']}");
-      print(" ${inProcessingRequests.length} in-processing requests loaded successfully");
+      print(
+          " ${inProcessingRequests.length} in-processing requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
   }
-  
+
   @override
-  getAllPendingRequests() async{
+  getAllPendingRequests() async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await adminRemote.getAllPendingRequests();
@@ -355,9 +580,9 @@ class AdminRequestControllerImpl extends AdminRequestController {
     }
     update();
   }
-  
+
   @override
-  getAllRejectedRequests()async {
+  getAllRejectedRequests() async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await adminRemote.getAllRejectedRequests();
@@ -368,26 +593,27 @@ class AdminRequestControllerImpl extends AdminRequestController {
           .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
           .toList();
       // print("${response['data']}");
-      print(" ${rejectedRequests.length} rejected requests loaded successfully");
+      print(
+          " ${rejectedRequests.length} rejected requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
   }
+
   @override
   Future<void> deleteCategory(String id) async {
-  statusRequest = StatusRequest.loading;
-  update();
-  var response = await adminRemote.deleteCategory(id);
-  statusRequest = handlingData(response);
-  if (statusRequest == StatusRequest.success) {
-    // تحديث القائمة محلياً
-    categorys.removeWhere((cat) => (cat['_id'] ?? cat['id']) == id);
+    statusRequest = StatusRequest.loading;
     update();
-    Get.snackbar('نجاح', 'تم حذف الفئة بنجاح');
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
+    var response = await adminRemote.deleteCategory(id);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      // تحديث القائمة محلياً
+      categorys.removeWhere((cat) => (cat['_id'] ?? cat['id']) == id);
+      update();
+      Get.snackbar('نجاح', 'تم حذف الفئة بنجاح');
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
+    }
+    update();
   }
-  update();
 }
-}
-
