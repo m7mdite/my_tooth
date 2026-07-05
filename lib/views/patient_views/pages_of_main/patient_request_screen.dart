@@ -23,17 +23,17 @@ class PatientRequestScreen extends StatelessWidget {
       Get.put(PatientRequestControllerImp());
   final FillRequestControllerImp controllerr =
       Get.put(FillRequestControllerImp());
-final UnifiedSettingController settingController =
+  final UnifiedSettingController settingController =
       Get.find<UnifiedSettingController>();
   PatientRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:CustomAppBar(
-            title: "طلبات المعالجة",
-            automaticallyImplyLeading: false,
-            actions: [
+      appBar: CustomAppBar(
+        title: "طلبات المعالجة",
+        automaticallyImplyLeading: false,
+        actions: [
           CustomIconAppBar(
               iconData: Icons.chat,
               onTap: () {
@@ -47,17 +47,19 @@ final UnifiedSettingController settingController =
             reverseColors: true,
           ),
         ],
-        leading: Obx(() {
-          final pic = settingController.profilePicture.value;
-          return InkWell(
-            onTap: () {
-              // هنا يمكنك إضافة وظيفة عند الضغط على الصورة الشخصية
-              Get.to(() => UnifiedProfileScreen());
-            },
-            child: CustomPhotoAppBar(pic: pic),
-          );
-        }),
-          ),
+        leading: Obx(
+          () {
+            final pic = settingController.profilePicture.value;
+            return InkWell(
+              onTap: () {
+                // هنا يمكنك إضافة وظيفة عند الضغط على الصورة الشخصية
+                Get.to(() => UnifiedProfileScreen());
+              },
+              child: CustomPhotoAppBar(pic: pic),
+            );
+          },
+        ),
+      ),
       body: Column(
         children: [
           SizedBox(
@@ -213,7 +215,6 @@ final UnifiedSettingController settingController =
                     child: Text(
                       "الطلبات المرفوضة",
                       style: TextStyle(
-                        
                         color: controller.currentPageFilter == 3
                             ? Colors.blue
                             : Colors.black,
@@ -256,8 +257,10 @@ final UnifiedSettingController settingController =
                                           requestModel: controller
                                               .requestListProcessing[index],
                                           onTap: () {
-                                            controller.showProcessingRequest(controller
-                                              .requestListProcessing[index]);
+                                            controller.showProcessingRequest(
+                                                controller
+                                                        .requestListProcessing[
+                                                    index]);
                                           },
                                         )
                                       : CardRequestProcessing(

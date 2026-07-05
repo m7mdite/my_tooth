@@ -1,15 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-// import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:gr_flutter/controllers/requests_controllers/fill_request_controller.dart';
 import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
 import 'package:gr_flutter/services/functions/show_tooth_location_map.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
-
-// import '../../controllers/patient_controller/submitting_request_patient_controller.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
 
@@ -26,12 +23,6 @@ class ModifiedRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ادوية او مكملااات
-    // bool medicines = false;
-    // // امراض مزمنة
-    // bool chronicDiseases = false;
-    // bool? previousTreatment   = controller.requestSendModel.moreDetails!.previousTreatment;
-
     return Container(
       margin: EdgeInsets.symmetric(
           horizontal: Get.width * 0.1, vertical: Get.height * 0.1),
@@ -59,29 +50,6 @@ class ModifiedRequest extends StatelessWidget {
       ),
       child: Scaffold(
         bottomNavigationBar: bottomNavigationBar,
-        // bottomNavigationBar: Container(
-        //   padding: EdgeInsets.only(top: 6),
-        //   height: 60,
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //         image: AssetImage(AppConstants.defaultBackgroundImage),
-        //         fit: BoxFit.cover),
-        //     boxShadow: [
-        //       BoxShadow(
-        //         color: Colors.grey,
-        //         blurRadius: 5,
-        //       ),
-        //     ],
-        //     border: Border(
-        //       top: BorderSide(
-        //         color: Colors.white,
-        //         width: 1.5,
-        //       ),
-        //     ),
-        //     color: Colors.white,
-        //   ),
-        //   child: controller.bottomNavigationBar,
-        // ),
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
         body: GetBuilder<FillRequestControllerImp>(
           init: controller,
@@ -92,21 +60,9 @@ class ModifiedRequest extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    // child: SelectFromItemsMap(
-                    //   items: patientRequestControllerImp.treatments,
-                    //   selectedId: patientRequestControllerImp.treatments[0]['id'],
-                    //   title: "  إختر نوع المعالجة:   ",
-                    //   onChanged: (value) {
-                    //     controller.requestSendModel.caseType = value!;
-                    //     controller.update();
-                    //   },
-                    // ),
                     child: SelectFromItemsMap(
                       items: patientRequestControllerImp.treatments,
-                      selectedId:
-                          patientRequestControllerImp.treatments.isNotEmpty
-                              ? patientRequestControllerImp.treatments[0]['id']
-                              : null,
+                      selectedId: null,
                       title: "  إختر نوع المعالجة:   ",
                       onChanged: (value) {
                         controller.pendingRequestModel.caseType!.sId = value;
@@ -115,33 +71,168 @@ class ModifiedRequest extends StatelessWidget {
                     ),
                   ),
                   BreakContainer(),
+
+                  // ----- شدة الألم (1-10) -----
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: SelectFromItems(
-                      items: ToothConstants.painSeverityList,
-                      value:
-                          controller.pendingRequestModel.requestion!.painSeverity!.toString(),
-                      title: "  حدد شدة الألم  :   ",
-                      onChanged: (value) {
-                        controller.pendingRequestModel.requestion!.painSeverity =
-                            int.tryParse(value!)!;
-                        controller.update();
-                      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "حدد شدة الألم :",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: Obx(
+                            () => RatingBar.builder(
+                              initialRating: controller
+                                  .selectedPainSeverity.value
+                                  .toDouble(),
+                              minRating: 1,
+                              maxRating: 10,
+                              direction: Axis.horizontal,
+                              allowHalfRating: false,
+                              itemCount: 10,
+                              itemSize: 20.0,
+                              itemPadding: const EdgeInsets.symmetric(
+                                  horizontal: 1.0),
+                              itemBuilder: (context, index) {
+                                final number = index + 1;
+                                final isSelected = controller
+                                        .selectedPainSeverity.value >=
+                                    number;
+                          
+                                // ✅ إيموجي حسب شدة الألم (1-10)
+                                String emoji;
+                                Color emojiColor;
+                                switch (number) {
+                                  case 1:
+                                    emoji = '😊';
+                                    emojiColor = Colors.green.shade400;
+                                    break;
+                                  case 2:
+                                    emoji = '🙂';
+                                    emojiColor = Colors.lightGreen.shade500;
+                                    break;
+                                  case 3:
+                                    emoji = '😐';
+                                    emojiColor = Colors.lime.shade600;
+                                    break;
+                                  case 4:
+                                    emoji = '😕';
+                                    emojiColor = Colors.yellow.shade700;
+                                    break;
+                                  case 5:
+                                    emoji = '😟';
+                                    emojiColor = Colors.orange.shade400;
+                                    break;
+                                  case 6:
+                                    emoji = '😣';
+                                    emojiColor = Colors.deepOrange.shade400;
+                                    break;
+                                  case 7:
+                                    emoji = '😖';
+                                    emojiColor = Colors.deepOrange.shade600;
+                                    break;
+                                  case 8:
+                                    emoji = '😫';
+                                    emojiColor = Colors.red.shade400;
+                                    break;
+                                  case 9:
+                                    emoji = '😩';
+                                    emojiColor = Colors.red.shade600;
+                                    break;
+                                  case 10:
+                                    emoji = '😱';
+                                    emojiColor = Colors.red.shade900;
+                                    break;
+                                  default:
+                                    emoji = '😊';
+                                    emojiColor = Colors.green.shade400;
+                                }
+                          
+                                return AnimatedContainer(
+                                  duration:
+                                      const Duration(milliseconds: 200),
+                                  curve: Curves.easeInOut,
+                                  transform: Matrix4.identity()
+                                    ..scale(isSelected ? 1.0 : 0.85),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isSelected
+                                          ? emojiColor.withValues(
+                                              alpha: 0.15)
+                                          : Colors.transparent,
+                                      border: isSelected
+                                          ? Border.all(
+                                              color: emojiColor, width: 2)
+                                          : null,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text(
+                                        emoji,
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          color: isSelected
+                                              ? emojiColor
+                                              : Colors.grey.shade400,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              onRatingUpdate: (rating) {
+                                controller.selectedPainSeverity.value =
+                                    rating.round();
+                                controller.pendingRequestModel
+                                    .requestion!.painSeverity =
+                                    rating.round();
+                                controller.update();
+                              },
+                              updateOnDrag: true,
+                            ),
+                          ),
+                        ),
+                        // عرض القيمة المختارة
+                        Obx(() => Center(
+                              child: Text(
+                                'القيمة المختارة: ${controller.selectedPainSeverity.value}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                  color: controller.selectedPainSeverity
+                                              .value >=
+                                          8
+                                      ? Colors.red
+                                      : controller.selectedPainSeverity
+                                                  .value >=
+                                              5
+                                          ? Colors.orange
+                                          : Colors.green,
+                                ),
+                              ),
+                            )),
+                      ],
                     ),
                   ),
                   BreakContainer(),
-                  if (controller.pendingRequestModel.requestion!.painSeverity != 0) ...[
+
+                  if (controller.pendingRequestModel.requestion!.painSeverity !=
+                      0) ...[
                     RowContainerWithTitle(
                       title: "متى يحصل الألم؟ ",
                       text: controller.pendingRequestModel.requestion!.painTime,
                       onChanged: (p0) {
                         controller.pendingRequestModel.requestion!.painTime = p0;
-
-                        // controller.update();
                       },
                     ),
                     BreakContainer(),
                   ],
+                  // ... باقي الحقول كما هي ...
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -150,19 +241,23 @@ class ModifiedRequest extends StatelessWidget {
                         children: [
                           SelectOneOption(
                             title: "ذكر",
-                            selectOption:
-                                controller.pendingRequestModel.requestion!.gender == "male",
+                            selectOption: controller
+                                    .pendingRequestModel.requestion!.gender ==
+                                "male",
                             onTap: () {
-                              controller.pendingRequestModel.requestion!.gender = "male";
+                              controller.pendingRequestModel.requestion!
+                                  .gender = "male";
                               controller.update();
                             },
                           ),
                           SelectOneOption(
                             title: "أنثى",
-                            selectOption:
-                                controller.pendingRequestModel.requestion!.gender == "female",
+                            selectOption: controller
+                                    .pendingRequestModel.requestion!.gender ==
+                                "female",
                             onTap: () {
-                              controller.pendingRequestModel.requestion!.gender = "female";
+                              controller.pendingRequestModel.requestion!
+                                  .gender = "female";
                               controller.update();
                             },
                           ),
@@ -171,7 +266,8 @@ class ModifiedRequest extends StatelessWidget {
                     ],
                   ),
                   BreakContainer(),
-                  if (controller.pendingRequestModel.requestion!.gender == "female") ...[
+                  if (controller.pendingRequestModel.requestion!.gender ==
+                      "female") ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -180,24 +276,24 @@ class ModifiedRequest extends StatelessWidget {
                           children: [
                             BottonContainer(
                               body: "لا",
-                              selected:
-                                  controller.pendingRequestModel.requestion!.isPregnant ==
-                                      false,
+                              selected: controller.pendingRequestModel
+                                      .requestion!.isPregnant ==
+                                  false,
                               onTap: () {
-                                controller.pendingRequestModel.requestion!.isPregnant  = false;
+                                controller.pendingRequestModel.requestion!
+                                    .isPregnant = false;
                                 controller.update();
                               },
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
+                            SizedBox(width: 20),
                             BottonContainer(
                               body: "نعم",
-                              selected:
-                                  controller.pendingRequestModel.requestion!.isPregnant ==
-                                      true,
+                              selected: controller.pendingRequestModel
+                                      .requestion!.isPregnant ==
+                                  true,
                               onTap: () {
-                                controller.pendingRequestModel.requestion!.isPregnant = true;
+                                controller.pendingRequestModel.requestion!
+                                    .isPregnant = true;
                                 controller.update();
                               },
                             ),
@@ -212,7 +308,6 @@ class ModifiedRequest extends StatelessWidget {
                     text: controller.pendingRequestModel.requestion!.age,
                     onChanged: (p0) {
                       controller.pendingRequestModel.requestion!.age = p0;
-                      // controller.update();
                     },
                   ),
                   BreakContainer(),
@@ -226,38 +321,27 @@ class ModifiedRequest extends StatelessWidget {
                         },
                         child: Column(
                           children: [
-                            FaIcon(
-                              FontAwesomeIcons.tooth,
-                              color: Colors.blue,
-                            ),
-                            Text(
-                              "تلميح!",
-                              style: TextStyle(color: Colors.blue),
-                            )
+                            FaIcon(FontAwesomeIcons.tooth, color: Colors.blue),
+                            Text("تلميح!",
+                                style: TextStyle(color: Colors.blue)),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   RowContainerWithTitle(
                     title: "رقم السن :  ",
-                    text: controller.pendingRequestModel.requestion!.toothLocation,
+                    text: controller
+                        .pendingRequestModel.requestion!.toothLocation,
                     onChanged: (p0) {
-                      controller.pendingRequestModel.requestion!.toothLocation = p0;
-                      // controller.update();
+                      controller.pendingRequestModel.requestion!.toothLocation =
+                          p0;
                     },
                   ),
                   BreakContainer(),
-                  Text(
-                    "ارفاق صورة للسن",
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  Text("ارفاق صورة للسن", textAlign: TextAlign.center),
+                  SizedBox(height: 10),
                   Center(
                     child: Container(
                       decoration: BoxDecoration(
@@ -267,30 +351,34 @@ class ModifiedRequest extends StatelessWidget {
                           await controller.uploadReguestPicture();
                           controller.update();
                         },
-                        child: controller.pendingRequestModel.requestion!.photo != null &&
-                                controller.pendingRequestModel.requestion!.photo!.url != ""
-                            ? SizedBox(
-                                height: 80,
-                                width: 80,
-                                child: Image.network(
-                                  "${controller.pendingRequestModel.requestion!.photo!.url!}",
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : controller.image == null
-                                ? FaIcon(
-                                    FontAwesomeIcons.tooth,
-                                    color: Colors.blue,
-                                    size: 80,
-                                  )
-                                : SizedBox(
+                        child:
+                            controller.pendingRequestModel.requestion!.photo !=
+                                        null &&
+                                    controller.pendingRequestModel.requestion!
+                                            .photo!.url !=
+                                        ""
+                                ? SizedBox(
                                     height: 80,
                                     width: 80,
-                                    child: Image.file(
-                                      controller.image!,
+                                    child: Image.network(
+                                      "${controller.pendingRequestModel.requestion!.photo!.url!}",
                                       fit: BoxFit.cover,
                                     ),
-                                  ),
+                                  )
+                                : controller.image == null
+                                    ? FaIcon(
+                                        FontAwesomeIcons.tooth,
+                                        color: Colors.blue,
+                                        size: 80,
+                                      )
+                                    : SizedBox(
+                                        height: 80,
+                                        width: 80,
+                                        child: Image.file(
+                                          controller.image!,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                       ),
                     ),
                   ),
@@ -318,17 +406,15 @@ class ModifiedRequest extends StatelessWidget {
                     ],
                   ),
                   if (controller.chronicDiseases == true) ...[
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     RowContainerWithTitle(
                       title: "اذكر اسم المرض  ",
                       onChanged: (p0) {
-                        controller
-                            .pendingRequestModel.requestion!.moreDetails!.chronicDiseases = p0;
+                        controller.pendingRequestModel.requestion!.moreDetails!
+                            .chronicDiseases = p0;
                       },
-                      text: controller
-                          .pendingRequestModel.requestion!.moreDetails!.chronicDiseases,
+                      text: controller.pendingRequestModel.requestion!
+                          .moreDetails!.chronicDiseases,
                     ),
                   ],
                   BreakContainer(),
@@ -355,15 +441,15 @@ class ModifiedRequest extends StatelessWidget {
                     ],
                   ),
                   if (controller.medicines == true) ...[
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     ColumnContainerWithTitle(
                       title: "اذكر اسم الدواء او المكمل    ",
                       onChanged: (p0) {
-                        controller.pendingRequestModel.requestion!.moreDetails!.medicines = p0;
+                        controller.pendingRequestModel.requestion!.moreDetails!
+                            .medicines = p0;
                       },
-                      text: controller.pendingRequestModel.requestion!.moreDetails!.medicines,
+                      text: controller.pendingRequestModel.requestion!
+                          .moreDetails!.medicines,
                     ),
                   ],
                   BreakContainer(),
@@ -376,8 +462,8 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == false,
                         onTap: () {
                           controller.previousTreatment = false;
-                          controller.pendingRequestModel.requestion!.moreDetails!
-                              .previousTreatment = false;
+                          controller.pendingRequestModel.requestion!
+                              .moreDetails!.previousTreatment = false;
                           controller.update();
                         },
                       ),
@@ -386,8 +472,8 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == true,
                         onTap: () {
                           controller.previousTreatment = true;
-                          controller.pendingRequestModel.requestion!.moreDetails!
-                              .previousTreatment = true;
+                          controller.pendingRequestModel.requestion!
+                              .moreDetails!.previousTreatment = true;
                           controller.update();
                         },
                       ),
@@ -396,15 +482,14 @@ class ModifiedRequest extends StatelessWidget {
                   BreakContainer(),
                   ColumnContainerWithTitle(
                     title: "هل لديك ملاحظات تود إضافتها؟  ",
-                    text: controller.pendingRequestModel.requestion!.moreDetails!.notes,
+                    text: controller
+                        .pendingRequestModel.requestion!.moreDetails!.notes,
                     onChanged: (p0) {
-                      controller.pendingRequestModel.requestion!.moreDetails!.notes = p0;
-                      // controller.update();
+                      controller.pendingRequestModel.requestion!.moreDetails!
+                          .notes = p0;
                     },
                   ),
-                  SizedBox(
-                    height: 100,
-                  )
+                  SizedBox(height: 100),
                 ],
               ),
             );
@@ -415,11 +500,12 @@ class ModifiedRequest extends StatelessWidget {
   }
 }
 
+// ===== باقي الويدجت المساعدة (RowContainerWithTitle, ColumnContainerWithTitle, SelectFromItems, SelectFromItemsMap, BreakContainer) =====
+
 class RowContainerWithTitle extends StatelessWidget {
   final String? title;
   final String? text;
   final void Function(String)? onChanged;
-
   const RowContainerWithTitle({
     super.key,
     this.title,
@@ -454,7 +540,6 @@ class ColumnContainerWithTitle extends StatelessWidget {
   final String? title;
   final String? text;
   final void Function(String)? onChanged;
-
   const ColumnContainerWithTitle({
     super.key,
     this.title,
@@ -468,13 +553,8 @@ class ColumnContainerWithTitle extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title ?? "",
-          textAlign: TextAlign.left,
-        ),
-        SizedBox(
-          height: 20,
-        ),
+        Text(title ?? "", textAlign: TextAlign.left),
+        SizedBox(height: 20),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: TextFormField(
@@ -494,6 +574,7 @@ class ColumnContainerWithTitle extends StatelessWidget {
   }
 }
 
+// ===== SelectFromItems (للاستخدام في صفحات أخرى) =====
 class SelectFromItems extends StatelessWidget {
   final String? value;
   final String? title;
@@ -509,6 +590,13 @@ class SelectFromItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> displayItems = ['', ...items];
+    String? currentValue;
+    if (value != null && value!.isNotEmpty && displayItems.contains(value)) {
+      currentValue = value;
+    } else {
+      currentValue = null;
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -519,10 +607,7 @@ class SelectFromItems extends StatelessWidget {
             focusColor: Colors.white,
             alignment: Alignment.center,
             isExpanded: false,
-            icon: FaIcon(
-              FontAwesomeIcons.tooth,
-              color: Colors.blue,
-            ),
+            icon: FaIcon(FontAwesomeIcons.tooth, color: Colors.blue),
             menuMaxHeight: Get.height * 0.5,
             borderRadius: BorderRadius.circular(30),
             decoration: InputDecoration(
@@ -532,21 +617,17 @@ class SelectFromItems extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
             ),
-            value: value,
-            items: items
-                .map(
-                  (String value) => DropdownMenuItem<String>(
-                    alignment: Alignment.center,
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+            value: currentValue,
+            items: displayItems.map((String value) {
+              return DropdownMenuItem<String>(
+                alignment: Alignment.center,
+                value: value,
+                child: Text(
+                  value.isEmpty ? 'اختر ...' : value,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              );
+            }).toList(),
             onChanged: (s) {
               onChanged!(s);
             },
@@ -557,112 +638,7 @@ class SelectFromItems extends StatelessWidget {
   }
 }
 
-// class SelectFromItemsMap extends StatelessWidget {
-//   final String? selectedId; // ✅ التغيير: نستخدم ID بدلاً من value
-//   final String? title;
-//   final List<Map<String, String>> items; // ✅ التغيير: قائمة من الخرائط {id, treatment_case}
-//   final void Function(String?)? onChanged; // ✅ سيرسل ID
-
-//   const SelectFromItemsMap({
-//     super.key,
-//     this.selectedId,
-//     this.title,
-//     this.onChanged,
-//     required this.items,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // ✅ استخراج القائمة المعروضة للمستخدم
-//     final displayItems = items.map((item) => item['treatment_case'] ?? '').toList();
-
-//     // ✅ البحث عن العنصر المحدد
-//     String? selectedDisplayValue;
-//     if (selectedId != null) {
-//       final selectedItem = items.firstWhere(
-//         (item) => item['id'] == selectedId,
-//         orElse: () => {},
-//       );
-//       selectedDisplayValue = selectedItem['treatment_case'];
-//     }
-
-//     if (items.isEmpty) {
-//       return Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Center(
-//           child: Text(
-//             "لا توجد معالجات متاحة",
-//             style: TextStyle(color: Colors.red),
-//           ),
-//         ),
-//       );
-//     }
-
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Flexible(
-//           flex: 1,
-//           child: Text(
-//             title ?? "",
-//             style: const TextStyle(fontSize: 14),
-//           ),
-//         ),
-//         const SizedBox(width: 8),
-//         Flexible(
-//           flex: 2,
-//           child: DropdownButtonFormField<String>(
-//             dropdownColor: Colors.white,
-//             focusColor: Colors.white,
-//             alignment: Alignment.center,
-//             isExpanded: true,
-//             icon: FaIcon(
-//               FontAwesomeIcons.tooth,
-//               color: Colors.blue,
-//               size: 16,
-//             ),
-//             menuMaxHeight: Get.height * 0.5,
-//             borderRadius: BorderRadius.circular(30),
-//             decoration: InputDecoration(
-//               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-//               border: OutlineInputBorder(
-//                 gapPadding: 10,
-//                 borderRadius: BorderRadius.circular(20),
-//                 borderSide: BorderSide.none,
-//               ),
-//               filled: true,
-//               fillColor: Colors.white,
-//             ),
-//             value: selectedDisplayValue,
-//             items: displayItems.map((String displayValue) {
-//               return DropdownMenuItem<String>(
-//                 alignment: Alignment.center,
-//                 value: displayValue,
-//                 child: Text(
-//                   displayValue,
-//                   style: const TextStyle(fontSize: 14),
-//                   overflow: TextOverflow.ellipsis,
-//                   maxLines: 1,
-//                 ),
-//               );
-//             }).toList(),
-//             onChanged: (selectedDisplayValue) {
-//               if (onChanged != null && selectedDisplayValue != null) {
-//                 // ✅ إرجاع الـ ID المناسب للعنصر المختار
-//                 final selectedItem = items.firstWhere(
-//                   (item) => item['treatment_case'] == selectedDisplayValue,
-//                   orElse: () => {},
-//                 );
-//                 onChanged!(selectedItem['id']);
-//               }
-//             },
-//             hint: const Text('اختر نوع المعالجة'),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
+// ===== SelectFromItemsMap (مع خيار فارغ) =====
 class SelectFromItemsMap extends StatelessWidget {
   final String? selectedId;
   final String? title;
@@ -684,40 +660,34 @@ class SelectFromItemsMap extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Text(
-            "لا توجد  بيانات",
+            "لا توجد بيانات",
             style: TextStyle(color: Colors.red),
           ),
         ),
       );
     }
 
-    // ✅ بناء DropdownMenuItem باستخدام ID كقيمة
-    List<DropdownMenuItem<String>> dropdownItems = [];
-    String? currentValue;
-    
+    List<DropdownMenuItem<String?>> dropdownItems = [
+      const DropdownMenuItem<String?>(
+        value: null,
+        child: Text('اختر نوع المعالجة'),
+      ),
+    ];
+
     for (var item in items) {
       String id = item['id'] ?? '';
       String treatmentCase = item['case_type'] ?? '';
-      
       if (id.isNotEmpty && treatmentCase.isNotEmpty) {
         dropdownItems.add(
-          DropdownMenuItem<String>(
-            value: id,  // ✅ استخدام الـ ID كقيمة
+          DropdownMenuItem<String?>(
+            value: id,
             child: Text(treatmentCase),
           ),
         );
-        
-        // ✅ تعيين القيمة الحالية إذا تطابق الـ ID
-        if (selectedId == id) {
-          currentValue = id;
-        }
       }
     }
 
-    // ✅ إذا لم يتم العثور على تطابق، استخدم أول عنصر كقيمة افتراضية
-    if (currentValue == null && dropdownItems.isNotEmpty) {
-      currentValue = dropdownItems.first.value;
-    }
+    String? currentValue = selectedId;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -732,8 +702,8 @@ class SelectFromItemsMap extends StatelessWidget {
         const SizedBox(width: 8),
         Flexible(
           flex: 2,
-          child: DropdownButtonFormField<String>(
-            value: currentValue,  // ✅ الآن القيمة هي ID وليس null
+          child: DropdownButtonFormField<String?>(
+            value: currentValue,
             items: dropdownItems,
             onChanged: onChanged,
             dropdownColor: Colors.white,
@@ -746,7 +716,8 @@ class SelectFromItemsMap extends StatelessWidget {
             menuMaxHeight: Get.height * 0.5,
             borderRadius: BorderRadius.circular(30),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               border: OutlineInputBorder(
                 gapPadding: 10,
                 borderRadius: BorderRadius.circular(20),
@@ -755,7 +726,6 @@ class SelectFromItemsMap extends StatelessWidget {
               filled: true,
               fillColor: Colors.white,
             ),
-            hint: const Text('اختر نوع المعالجة'),
           ),
         ),
       ],
@@ -764,9 +734,7 @@ class SelectFromItemsMap extends StatelessWidget {
 }
 
 class BreakContainer extends StatelessWidget {
-  const BreakContainer({
-    super.key,
-  });
+  const BreakContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/auth_text_form_field.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
@@ -98,39 +100,65 @@ class OverseerManageRequest extends StatelessWidget {
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // AuthTextFormField(
-                      //   label: "تقييم",
-                      //   textEditingController:
-                      //       controller.textEditingControllerRating,
-                      // ),
+                      Obx(
+                        () => Text(
+                          "التقييم: ${controller.selectedRating.value}",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 4),
                       Column(
                         children: [
-                          Text(
-                            "التقييم",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
                           SizedBox(height: 8),
                           RatingBar.builder(
-                            initialRating: controller.selectedRating.value.toDouble(),
+                            initialRating:
+                                controller.selectedRating.value.toDouble(),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
                             itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
+                            itemSize: 30.0,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            
+
+                            itemBuilder: (context, index) {
+                              final isSelected =
+                                  index < controller.selectedRating.value;
+                              final number = index + 1; // 1, 2, 3, 4, 5
+
+                              return Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  // أيقونة الأسنان
+                                  Icon(
+                                    FontAwesomeIcons.tooth,
+                                    color: isSelected
+                                        ? Colors.blue.shade700
+                                        : Colors.grey.shade300,
+                                    size: 40,
+                                  ),
+                                  // الرقم في المنتصف
+                                  Positioned(
+                                    top: 5,
+                                    child: Text(
+                                      '$number',
+                                      style: TextStyle(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.grey.shade600,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                             onRatingUpdate: (rating) {
                               controller.selectedRating.value = rating.round();
                             },
                             updateOnDrag: true,
                           ),
-                          SizedBox(height: 4),
-                          Obx(() => Text(
-                            "التقييم: ${controller.selectedRating.value}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
                         ],
                       ),
                       SizedBox(
@@ -146,22 +174,31 @@ class OverseerManageRequest extends StatelessWidget {
                 : Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (controller.selectRequest.stageEvaluations!.isNotEmpty ) ...[
+                      if (controller
+                          .selectRequest.stageEvaluations!.isNotEmpty) ...[
                         Center(
                           child: BottonContainer(
                             body: "عرض التقييمات السابقة",
                             fontSize: 12,
                             onTap: () {
-                              Get.dialog(SubmitDialog(children: [
-                                ...controller.selectRequest.stageEvaluations!.map((e) => Row(
-                                  mainAxisSize: MainAxisSize.min,
+                              Get.dialog(
+                                SubmitDialog(
                                   children: [
-                                    Flexible(child: Text(e.text!)),
-                                    SizedBox(width: 5,),
-                                    Text(e.date!.split('-')[0]),
+                                    ...controller
+                                        .selectRequest.stageEvaluations!
+                                        .map((e) => Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Flexible(child: Text(e.text!)),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(e.date!.split('-')[0]),
+                                              ],
+                                            ))
                                   ],
-                                ))
-                              ],),);
+                                ),
+                              );
                             },
                           ),
                         ),

@@ -20,11 +20,9 @@ abstract class FillRequestController extends GetxController {
 class FillRequestControllerImp extends FillRequestController {
   bool chronicDiseases = false;
   bool medicines = false;
-  bool previousTreatment = false;
+  bool? previousTreatment ;
+  RxInt selectedPainSeverity = 0.obs;
 
-  // PatientRequestControllerImp patientRequestControllerImp =
-  //     Get.find<PatientRequestControllerImp>();
-  // PatientRequestControllerImp patientRequestControllerImp =Get.put(PatientRequestControllerImp());
   File? image;
 
   Widget? bottomNavigationBar;
@@ -33,26 +31,7 @@ class FillRequestControllerImp extends FillRequestController {
   late StatusRequest statusRequest;
   final RequestRemote requestData = RequestRemote(Get.find());
 
-  // fromReceiveToSend(PendingRequestModel r) {
-  //   requestSendModel.age = r.age;
-  //   // requestSendModel.caseType = r.caseType;
-  //   requestSendModel.gender = r.gender;
-  //   requestSendModel.isPregnant = r.isRegnant;
-  //   requestSendModel.moreDetails = r.moreDetails;
-  //   requestSendModel.painSeverity = r.painSeverity;
-  //   requestSendModel.painTime = r.painTime;
-  //   requestSendModel.photo = r.photo;
-  //   requestSendModel.toothLocation = r.toothLocation;
-  //   if (r.moreDetails!.chronicDiseases != null &&
-  //       r.moreDetails!.chronicDiseases != "") {
-  //     chronicDiseases = true;
-  //   }
-  //   if (r.moreDetails!.medicines != null && r.moreDetails!.medicines != "") {
-  //     medicines = true;
-  //   }
-  //   update();
-  // }
-
+  // ===== عرض الديالوج =====
   showDialog(String status) async {
     status == "send"
         ? bottomNavigationBar = Row(
@@ -102,6 +81,7 @@ class FillRequestControllerImp extends FillRequestController {
     );
   }
 
+  // ===== إرسال الطلب =====
   @override
   sendRequest() async {
     if (!validateForm()) {
@@ -128,9 +108,7 @@ class FillRequestControllerImp extends FillRequestController {
           duration: const Duration(seconds: 3),
         );
         onClose();
-        // Get.close(1);
         return true;
-        // patientRequestControllerImp.refreshData();
       } else {
         Get.snackbar(
           'خطأ',
@@ -140,8 +118,6 @@ class FillRequestControllerImp extends FillRequestController {
           duration: const Duration(seconds: 3),
         );
       }
-      // cancelRequest();
-      // update();
     } catch (error) {
       statusRequest = StatusRequest.serverFailure;
       Get.snackbar(
@@ -154,11 +130,18 @@ class FillRequestControllerImp extends FillRequestController {
     }
   }
 
-  // ===================
+  // ===== التحقق من صحة النموذج =====
   bool validateForm() {
     final form = formState.currentState;
     if (form == null) {
       Get.snackbar('خطأ', 'نموذج غير صالح');
+      return false;
+    }
+
+    // ✅ التحقق من اختيار نوع المعالجة
+    if (pendingRequestModel.caseType?.sId == null ||
+        pendingRequestModel.caseType!.sId!.isEmpty) {
+      Get.snackbar('تنبيه', 'الرجاء اختيار نوع المعالجة');
       return false;
     }
 
@@ -167,14 +150,10 @@ class FillRequestControllerImp extends FillRequestController {
       return false;
     }
 
-    // Additional validations
-    if (pendingRequestModel.requestion!.painSeverity != 0 &&
-        pendingRequestModel.requestion!.painSeverity != 1 &&
-        pendingRequestModel.requestion!.painSeverity != 2 &&
-        pendingRequestModel.requestion!.painSeverity != 3 &&
-        pendingRequestModel.requestion!.painSeverity != 4 &&
-        pendingRequestModel.requestion!.painSeverity != 5) {
-      Get.snackbar('تحذير', 'الرجاء تحديد شدة الألم');
+    // ✅ التحقق من اختيار شدة الألم
+    if (pendingRequestModel.requestion!.painSeverity == null ||
+        pendingRequestModel.requestion!.painSeverity! < 1 || pendingRequestModel.requestion!.painSeverity! >10) {
+      Get.snackbar('تنبيه', 'الرجاء تحديد شدة الألم');
       return false;
     }
 
@@ -225,7 +204,7 @@ class FillRequestControllerImp extends FillRequestController {
     return true;
   }
 
-  // ==================
+  // ===== رفع الصورة =====
   uploadReguestPicture() async {
     File? pickedImage = await uploadPicture();
     if (image != pickedImage) update();
@@ -236,22 +215,22 @@ class FillRequestControllerImp extends FillRequestController {
     update();
   }
 
+  // ===== تهيئة النموذج =====
   formatRequest() {
+    selectedPainSeverity.value = 0;
     pendingRequestModel = PendingRequestModel(
-      requestion: 
-          RequestionModel(
-            painSeverity: 0,
-            painTime: "",
-            toothLocation: "",
-            moreDetails: MoreDetails(
-              chronicDiseases: "",
-              medicines: "",
-              previousTreatment: null,
-            ),
-          ),
-          caseType: CaseType(sId: "", caseType: ""),
+      requestion: RequestionModel(
+        painSeverity: 0,
+        painTime: "لا يوجد",
+        toothLocation: "",
+        moreDetails: MoreDetails(
+          chronicDiseases: "",
+          medicines: "",
+          previousTreatment: false,
+        ),
+      ),
+      caseType: CaseType(sId: "", caseType: ""),
     );
-    
     image = null;
     update();
   }
@@ -274,6 +253,7 @@ class FillRequestControllerImp extends FillRequestController {
     Get.close(1);
   }
 
+  // ===== تعديل الطلب =====
   @override
   Future<void> updateRequest(String id) async {
     if (!validateForm()) {
@@ -295,10 +275,7 @@ class FillRequestControllerImp extends FillRequestController {
           duration: const Duration(seconds: 3),
         );
         onClose();
-        // Get.close(1);
-        // patientRequestControllerImp.refreshData();
       } else {
-        // print("$response");
         Get.snackbar(
           'خطأ',
           'فشل في إرسال الطلب. الرجاء المحاولة مرة أخرى',
@@ -307,8 +284,6 @@ class FillRequestControllerImp extends FillRequestController {
           duration: const Duration(seconds: 3),
         );
       }
-      // cancelRequest();
-      // update();
     } catch (error) {
       statusRequest = StatusRequest.serverFailure;
       Get.snackbar(
