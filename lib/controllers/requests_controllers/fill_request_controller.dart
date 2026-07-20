@@ -81,6 +81,16 @@ class FillRequestControllerImp extends FillRequestController {
     );
   }
 
+  // داخل FillRequestControllerImp
+RxInt currentStep = 0.obs;
+int totalSteps = 12; // حسب عدد العناصر الرئيسية
+
+void goToNextStep() {
+  if (currentStep.value < totalSteps) {
+    currentStep.value++;
+  }
+}
+
   // ===== إرسال الطلب =====
   @override
   sendRequest() async {

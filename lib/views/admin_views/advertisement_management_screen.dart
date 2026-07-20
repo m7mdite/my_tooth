@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_home_controller.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AdvertisementManagementScreen extends StatelessWidget {
@@ -35,7 +36,8 @@ class AdvertisementManagementScreen extends StatelessWidget {
                 SizedBox(height: 8),
                 ElevatedButton.icon(
                   onPressed: () async {
-                    final XFile? picked = await picker.pickImage(source: ImageSource.gallery);
+                    final XFile? picked =
+                        await picker.pickImage(source: ImageSource.gallery);
                     if (picked != null) {
                       setState(() => selectedImage = File(picked.path));
                     }
@@ -63,7 +65,10 @@ class AdvertisementManagementScreen extends StatelessWidget {
                         );
                       },
                 child: controller.isLoading.value
-                    ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))
                     : Text('إضافة'),
               )),
         ],
@@ -74,10 +79,9 @@ class AdvertisementManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('إدارة الإعلانات'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+      appBar: CustomAppBar(
+        title: 'إدارة الإعلانات',
+        automaticallyImplyLeading: true,
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -85,12 +89,13 @@ class AdvertisementManagementScreen extends StatelessWidget {
           ),
         ],
       ),
+
+      
       body: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           controller.onInit();
         },
         child: Obx(() {
-          
           if (controller.isLoading.value && controller.advertisements.isEmpty) {
             return Center(child: CircularProgressIndicator());
           }
@@ -106,7 +111,8 @@ class AdvertisementManagementScreen extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: adv.image!.url!.isNotEmpty
-                      ? Image.network(adv.image!.url!, width: 60, height: 60, fit: BoxFit.cover)
+                      ? Image.network(adv.image!.url!,
+                          width: 60, height: 60, fit: BoxFit.cover)
                       : Icon(Icons.image, size: 60),
                   title: Text(adv.content!),
                   subtitle: Text('تاريخ الإضافة: ${adv.createdAt}'),

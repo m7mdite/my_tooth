@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 class AuthTextFormField extends StatelessWidget {
   final String label;
   final TextEditingController textEditingController;
   final bool isPassword;
   final Widget? suffix;
-   final   bool showPassword ;
- 
+  final bool showPassword;
+  final IconData? icon; // جديد
+
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
 
@@ -17,7 +19,9 @@ class AuthTextFormField extends StatelessWidget {
     this.isPassword = false,
     this.suffix,
     this.onChanged,
-    this.validator,  this.showPassword= false,
+    this.validator,
+    this.showPassword = false,
+    this.icon,
   });
 
   @override
@@ -25,22 +29,16 @@ class AuthTextFormField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
-        // image: DecorationImage(image: AssetImage("images/asnan3.jpg"),fit: BoxFit.cover),
-        color: const Color.fromARGB(255, 255, 254, 254),
-        border: Border(
-            right: BorderSide(
-              color: Colors.blueAccent,
-            ),
-            bottom: BorderSide(
-              color: Colors.blueAccent,
-            )),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(100, 10),
-          bottomLeft: Radius.elliptical(10, 100),
-          topRight: Radius.elliptical(10, 100),
-          bottomRight: Radius.elliptical(100, 10),
-        ),
-      ),
+          // image: DecorationImage(image: AssetImage("images/asnan3.jpg"),fit: BoxFit.cover),
+          color: const Color.fromARGB(255, 255, 254, 254),
+          border: Border(
+              right: BorderSide(
+                color: Colors.blueAccent,
+              ),
+              bottom: BorderSide(
+                color: Colors.blueAccent,
+              )),
+          borderRadius: AppThemeConstants.borderRadius),
       child: TextFormField(
         validator: validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -48,7 +46,10 @@ class AuthTextFormField extends StatelessWidget {
         onChanged: onChanged,
         controller: textEditingController,
         decoration: InputDecoration(
-          suffix: suffix ,
+          prefixIcon: icon != null
+              ? Icon(icon, size: 20, color: Colors.blue.shade700)
+              : null,
+          suffix: suffix,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           label: Container(
               padding: EdgeInsets.all(2),

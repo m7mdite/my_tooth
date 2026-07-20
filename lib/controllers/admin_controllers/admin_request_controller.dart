@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/app_route.dart';
@@ -12,6 +13,7 @@ import '../../models/public_models/profile_model.dart';
 import '../../models/requests_models/treatment_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/remote/admin_remotes/admin_remote.dart';
+import '../../utils/app_constants/app_constants.dart';
 import '../../utils/app_constants/status_request.dart';
 
 abstract class AdminRequestController extends GetxController {
@@ -30,7 +32,7 @@ abstract class AdminRequestController extends GetxController {
   toViewRejectedRequestsPage();
   addTreatment();
   addCourse();
-  addLesson();
+  // addLesson();
   addCategory();
   getAllTreatments();
   getAllCourses();
@@ -41,11 +43,17 @@ abstract class AdminRequestController extends GetxController {
   getAllFinishedRequests();
   getAllRejectedRequests();
   deleteCategory(String id);
+  // دوال جديدة لإدارة الدروس المتعددة
+  void addLessonToQueue(); // يضيف الدرس الحالي إلى القائمة
+  void removeLessonFromQueue(int index); // يحذف درساً من القائمة
+  void submitLessons(); // يرسل كل الدروس المضافة
+  void clearLessonsQueue(); // (اختياري) لمسح القائمة بعد الإرسال
 }
 
 class AdminRequestControllerImpl extends AdminRequestController {
   AdminUsersControllerImpl adminUsersControllerImpl =
       Get.put(AdminUsersControllerImpl());
+  List<Map<String, dynamic>> lessonsQueue = [];
   late StatusRequest statusRequest;
   AdminRemote adminRemote = AdminRemote(Get.find());
   List<TreatmentModel> treatments = [];
@@ -432,27 +440,27 @@ class AdminRequestControllerImpl extends AdminRequestController {
     Get.toNamed(AppRroute.addLessons);
   }
 
-  @override
-  addLesson() async {
-    lesson = {
-      "course": selectedCourseId,
-      "category": selectedCategoryId,
-      "overseers": selectedOverseers.map((o) => o.user).toList(),
-      "time": "$day-$periodLesson",
-      "hall": hall
-    };
-    print("====================$lesson");
-    statusRequest = StatusRequest.loading;
-    update();
-    var response = await adminRemote.addLesson(lesson);
-    statusRequest = handlingData(response);
-    print("+++++++++++++++++++++++++++$response");
-    // if(statusRequest == StatusRequest.success){
-    // showsnack(title: response['status'], message: response['message']);
-    // }
-    // Get.back();
-    update();
-  }
+  // @override
+  // addLessons() async {
+  //   lesson = {
+  //     "course": selectedCourseId,
+  //     "category": selectedCategoryId,
+  //     "overseers": selectedOverseers.map((o) => o.user).toList(),
+  //     "time": "$day-$periodLesson",
+  //     "hall": hall
+  //   };
+  //   print("====================$lesson");
+  //   statusRequest = StatusRequest.loading;
+  //   update();
+  //   var response = await adminRemote.addLessons(lesson);
+  //   statusRequest = handlingData(response);
+  //   print("+++++++++++++++++++++++++++$response");
+  //   // if(statusRequest == StatusRequest.success){
+  //   // showsnack(title: response['status'], message: response['message']);
+  //   // }
+  //   // Get.back();
+  //   update();
+  // }
 
   @override
   toAddCategoryPage() {
@@ -616,4 +624,329 @@ class AdminRequestControllerImpl extends AdminRequestController {
     }
     update();
   }
+
+  @override
+  void addLessonToQueue() {
+    // التحقق من اكتمال البيانات
+    if (selectedCourseId.isEmpty) {
+      showsnack(title: "خطأ", message: "يرجى اختيار المادة");
+      return;
+    }
+    if (selectedCategoryId.isEmpty) {
+      showsnack(title: "خطأ", message: "يرجى اختيار الفئة");
+      return;
+    }
+    if (selectedOverseers.isEmpty) {
+      showsnack(title: "خطأ", message: "يرجى اختيار مشرف على الأقل");
+      return;
+    }
+    if (day.isEmpty || periodLesson.isEmpty || hall.isEmpty) {
+      showsnack(title: "خطأ", message: "يرجى تحديد اليوم والفترة والقاعة");
+      return;
+    }
+
+    // بناء كائن الدرس
+    Map<String, dynamic> lesson = {
+      "course": selectedCourseId,
+      "category": selectedCategoryId,
+      "overseers": selectedOverseers.map((o) => o.user).toList(),
+      "time": "$day-$periodLesson",
+      "hall": hall,
+    };
+
+    // إضافته إلى القائمة
+    lessonsQueue.add(lesson);
+    update(); // لتحديث الواجهة
+
+    // إعادة تعيين الحقول (اختياري) لتسهيل إدخال درس آخر
+    // يمكنك تركها كما هي أو مسح البعض
+    // day = '';
+    // periodLesson = '';
+    // hall = '';
+    // selectedOverseers.clear();
+    // لكن الأفضل تركها لتكرار الإضافة بسرعة
+    showsnack(
+        title: "تم",
+        message: "تم إضافة الدرس إلى القائمة (${lessonsQueue.length})");
+  }
+
+  @override
+  void removeLessonFromQueue(int index) {
+    if (index >= 0 && index < lessonsQueue.length) {
+      lessonsQueue.removeAt(index);
+      update();
+      showsnack(title: "تم", message: "تم حذف الدرس من القائمة");
+    }
+  }
+
+  @override
+  void clearLessonsQueue() {
+    lessonsQueue.clear();
+    update();
+  }
+
+  @override
+  void submitLessons() async {
+    if (lessonsQueue.isEmpty) {
+      showsnack(title: "تنبيه", message: "لا توجد دروس للإضافة");
+      return;
+    }
+
+    statusRequest = StatusRequest.loading;
+    update();
+    try {
+      var response = await adminRemote.addLessons(lessonsQueue);
+      statusRequest = handlingData(response);
+      if (statusRequest == StatusRequest.success) {
+        showsnack(
+            title: "نجاح",
+            message: response['message'] ?? "تم إضافة الدروس بنجاح");
+        clearLessonsQueue(); // مسح القائمة بعد النجاح
+        Get.back(); // العودة للشاشة السابقة
+      } else {
+        showsnack(title: "خطأ", message: response['message'] ?? "فشل الإضافة");
+      }
+    } catch (e) {
+      showsnack(title: "خطأ", message: "حدث خطأ أثناء الإرسال");
+    }
+    update();
+  }
+
+  // دالة لفتح حوار إضافة درس لخلية محددة (اليوم والفترة محددان)
+void showAddLessonDialog(BuildContext context, String day, String period) {
+  // نعيد تعيين الحقول المؤقتة (اختياري) لتفادي تداخل القيم السابقة
+  selectedCourseId = '';
+  selectedOverseers = [];
+  hall = '';
+
+  Get.dialog(
+    AlertDialog(
+      title: Text("إضافة درس في $day - $period"),
+      content: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // اختيار المادة
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: "المادة"),
+                value: selectedCourseId.isEmpty ? null : selectedCourseId,
+                items: courses.map((course) {
+                  return DropdownMenuItem<String>(
+                    value: course.sId,
+                    child: Text(course.courseName ?? ""),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedCourseId = value!;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              // اختيار المشرفين (متعدد)
+              DropdownSearch<ProfileModel>.multiSelection(
+                items: (filter, infiniteScrollProps) {
+                  if (overSeers.isEmpty) return [];
+                  if (filter.isEmpty) return overSeers.toList();
+                  return overSeers.where((overseer) =>
+                      overseer.firstName != null &&
+                      overseer.firstName!
+                          .toLowerCase()
+                          .contains(filter.toLowerCase())).toList();
+                },
+                compareFn: (item1, item2) => item1.user == item2.user,
+                onChanged: (List<ProfileModel>? selected) {
+                  setState(() {
+                    if (selected != null) {
+                      selectedOverseers = selected;
+                    }
+                  });
+                },
+                selectedItems: selectedOverseers,
+                dropdownBuilder: (context, selectedItems) {
+                  if (selectedItems.isEmpty) {
+                    return Text("اختر المشرفين...", style: TextStyle(color: Colors.grey));
+                  }
+                  return Text("تم اختيار ${selectedItems.length} مشرف");
+                },
+                itemAsString: (ProfileModel? p) => "${p!.firstName} ${p.lastName}",
+                popupProps: PopupPropsMultiSelection.menu(
+                  showSearchBox: true,
+                  searchDelay: Duration(milliseconds: 500),
+                ),
+              ),
+              SizedBox(height: 10),
+              // اختيار القاعة
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: "القاعة"),
+                value: hall.isEmpty ? null : hall,
+                items: AppConstants.hall.map((h) {
+                  return DropdownMenuItem<String>(value: h, child: Text(h));
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    hall = value!;
+                  });
+                },
+              ),
+            ],
+          );
+        },
+      ),
+      actions: [
+        TextButton(onPressed: () => Get.back(), child: Text("إلغاء")),
+        ElevatedButton(
+          onPressed: () {
+            // التحقق من اكتمال البيانات
+            if (selectedCourseId.isEmpty ||
+                selectedOverseers.isEmpty ||
+                hall.isEmpty) {
+              Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
+              return;
+            }
+            // بناء الدرس وإضافته للقائمة
+            Map<String, dynamic> lesson = {
+              "course": selectedCourseId,
+              "category": selectedCategoryId,
+              "overseers": selectedOverseers.map((o) => o.user).toList(),
+              "time": "$day-$period",
+              "hall": hall,
+            };
+            // التحقق من عدم وجود درس مكرر في نفس الخلية
+            bool exists = lessonsQueue.any((l) => l['time'] == '$day-$period');
+            if (exists) {
+              Get.snackbar("تنبيه", "يوجد درس مسبق في هذه الخلية، قم بحذفه أولاً");
+              return;
+            }
+            lessonsQueue.add(lesson);
+            update();
+            Get.back();
+            Get.snackbar("تم", "تم إضافة الدرس");
+          },
+          child: Text("إضافة"),
+        ),
+      ],
+    ),
+    barrierDismissible: false,
+  );
+}
+Future<void> updateLesson(String id, Map data) async {
+  statusRequest = StatusRequest.loading;
+  update();
+  var response = await adminRemote.updateLesson(id, data);
+  statusRequest = handlingData(response);
+  if (statusRequest == StatusRequest.success) {
+    Get.snackbar("نجاح", response['message'] ?? "تم التعديل بنجاح");
+    getSchedule(); // تحديث الجدول
+  } else {
+    Get.snackbar("خطأ", response['message'] ?? "فشل التعديل");
+  }
+  update();
+}
+
+void showEditLessonDialog(BuildContext context, LessonModel lesson) {
+  String tempCourseId = lesson.course?.sId ?? '';
+  String tempCategoryId = lesson.category?.sId ?? '';
+  List<String> tempOverseerIds = lesson.overseers?.map((o) => o.user ?? '').where((id) => id.isNotEmpty).toList() ?? [];
+  String tempHall = lesson.hall ?? '';
+
+  Get.dialog(
+    AlertDialog(
+      title: Text("تعديل درس في ${lesson.day} - ${lesson.period}"),
+      content: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // المادة
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: "المادة"),
+                value: tempCourseId.isEmpty ? null : tempCourseId,
+                items: courses.map((c) => DropdownMenuItem<String>(
+                  value: c.sId,
+                  child: Text(c.courseName ?? ""),
+                )).toList(),
+                onChanged: (val) => setState(() => tempCourseId = val!),
+              ),
+              const SizedBox(height: 10),
+              // الفئة
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: "الفئة"),
+                value: tempCategoryId.isEmpty ? null : tempCategoryId,
+                items: categorys.map((c) => DropdownMenuItem<String>(
+                  value: c['id'],
+                  child: Text(c['category'] ?? ""),
+                )).toList(),
+                onChanged: (val) => setState(() => tempCategoryId = val!),
+              ),
+              const SizedBox(height: 10),
+              // المشرفين (متعدد)
+              DropdownSearch<ProfileModel>.multiSelection(
+                items: (filter, infiniteScrollProps) {
+                  if (overSeers.isEmpty) return [];
+                  if (filter.isEmpty) return overSeers.toList();
+                  return overSeers.where((o) =>
+                      o.firstName != null &&
+                      o.firstName!.toLowerCase().contains(filter.toLowerCase())).toList();
+                },
+                compareFn: (item1, item2) => item1.user == item2.user,
+                onChanged: (List<ProfileModel>? selected) {
+                  setState(() {
+                    if (selected != null) {
+                      tempOverseerIds = selected.map((o) => o.user ?? '').where((id) => id.isNotEmpty).toList();
+                    }
+                  });
+                },
+                selectedItems: overSeers.where((o) => tempOverseerIds.contains(o.user)).toList(),
+                dropdownBuilder: (context, selectedItems) {
+                  if (selectedItems.isEmpty) return const Text("اختر المشرفين...");
+                  return Text("تم اختيار ${selectedItems.length} مشرف");
+                },
+                itemAsString: (ProfileModel? p) => "${p!.firstName} ${p.lastName}",
+                popupProps: PopupPropsMultiSelection.menu(
+                  showSearchBox: true,
+                  searchDelay: const Duration(milliseconds: 500),
+                ),
+              ),
+              const SizedBox(height: 10),
+              // القاعة
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: "القاعة"),
+                value: tempHall.isEmpty ? null : tempHall,
+                items: AppConstants.hall.map((h) => DropdownMenuItem<String>(
+                  value: h,
+                  child: Text(h),
+                )).toList(),
+                onChanged: (val) => setState(() => tempHall = val!),
+              ),
+            ],
+          );
+        },
+      ),
+      actions: [
+        TextButton(onPressed: () => Get.back(), child: const Text("إلغاء")),
+        ElevatedButton(
+          onPressed: () {
+            if (tempCourseId.isEmpty || tempOverseerIds.isEmpty || tempHall.isEmpty) {
+              Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
+              return;
+            }
+            Map<String, dynamic> data = {
+              "course": tempCourseId,
+              "category": tempCategoryId,
+              "overseers": tempOverseerIds,
+              "hall": tempHall,
+              // الوقت لا نغيره (يبقى كما هو)
+            };
+            updateLesson(lesson.sId!, data);
+            Get.back();
+          },
+          child: const Text("تعديل"),
+        ),
+      ],
+    ),
+    barrierDismissible: false,
+  );
+}
 }

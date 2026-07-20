@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/views/widgets/requests/request_container.dart';
 
+import '../../widgets/custom_app_bar.dart';
+
 class ViewPendingRequestsPage extends StatelessWidget {
   final AdminRequestControllerImpl controller =Get.find<AdminRequestControllerImpl>();
    ViewPendingRequestsPage({super.key});
@@ -10,9 +12,7 @@ class ViewPendingRequestsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('الطلبات قيد الانتظار'),
-      ),
+      appBar:CustomAppBar(title: "قيد الانتظار",),
       body: GetBuilder<AdminRequestControllerImpl>(
         builder: (_) {
           return RefreshIndicator(

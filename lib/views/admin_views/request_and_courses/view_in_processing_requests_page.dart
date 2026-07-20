@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/requests/card_request_processing.dart';
 
 class ViewInProcessingRequestsPage extends StatelessWidget {
@@ -13,9 +14,9 @@ class ViewInProcessingRequestsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('الطلبات قيد المعالجة'),
-      ),
+      appBar: CustomAppBar(
+        title: "الطلبات قيد المعالجة",
+      ),  
       body: GetBuilder<AdminRequestControllerImpl>(builder: (_) {
         return RefreshIndicator(
           onRefresh: () async {

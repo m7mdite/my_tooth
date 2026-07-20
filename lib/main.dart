@@ -13,10 +13,10 @@ import 'services/remote/public_remotes/unified_profile_remote.dart';
 import 'services/notification/websocket_service.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Get.put(SecureStorageService(), permanent: true);
   Get.put(LocalUserStorage(), permanent: true);
   Get.put(Crud(), permanent: true);
-  WidgetsFlutterBinding.ensureInitialized();
 
   // await initialServices();
   await GetStorage.init();

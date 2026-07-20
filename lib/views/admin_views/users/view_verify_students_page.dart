@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
@@ -12,7 +13,7 @@ class ViewVerifyStudentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("عرض الطلاب المحققين")),
+      appBar: CustomAppBar(actions: [],title: "طلبات التوثيق",),
       body: GetBuilder<AdminUsersControllerImpl>(
         init: AdminUsersControllerImpl(),
         initState: (_) => Get.find<AdminUsersControllerImpl>().getAllVerifyStudents(),

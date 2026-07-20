@@ -9,14 +9,14 @@ import '../../controllers/conversations_controllers/chat_controller.dart';
 import '../../models/conversations_models/message_model.dart';
 import 'profile_screen_public.dart'; // تأكد من المسار الصحيح
 
-class ChatScreenn extends StatelessWidget {
+class ChatScreen extends StatelessWidget {
   final String conversationId;
   final OtherPartyProfile otherPartyProfile;
   // final String otherPartyName;
   // final String otherUserId;      // userId الخاص بالطرف الآخر
   // final String? otherProfilePhotoUrl; // رابط صورة المستخدم الآخر
 
-  const ChatScreenn({
+  const ChatScreen({
     super.key,
     // required this.otherUserId,
     required this.conversationId,

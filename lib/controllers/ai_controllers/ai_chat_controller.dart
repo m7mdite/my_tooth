@@ -1,20 +1,25 @@
-// controllers/chat_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gr_flutter/utils/app_constants/ai_constants.dart';
-import '../../services/remote/public_remotes/gimini_remote.dart';
+import '../../services/local_storge/local_user_storage.dart';
+import '../../services/remote/local_ai_remote.dart';
 
 abstract class AiChatContr extends GetxController {
   sendMessage();
   clearChat();
   copyMessage(String text);
   retryMessage(int index);
-  getRoleFromArguments();
+  getRoleFromLocal();
   setFirstMessag();
 }
 
 class AiChatController extends AiChatContr {
-  final GeminiRemote _geminiRemote = GeminiRemote();
+  final LocalAiRemote _aiRemote = LocalAiRemote();
+  final GetStorage _chatStorage = GetStorage();
+
+  static const String _messagesKey = 'ai_chat_messages';
+  static const String _roleKey = 'ai_chat_role';
 
   // قائمة الرسائل
   final RxList<ChatMessage> messages = <ChatMessage>[].obs;
@@ -37,25 +42,92 @@ class AiChatController extends AiChatContr {
   final RxBool isLoading = false.obs;
   final RxBool isTyping = false.obs;
   final ScrollController scrollController = ScrollController();
-
-  // إعدادات المحادثة
-  // final RxString selectedModel = 'gemini-2.5-flash'.obs;
   final RxDouble temperature = 0.7.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // رسالة ترحيب افتراضية
-    getRoleFromArguments();
-    setFirstMessag();
-    addWelcomeMessage();
+  // ============================================================
+  // ✅ دوال التخزين المحلي
+  // ============================================================
+
+  void saveMessages() {
+    try {
+      final messagesJson = messages
+          .map((m) => {
+                'text': m.text,
+                'isUser': m.isUser,
+                'isError': m.isError,
+                'timestamp': m.timestamp.toIso8601String(),
+              })
+          .toList();
+      _chatStorage.write(_messagesKey, messagesJson);
+      if (role != null) {
+        _chatStorage.write(_roleKey, role);
+      }
+    } catch (e) {
+      print('Error saving messages: $e');
+    }
   }
 
+  List<ChatMessage> loadMessages() {
+    try {
+      final messagesJson = _chatStorage.read<List>(_messagesKey);
+      if (messagesJson != null && messagesJson.isNotEmpty) {
+        return messagesJson
+            .map((json) => ChatMessage(
+                  text: json['text'] ?? '',
+                  isUser: json['isUser'] ?? false,
+                  isError: json['isError'] ?? false,
+                  timestamp: json['timestamp'] != null
+                      ? DateTime.parse(json['timestamp'])
+                      : DateTime.now(),
+                ))
+            .toList();
+      }
+    } catch (e) {
+      print('Error loading messages: $e');
+    }
+    return [];
+  }
+
+  String? loadStoredRole() {
+    return _chatStorage.read<String>(_roleKey);
+  }
+
+  void clearStoredMessages() {
+    _chatStorage.remove(_messagesKey);
+    _chatStorage.remove(_roleKey);
+  }
+
+  // ============================================================
+  // ✅ دورة الحياة
+  // ============================================================
+
   @override
-  void onClose() {
-    messageController.dispose();
-    scrollController.dispose();
-    super.onClose();
+  void onInit() async {
+    super.onInit();
+
+    // استرجاع الدور المخزن
+    final storedRole = loadStoredRole();
+    if (storedRole != null) {
+      role = storedRole;
+      print('✅ Role loaded from storage: $role');
+    } else {
+      await getRoleFromLocal();
+    }
+
+    setFirstMessag();
+
+    // استرجاع الرسائل المخزنة
+    final savedMessages = loadMessages();
+    if (savedMessages.isNotEmpty) {
+      messages.value = savedMessages;
+      print('✅ Loaded ${messages.length} messages from storage');
+    } else {
+      addWelcomeMessage();
+      saveMessages();
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToBottom();
+    });
   }
 
   void addWelcomeMessage() {
@@ -67,12 +139,14 @@ class AiChatController extends AiChatContr {
         ));
   }
 
-  // إرسال رسالة
+  // ============================================================
+  // ✅ إرسال الرسائل
+  // ============================================================
+
   @override
   Future<void> sendMessage() async {
     if (messageController.text.trim().isEmpty) return;
 
-    // إضافة رسالة المستخدم
     final userMessage = ChatMessage(
       text: messageController.text.trim(),
       isUser: true,
@@ -80,23 +154,16 @@ class AiChatController extends AiChatContr {
     );
     messages.add(userMessage);
     messageController.clear();
-
-    // التمرير للأسفل
     scrollToBottom();
 
-    // إظهار مؤشر الكتابة
     isLoading.value = true;
     isTyping.value = true;
 
     try {
-      // إرسال الطلب إلى Gemini
-      final response = await _geminiRemote.sendMessage(
+      final response = await _aiRemote.sendMessage(
         updateMessage(userMessage.text),
-        // model: selectedModel.value,
-        // temperature: temperature.value,
       );
 
-      // إضافة رد المساعد
       messages.add(ChatMessage(
         text: response,
         isUser: false,
@@ -105,7 +172,6 @@ class AiChatController extends AiChatContr {
 
       scrollToBottom();
     } catch (e) {
-      // رسالة خطأ
       messages.add(ChatMessage(
         text: "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
         isUser: false,
@@ -115,20 +181,24 @@ class AiChatController extends AiChatContr {
     } finally {
       isLoading.value = false;
       isTyping.value = false;
+      saveMessages(); // ✅ حفظ الرسائل
     }
   }
 
-  // مسح المحادثة
+  // ============================================================
+  // ✅ دوال أخرى
+  // ============================================================
+
   @override
   void clearChat() {
     messages.clear();
+    clearStoredMessages();
     addWelcomeMessage();
+    saveMessages();
   }
 
-  // نسخ الرسالة
   @override
   void copyMessage(String text) {
-    // يمكن إضافة Clipboard functionality
     Get.snackbar(
       'تم النسخ',
       'تم نسخ الرسالة إلى الحافظة',
@@ -138,17 +208,16 @@ class AiChatController extends AiChatContr {
   }
 
   @override
-  void getRoleFromArguments() {
-    final arguments = Get.arguments;
-    if (arguments != null && arguments['role'] != null) {
-      role = arguments['role'];
-    } else {
-      role = "patient"; // القيمة الافتراضية
-    }
+  getRoleFromLocal() async {
+    final storage = Get.find<LocalUserStorage>();
+    role = await storage.getRole();
+    role ??= "patient";
+    print("Role from local storage: $role");
   }
 
   @override
-  setFirstMessag() {
+  void setFirstMessag() {
+    print("Setting first message for role: $role");
     if (role == "patient") {
       firstUserMessage = ChatMessage(
         text: AiConstants.helloPatient,
@@ -170,7 +239,6 @@ class AiChatController extends AiChatContr {
     }
   }
 
-  // إعادة إرسال الرسالة
   @override
   void retryMessage(int index) {
     final message = messages[index];
@@ -180,7 +248,6 @@ class AiChatController extends AiChatContr {
     }
   }
 
-  // التمرير للأسفل
   void scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (scrollController.hasClients) {

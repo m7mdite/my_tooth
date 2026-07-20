@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AddCategoryPage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
@@ -11,10 +12,8 @@ class AddCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("إضافة فئة"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+      appBar: CustomAppBar(
+        title: "إضافة فئة",
       ),
       body: GetBuilder<AdminRequestControllerImpl>(
         builder: (controller) {
@@ -62,7 +61,7 @@ class AddCategoryPage extends StatelessWidget {
                   ),
                   child: const Text(
                     "إضافة",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18,color: Colors.white),
                   ),
                 ),
               ],

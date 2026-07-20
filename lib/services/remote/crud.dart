@@ -10,6 +10,46 @@ import '../local_storge/local_user_storage.dart';
 class Crud {
   final localStorage = Get.find<LocalUserStorage>();
   // ================================================================
+  Future<Either<StatusRequest, Map>> postManyData(String linkurl, List<Map<String, dynamic>> data,
+      {Map<String, String>? header}) async {
+    final String? token = await localStorage.getToken();
+    try {
+      final headers = header ??
+          {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          };
+      // if(await checkInternet()){
+      var response = await http.post(
+        Uri.parse(linkurl),
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map responsebody = jsonDecode(response.body);
+        if (responsebody.containsKey('message')) {
+          print("$responsebody");
+          // Get.snackbar(
+          //   "${responsebody['status']}",
+          //   "${responsebody['message']}",
+          // );
+        }
+        return right(responsebody);
+      } else {
+        Map responsebody = jsonDecode(response.body);
+        Get.snackbar("${responsebody['status']}", "${responsebody['message']}");
+        return right(responsebody);
+      }
+      // }else{
+      //   return left(StatusRequest.offlinefailure);
+      // }
+    } catch (e) {
+      // ← استخدم e بدلاً من _ لرؤية الخطأ
+      print('Exception: $e');
+      return left(StatusRequest.serverFailure);
+    }
+  }
   Future<Either<StatusRequest, Map>> postData(String linkurl, Map data,
       {Map<String, String>? header}) async {
     final String? token = await localStorage.getToken();
@@ -60,7 +100,7 @@ class Crud {
       var response = await http.get(Uri.parse(linkurl),
           headers: header ??
               {
-                'Authorization': 'Bearer $token',
+               if(token != null) 'Authorization': 'Bearer $token',
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
               });

@@ -3,14 +3,15 @@ class DashboardModel {
   Users? users;
   TopPosts? topPosts;
   AdvStats? adv;
-
-  DashboardModel({this.requests, this.users, this.topPosts, this.adv});
+MyCases? myCases;
+  DashboardModel({this.requests, this.users, this.topPosts, this.adv, this.myCases});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
     requests = json['requests'] != null ? Requests.fromJson(json['requests']) : null;
     users = json['users'] != null ? Users.fromJson(json['users']) : null;
     topPosts = json['top_posts'] != null ? TopPosts.fromJson(json['top_posts']) : null;
     adv = json['adv'] != null ? AdvStats.fromJson(json['adv']) : null;
+    myCases = json['my_cases'] != null ? MyCases.fromJson(json['my_cases']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +20,7 @@ class DashboardModel {
     if (users != null) data['users'] = users!.toJson();
     if (topPosts != null) data['top_posts'] = topPosts!.toJson();
     if (adv != null) data['adv'] = adv!.toJson();
+    if (myCases != null) data['my_cases'] = myCases!.toJson();
     return data;
   }
 }
@@ -70,6 +72,29 @@ class Users {
     data['count_students'] = countStudents;
     data['count_patients'] = countPatients;
     data['count_overseers'] = countOverseers;
+    return data;
+  }
+}
+
+// ===== 
+class MyCases {
+  int? finished;
+  int? inProcess;
+  int? pending; // فقط للمريض
+
+  MyCases({this.finished, this.inProcess, this.pending});
+
+  MyCases.fromJson(Map<String, dynamic> json) {
+    finished = json['finished'];
+    inProcess = json['in_process'];
+    pending = json['pending'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['finished'] = finished;
+    data['in_process'] = inProcess;
+    data['pending'] = pending;
     return data;
   }
 }

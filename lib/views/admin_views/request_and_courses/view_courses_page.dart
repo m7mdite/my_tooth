@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
 
@@ -12,16 +13,8 @@ class ViewCoursesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("المواد الدراسية"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => controller.getAllCourses(),
-          ),
-        ],
+      appBar: CustomAppBar(
+        title: "عرض المواد الدراسية",
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.getAllCourses(),
@@ -34,9 +27,17 @@ class ViewCoursesPage extends StatelessWidget {
             if (controller.courses.isEmpty) {
               return const Center(child: Text("لا توجد مواد بعد"));
             }
-            return ListView.builder(
+            return ListView.separated(
               padding: const EdgeInsets.all(12),
               itemCount: controller.courses.length,
+              separatorBuilder: (context, index) {
+                return const Divider(
+                  color: Colors.blue,
+                  endIndent: 50,
+                  indent: 50,
+                  thickness: 1,
+                );
+              },
               itemBuilder: (context, index) {
                 final course = controller.courses[index];
                 // return Card(
@@ -83,18 +84,16 @@ class ViewCoursesPage extends StatelessWidget {
                 //     ],
                 //   ),
                 // );
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    leading: CircleAvatar(child: Text("${index + 1}")),
-                    title: Text(course.courseName ?? "غير متوفر"),
-                    // subtitle:
-                    //     Text("المشرفين: ${course.overseers!.category1!.length ?? 0}"),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      // يمكن فتح صفحة تفاصيل المادة
-                    },
-                  ),
+                return ListTile(
+                  // leading: CircleAvatar(child: Text("${index + 1}")),
+                  title: Text(course.courseName ?? "غير متوفر"),
+                  // subtitle: Text("عدد المشرفين: ${course.}"),
+                  // subtitle:
+                  //     Text("المشرفين: ${course.overseers!.category1!.length ?? 0}"),
+                  // trailing: const Icon(Icons.chevron_right),
+                  // onTap: () {
+                  //   // يمكن فتح صفحة تفاصيل المادة
+                  // },
                 );
               },
             );

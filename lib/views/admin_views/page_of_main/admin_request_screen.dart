@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class AdminRequestScreen extends StatelessWidget {
   final AdminRequestControllerImpl controller =
@@ -11,6 +12,7 @@ class AdminRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:CustomAppBar(title: " إداراة الطلبات",automaticallyImplyLeading: false,),
       body: RefreshIndicator(
         onRefresh: () async {
           controller.onInit();

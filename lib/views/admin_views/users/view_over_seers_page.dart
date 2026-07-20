@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class ViewOverSeersPage extends StatelessWidget {
-  final AdminUsersControllerImpl controller = Get.find<AdminUsersControllerImpl>();
+  final AdminUsersControllerImpl controller =
+      Get.find<AdminUsersControllerImpl>();
 
   ViewOverSeersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("المشرفين"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => controller.getAllOverSeers(),
-          ),
-        ],
+      appBar: CustomAppBar(
+        title: "المشرفين",
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.getAllOverSeers(),
@@ -32,19 +26,26 @@ class ViewOverSeersPage extends StatelessWidget {
             if (controller.overSeers.isEmpty) {
               return const Center(child: Text("لا يوجد مشرفين"));
             }
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context, index) => const Divider(
+                height: 12,
+                color: Colors.blue,
+                endIndent: 50,
+                indent: 50,
+              ),
               padding: const EdgeInsets.all(12),
               itemCount: controller.overSeers.length,
               itemBuilder: (context, index) {
                 final overSeer = controller.overSeers[index];
                 return Card(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                  // margin: const EdgeInsets.only(bottom: 12),
+                  // elevation: 3,
+                  // shape: RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(16),
+                  // ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     leading: CircleAvatar(
                       backgroundColor: Colors.blue,
                       child: Text(
@@ -55,7 +56,8 @@ class ViewOverSeersPage extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      "${overSeer.firstName ?? ''} ${overSeer.fatherName ?? ''} ${overSeer.lastName ?? ''}".trim(),
+                      "${overSeer.firstName ?? ''} ${overSeer.fatherName ?? ''} ${overSeer.lastName ?? ''}"
+                          .trim(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
@@ -65,13 +67,18 @@ class ViewOverSeersPage extends StatelessWidget {
                         Text("البريد: ${overSeer.email ?? 'غير متوفر'}"),
                         if (overSeer.bio != null && overSeer.bio!.isNotEmpty)
                           Text("نبذة: ${overSeer.bio}"),
+                        if (overSeer.category != null)
+                          Text(
+                              "الفئة: ${overSeer.category!.category ?? 'غير متوفر'}"),
+                        if (overSeer.gender != null)
+                          Text("الجنس: ${overSeer.gender ?? 'غير متوفر'}"),
                       ],
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline, color: Colors.red),
                       onPressed: () => _confirmDelete(overSeer.user!),
                     ),
-                    isThreeLine: true,
+                    // isThreeLine: true,
                   ),
                 );
               },

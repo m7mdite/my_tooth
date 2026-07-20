@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AddCoursePage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
@@ -11,11 +12,7 @@ class AddCoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("إضافة مادة"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar: CustomAppBar(actions: [], title: "إضافة مادة"),
       body: GetBuilder<AdminRequestControllerImpl>(
         builder: (controller) {
           if (controller.statusRequest == StatusRequest.loading) {
@@ -60,7 +57,7 @@ class AddCoursePage extends StatelessWidget {
                   ),
                   child: const Text(
                     "إضافة",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18,color: Colors.white),
                   ),
                 ),
               ],

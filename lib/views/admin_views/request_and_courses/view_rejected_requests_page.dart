@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/requests/card_request_processing.dart';
 import '../../widgets/requests/show_request_processing.dart';
 
@@ -13,8 +14,8 @@ class ViewRejectedRequestsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('الطلبات المرفوضة'),
+      appBar: CustomAppBar(
+        title: "الطلبات المرفوضة",
       ),
       body:  GetBuilder<AdminRequestControllerImpl>(builder: (_) {
         return RefreshIndicator(

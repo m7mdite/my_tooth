@@ -51,6 +51,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                       color: Colors.teal,
                       controller: controller,
                       allLessons: controller.allLessons,
+                      context: context, // ← تمرير context
                     ),
                   const SizedBox(height: 24),
                   if (controller.year5Lessons.isNotEmpty)
@@ -60,6 +61,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                       color: Colors.orange,
                       controller: controller,
                       allLessons: controller.allLessons,
+                      context: context,
                     ),
                   if (controller.year4Lessons.isEmpty &&
                       controller.year5Lessons.isEmpty)
@@ -99,11 +101,17 @@ class WeeklyScheduleScreen extends StatelessWidget {
         .join('، ');
   }
 
+  // ===================== دالة فتح حوار التعديل =====================
+  void _showEditLessonDialog(BuildContext context, LessonModel lesson) {
+    controller.showEditLessonDialog(context, lesson);
+  }
+
   // ===================== بناء الخلية (فارغة أو مملوءة) =====================
   Widget _buildCellContent({
     required LessonModel? period1Lesson,
     required LessonModel? period2Lesson,
     required bool isOccupiedByOther,
+    VoidCallback? onLongPress,
   }) {
     final bool hasLesson = period1Lesson != null || period2Lesson != null;
 
@@ -113,162 +121,164 @@ class WeeklyScheduleScreen extends StatelessWidget {
             ? Colors.blue.shade50
             : Colors.grey.shade100);
 
-    return Container(
-      width: 150,
-      height: 110,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: cellColor,
-        border: Border(
-          right: BorderSide(color: Colors.grey.shade300, width: 0.5),
-          bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+    return GestureDetector(
+      onLongPress: onLongPress,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: 150,
+        height: 110,
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: cellColor,
+          border: Border(
+            right: BorderSide(color: Colors.grey.shade300, width: 0.5),
+            bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          // النصف الأول (الفترة الأولى 08:00)
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: period1Lesson != null
-                    ? Colors.blue.shade50
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: period1Lesson != null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          period1Lesson.course?.courseName ?? '',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+        child: Row(
+          children: [
+            // النصف الأول (الفترة الأولى 08:00)
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: period1Lesson != null
+                      ? Colors.blue.shade50
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: period1Lesson != null
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            period1Lesson.course?.courseName ?? '',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        const SizedBox(height: 1),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: (period1Lesson.category?.category ?? '').startsWith('4')
-                                ? Colors.teal.withValues(alpha: 0.2)
-                                : Colors.orange.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            _getShortCategory(period1Lesson.category?.category),
-                            style: TextStyle(
-                              fontSize: 8,
-                              fontWeight: FontWeight.w600,
+                          const SizedBox(height: 1),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                            decoration: BoxDecoration(
                               color: (period1Lesson.category?.category ?? '').startsWith('4')
-                                  ? Colors.teal.shade700
-                                  : Colors.orange.shade700,
+                                  ? Colors.teal.withValues(alpha: 0.2)
+                                  : Colors.orange.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              _getShortCategory(period1Lesson.category?.category),
+                              style: TextStyle(
+                                fontSize: 8,
+                                fontWeight: FontWeight.w600,
+                                color: (period1Lesson.category?.category ?? '').startsWith('4')
+                                    ? Colors.teal.shade700
+                                    : Colors.orange.shade700,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 1),
-                        // عرض جميع المشرفين (مفصولين بفواصل)
-                        Flexible(
-                          child: Text(
-                            _getOverseersNames(period1Lesson.overseers),
-                            style: TextStyle(
-                              fontSize: 7,
-                              color: Colors.grey.shade700,
+                          const SizedBox(height: 1),
+                          Flexible(
+                            child: Text(
+                              _getOverseersNames(period1Lesson.overseers),
+                              style: TextStyle(
+                                fontSize: 7,
+                                color: Colors.grey.shade700,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
                           ),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text(
-                        '08:00',
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey,
+                        ],
+                      )
+                    : const Center(
+                        child: Text(
+                          '08:00',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                    ),
-            ),
-          ),
-          // النصف الثاني (الفترة الثانية 12:00)
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: period2Lesson != null
-                    ? Colors.green.shade50
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(4),
               ),
-              child: period2Lesson != null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          period2Lesson.course?.courseName ?? '',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        const SizedBox(height: 1),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: (period2Lesson.category?.category ?? '').startsWith('4')
-                                ? Colors.teal.withValues(alpha: 0.2)
-                                : Colors.orange.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            _getShortCategory(period2Lesson.category?.category),
-                            style: TextStyle(
-                              fontSize: 8,
-                              fontWeight: FontWeight.w600,
-                              color: (period2Lesson.category?.category ?? '').startsWith('4')
-                                  ? Colors.teal.shade700
-                                  : Colors.orange.shade700,
+            ),
+            // النصف الثاني (الفترة الثانية 12:00)
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: period2Lesson != null
+                      ? Colors.green.shade50
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: period2Lesson != null
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            period2Lesson.course?.courseName ?? '',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 1),
-                        // عرض جميع المشرفين (مفصولين بفواصل)
-                        Flexible(
-                          child: Text(
-                            _getOverseersNames(period2Lesson.overseers),
-                            style: TextStyle(
-                              fontSize: 7,
-                              color: Colors.grey.shade700,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
                             textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                        ),
-                      ],
-                    )
-                  : const Center(
-                      child: Text(
-                        '12:00',
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey,
+                          const SizedBox(height: 1),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: (period2Lesson.category?.category ?? '').startsWith('4')
+                                  ? Colors.teal.withValues(alpha: 0.2)
+                                  : Colors.orange.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              _getShortCategory(period2Lesson.category?.category),
+                              style: TextStyle(
+                                fontSize: 8,
+                                fontWeight: FontWeight.w600,
+                                color: (period2Lesson.category?.category ?? '').startsWith('4')
+                                    ? Colors.teal.shade700
+                                    : Colors.orange.shade700,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Flexible(
+                            child: Text(
+                              _getOverseersNames(period2Lesson.overseers),
+                              style: TextStyle(
+                                fontSize: 7,
+                                color: Colors.grey.shade700,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: Text(
+                          '12:00',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                    ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -280,6 +290,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
     required Color color,
     required AdminRequestControllerImpl controller,
     required List<LessonModel> allLessons,
+    required BuildContext context,
   }) {
     final allHalls = controller.getAllHalls();
     final days = controller.getDays(lessons);
@@ -452,10 +463,19 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                         period2Lesson = null;
                                       }
 
+                                      // تحديد الـ onLongPress بناءً على وجود درس
+                                      VoidCallback? onLongPress;
+                                      if (period1Lesson != null) {
+                                        onLongPress = () => _showEditLessonDialog(context, period1Lesson!);
+                                      } else if (period2Lesson != null) {
+                                        onLongPress = () => _showEditLessonDialog(context, period2Lesson!);
+                                      }
+
                                       return _buildCellContent(
                                         period1Lesson: period1Lesson,
                                         period2Lesson: period2Lesson,
                                         isOccupiedByOther: isOccupiedByOther,
+                                        onLongPress: onLongPress,
                                       );
                                     }).toList(),
                                   );

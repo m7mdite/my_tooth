@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../../utils/app_constants/status_request.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class ViewCategorysPage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
@@ -11,16 +12,8 @@ class ViewCategorysPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("الفئات"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => controller.getAllCategory(),
-          ),
-        ],
+      appBar: CustomAppBar(
+        title: "عرض الفئات",
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.getAllCategory(),
@@ -33,9 +26,17 @@ class ViewCategorysPage extends StatelessWidget {
             if (controller.categorys.isEmpty) {
               return const Center(child: Text("لا توجد فئات"));
             }
-            return ListView.builder(
+            return ListView.separated(
               padding: const EdgeInsets.all(12),
               itemCount: controller.categorys.length,
+              separatorBuilder: (context, index) {
+                return const Divider(
+                  color: Colors.blue,
+                  endIndent: 50,
+                  indent: 50,
+                  thickness: 1,
+                );
+              },
               itemBuilder: (context, index) {
                 final category = controller.categorys[index];
                 final categoryName = category['category'] ?? "اسم غير متوفر";
@@ -46,13 +47,13 @@ class ViewCategorysPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: Text(
-                        "${index + 1}",
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    // leading: CircleAvatar(
+                    //   backgroundColor: Colors.blue,
+                    //   child: Text(
+                    //     "${index + 1}",
+                    //     style: const TextStyle(color: Colors.white),
+                    //   ),
+                    // ),
                     title: Text(
                       categoryName,
                       style: const TextStyle(fontWeight: FontWeight.w500),

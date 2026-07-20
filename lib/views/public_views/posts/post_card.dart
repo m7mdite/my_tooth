@@ -16,7 +16,8 @@ class PostCard extends StatelessWidget {
   final VoidCallback? onComment;
   final VoidCallback? onEdit;    // ← جديد
   final VoidCallback? onDelete; // ← جديد
-   _getRole() async {
+  final String currentUserRole;
+    _getRole() async {
     final storage = Get.find<LocalUserStorage>();
     final role = await storage.getRole();
     return role!;
@@ -29,11 +30,12 @@ class PostCard extends StatelessWidget {
     this.onComment,
     this.onEdit,
     this.onDelete,
+    required this.currentUserRole,
   });
 
   @override
   Widget build(BuildContext context)  {
-    final role = _getRole();
+    final bool canEditOrDelete = (post.isForMe == true) || (currentUserRole == 'admin');
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       elevation: 2,
@@ -85,7 +87,7 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
                 // إذا كان المنشور للمستخدم نفسه → عرض قائمة الإجراءات
-                if (post.isForMe == true || role == 'admin')
+                if (canEditOrDelete)
                   PopupMenuButton<String>(
                     onSelected: (value) {
                       if (value == 'edit') {

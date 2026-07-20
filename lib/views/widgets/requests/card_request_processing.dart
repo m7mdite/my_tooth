@@ -345,7 +345,7 @@ class CardRequestProcessing extends StatelessWidget {
                 ),
               ],
             ),
-            if (requestModel.overseer == null && requestModel.student ==null) ...[
+            if (requestModel.overseer == null && requestModel.student ==null && requestModel.status == "pending") ...[
               Container(
                 color: Colors.white,
                 height: 1,

@@ -1,6 +1,7 @@
 class TreatmentRequestProcessingSModel {
   String? sId;
   Patient? patient;
+  String? status;
   Requestion? requestion;
   Patient? overseer;
   Patient? student;
@@ -12,6 +13,7 @@ class TreatmentRequestProcessingSModel {
   TreatmentRequestProcessingSModel(
       {this.sId,
       this.patient,
+      this.status,
       this.requestion,
       this.overseer,
       this.student,
@@ -23,6 +25,7 @@ class TreatmentRequestProcessingSModel {
   TreatmentRequestProcessingSModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     if (json.containsKey('patient')) patient = Patient.fromJson(json['patient'] as Map<String, dynamic>);
+    status = json['status'];
     requestion = json['Requestion'] != null
         ? Requestion.fromJson(json['Requestion'])
         : null;

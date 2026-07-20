@@ -5,6 +5,7 @@ import 'package:gr_flutter/services/functions/handling_data.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 
 import '../models/dashboard_model.dart';
+import '../services/local_storge/local_user_storage.dart';
 import '../services/remote/dashboard_remote.dart';
 
 
@@ -17,14 +18,20 @@ class HomeDashboardController extends GetxController {
   RxInt currentAdvIndex = 0.obs;
   late PageController advPageController;
   Timer? _advAutoScrollTimer;
+  final isAdmin = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+     _checkAdminStatus();
     advPageController = PageController(viewportFraction: 0.85);
     fetchDashboard();
   }
 
+  Future<void> _checkAdminStatus() async {
+    final role = await Get.find<LocalUserStorage>().getRole();
+    isAdmin.value = (role == 'admin');
+  }
   Future<void> fetchDashboard() async {
     isLoading.value = true;
     statusRequest.value = StatusRequest.loading;

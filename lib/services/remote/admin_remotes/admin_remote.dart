@@ -118,13 +118,17 @@ class AdminRemote {
     return response.fold((l) => l, (r) => r);
   }
 
-  addLesson(Map data) async {
-    var response = await crud.postData(
+  addLessons(List<Map<String, dynamic>> data) async {
+    var response = await crud.postManyData(
       ApiLink.weeklySchedule,
       data,
     );
     return response.fold((l) => l, (r) => r);
   }
+  Future updateLesson(String id, Map data) async {
+  var response = await crud.postData('${ApiLink.weeklySchedule}/$id', data);
+  return response.fold((l) => l, (r) => r);
+}
 
   addCategory(Map data) async {
     var response = await crud.postData(

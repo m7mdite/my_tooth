@@ -4,6 +4,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 
 import '../../../controllers/post_controllers/post_controller.dart';
 import '../../../models/posts_models/comment_model.dart';
+import '../../../services/local_storge/local_user_storage.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
 
@@ -16,13 +17,22 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
+  String currentUserRole = '';
   final PostController controller = Get.find();
   final TextEditingController commentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _loadUserRole();
     controller.fetchPostDetails(widget.postId);
+  }
+  Future<void> _loadUserRole() async {
+    final storage = Get.find<LocalUserStorage>();
+    final role = await storage.getRole();
+    setState(() {
+      currentUserRole = role ?? 'guest';
+    });
   }
 
   @override
@@ -51,6 +61,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     onComment: null, // منع فتح الشاشة مرة أخرى
                     onEdit: () => Get.to(() => EditPostScreen(post: post)),
                     onDelete: () => controller.deletePost(post.sId!),
+                    currentUserRole: currentUserRole,
                   ),
                   const Divider(thickness: 1, height: 1),
                   if (controller.postComments.isEmpty)

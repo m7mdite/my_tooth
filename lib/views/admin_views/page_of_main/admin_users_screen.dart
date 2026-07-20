@@ -4,15 +4,28 @@ import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AdminUsersScreen extends StatelessWidget {
-  final AdminUsersControllerImpl controller = Get.put(AdminUsersControllerImpl());
+  final AdminUsersControllerImpl controller =
+      Get.put(AdminUsersControllerImpl());
 
   AdminUsersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
-  appBar: CustomAppBar(title: "إدارة المستخدمين", centerTitle: true,actions: [IconButton(icon: Icon(Icons.exit_to_app_outlined), onPressed: () => controller.logout())],),
+      appBar: CustomAppBar(
+        title: "إدارة المستخدمين",
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app_outlined,
+              color: Colors.white,
+            ),
+            onPressed: () => controller.logout(),
+          ),
+        ],
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: GridView.count(

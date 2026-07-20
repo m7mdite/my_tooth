@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_reports_controller.dart';
 import 'package:gr_flutter/models/admin_models/report_model.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AdminReportsScreen extends StatelessWidget {
   final AdminReportsController controller = Get.put(AdminReportsController());
@@ -11,11 +12,7 @@ class AdminReportsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('البلاغات'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar: CustomAppBar(title: "البلاغات"),
       body: RefreshIndicator(
         onRefresh: () async {
           await controller.fetchReports();

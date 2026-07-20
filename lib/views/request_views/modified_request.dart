@@ -72,7 +72,9 @@ class ModifiedRequest extends StatelessWidget {
                   ),
                   BreakContainer(),
 
-                  // ----- شدة الألم (1-10) -----
+                  // ----- شدة الألم (1-10) مع أنيميشن متقدم -----
+                  // Container(),
+                  // ----- شدة الألم (1-10) مع أنيميشن AnimatedContainer -----
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Column(
@@ -80,7 +82,8 @@ class ModifiedRequest extends StatelessWidget {
                       children: [
                         const Text(
                           "حدد شدة الألم :",
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(height: 10),
                         Center(
@@ -95,15 +98,14 @@ class ModifiedRequest extends StatelessWidget {
                               allowHalfRating: false,
                               itemCount: 10,
                               itemSize: 20.0,
-                              itemPadding: const EdgeInsets.symmetric(
-                                  horizontal: 1.0),
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 1.0),
                               itemBuilder: (context, index) {
                                 final number = index + 1;
-                                final isSelected = controller
-                                        .selectedPainSeverity.value >=
-                                    number;
-                          
-                                // ✅ إيموجي حسب شدة الألم (1-10)
+                                final isSelected =
+                                    controller.selectedPainSeverity.value >=
+                                        number;
+
                                 String emoji;
                                 Color emojiColor;
                                 switch (number) {
@@ -151,23 +153,33 @@ class ModifiedRequest extends StatelessWidget {
                                     emoji = '😊';
                                     emojiColor = Colors.green.shade400;
                                 }
-                          
+
+                                // ✅ AnimatedContainer مع transform و decoration
                                 return AnimatedContainer(
-                                  duration:
-                                      const Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.elasticOut,
                                   transform: Matrix4.identity()
-                                    ..scale(isSelected ? 1.0 : 0.85),
+                                    ..scale(isSelected ? 1.15 : 0.85)
+                                    ..rotateZ(isSelected ? 0.05 : 0.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: isSelected
-                                          ? emojiColor.withValues(
-                                              alpha: 0.15)
+                                          ? emojiColor.withValues(alpha: 0.15)
                                           : Colors.transparent,
                                       border: isSelected
                                           ? Border.all(
                                               color: emojiColor, width: 2)
+                                          : null,
+                                      boxShadow: isSelected
+                                          ? [
+                                              BoxShadow(
+                                                color: emojiColor.withValues(
+                                                    alpha: 0.3),
+                                                blurRadius: 8,
+                                                spreadRadius: 1,
+                                              )
+                                            ]
                                           : null,
                                     ),
                                     child: Padding(
@@ -175,7 +187,7 @@ class ModifiedRequest extends StatelessWidget {
                                       child: Text(
                                         emoji,
                                         style: TextStyle(
-                                          fontSize: 22,
+                                          fontSize: 24,
                                           color: isSelected
                                               ? emojiColor
                                               : Colors.grey.shade400,
@@ -186,33 +198,45 @@ class ModifiedRequest extends StatelessWidget {
                                 );
                               },
                               onRatingUpdate: (rating) {
+                                final newValue = rating.round();
                                 controller.selectedPainSeverity.value =
-                                    rating.round();
-                                controller.pendingRequestModel
-                                    .requestion!.painSeverity =
-                                    rating.round();
+                                    newValue;
+                                controller.pendingRequestModel.requestion!
+                                    .painSeverity = newValue;
                                 controller.update();
                               },
                               updateOnDrag: true,
                             ),
                           ),
                         ),
-                        // عرض القيمة المختارة
-                        Obx(() => Center(
+                        const SizedBox(height: 8),
+                        // عرض القيمة المختارة مع أنيميشن
+                        Obx(() => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: controller.selectedPainSeverity.value >=
+                                        8
+                                    ? Colors.red.shade100
+                                    : controller.selectedPainSeverity.value >= 5
+                                        ? Colors.orange.shade100
+                                        : Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               child: Text(
                                 'القيمة المختارة: ${controller.selectedPainSeverity.value}',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                  color: controller.selectedPainSeverity
-                                              .value >=
-                                          8
-                                      ? Colors.red
-                                      : controller.selectedPainSeverity
-                                                  .value >=
-                                              5
-                                          ? Colors.orange
-                                          : Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color:
+                                      controller.selectedPainSeverity.value >= 8
+                                          ? Colors.red.shade700
+                                          : controller.selectedPainSeverity
+                                                      .value >=
+                                                  5
+                                              ? Colors.orange.shade700
+                                              : Colors.green.shade700,
                                 ),
                               ),
                             )),
@@ -221,18 +245,23 @@ class ModifiedRequest extends StatelessWidget {
                   ),
                   BreakContainer(),
 
+                  // ============================================
+                  // باقي الحقول كما هي (بدون تغيير)
+                  // ============================================
+
                   if (controller.pendingRequestModel.requestion!.painSeverity !=
                       0) ...[
                     RowContainerWithTitle(
                       title: "متى يحصل الألم؟ ",
                       text: controller.pendingRequestModel.requestion!.painTime,
                       onChanged: (p0) {
-                        controller.pendingRequestModel.requestion!.painTime = p0;
+                        controller.pendingRequestModel.requestion!.painTime =
+                            p0;
                       },
                     ),
                     BreakContainer(),
                   ],
-                  // ... باقي الحقول كما هي ...
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -500,6 +529,8 @@ class ModifiedRequest extends StatelessWidget {
   }
 }
 
+// ===== باقي الويدجت المساعدة كما هي (بدون تغيير) =====
+// ... (RowContainerWithTitle, ColumnContainerWithTitle, SelectFromItems, SelectFromItemsMap, BreakContainer)
 // ===== باقي الويدجت المساعدة (RowContainerWithTitle, ColumnContainerWithTitle, SelectFromItems, SelectFromItemsMap, BreakContainer) =====
 
 class RowContainerWithTitle extends StatelessWidget {

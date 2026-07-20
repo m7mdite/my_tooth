@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
+import '../../widgets/custom_app_bar.dart';
+
 class AddOverSeerPage extends StatelessWidget {
   final AdminUsersControllerImpl controller = Get.put(AdminUsersControllerImpl());
   AddOverSeerPage({super.key});
@@ -9,11 +11,7 @@ class AddOverSeerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("إضافة مشرف جديد"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar:CustomAppBar(title: "إضافة مشرف",),
       body: Form(
         key: controller.formKey,
         child: ListView(

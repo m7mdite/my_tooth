@@ -55,6 +55,13 @@ class AdminUsersControllerImpl extends AdminUsersController {
   AdminRemote adminRemote = AdminRemote(Get.find());
   late StatusRequest statusRequest;
 
+
+
+  @override
+  void onInit() {
+    getAllOverSeers();
+    super.onInit();
+  }
   @override
   toAddOverSeerPage() {
     Get.toNamed(AppRroute.addOverSeer);

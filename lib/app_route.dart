@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/bindings/auth_binding.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/admin_home_screen.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/main_screen__admin.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/main_screen_patient.dart';
@@ -8,6 +9,7 @@ import 'package:gr_flutter/views/public_views/change_password_screen.dart';
 import 'package:gr_flutter/views/public_views/contact_support_screen.dart';
 import 'package:gr_flutter/views/public_views/privacy_policy_screen.dart';
 
+import 'bindings/ai_chat_binding.dart';
 import 'bindings/feed_binding.dart';
 import 'bindings/login_binding.dart';
 import 'bindings/main_overseer_binding.dart';
@@ -34,8 +36,11 @@ import 'views/admin_views/users/view_over_seers_page.dart';
 import 'views/admin_views/users/view_patientes_page.dart';
 import 'views/admin_views/users/view_students_page.dart';
 import 'views/admin_views/users/view_verify_students_page.dart';
+import 'views/auth/auth_screen.dart';
 import 'views/auth/login_screen.dart';
 import 'views/auth/register_screen.dart';
+import 'views/guest_view/main_screen_guest.dart';
+import 'views/onboarding_screen.dart';
 import 'views/public_views/chat_screen.dart';
 import 'views/public_views/conversations_screen.dart';
 import 'views/public_views/notifications_view.dart';
@@ -51,14 +56,14 @@ import 'views/student_views/page_of_main/student_home_screen.dart';
 import 'views/student_views/page_of_main/student_requests_screen.dart';
 import 'views/student_views/page_of_main/show_owned_student_request.dart';
 import 'views/student_views/view_verify_page.dart';
-import 'views/widgets/ai/chat_gimini.dart';
+import 'views/widgets/ai/ai_chat_screen.dart';
 import 'views/public_views/view_other_profile.dart';
 
 
 
 List<GetPage<dynamic>> routes = [
 
-
+GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),  
 
 
   // ========== AUTH ==========
@@ -67,19 +72,25 @@ List<GetPage<dynamic>> routes = [
     page: () => SplashScreen(),
     // binding: RegisterBinding()  
   ),
-  GetPage( 
-    name: AppRroute.login,
-    page: () => LoginScreen(),
-    binding: LoginBinding(),
-  ),
+  // GetPage( 
+  //   name: AppRroute.login,
+  //   page: () => LoginScreen(),
+  //   binding: LoginBinding(),
+  // ),
+  // GetPage(
+  //   name: AppRroute.register,
+  //   page: () => RegisterScreen(),
+  //   binding: RegisterBinding(),
+  // ),
   GetPage(
-    name: AppRroute.register,
-    page: () => RegisterScreen(),
-    binding: RegisterBinding(),
+    name: AppRroute.auth,
+    page: () => AuthScreen(),
+    binding: AuthBinding()
   ),
 
   // ========== GENERAL ==========
   GetPage(name: AppRroute.splash, page: () => const SplashScreen()),
+  GetPage(name: AppRroute.mainScreenGuest, page: () =>  MainScreenGuest()),
   GetPage(
     name: AppRroute.notificationsView,
     page: () => NotificationsView(),
@@ -94,7 +105,8 @@ List<GetPage<dynamic>> routes = [
   ),
   GetPage(
     name: AppRroute.aiChat,
-    page: () => ChatScreen(),
+    page: () => AiChatScreen(),
+    binding: AiChatBinding(),
   ),
   GetPage(
     name: AppRroute.changePassword,
@@ -114,7 +126,7 @@ List<GetPage<dynamic>> routes = [
     name: AppRroute.chat,
     page: () {
       final args = Get.arguments as Map<String, dynamic>;
-      return ChatScreenn(
+      return ChatScreen(
         otherPartyProfile: args['otherPartyProfile'],
         conversationId: args['conversationId'],
       );
@@ -293,9 +305,12 @@ List<GetPage<dynamic>> routes = [
 ];
 
 class AppRroute {
+
+  static const String onboarding = '/onboarding';
   // ========== AUTH ==========
   static const String login = "/login";
   static const String register = "/register";
+  static const String auth = "/auth";
 
   // ========== GENERAL ==========
   static const String homeScreenAll = "/homeScreenAll";
@@ -318,6 +333,7 @@ class AppRroute {
   static const String unifiedSetting = "/unified_setting";
   static const String unifiedProfileScreen = "/unifiedProfileScreen";
   static const String unifiedEditProfile = "/unified_edit_profile";
+  static const String mainScreenGuest = "/mainScreenGuest";
 
   // ========== STUDENT ==========
   static const String mainScreenStudent = "/mainScreenStudent";

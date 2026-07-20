@@ -24,6 +24,7 @@ class RegisterControllerImp extends RegisterController {
   late TextEditingController password;
   late TextEditingController confirmPassword;
   late TextEditingController universityNumber;
+  final RxBool isLoading = false.obs;
   String role = 'patient';
   String gender = 'male';
   Map<String, dynamic> data = <String, dynamic>{};
@@ -60,6 +61,7 @@ class RegisterControllerImp extends RegisterController {
     print("Data to send: $data");
     var formData = formStateRegister.currentState;
     if (formData!.validate()) {
+      isLoading.value = true;
       statusRequest = StatusRequest.loading;
       update();
       try {
@@ -77,6 +79,8 @@ class RegisterControllerImp extends RegisterController {
         statusRequest = StatusRequest.serverFailure;
         update();
         print("Exception in register: $e");
+      }finally{
+        isLoading.value = false;
       }
     }
   }

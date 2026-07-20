@@ -24,14 +24,18 @@ class _SplashScreenState extends State<SplashScreen> {
     final storage = Get.find<LocalUserStorage>();
     final token = await storage.getToken();
     final role = await storage.getRole();
+    final hasSeenOnboarding = await storage.hasSeenOnboarding();
     print("$token");
     print("$role");
-    if (token != null && token.isNotEmpty) {
+    print(  "$hasSeenOnboarding");
+    if (!hasSeenOnboarding) {
+      Get.offAllNamed(AppRroute.onboarding);
+    } else if (token != null && token.isNotEmpty) {
       // يوجد توكن → انتقل إلى الصفحة المناسبة حسب الدور
       _navigateToHome(role);
     } else {
       // لا يوجد توكن → انتقل إلى صفحة التسجيل
-      Get.offAllNamed(AppRroute.register);
+      Get.offAllNamed(AppRroute.auth);
     }
   }
 

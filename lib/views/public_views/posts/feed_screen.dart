@@ -7,6 +7,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import 'package:gr_flutter/views/public_views/posts/create_post_screen.dart';
 import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
 import '../../../app_route.dart';
+import '../../../services/local_storge/local_user_storage.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
 
@@ -18,6 +19,7 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  String currentUserRole = '';
   final PostController controller = Get.put(PostController());
   final ScrollController _scrollController = ScrollController();
 
@@ -31,7 +33,15 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     super.initState();
+    _loadUserRole();
     _scrollController.addListener(_onScroll);
+  }
+  Future<void> _loadUserRole() async {
+    final storage = Get.find<LocalUserStorage>();
+    final role = await storage.getRole();
+    setState(() {
+      currentUserRole = role ?? 'guest';
+    });
   }
 
   void _onScroll() {
@@ -200,6 +210,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               Get.to(() => EditPostScreen(post: post));
                             },
                             onDelete: () => controller.deletePost(post.sId!),
+                            currentUserRole: currentUserRole,
                           ),
                         ),
                       ),

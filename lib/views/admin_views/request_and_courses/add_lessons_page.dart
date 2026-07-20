@@ -1,223 +1,227 @@
-import 'package:dropdown_search/dropdown_search.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
-
-import '../../../models/public_models/profile_model.dart';
-import '../../request_views/modified_request.dart';
+import 'package:gr_flutter/models/admin_models/course_model.dart';
+import 'package:gr_flutter/models/public_models/profile_model.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AddLessonsPage extends StatelessWidget {
   final AdminRequestControllerImpl controller =
       Get.find<AdminRequestControllerImpl>();
+
   AddLessonsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("إضافة درس")),
+      appBar: CustomAppBar(
+        titleWidget: GetBuilder<AdminRequestControllerImpl>(
+          builder: (_) {
+            final categoryName = controller.categorys.firstWhere(
+              (c) => c['id'] == controller.selectedCategoryId,
+              orElse: () => {'category': 'غير محددة'},
+            )['category'];
+            return Text(" الفئة: $categoryName",style: const TextStyle(fontSize: 16),);
+          },
+        ),
+        actions: [
+          GetBuilder<AdminRequestControllerImpl>(
+            builder: (_) {
+              return DropdownButton<String>(
+                hint: const Text("اختر الفئة"),
+                value: controller.selectedCategoryId.isEmpty
+                    ? null
+                    : controller.selectedCategoryId,
+                items: controller.categorys.map((item) {
+                  return DropdownMenuItem<String>(
+                    value: item['id'],
+                    child: Text(item['category'] ?? "بدون اسم"),
+                  );
+                }).toList(),
+                onChanged: (newId) {
+                  if (newId != null && newId != controller.selectedCategoryId) {
+                    controller.selectedCategoryId = newId;
+                    controller.clearLessonsQueue();
+                    controller.update();
+                  }
+                },
+              );
+            },
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
       body: GetBuilder<AdminRequestControllerImpl>(
         builder: (controller) {
-          return ListView(
-            padding: EdgeInsets.all(20),
+          final days = AppConstants.days;
+          final periods = AppConstants.periodLessons;
+
+          return Column(
             children: [
-              // SelectFromItemsMap(
-              //         items: controller.courses,
-              //         selectedId:
-              //             controller.courses.isNotEmpty
-              //                 ? controller.courses[0]['id']
-              //                 : null,
-              //         title: "حدد المادة",
-              //         onChanged: (value) {
-              //           controller.courseModel.caseType!.sId = value!;
-              //           controller.update();
-              //         },
-              //       ),
-              // SizedBox(height: 20,),
-
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("حدد الفئة   "),
-                    DropdownButton<String>(
-                      hint: Text("حدد الفئة"),
-                      value: controller.selectedCategoryId == ""
-                          ? null
-                          : controller.selectedCategoryId,
-                      items: controller.categorys.map((item) {
-                        return DropdownMenuItem<String>(
-                          value: item['id'],
-                          child: Text(item['category'] ?? "no name"),
-                        );
-                      }).toList(),
-                      focusColor: const Color.fromARGB(45, 158, 158, 158),
-                      borderRadius: BorderRadius.circular(30),
-                      onChanged: (newId) {
-                        if (newId != null) {
-                          controller.selectedCategoryId = newId;
-                          
-                        }
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    child: Table(
+                      border: TableBorder.all(color: Colors.grey.shade300),
+                      columnWidths: {
+                        0: const FixedColumnWidth(100), // عمود الأيام
+                        for (int i = 0; i < periods.length; i++)
+                          i + 1: const FixedColumnWidth(150), // أعمدة الفترات
                       },
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("حدد المادة   "),
-                    DropdownButton<String>(
-                      hint: Text("حدد المادة"),
-                      value: controller.selectedCourseId == ""
-                          ? null
-                          : controller.selectedCourseId,
-                      items: controller.courses.map((item) {
-                        return DropdownMenuItem<String>(
-                          value: item.sId,
-                          child: Text(item.courseName ?? "no name"),
-                        );
-                      }).toList(),
-                      focusColor: const Color.fromARGB(45, 158, 158, 158),
-                      borderRadius: BorderRadius.circular(30),
-                      onChanged: (newId) {
-                        if (newId != null) {
-                          controller.selectedCourseId = newId;
-                          
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-              // ✅ الاختيار المتعدد للمشرفين
-              Center(
-                child: DropdownSearch<ProfileModel>.multiSelection(
-                  // دالة items للبحث والتصفية
-                  items: (filter, infiniteScrollProps) {
-                    if (controller.overSeers.isEmpty) {
-                      return [];
-                    }
-                
-                    if (filter.isEmpty) {
-                      return controller.overSeers.toList();
-                    }
-                
-                    return controller.overSeers
-                        .where((overseer) =>
-                            overseer.firstName != null &&
-                            overseer.firstName!
-                                .toLowerCase()
-                                .contains(filter.toLowerCase()))
-                        .toList();
-                  },
-                
-                  // مقارنة العناصر
-                  compareFn: (item1, item2) => item1.user == item2.user,
-                
-                  // التعامل مع التغيير (قائمة من العناصر المختارة)
-                  onChanged: (List<ProfileModel>? selectedItems) {
-                    if (selectedItems != null) {
-                      controller.selectedOverseers = selectedItems;
-                      print("تم اختيار ${selectedItems.length} مشرف");
-                    }
-                  },
-                
-                  // العناصر المختارة مبدئياً
-                  selectedItems: controller.selectedOverseers,
-                
-                  // عرض العناصر المختارة
-                  dropdownBuilder: (context, selectedItems) {
-                    if (selectedItems.isEmpty) {
-                      return Text(
-                        "اختر المشرفين...",
-                        style: TextStyle(color: Colors.grey[600]),
-                      );
-                    }
-                    return Text(
-                      "تم اختيار ${selectedItems.length} مشرف",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    );
-                  },
-                
-                  // كيفية عرض كل عنصر في القائمة
-                  itemAsString: (ProfileModel? overseer) =>
-                      "${overseer!.firstName} ${overseer.lastName}",
-                
-                  // إعدادات القائمة المنبثقة للاختيار المتعدد
-                  popupProps: PopupPropsMultiSelection.menu(
-                    showSearchBox: true,
-                    searchDelay: Duration(milliseconds: 500),
-                    showSelectedItems: true, // عرض المختارة في الأعلى
-                    searchFieldProps: TextFieldProps(
-                      decoration: InputDecoration(
-                        hintText: "ابحث عن مشرف...",
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
-                      ),
+                      children: [
+                        // ---------- صف العناوين ----------
+                        TableRow(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              color: Colors.grey.shade200,
+                              child: const Text(
+                                "اليوم \\ الفترة",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            ...periods.map((period) => Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: Colors.grey.shade200,
+                                  child: Text(
+                                    period,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        // ---------- صفوف الأيام ----------
+                        ...days.map((day) {
+                          return TableRow(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                color: Colors.grey.shade100,
+                                child: Text(
+                                  day,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              ...periods.map((period) {
+                                // 🔹 استخدام firstWhereOrNull لتجنب الخطأ
+                                final lesson = controller.lessonsQueue
+                                    .firstWhereOrNull(
+                                        (l) => l['time'] == '$day-$period');
+                                return _buildCell(
+                                  context,
+                                  day,
+                                  period,
+                                  lesson,
+                                  controller,
+                                );
+                              }),
+                            ],
+                          );
+                        }),
+                      ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              SelectFromItems(
-                items: AppConstants.days,
-                value: AppConstants.days[0],
-                title: "اختر اليوم",
-                onChanged: (value) {
-                  controller.day = value!;
-                  controller.update();
-                },
-              ),
-              SelectFromItems(
-                items: AppConstants.periodLessons,
-                value: AppConstants.periodLessons[0],
-                title: "اختر الفترة",
-                onChanged: (value) {
-                  controller.periodLesson = value!;
-                  controller.update();
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SelectFromItems(
-                items: AppConstants.hall,
-                value: AppConstants.hall[0],
-                title: "اختر القاعة",
-                onChanged: (value) {
-                  controller.hall = value!;
-                  controller.update();
-                },
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-              Center(
+              // زر حفظ الكل
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: BottonContainer(
-                  body: "اضافة",
-                  onTap: () {
-                    controller.addLesson();
-                  },
+                  body: "حفظ الدروس (${controller.lessonsQueue.length})",
+                  onTap: controller.lessonsQueue.isEmpty
+                      ? null
+                      : () {
+                          controller.submitLessons();
+                        },
                 ),
-              )
+              ),
             ],
           );
         },
       ),
     );
+  }
+
+  Widget _buildCell(
+    BuildContext context,
+    String day,
+    String period,
+    Map<String, dynamic>? lesson, // ⬅️ أصبح nullable
+    AdminRequestControllerImpl controller,
+  ) {
+    if (lesson != null) {
+      // عرض الدرس الموجود
+      final courseName = controller.courses.firstWhere(
+        (c) => c.sId == lesson['course'],
+        orElse: () => CourseModel(sId: '', courseName: 'غير معروف'),
+      ).courseName ?? 'غير معروف';
+
+      final overseersIds = lesson['overseers'] as List? ?? [];
+      final overseersNames = overseersIds.map((id) {
+        final overseer = controller.overSeers.firstWhere(
+          (o) => o.user == id,
+          orElse: () => ProfileModel(firstName: 'غير معروف', lastName: ''),
+        );
+        return "${overseer.firstName ?? ''} ${overseer.lastName ?? ''}".trim();
+      }).join('، ');
+
+      return Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: Colors.green.shade50,
+          border: Border.all(color: Colors.green.shade200),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(courseName, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text("قاعة: ${lesson['hall']}", style: const TextStyle(fontSize: 12)),
+            Text(
+              overseersNames.length > 20 ? '${overseersNames.substring(0, 20)}...' : overseersNames,
+              style: const TextStyle(fontSize: 10),
+              textAlign: TextAlign.center,
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red, size: 16),
+              onPressed: () {
+                controller.lessonsQueue.removeWhere(
+                  (l) => l['time'] == '$day-$period',
+                );
+                controller.update();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      // خلية فارغة → زر إضافة
+      return InkWell(
+        onTap: () {
+          if (controller.selectedCategoryId.isEmpty) {
+            Get.snackbar("تنبيه", "يرجى اختيار الفئة أولاً من الأعلى");
+            return;
+          }
+          controller.showAddLessonDialog(context, day, period);
+        },
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: const Center(
+            child: Icon(Icons.add_circle_outline, color: Colors.grey),
+          ),
+        ),
+      );
+    }
   }
 }

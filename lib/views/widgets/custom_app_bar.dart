@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/public_views/notifications_view.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
-
 import '../../services/local_storge/local_user_storage.dart';
-import '../../utils/app_constants/app_theme.dart'; // تأكد من المسار
+import '../../utils/app_constants/app_theme.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  // 🆕 أصبح title اختيارياً (String?)
+  final String? title;
   final List<Widget>? actions;
   final bool automaticallyImplyLeading;
   final bool notifacation;
@@ -18,15 +18,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
   final double? elevation;
   final Widget? leading;
-  final Widget? titleWidget;
+  final Widget? titleWidget; // موجود مسبقاً
   final bool showVerifiedBadge;
   final double titleSize;
   final List<BoxShadow>? titleShadows;
-  final bool useLargeTitle; // تأثير العنوان الكبير (كما في iOS)
+  final bool useLargeTitle;
 
   const CustomAppBar({
     super.key,
-    required this.title,
+    this.title, // الآن اختياري
     this.actions,
     this.automaticallyImplyLeading = true,
     this.onLeadingPressed,
@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = true,
     this.elevation = 0,
     this.leading,
-    this.titleWidget,
+    this.titleWidget, // يمكن تمرير Widget مخصص
     this.showVerifiedBadge = false,
     this.titleSize = 20,
     this.titleShadows,
@@ -50,9 +50,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final bool isStudent = localStorage.getRole() == 'student';
     final bool isVerified = localStorage.isVerified();
 
-    // اختيار التدرج المناسب (يمكن تمريره من الخارج أو اختياره ديناميكياً حسب الدور)
     final effectiveGradient =
         backgroundGradient ?? AppGradients.arcticFrostGradient;
+
+    // 🔹 بناء Widget العنوان (إما من titleWidget أو من title كنص)
+    Widget titleWidgetToDisplay = titleWidget ?? _buildTitleText();
 
     return AppBar(
       titleTextStyle: TextStyle(
@@ -60,65 +62,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         fontWeight: FontWeight.bold,
         fontSize: titleSize,
         shadows: titleShadows ??
-            [
-              const BoxShadow(
+            const [
+              BoxShadow(
                 color: Colors.black,
                 blurRadius: 10,
-                // offset: Offset(0, 2),
               ),
             ],
       ),
       title: useLargeTitle
           ? Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: titleWidget ??
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            color: titleColor ?? Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: titleSize,
-                            shadows: [
-                              BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 10,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (showVerifiedBadge && isStudent && isVerified) ...[
-                        const SizedBox(width: 8),
-                        const Icon(Icons.verified,
-                            color: Colors.white, size: 22),
-                      ],
-                    ],
-                  ),
+              child: titleWidgetToDisplay,
             )
-          : (titleWidget ??
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: titleColor ?? Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: titleSize,
-                      shadows: titleShadows,
-                    ),
-                  ),
-                  if (showVerifiedBadge && isStudent && isVerified) ...[
-                    const SizedBox(width: 6),
-                    const Icon(Icons.verified, color: Colors.white, size: 18),
-                  ],
-                ],
-              )),
+          : titleWidgetToDisplay,
       centerTitle: centerTitle,
       backgroundColor: backgroundColor,
       flexibleSpace: (backgroundColor == null)
@@ -155,9 +111,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: notifacation && actions == null
           ? _defaultActions(context, isStudent, isVerified)
           : actions,
-      // actions: actions ==null && notifacation  ? _defaultActions(context, isStudent, isVerified),
-      // تأثير شفافية للخلفية عند التمرير (اختياري)
       scrolledUnderElevation: 0,
+    );
+  }
+
+  // 🆕 دالة مساعدة لبناء النص إذا لم يتم تمرير titleWidget
+  Widget _buildTitleText() {
+    final String displayText = title ?? '';
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          displayText,
+          style: TextStyle(
+            color: titleColor ?? Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: titleSize,
+            shadows: titleShadows ??
+                [
+                  const BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 10,
+                  ),
+                ],
+          ),
+        ),
+        if (showVerifiedBadge && title != null) ...[
+          const SizedBox(width: 6),
+          const Icon(Icons.verified, color: Colors.white, size: 18),
+        ],
+      ],
     );
   }
 
@@ -167,7 +150,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       CustomIconAppBar(
         iconData: Icons.notifications_none_outlined,
         onTap: () {
-          () => Get.to(() => const NotificationsView());
+          Get.to(() => const NotificationsView());
         },
       ),
       if (isStudent && !isVerified)

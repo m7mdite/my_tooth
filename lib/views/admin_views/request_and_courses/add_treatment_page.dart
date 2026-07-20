@@ -4,6 +4,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 import 'package:gr_flutter/models/admin_models/course_model.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 class AddTreatmentPage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
@@ -13,11 +14,7 @@ class AddTreatmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("إضافة معالجة"),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar: CustomAppBar(actions: [], title: "إضافة معالجة", centerTitle: true),
       body: GetBuilder<AdminRequestControllerImpl>(
         builder: (controller) {
           if (controller.statusRequest == StatusRequest.loading) {
@@ -110,7 +107,7 @@ class AddTreatmentPage extends StatelessWidget {
                     ),
                     child: const Text(
                       "حفظ المعالجة",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 18,color: Colors.white),
                     ),
                   ),
                 ),
