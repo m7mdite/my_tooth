@@ -5,7 +5,7 @@ import 'package:gr_flutter/views/admin_views/page_of_main/admin_request_screen.d
 import 'package:gr_flutter/views/admin_views/page_of_main/admin_users_screen.dart';
 import 'package:gr_flutter/views/public_views/posts/feed_screen.dart';
 
-import '../../views/home_dashboard_screen.dart';
+import '../../views/public_views/home_dashboard_screen.dart';
 
 abstract class MainAdminController extends GetxController {}
 

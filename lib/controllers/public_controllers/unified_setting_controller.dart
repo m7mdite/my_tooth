@@ -72,13 +72,13 @@ class UnifiedSettingController extends GetxController {
       if (role.value == 'student') {
         universityNumber.value = data['university_number'] ?? "";
         category.value = data['category']?['category'] ?? "";
-        completedCases.value = data['count_cases_finishds'] ?? 0;
+        completedCases.value = data['count_cases_finished'] ?? 0;
         inProgressCases.value = data['count_cases_in_process'] ?? 0;
         isVerified.value = data['is_verified'] ?? false;
         await localStorage.saveIsVerified(isVerified.value);
       }
       if (role.value == 'overseer') {
-        completedCases.value = data['count_cases_finishds'] ?? 0;
+        completedCases.value = data['count_cases_finished'] ?? 0;
         inProgressCases.value = data['count_cases_in_process'] ?? 0;
       }
       if (role.value == 'patient') {

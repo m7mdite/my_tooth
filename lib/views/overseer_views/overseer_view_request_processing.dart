@@ -4,12 +4,13 @@ import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 
 import '../../controllers/overseer_controllers/overseer_requests_controller.dart';
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../models/requests_models/treatment_request_processing_s_model.dart';
 
 class OverseerViewRequestProcessing extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =
       Get.put(OverseerRequestsControllerImpl());
-  final TreatmentRequestProcessingSModel requestModel;
+  final TreatmentRequestModel requestModel;
   OverseerViewRequestProcessing({super.key, required this.requestModel});
 
   @override

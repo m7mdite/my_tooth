@@ -47,6 +47,7 @@ import 'views/public_views/notifications_view.dart';
 import 'views/overseer_views/page_of_main/main_screen_overseer.dart';
 import 'views/public_views/posts/create_post_screen.dart';
 import 'views/public_views/posts/feed_screen.dart';
+import 'views/public_views/posts/pending_posts_screen.dart';
 import 'views/public_views/posts/post_detail_screen.dart';
 import 'views/public_views/settings/unified_edit_profile_screen.dart';
 import 'views/public_views/settings/unified_setting_screen.dart';
@@ -147,6 +148,10 @@ GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),
     name: AppRroute.postDetail,
     page: () => PostDetailScreen(postId: Get.arguments),
   ),
+  GetPage(
+  name: AppRroute.pendingPosts,
+  page: () => const PendingPostsScreen(),
+),
 
   // ================================================================= UNIFIED SETTINGS & PROFILE ==========
   GetPage(
@@ -328,6 +333,7 @@ class AppRroute {
   static const String feed = "/feed";
   static const String createPost = "/create_post";
   static const String postDetail = "/post_detail";
+  static const String pendingPosts = '/pending_posts';
 
   // ========== UNIFIED ==========
   static const String unifiedSetting = "/unified_setting";

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/public_views/settings/unified_setting_screen.dart';
 
-import '../../views/home_dashboard_screen.dart';
+import '../../views/public_views/home_dashboard_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_home_screen.dart';
 import '../../views/overseer_views/page_of_main/overseer_request_screen.dart';
 import '../../views/public_views/posts/feed_screen.dart';

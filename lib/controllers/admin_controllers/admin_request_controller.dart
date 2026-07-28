@@ -10,6 +10,7 @@ import 'package:gr_flutter/services/functions/show_snack.dart';
 import '../../models/admin_models/course_model.dart';
 import '../../models/admin_models/lesson_model.dart';
 import '../../models/public_models/profile_model.dart';
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../models/requests_models/treatment_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/remote/admin_remotes/admin_remote.dart';
@@ -61,10 +62,10 @@ class AdminRequestControllerImpl extends AdminRequestController {
   List<ProfileModel> overSeers = [];
   // List lessons = [];
   List<Map<String, String>> categorys = [];
-  List<PendingRequestModel> pendingRequests = [];
-  List<TreatmentRequestProcessingSModel> inProcessingRequests = [];
-  List<TreatmentRequestProcessingSModel> finishedRequests = [];
-  List<TreatmentRequestProcessingSModel> rejectedRequests = [];
+  List<TreatmentRequestModel> pendingRequests = [];
+  List<TreatmentRequestModel> inProcessingRequests = [];
+  List<TreatmentRequestModel> finishedRequests = [];
+  List<TreatmentRequestModel> rejectedRequests = [];
   Map category = {};
   Map<String, dynamic> lesson = {};
   RxList<LessonModel> lessons = <LessonModel>[].obs;
@@ -537,12 +538,12 @@ class AdminRequestControllerImpl extends AdminRequestController {
   getAllFinishedRequests() async {
     statusRequest = StatusRequest.loading;
     update();
-    var response = await adminRemote.getAllFinishedRequests();
+    var response = await adminRemote.getCompletedRequests();
     statusRequest = handlingData(response);
     print("$response");
     if (statusRequest == StatusRequest.success) {
       finishedRequests = (response['data'] as List)
-          .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
+          .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
       // print("${response['data']}");
       print(
@@ -561,7 +562,7 @@ class AdminRequestControllerImpl extends AdminRequestController {
     print("$response");
     if (statusRequest == StatusRequest.success) {
       inProcessingRequests = (response['data'] as List)
-          .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
+          .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
       // print("${response['data']}");
       print(
@@ -580,7 +581,7 @@ class AdminRequestControllerImpl extends AdminRequestController {
     print("$response");
     if (statusRequest == StatusRequest.success) {
       pendingRequests = (response['data'] as List)
-          .map((c) => PendingRequestModel.fromJson(c))
+          .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
       // print("${response['data']}");
       print(" ${pendingRequests.length} pending requests loaded successfully");
@@ -598,7 +599,7 @@ class AdminRequestControllerImpl extends AdminRequestController {
     print("$response");
     if (statusRequest == StatusRequest.success) {
       rejectedRequests = (response['data'] as List)
-          .map((c) => TreatmentRequestProcessingSModel.fromJson(c))
+          .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
       // print("${response['data']}");
       print(

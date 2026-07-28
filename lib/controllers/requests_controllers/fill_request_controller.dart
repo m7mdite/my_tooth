@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/functions/upload_picture.dart';
 import '../../services/remote/public_remotes/request_remote.dart';
@@ -26,7 +27,7 @@ class FillRequestControllerImp extends FillRequestController {
   File? image;
 
   Widget? bottomNavigationBar;
-  late PendingRequestModel pendingRequestModel;
+  late TreatmentRequestModel treatmentRequestModel;
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
   late StatusRequest statusRequest;
   final RequestRemote requestData = RequestRemote(Get.find());
@@ -97,9 +98,9 @@ void goToNextStep() {
     if (!validateForm()) {
       return false;
     }
-    print("${pendingRequestModel.toJson()}");
-    print("${pendingRequestModel.toJson().runtimeType}");
-    final formData = pendingRequestModel.toJson();
+    print("${treatmentRequestModel.toJson()}");
+    print("${treatmentRequestModel.toJson().runtimeType}");
+    final formData = treatmentRequestModel.toJson();
 
     print("formData: $formData");
     statusRequest = StatusRequest.loading;
@@ -149,8 +150,8 @@ void goToNextStep() {
     }
 
     // ✅ التحقق من اختيار نوع المعالجة
-    if (pendingRequestModel.caseType?.sId == null ||
-        pendingRequestModel.caseType!.sId!.isEmpty) {
+    if (treatmentRequestModel.caseType?.sId == null ||
+        treatmentRequestModel.caseType!.sId!.isEmpty) {
       Get.snackbar('تنبيه', 'الرجاء اختيار نوع المعالجة');
       return false;
     }
@@ -161,52 +162,52 @@ void goToNextStep() {
     }
 
     // ✅ التحقق من اختيار شدة الألم
-    if (pendingRequestModel.requestion!.painSeverity == null ||
-        pendingRequestModel.requestion!.painSeverity! < 1 || pendingRequestModel.requestion!.painSeverity! >10) {
+    if (treatmentRequestModel.requestion!.painSeverity == null ||
+        treatmentRequestModel.requestion!.painSeverity! < 1 || treatmentRequestModel.requestion!.painSeverity! >10) {
       Get.snackbar('تنبيه', 'الرجاء تحديد شدة الألم');
       return false;
     }
 
-    if (pendingRequestModel.requestion!.gender != "male" &&
-        pendingRequestModel.requestion!.gender != "female" &&
-        pendingRequestModel.requestion!.gender != "other") {
+    if (treatmentRequestModel.requestion!.gender != "male" &&
+        treatmentRequestModel.requestion!.gender != "female" &&
+        treatmentRequestModel.requestion!.gender != "other") {
       Get.snackbar('تحذير', 'الرجاء تحديد الجنس');
       return false;
     }
 
-    if (pendingRequestModel.requestion!.toothLocation == null ||
-        pendingRequestModel.requestion!.toothLocation!.isEmpty) {
+    if (treatmentRequestModel.requestion!.toothLocation == null ||
+        treatmentRequestModel.requestion!.toothLocation!.isEmpty) {
       Get.snackbar('تحذير', 'الرجاء إدخال موقع السن');
       return false;
     }
-    if (pendingRequestModel.requestion!.moreDetails!.previousTreatment ==
+    if (treatmentRequestModel.requestion!.moreDetails!.previousTreatment ==
         null) {
       Get.snackbar('تحذير', "حدد في ما إذا قمت بمعالجة هذا السن من قبل أم لا");
       return false;
     }
-    if (pendingRequestModel.requestion!.painTime == null ||
-        pendingRequestModel.requestion!.painTime!.isEmpty) {
+    if (treatmentRequestModel.requestion!.painTime == null ||
+        treatmentRequestModel.requestion!.painTime!.isEmpty) {
       Get.snackbar('تحذير', 'الرجاء إدخال  وقت الألم');
       return false;
     }
     if (medicines == true &&
-        (pendingRequestModel.requestion!.moreDetails!.medicines == null ||
-            pendingRequestModel.requestion!.moreDetails!.medicines!.isEmpty)) {
+        (treatmentRequestModel.requestion!.moreDetails!.medicines == null ||
+            treatmentRequestModel.requestion!.moreDetails!.medicines!.isEmpty)) {
       Get.snackbar(
           'تحذير', 'الرجاء إدخال الأدوية أو المكملات التي تتناولها أو إختر لا');
       return false;
     }
     if (chronicDiseases == true &&
-        (pendingRequestModel.requestion!.moreDetails!.chronicDiseases == null ||
-            pendingRequestModel
+        (treatmentRequestModel.requestion!.moreDetails!.chronicDiseases == null ||
+            treatmentRequestModel
                 .requestion!.moreDetails!.chronicDiseases!.isEmpty)) {
       Get.snackbar(
           'تحذير', 'الرجاء إدخال الأمراض المزمنة التي تعاني منها أو إختر لا');
       return false;
     }
 
-    if (pendingRequestModel.requestion!.age == null ||
-        pendingRequestModel.requestion!.age!.isEmpty) {
+    if (treatmentRequestModel.requestion!.age == null ||
+        treatmentRequestModel.requestion!.age!.isEmpty) {
       Get.snackbar('تحذير', 'الرجاء إدخال  العمر ');
       return false;
     }
@@ -228,8 +229,8 @@ void goToNextStep() {
   // ===== تهيئة النموذج =====
   formatRequest() {
     selectedPainSeverity.value = 0;
-    pendingRequestModel = PendingRequestModel(
-      requestion: RequestionModel(
+    treatmentRequestModel = TreatmentRequestModel(
+      requestion: Requestion(
         painSeverity: 0,
         painTime: "لا يوجد",
         toothLocation: "",
@@ -269,7 +270,7 @@ void goToNextStep() {
     if (!validateForm()) {
       return;
     }
-    final formData = pendingRequestModel.toJson();
+    final formData = treatmentRequestModel.toJson();
     statusRequest = StatusRequest.loading;
 
     try {

@@ -9,6 +9,8 @@ import '../../services/functions/handling_data.dart';
 class PostController extends GetxController {
   final PostRemote remote = PostRemote(Get.find());
   RxList<PostModel> posts = <PostModel>[].obs;
+  RxList<PostModel> pendingPosts = <PostModel>[].obs;
+  RxBool isLoadingPending = false.obs;
   RxInt currentPage = 1.obs;
   RxInt totalPages = 1.obs;
   RxBool hasMore = true.obs;
@@ -25,8 +27,7 @@ class PostController extends GetxController {
     // fetchPosts();
   }
 
-
-Future<void> fetchPosts({bool refresh = false}) async {
+  Future<void> fetchPosts({bool refresh = false}) async {
     if (refresh) {
       currentPage.value = 1;
       posts.clear();
@@ -41,7 +42,7 @@ Future<void> fetchPosts({bool refresh = false}) async {
 
     final response = await remote.getAllPosts(
       page: currentPage.value,
-      limit: 10, // عدد البوستات في كل طلب
+      limit: 10,
       filter: currentFilter,
     );
 
@@ -55,12 +56,9 @@ Future<void> fetchPosts({bool refresh = false}) async {
       } else {
         posts.addAll(newPosts);
       }
-
-      // تحديث معلومات الصفحات
       totalPages.value = response['pagination']['total_pages'] ?? 1;
       hasMore.value = currentPage.value < totalPages.value;
       if (hasMore.value) currentPage.value++;
-      
       posts.refresh();
     } else {
       Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل البوستات');
@@ -70,7 +68,7 @@ Future<void> fetchPosts({bool refresh = false}) async {
     update();
   }
 
-Future<void> loadMorePosts() async {
+  Future<void> loadMorePosts() async {
     if (hasMore.value && !isLoadingMore.value) {
       await fetchPosts(refresh: false);
     }
@@ -80,7 +78,6 @@ Future<void> loadMorePosts() async {
     currentFilter = filter;
     fetchPosts(refresh: true);
   }
-
 
   // Future<void> fetchPosts() async {
   //   isLoading.value = true;
@@ -94,14 +91,14 @@ Future<void> loadMorePosts() async {
   //     Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل البوستات');
   //   }
   //   isLoading.value = false;
-    
+
   // }
 
   Future<void> createPost(String content, List<String> imagePaths) async {
     isCreating.value = true;
     final response = await remote.createPost(content, imagePaths);
     if (response['status'] == 'success') {
-      Get.back(); // العودة من شاشة الإضافة
+      Get.back();
       await fetchPosts();
       Get.snackbar('نجاح', 'تم نشر البوست بنجاح');
     } else {
@@ -141,60 +138,60 @@ Future<void> loadMorePosts() async {
     }
   }
 
-
-
   // أضف داخل PostController
-Rx<PostModel?> selectedPost = Rx<PostModel?>(null);
-RxList<CommentModel> postComments = <CommentModel>[].obs;
-RxBool isLoadingDetails = false.obs;
+  Rx<PostModel?> selectedPost = Rx<PostModel?>(null);
+  RxList<CommentModel> postComments = <CommentModel>[].obs;
+  RxBool isLoadingDetails = false.obs;
 
-Future<void> fetchPostDetails(String postId) async {
-  isLoadingDetails.value = true;
-  var response = await remote.getPostDetails(postId);
-  if (response['status'] == 'success') {
-    final data = response['data'];
-    selectedPost.value = PostModel.fromJson(data['post']);
-    List<dynamic> commentsJson = data['comments'] ?? [];
-    postComments.value = commentsJson.map((c) => CommentModel.fromJson(c)).toList();
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل تفاصيل البوست');
-  }
-  isLoadingDetails.value = false;
-}
-
-Future<void> addComment(String postId, String content) async {
-  if (content.trim().isEmpty) return;
-  isLoadingDetails.value = true;
-  var response = await remote.addComment(postId, content);
-  if (response['status'] == 'success') {
-    await fetchPostDetails(postId);
-    Get.snackbar('نجاح', 'تم إضافة التعليق');
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل إضافة التعليق');
-  }
-  isLoadingDetails.value = false;
-}
-
-Future<void> likeComment(String commentId) async {
-  var response = await remote.likeComment(commentId);
-  print("$response");
-  if (response['status'] == 'success') {
-    int index = postComments.indexWhere((c) => c.id == commentId);
-    if (index != -1) {
-      int newCount = response['data']['likesCount'] ?? postComments[index].likesCount;
-      postComments[index] = CommentModel(
-        id: postComments[index].id,
-        content: postComments[index].content,
-        likesCount: newCount,
-        createdAt: postComments[index].createdAt,
-        user: postComments[index].user,
-      );
-      postComments.refresh();
+  Future<void> fetchPostDetails(String postId) async {
+    isLoadingDetails.value = true;
+    var response = await remote.getPostDetails(postId);
+    if (response['status'] == 'success') {
+      final data = response['data'];
+      selectedPost.value = PostModel.fromJson(data['post']);
+      List<dynamic> commentsJson = data['comments'] ?? [];
+      postComments.value =
+          commentsJson.map((c) => CommentModel.fromJson(c)).toList();
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل تفاصيل البوست');
     }
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل التفاعل');
+    isLoadingDetails.value = false;
   }
-}
+
+  Future<void> addComment(String postId, String content) async {
+    if (content.trim().isEmpty) return;
+    isLoadingDetails.value = true;
+    var response = await remote.addComment(postId, content);
+    if (response['status'] == 'success') {
+      await fetchPostDetails(postId);
+      Get.snackbar('نجاح', 'تم إضافة التعليق');
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل إضافة التعليق');
+    }
+    isLoadingDetails.value = false;
+  }
+
+  Future<void> likeComment(String commentId) async {
+    var response = await remote.likeComment(commentId);
+    print("$response");
+    if (response['status'] == 'success') {
+      int index = postComments.indexWhere((c) => c.id == commentId);
+      if (index != -1) {
+        int newCount =
+            response['data']['likesCount'] ?? postComments[index].likesCount;
+        postComments[index] = CommentModel(
+          id: postComments[index].id,
+          content: postComments[index].content,
+          likesCount: newCount,
+          createdAt: postComments[index].createdAt,
+          user: postComments[index].user,
+        );
+        postComments.refresh();
+      }
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل التفاعل');
+    }
+  }
 
   // مساعد لمعالجة الردود (يجب إضافته إن لم يكن موجوداً)
   // StatusRequest handlingData(Map<String, dynamic> response) {
@@ -202,49 +199,76 @@ Future<void> likeComment(String commentId) async {
   //   return StatusRequest.failure;
   // }
 
-
   // ===== في PostController =====
 
 // ✅ حذف المنشور
-Future<void> deletePost(String postId) async {
-  isLoading.value = true;
-  final response = await remote.deletePost(postId);
-  if (handlingData(response) == StatusRequest.success) {
-    posts.removeWhere((p) => p.sId == postId);
-    posts.refresh();
-    Get.snackbar('نجاح', 'تم حذف المنشور');
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
+  Future<void> deletePost(String postId) async {
+    isLoading.value = true;
+    final response = await remote.deletePost(postId);
+    if (handlingData(response) == StatusRequest.success) {
+      posts.removeWhere((p) => p.sId == postId);
+      posts.refresh();
+      Get.snackbar('نجاح', 'تم حذف المنشور');
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
+    }
+    isLoading.value = false;
   }
-  isLoading.value = false;
-}
 
 // ✅ تعديل المنشور (سيتم استدعاؤها من شاشة التعديل)
-Future<void> updatePost({
-  required String postId,
-  required String newContent,
-  List<String>? newImagePaths,
-  List<String>? deleteImageIds,
-}) async {
-  isLoading.value = true;
-  final response = await remote.updatePost(
-    postId: postId,
-    content: newContent,
-    newImagePaths: newImagePaths,
-    deleteImageIds: deleteImageIds,
-  );
-  if (handlingData(response) == StatusRequest.success) {
-    // تحديث البوست في القائمة
-    final index = posts.indexWhere((p) => p.sId == postId);
-    if (index != -1) {
-      posts[index] = PostModel.fromJson(response['data']);
-      posts.refresh();
+  Future<void> updatePost({
+    required String postId,
+    required String newContent,
+    List<String>? newImagePaths,
+    List<String>? deleteImageIds,
+  }) async {
+    isLoading.value = true;
+    final response = await remote.updatePost(
+      postId: postId,
+      content: newContent,
+      newImagePaths: newImagePaths,
+      deleteImageIds: deleteImageIds,
+    );
+    if (handlingData(response) == StatusRequest.success) {
+      // تحديث البوست في القائمة
+      final index = posts.indexWhere((p) => p.sId == postId);
+      if (index != -1) {
+        posts[index] = PostModel.fromJson(response['data']);
+        posts.refresh();
+      }
+      Get.back(); // إغلاق شاشة التعديل
+      Get.snackbar('نجاح', 'تم تحديث المنشور');
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل التعديل');
     }
-    Get.back(); // إغلاق شاشة التعديل
-    Get.snackbar('نجاح', 'تم تحديث المنشور');
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل التعديل');
+    isLoading.value = false;
   }
-  isLoading.value = false;
+
+  Future<void> fetchPendingPosts() async {
+  isLoadingPending.value = true;
+  final response = await remote.getPendingPosts();
+  if (response['status'] == 'success') {
+    final List<dynamic> data = response['data'] ?? [];
+    pendingPosts.value = data.map((json) => PostModel.fromJson(json)).toList();
+  } else {
+    Get.snackbar('خطأ', response['message'] ?? 'فشل جلب البوستات المعلقة');
+  }
+  isLoadingPending.value = false;
+}
+
+// ===== الموافقة على بوست معلق (للأدمن فقط) =====
+Future<void> acceptPendingPost(String postId) async {
+  isLoadingPending.value = true;
+  final response = await remote.acceptPendingPost(postId);
+  if (response['status'] == 'success') {
+    pendingPosts.removeWhere((p) => p.sId == postId);
+    pendingPosts.refresh();
+    // تحديث قائمة البوستات الرئيسية
+    await fetchPosts(refresh: true);
+    Get.snackbar('نجاح', 'تم الموافقة على المنشور ونشره للعامة');
+  } else {
+    Get.snackbar('خطأ', response['message'] ?? 'فشل الموافقة على البوست');
+  }
+  isLoadingPending.value = false;
 }
 }

@@ -1,32 +1,35 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/models/student_models/accept_request_model.dart';
-import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
-import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/services/remote/public_remotes/request_remote.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 import 'package:gr_flutter/views/widgets/requests/student_dunning_request.dart';
 
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../utils/app_constants/status_request.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 
 abstract class StudentRequestsController extends GetxController {
-  showRequest(PendingRequestModel requestModel);
-  getPendingRequests();
+  showRequest(TreatmentRequestModel requestModel);
+  // getPendingRequests();
 
   agreeRequest(String idR, String idO);
-  getOwnedStudentRequest();
+  getProcessingRequest();
   // طلبات التي يشرف عليها الطالب
   showMyRequest();
   getOverSeer(String id);
 }
 
 class StudentRequestsControllerImp extends StudentRequestsController {
+  RxInt currentPageIndex = 0.obs;
+  PageController pageController = PageController(initialPage: 0);
+  List completedRequests = <TreatmentRequestModel>[];
   // AuthModel authModel = AuthModel();
-  List requestList = <PendingRequestModel>[];
-  List requestSpecialList = <TreatmentRequestProcessingSModel>[];
+  List pendingRequests = <TreatmentRequestModel>[];
+  List processingRequests = <TreatmentRequestModel>[];
   // List<TreatmentRequestModel> requestListFilter = <TreatmentRequestModel>[];
   late StatusRequest statusRequest;
   String filterRequest = ToothConstants.filterRequest[0];
@@ -51,14 +54,10 @@ class StudentRequestsControllerImp extends StudentRequestsController {
     var response = await requestRemote.getPendingRequests();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      requestList = (response['data'])
-          .map((item) => PendingRequestModel.fromJson(item))
+      pendingRequests = (response['data'])
+          .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
-
-      // print("$requestList");
     }
-    // print("${response['data']}");
-    // fetchFilterItems();
     update();
   }
 
@@ -76,6 +75,34 @@ class StudentRequestsControllerImp extends StudentRequestsController {
       Get.close(1);
     }
     update();
+  }
+
+  Future<void> getCompletedRequests() async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await requestRemote.getCompletedRequest();
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      completedRequests = (response['data'] as List)
+          .map((item) => TreatmentRequestModel.fromJson(item))
+          .toList();
+    }
+    update();
+  }
+
+  void changePage(int index) {
+    currentPageIndex.value = index;
+    pageController.jumpToPage(index);
+    update();
+  }
+
+// ===== جلب البيانات حسب الصفحة =====
+  List getCurrentPageData() {
+    if (currentPageIndex.value == 0) {
+      return processingRequests; // قيد المعالجة
+    } else {
+      return completedRequests; // مكتملة
+    }
   }
 
   // @override
@@ -99,19 +126,14 @@ class StudentRequestsControllerImp extends StudentRequestsController {
 
   // late int i;
   @override
-  showRequest(PendingRequestModel requestModel) async {
+  showRequest(TreatmentRequestModel requestModel) async {
     // i = index;
     await getOverSeer(requestModel.courseInfo!.sId!);
-    // if (overseersCourse.isEmpty) {
-    //   Get.snackbar("لا يوجد مشرفين لهذا المقرر",
-    //       "يرجى التواصل مع الإدارة لتعيين مشرف لهذا المقرر");
-    //   return;
-    // }
     print("======== ${requestModel.courseInfo!.sId!}");
     Get.dialog(StudentDunningRequest(requestModel: requestModel));
   }
 
-  showOnedRequest(TreatmentRequestProcessingSModel requestModel) {
+  showOnedRequest(TreatmentRequestModel requestModel) {
     // i = index;
     getOverSeer(requestModel.courseInfo!.sId ?? "");
     Get.dialog(
@@ -145,31 +167,30 @@ class StudentRequestsControllerImp extends StudentRequestsController {
   }
 
   @override
-  getOwnedStudentRequest() async {
-    // Get.snackbar("جاري جلب الطلبات الخاصة بك", "يرجى الانتظار...");
+  getProcessingRequest() async {
     statusRequest = StatusRequest.loading;
     update();
-    var response = await requestRemote.fetchingSpecialData();
+    var response = await requestRemote.getProcessingRequest();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      requestSpecialList = response['data']
-          .map((item) => TreatmentRequestProcessingSModel.fromJson(item))
+      processingRequests = response['data']
+          .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
     }
     print("${response['data']}");
-    // fetchFilterItems();
     update();
   }
 
   @override
   showMyRequest() async {
-    await getOwnedStudentRequest();
+    currentPageIndex.value=0;
+    await getProcessingRequest();
+    await getCompletedRequests();
     Get.toNamed(AppRroute.showOwnedStudentRequest);
   }
 
   @override
   getOverSeer(String id) async {
-    // Get.snackbar("جاري جلب المشرفين الخاصة بك", "يرجى الانتظار...");
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.getOverSeerForCourse(id);
@@ -178,13 +199,9 @@ class StudentRequestsControllerImp extends StudentRequestsController {
       response['data'] == null || response['data'] == []
           ? overseersCourse = []
           : overseersCourse = response['data'] as List;
-      
-      
+
       print("$overseersCourse");
     }
     update();
   }
 }
-
-
-

@@ -7,6 +7,7 @@ import 'package:gr_flutter/controllers/patient_controller/patient_request_contro
 import 'package:gr_flutter/services/functions/show_tooth_location_map.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
 
@@ -65,7 +66,7 @@ class ModifiedRequest extends StatelessWidget {
                       selectedId: null,
                       title: "  إختر نوع المعالجة:   ",
                       onChanged: (value) {
-                        controller.pendingRequestModel.caseType!.sId = value;
+                        controller.treatmentRequestModel.caseType!.sId = value;
                         controller.update();
                       },
                     ),
@@ -201,7 +202,7 @@ class ModifiedRequest extends StatelessWidget {
                                 final newValue = rating.round();
                                 controller.selectedPainSeverity.value =
                                     newValue;
-                                controller.pendingRequestModel.requestion!
+                                controller.treatmentRequestModel.requestion!
                                     .painSeverity = newValue;
                                 controller.update();
                               },
@@ -249,13 +250,13 @@ class ModifiedRequest extends StatelessWidget {
                   // باقي الحقول كما هي (بدون تغيير)
                   // ============================================
 
-                  if (controller.pendingRequestModel.requestion!.painSeverity !=
+                  if (controller.treatmentRequestModel.requestion!.painSeverity !=
                       0) ...[
                     RowContainerWithTitle(
                       title: "متى يحصل الألم؟ ",
-                      text: controller.pendingRequestModel.requestion!.painTime,
+                      text: controller.treatmentRequestModel.requestion!.painTime,
                       onChanged: (p0) {
-                        controller.pendingRequestModel.requestion!.painTime =
+                        controller.treatmentRequestModel.requestion!.painTime =
                             p0;
                       },
                     ),
@@ -271,10 +272,10 @@ class ModifiedRequest extends StatelessWidget {
                           SelectOneOption(
                             title: "ذكر",
                             selectOption: controller
-                                    .pendingRequestModel.requestion!.gender ==
+                                    .treatmentRequestModel.requestion!.gender ==
                                 "male",
                             onTap: () {
-                              controller.pendingRequestModel.requestion!
+                              controller.treatmentRequestModel.requestion!
                                   .gender = "male";
                               controller.update();
                             },
@@ -282,10 +283,10 @@ class ModifiedRequest extends StatelessWidget {
                           SelectOneOption(
                             title: "أنثى",
                             selectOption: controller
-                                    .pendingRequestModel.requestion!.gender ==
+                                    .treatmentRequestModel.requestion!.gender ==
                                 "female",
                             onTap: () {
-                              controller.pendingRequestModel.requestion!
+                              controller.treatmentRequestModel.requestion!
                                   .gender = "female";
                               controller.update();
                             },
@@ -295,7 +296,7 @@ class ModifiedRequest extends StatelessWidget {
                     ],
                   ),
                   BreakContainer(),
-                  if (controller.pendingRequestModel.requestion!.gender ==
+                  if (controller.treatmentRequestModel.requestion!.gender ==
                       "female") ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -305,11 +306,11 @@ class ModifiedRequest extends StatelessWidget {
                           children: [
                             BottonContainer(
                               body: "لا",
-                              selected: controller.pendingRequestModel
+                              selected: controller.treatmentRequestModel
                                       .requestion!.isPregnant ==
                                   false,
                               onTap: () {
-                                controller.pendingRequestModel.requestion!
+                                controller.treatmentRequestModel.requestion!
                                     .isPregnant = false;
                                 controller.update();
                               },
@@ -317,11 +318,11 @@ class ModifiedRequest extends StatelessWidget {
                             SizedBox(width: 20),
                             BottonContainer(
                               body: "نعم",
-                              selected: controller.pendingRequestModel
+                              selected: controller.treatmentRequestModel
                                       .requestion!.isPregnant ==
                                   true,
                               onTap: () {
-                                controller.pendingRequestModel.requestion!
+                                controller.treatmentRequestModel.requestion!
                                     .isPregnant = true;
                                 controller.update();
                               },
@@ -334,9 +335,9 @@ class ModifiedRequest extends StatelessWidget {
                   ],
                   RowContainerWithTitle(
                     title: "ادخل عمر المريض : ",
-                    text: controller.pendingRequestModel.requestion!.age,
+                    text: controller.treatmentRequestModel.requestion!.age,
                     onChanged: (p0) {
-                      controller.pendingRequestModel.requestion!.age = p0;
+                      controller.treatmentRequestModel.requestion!.age = p0;
                     },
                   ),
                   BreakContainer(),
@@ -362,9 +363,9 @@ class ModifiedRequest extends StatelessWidget {
                   RowContainerWithTitle(
                     title: "رقم السن :  ",
                     text: controller
-                        .pendingRequestModel.requestion!.toothLocation,
+                        .treatmentRequestModel.requestion!.toothLocation,
                     onChanged: (p0) {
-                      controller.pendingRequestModel.requestion!.toothLocation =
+                      controller.treatmentRequestModel.requestion!.toothLocation =
                           p0;
                     },
                   ),
@@ -381,16 +382,16 @@ class ModifiedRequest extends StatelessWidget {
                           controller.update();
                         },
                         child:
-                            controller.pendingRequestModel.requestion!.photo !=
+                            controller.treatmentRequestModel.requestion!.photo !=
                                         null &&
-                                    controller.pendingRequestModel.requestion!
+                                    controller.treatmentRequestModel.requestion!
                                             .photo!.url !=
                                         ""
                                 ? SizedBox(
                                     height: 80,
                                     width: 80,
                                     child: Image.network(
-                                      "${controller.pendingRequestModel.requestion!.photo!.url!}",
+                                      "${controller.treatmentRequestModel.requestion!.photo!.url!}",
                                       fit: BoxFit.cover,
                                     ),
                                   )
@@ -439,10 +440,10 @@ class ModifiedRequest extends StatelessWidget {
                     RowContainerWithTitle(
                       title: "اذكر اسم المرض  ",
                       onChanged: (p0) {
-                        controller.pendingRequestModel.requestion!.moreDetails!
+                        controller.treatmentRequestModel.requestion!.moreDetails!
                             .chronicDiseases = p0;
                       },
-                      text: controller.pendingRequestModel.requestion!
+                      text: controller.treatmentRequestModel.requestion!
                           .moreDetails!.chronicDiseases,
                     ),
                   ],
@@ -474,10 +475,10 @@ class ModifiedRequest extends StatelessWidget {
                     ColumnContainerWithTitle(
                       title: "اذكر اسم الدواء او المكمل    ",
                       onChanged: (p0) {
-                        controller.pendingRequestModel.requestion!.moreDetails!
+                        controller.treatmentRequestModel.requestion!.moreDetails!
                             .medicines = p0;
                       },
-                      text: controller.pendingRequestModel.requestion!
+                      text: controller.treatmentRequestModel.requestion!
                           .moreDetails!.medicines,
                     ),
                   ],
@@ -491,7 +492,7 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == false,
                         onTap: () {
                           controller.previousTreatment = false;
-                          controller.pendingRequestModel.requestion!
+                          controller.treatmentRequestModel.requestion!
                               .moreDetails!.previousTreatment = false;
                           controller.update();
                         },
@@ -501,7 +502,7 @@ class ModifiedRequest extends StatelessWidget {
                         selected: controller.previousTreatment == true,
                         onTap: () {
                           controller.previousTreatment = true;
-                          controller.pendingRequestModel.requestion!
+                          controller.treatmentRequestModel.requestion!
                               .moreDetails!.previousTreatment = true;
                           controller.update();
                         },
@@ -512,9 +513,9 @@ class ModifiedRequest extends StatelessWidget {
                   ColumnContainerWithTitle(
                     title: "هل لديك ملاحظات تود إضافتها؟  ",
                     text: controller
-                        .pendingRequestModel.requestion!.moreDetails!.notes,
+                        .treatmentRequestModel.requestion!.moreDetails!.notes,
                     onChanged: (p0) {
-                      controller.pendingRequestModel.requestion!.moreDetails!
+                      controller.treatmentRequestModel.requestion!.moreDetails!
                           .notes = p0;
                     },
                   ),

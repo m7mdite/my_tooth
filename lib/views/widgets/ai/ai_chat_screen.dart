@@ -63,7 +63,7 @@ class AiChatScreen extends StatelessWidget {
                     },
                   )),
             ),
-// حقل الإدخال - تصميم زجاجي عصري
+            // حقل الإدخال - تصميم زجاجي عصري
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),

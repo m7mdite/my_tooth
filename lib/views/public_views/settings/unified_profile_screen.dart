@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/services/functions/show_image_preview.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
@@ -11,7 +12,7 @@ import '../../../utils/app_constants/status_request.dart';
 import 'unified_edit_profile_screen.dart';
 
 class UnifiedProfileScreen extends StatelessWidget {
-  final UnifiedSettingController controller = Get.find();
+  final UnifiedSettingController controller = Get.find<UnifiedSettingController>();
 
   UnifiedProfileScreen({super.key});
 
@@ -43,193 +44,203 @@ class UnifiedProfileScreen extends StatelessWidget {
             ),
           ),
           child: AnimationLimiter(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              children: [
-                // ===== الصورة الشخصية =====
-                _buildAnimatedItem(
-                  position: 0,
-                  child: Center(
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: controller.profilePicture.value.isNotEmpty
-                              ? NetworkImage("${controller.profilePicture.value}")
-                              : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                        border: Border.all(color: Colors.white, width: 3),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blue.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            spreadRadius: 2,
-                            offset: const Offset(0, 6),
+            child: RefreshIndicator(
+              onRefresh: () async{
+                await  controller.refreshProfileData();
+              },
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                children: [
+                  // ===== الصورة الشخصية =====
+                  InkWell(
+                    onTap: () {
+                    if(controller.profilePicture.value.isNotEmpty)  showImagePreview(controller.profilePicture.value);
+                    },
+                    child: _buildAnimatedItem(
+                      position: 0,
+                      child: Center(
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: controller.profilePicture.value.isNotEmpty
+                                  ? NetworkImage(controller.profilePicture.value)
+                                  : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                            border: Border.all(color: Colors.white, width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withValues(alpha: 0.3),
+                                blurRadius: 20,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // ===== الاسم والدور =====
-                _buildAnimatedItem(
-                  position: 1,
-                  child: Column(
-                    children: [
-                      Text(
-                        controller.fullName.value,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.blue.shade400, Colors.blue.shade600],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
+              
+                  const SizedBox(height: 16),
+              
+                  // ===== الاسم والدور =====
+                  _buildAnimatedItem(
+                    position: 1,
+                    child: Column(
+                      children: [
+                        Text(
+                          controller.fullName.value,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
                           ),
-                          borderRadius: BorderRadius.circular(30),
                         ),
-                        child: Text(
-                          controller.getRoleTitle(),
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.blue.shade400, Colors.blue.shade600],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Text(
+                            controller.getRoleTitle(),
+                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                          ),
                         ),
+                      ],
+                    ),
+                  ),
+              
+                  const SizedBox(height: 24),
+              
+                  // ===== معلومات الاتصال (الهاتف والبريد) =====
+                  _buildAnimatedItem(
+                    position: 2,
+                    child: _buildSectionHeader(Icons.contact_phone, 'معلومات الاتصال'),
+                  ),
+                  _buildAnimatedItem(
+                    position: 3,
+                    child: _buildInfoCard(
+                      icon: Icons.phone,
+                      label: 'رقم الهاتف',
+                      value: controller.phoneNumber.value,
+                      onTap: () => _copyToClipboard(controller.phoneNumber.value),
+                    ),
+                  ),
+                  _buildAnimatedItem(
+                    position: 4,
+                    child: _buildInfoCard(
+                      icon: Icons.email,
+                      label: 'البريد الإلكتروني',
+                      value: controller.localStorage.getEmail() ?? '',
+                      onTap: () => _copyToClipboard(controller.localStorage.getEmail() ?? ''),
+                    ),
+                  ),
+                  if (controller.bio.value.isNotEmpty)
+                    _buildAnimatedItem(
+                      position: 5,
+                      child: _buildInfoCard(
+                        icon: Icons.description,
+                        label: 'نبذة',
+                        value: controller.bio.value,
                       ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // ===== معلومات الاتصال (الهاتف والبريد) =====
-                _buildAnimatedItem(
-                  position: 2,
-                  child: _buildSectionHeader(Icons.contact_phone, 'معلومات الاتصال'),
-                ),
-                _buildAnimatedItem(
-                  position: 3,
-                  child: _buildInfoCard(
-                    icon: Icons.phone,
-                    label: 'رقم الهاتف',
-                    value: controller.phoneNumber.value,
-                    onTap: () => _copyToClipboard(controller.phoneNumber.value),
-                  ),
-                ),
-                _buildAnimatedItem(
-                  position: 4,
-                  child: _buildInfoCard(
-                    icon: Icons.email,
-                    label: 'البريد الإلكتروني',
-                    value: controller.localStorage.getEmail() ?? '',
-                    onTap: () => _copyToClipboard(controller.localStorage.getEmail() ?? ''),
-                  ),
-                ),
-                if (controller.bio.value.isNotEmpty)
-                  _buildAnimatedItem(
-                    position: 5,
-                    child: _buildInfoCard(
-                      icon: Icons.description,
-                      label: 'نبذة',
-                      value: controller.bio.value,
                     ),
-                  ),
-
-                // ===== بيانات المريض =====
-                if (controller.role.value == 'patient') ...[
-                  const SizedBox(height: 12),
-                  _buildAnimatedItem(
-                    position: 6,
-                    child: _buildSectionHeader(Icons.health_and_safety, 'معلومات صحية'),
-                  ),
-                  _buildAnimatedItem(
-                    position: 7,
-                    child: _buildInfoCard(
-                      icon: Icons.cake,
-                      label: 'العمر',
-                      value: '${controller.age.value} سنة',
+              
+                  // ===== بيانات المريض =====
+                  if (controller.role.value == 'patient') ...[
+                    const SizedBox(height: 12),
+                    _buildAnimatedItem(
+                      position: 6,
+                      child: _buildSectionHeader(Icons.health_and_safety, 'معلومات صحية'),
                     ),
-                  ),
-                  _buildAnimatedItem(
-                    position: 8,
-                    child: _buildInfoCard(
-                      icon: Icons.people,
-                      label: 'الجنس',
-                      value: controller.gender.value == 'male' ? 'ذكر' : 'أنثى',
+                    _buildAnimatedItem(
+                      position: 7,
+                      child: _buildInfoCard(
+                        icon: Icons.cake,
+                        label: 'العمر',
+                        value: '${controller.age.value} سنة',
+                      ),
                     ),
-                  ),
+                    _buildAnimatedItem(
+                      position: 8,
+                      child: _buildInfoCard(
+                        icon: Icons.people,
+                        label: 'الجنس',
+                        value: controller.gender.value == 'male' ? 'ذكر' : 'أنثى',
+                      ),
+                    ),
+                  ],
+              
+                  // ===== بيانات الطالب (مع فصل السنة والفئة) =====
+                  if (controller.role.value == 'student') ...[
+                    const SizedBox(height: 12),
+                    _buildAnimatedItem(
+                      position: 6,
+                      child: _buildSectionHeader(Icons.school, 'معلومات أكاديمية'),
+                    ),
+                    _buildAnimatedItem(
+                      position: 7,
+                      child: _buildInfoCard(
+                        icon: Icons.numbers,
+                        label: 'الرقم الجامعي',
+                        value: controller.universityNumber.value,
+                        onTap: () => _copyToClipboard(controller.universityNumber.value),
+                      ),
+                    ),
+                    // ----- السنة (بطاقة منفصلة) -----
+                    _buildAnimatedItem(
+                      position: 8,
+                      child: _buildInfoCard(
+                        icon: Icons.calendar_month,
+                        label: 'السنة الدراسية',
+                        value: _getYearFromCategory(controller.category.value),
+                      ),
+                    ),
+                    // ----- الفئة (بطاقة منفصلة) -----
+                    _buildAnimatedItem(
+                      position: 9,
+                      child: _buildInfoCard(
+                        icon: Icons.category,
+                        label: 'الفئة',
+                        value: _getCategoryName(controller.category.value),
+                      ),
+                    ),
+                    _buildAnimatedItem(
+                      position: 10,
+                      child: _buildInfoCard(
+                        icon: Icons.verified,
+                        label: 'حالة التوثيق',
+                        value: controller.localStorage.isVerified() ? 'موثق ✅' : 'غير موثق ❌',
+                        isVerified: controller.localStorage.isVerified(),
+                      ),
+                    ),
+                  ],
+              
+                  // ===== إحصائيات الحالات (للطالب والمشرف) =====
+                  if (controller.role.value == 'student' || controller.role.value == 'overseer') ...[
+                    const SizedBox(height: 12),
+                    _buildAnimatedItem(
+                      position: 11,
+                      child: _buildSectionHeader(Icons.assessment, 'إحصائيات الحالات'),
+                    ),
+                    _buildAnimatedItem(
+                      position: 12,
+                      child: _buildStatsRow(),
+                    ),
+                  ],
+              
+                  const SizedBox(height: 40),
                 ],
-
-                // ===== بيانات الطالب (مع فصل السنة والفئة) =====
-                if (controller.role.value == 'student') ...[
-                  const SizedBox(height: 12),
-                  _buildAnimatedItem(
-                    position: 6,
-                    child: _buildSectionHeader(Icons.school, 'معلومات أكاديمية'),
-                  ),
-                  _buildAnimatedItem(
-                    position: 7,
-                    child: _buildInfoCard(
-                      icon: Icons.numbers,
-                      label: 'الرقم الجامعي',
-                      value: controller.universityNumber.value,
-                      onTap: () => _copyToClipboard(controller.universityNumber.value),
-                    ),
-                  ),
-                  // ----- السنة (بطاقة منفصلة) -----
-                  _buildAnimatedItem(
-                    position: 8,
-                    child: _buildInfoCard(
-                      icon: Icons.calendar_month,
-                      label: 'السنة الدراسية',
-                      value: _getYearFromCategory(controller.category.value),
-                    ),
-                  ),
-                  // ----- الفئة (بطاقة منفصلة) -----
-                  _buildAnimatedItem(
-                    position: 9,
-                    child: _buildInfoCard(
-                      icon: Icons.category,
-                      label: 'الفئة',
-                      value: _getCategoryName(controller.category.value),
-                    ),
-                  ),
-                  _buildAnimatedItem(
-                    position: 10,
-                    child: _buildInfoCard(
-                      icon: Icons.verified,
-                      label: 'حالة التوثيق',
-                      value: controller.localStorage.isVerified() ? 'موثق ✅' : 'غير موثق ❌',
-                      isVerified: controller.localStorage.isVerified(),
-                    ),
-                  ),
-                ],
-
-                // ===== إحصائيات الحالات (للطالب والمشرف) =====
-                if (controller.role.value == 'student' || controller.role.value == 'overseer') ...[
-                  const SizedBox(height: 12),
-                  _buildAnimatedItem(
-                    position: 11,
-                    child: _buildSectionHeader(Icons.assessment, 'إحصائيات الحالات'),
-                  ),
-                  _buildAnimatedItem(
-                    position: 12,
-                    child: _buildStatsRow(),
-                  ),
-                ],
-
-                const SizedBox(height: 40),
-              ],
+              ),
             ),
           ),
         );

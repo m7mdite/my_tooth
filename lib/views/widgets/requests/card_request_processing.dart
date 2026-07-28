@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../models/requests_models/treatment_request_model.dart';
 import '../../../utils/app_constants/tooth_constants.dart';
 
 class CardRequestProcessing extends StatelessWidget {
-  final TreatmentRequestProcessingSModel requestModel;
+  final TreatmentRequestModel requestModel;
   final Map? toothLocation = ToothConstants.toothLocationMap;
+  final UnifiedSettingController settingController =
+      Get.find<UnifiedSettingController>();
   final void Function()? onTap;
-  const CardRequestProcessing({
+   CardRequestProcessing({
     super.key,
     required this.requestModel,
     this.onTap,
@@ -16,6 +21,7 @@ class CardRequestProcessing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String role =settingController.role.value;
     return InkWell(
       onTap: (){
         onTap!();
@@ -345,7 +351,7 @@ class CardRequestProcessing extends StatelessWidget {
                 ),
               ],
             ),
-            if (requestModel.overseer == null && requestModel.student ==null && requestModel.status == "pending") ...[
+            if (requestModel.overseer == null  && requestModel.status == "processing" && role == "student") ...[
               Container(
                 color: Colors.white,
                 height: 1,

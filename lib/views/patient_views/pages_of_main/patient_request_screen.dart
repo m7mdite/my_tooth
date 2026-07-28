@@ -244,7 +244,7 @@ class PatientRequestScreen extends StatelessWidget {
                             itemCount: controller.getListRequest().length,
                             itemBuilder: (context, index) {
                               return controller.currentPageFilter == 0
-                                  ? RequestContainer(
+                                  ? CardRequestProcessing(
                                       onTap: () {
                                         controller.showRequest(controller
                                             .requestListPending[index]);

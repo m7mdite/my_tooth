@@ -14,6 +14,7 @@ class ApiLink {
   static const String supportMessage = "$servere/support";
   static const String requests = '$servere/request';
   static const String posts = "$servere/posts";
+  static const String getPendingPosts = "$servere/posts/pending";
 static const String comments = "$servere/posts/comments";
   static const String changePassword =
       "$servere/auth/change-password"; 
@@ -22,20 +23,24 @@ static const String comments = "$servere/posts/comments";
 
   // =========================== patient
   static const String pendingPatientRequest = '$servere/request/my';
-  static const String inProcessingPatientRequest =
-      '$servere/request/processing';
-  static const String completedPatientRequest = '$servere/request/finished';
-  static const String rejectedPatientRequest = '$servere/request/rejected';
+  
   static const String treatments = '$servere/admin/treatment';
   // =========================== student
   static const String acceptRequest = '$servere/request/accept';
   static const String dunningOverseer = '$servere/request/reassign-overseer';
-  static const String ownedStudentRequest = '$servere/request/processing';
+  // static const String getCompletedRequestsForStudent = '$servere/request/finished';
+
   static const String verify = '$servere/auth/verify';
   static const String getOverSeerForCourse =
       '$servere/request/course-overseers';
 
-  // =========================== super
+  // =========================== requests
+
+  static const String getCompletedRequests = '$servere/request/finished';
+
+  static const String getRejectedRequests = '$servere/request/rejected';
+
+  static const String getProcessingRequests = '$servere/request/processing';
 
   // ================================================= overseer
   static const String treatmentRequestsForOverseer =
@@ -64,14 +69,13 @@ static const String comments = "$servere/posts/comments";
   static const String getAllTreatments = '$servere/admin/treatment';
   static const String getAllCategory = '$servere/admin/category';
   static const String getAllPendingRequests = '$servere/request';
-  static const String getAllInProcessingRequests =
-      '$servere/request/Processing';
-  static const String getAllFinishedRequests = '$servere/request/finished';
-  static const String getAllRejectedRequests = '$servere/request/rejected';
   static const String advertisements = '$servere/advertisements';
   static const String adminReports = "$servere/reports";
   static String reviewReport(String id) => "$servere/reports/$id";
   static const String deleteOverSeer = "$servere/admin/overseer/delete";
+  static const String notifyAll  = "$servere/admin/notify";
   static const String categories = "$servere/admin/categories";
+  static const String acceptPendingPosts = "$servere/posts/pending/accept";
+
 
 }

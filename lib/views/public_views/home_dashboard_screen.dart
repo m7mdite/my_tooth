@@ -10,11 +10,12 @@ import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
-import '../controllers/home_dashboard_controller.dart';
-import '../models/dashboard_model.dart';
-import '../services/local_storge/local_user_storage.dart';
-import 'admin_views/advertisement_management_screen.dart';
-import 'widgets/dialog/submit_dialog.dart';
+import '../../controllers/home_dashboard_controller.dart';
+import '../../models/dashboard_model.dart';
+import '../../services/local_storge/local_user_storage.dart';
+import '../admin_views/admin_notify_dialog.dart';
+import '../admin_views/advertisement_management_screen.dart';
+import '../widgets/dialog/submit_dialog.dart';
 
 class HomeDashboardScreen extends StatelessWidget {
   HomeDashboardScreen({super.key});
@@ -25,6 +26,7 @@ class HomeDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   String role =settingController.role.value;
     return Scaffold(
       appBar: CustomAppBar(
         title: "الرئيسية",
@@ -121,8 +123,22 @@ class HomeDashboardScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // ===== 1. إحصائيات الطلبات =====
-                    _buildStatsSection(dashboard.requests!),
-
+                    _buildStatsSection(dashboard.requests!, role),
+                    InkWell(
+  onTap: () {
+    Get.dialog(
+      const AdminNotifyDialog(),
+      barrierDismissible: false,
+    );
+  },
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      Text("إرسال إشعار للجميع"),
+      Icon(Icons.notifications_active),
+    ],
+  ),
+),
                     // ===== 2. الإعلانات (كاروسيل) =====
                     if (dashboard.adv != null &&
                         dashboard.adv!.data != null &&
@@ -149,9 +165,10 @@ class HomeDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSection(Requests stats) {
+  Widget _buildStatsSection(Requests stats, String role) {
     final myCases = controller.dashboard.value?.myCases;
     final users = controller.dashboard.value?.users;
+    print(role);
     return AnimationConfiguration.staggeredList(
       position: 0,
       duration: const Duration(milliseconds: 600),
@@ -282,7 +299,7 @@ class HomeDashboardScreen extends StatelessWidget {
                   ),
                 ],
                 // حالاتي الخاصة (إن وجدت)
-                if (myCases != null) ...[
+                if (myCases != null && role != 'admin') ...[
                   const SizedBox(height: 10),
                   Container(
                     height: 1,

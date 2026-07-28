@@ -30,8 +30,8 @@ class RequestRemote {
     return response.fold((l) => l, (r) => r);
   }
 
-  fetchingSpecialData() async {
-    var response = await crud.getData(ApiLink.ownedStudentRequest);
+  getProcessingRequest() async {
+    var response = await crud.getData(ApiLink.getProcessingRequests);
     return response.fold((l) => l, (r) => r);
   }
 
@@ -40,17 +40,14 @@ class RequestRemote {
     return response.fold((l) => l, (r) => r);
   }
 
-  getInProcessingPatientRequest() async {
-    var response = await crud.getData(ApiLink.inProcessingPatientRequest);
-    return response.fold((l) => l, (r) => r);
-  }
+  
 
-  getCompletedPatientRequest() async {
-    var response = await crud.getData(ApiLink.completedPatientRequest);
+  getCompletedRequest() async {
+    var response = await crud.getData(ApiLink.getCompletedRequests);
     return response.fold((l) => l, (r) => r);
   }
   getRejectedPatientRequest() async {
-    var response = await crud.getData(ApiLink.completedPatientRequest);
+    var response = await crud.getData(ApiLink.getRejectedRequests);
     return response.fold((l) => l, (r) => r);
   }
 
@@ -79,6 +76,10 @@ class RequestRemote {
     var response = await crud.putData(ApiLink.complateRequest, data, id);
     return response.fold((l) => l, (r) => r);
   }
+  // getCompletedRequestsForStudent() async {
+  //   var response = await crud.getData(ApiLink.getcompletedRequest);
+  //   return response.fold((l) => l, (r) => r);
+  // }
 
   addEvaluationRequestData(Map data, String id) async {
     var response = await crud.putData(ApiLink.addEvaluationRequest, data, id);

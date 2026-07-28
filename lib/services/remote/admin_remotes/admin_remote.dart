@@ -88,17 +88,17 @@ class AdminRemote {
   }
 
   getAllInProcessingRequests() async {
-    var response = await crud.getData(ApiLink.getAllInProcessingRequests);
+    var response = await crud.getData(ApiLink.getProcessingRequests);
     return response.fold((l) => l, (r) => r);
   }
 
-  getAllFinishedRequests() async {
-    var response = await crud.getData(ApiLink.getAllFinishedRequests);
+  getCompletedRequests() async {
+    var response = await crud.getData(ApiLink.getCompletedRequests);
     return response.fold((l) => l, (r) => r);
   }
 
   getAllRejectedRequests() async {
-    var response = await crud.getData(ApiLink.getAllRejectedRequests);
+    var response = await crud.getData(ApiLink.getRejectedRequests);
     return response.fold((l) => l, (r) => r);
   }
 
@@ -176,5 +176,13 @@ class AdminRemote {
    getWeeklySchedule() async {
     final result = await crud.getData(ApiLink.weeklySchedule);
     return result.fold((l) => l, (r) => r);
+  }
+   notifyAll(String content) async {
+    final response = await crud.postData(
+      ApiLink.notifyAll,
+      {'content': content},
+    );
+    return response.fold((l) => l, (r) => r);
+    
   }
 }

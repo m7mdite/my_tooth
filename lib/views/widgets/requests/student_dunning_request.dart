@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
 import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
+import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
+import '../../../models/requests_models/treatment_request_model.dart';
 import '../botton_controller.dart';
 import '../dialog/submit_dialog.dart';
 import 'show_request.dart';
@@ -9,14 +11,13 @@ import 'show_request.dart';
 class StudentDunningRequest extends StatelessWidget {
   final StudentRequestsControllerImp controller =
       Get.put(StudentRequestsControllerImp());
-  final PendingRequestModel requestModel;
+  final TreatmentRequestModel requestModel;
   StudentDunningRequest({super.key, required this.requestModel});
 
   @override
   Widget build(BuildContext context) {
-    return ShowRequest(
+    return ShowRequestProcessing(
       requestModel: requestModel,
-      // toothLocation: ToothConstants.toothLocationMap,
       children: [
         Container(
           margin: EdgeInsets.symmetric(vertical: 10),

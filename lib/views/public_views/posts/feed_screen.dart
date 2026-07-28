@@ -10,6 +10,7 @@ import '../../../app_route.dart';
 import '../../../services/local_storge/local_user_storage.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
+import 'pending_posts_screen.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -36,6 +37,7 @@ class _FeedScreenState extends State<FeedScreen> {
     _loadUserRole();
     _scrollController.addListener(_onScroll);
   }
+
   Future<void> _loadUserRole() async {
     final storage = Get.find<LocalUserStorage>();
     final role = await storage.getRole();
@@ -118,6 +120,11 @@ class _FeedScreenState extends State<FeedScreen> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(height: 16),
+          IconButton(
+            icon: const Icon(Icons.hourglass_top, color: Colors.blue),
+            onPressed: () => Get.to(() => const PendingPostsScreen()),
           ),
           const SizedBox(height: 16),
 

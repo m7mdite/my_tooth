@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/patient_request_screen.dart';
 import 'package:gr_flutter/views/public_views/posts/feed_screen.dart';
 
-import '../../views/home_dashboard_screen.dart';
+import '../../views/public_views/home_dashboard_screen.dart';
 import '../../views/public_views/settings/unified_setting_screen.dart';
   
 abstract class MainGuestController extends GetxController {}

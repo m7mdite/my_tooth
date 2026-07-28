@@ -6,6 +6,7 @@ import 'package:gr_flutter/services/functions/show_snack.dart';
 import 'package:gr_flutter/views/widgets/requests/overseer_manage_request.dart';
 import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 
+import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/remote/public_remotes/request_remote.dart';
 import '../../utils/app_constants/status_request.dart';
@@ -14,23 +15,23 @@ import '../../views/widgets/requests/overseer_reject_request.dart';
 
 abstract class OverseerRequestsController extends GetxController {
   // تعريف الدوال التي ستستخدم في التحكم في الطلبات
-  getTreatmentRequests();
-  showRequest(TreatmentRequestProcessingSModel request);
-  toRejectRequest(TreatmentRequestProcessingSModel request);
-  rejectRequest(TreatmentRequestProcessingSModel request);
-  manageRequest(TreatmentRequestProcessingSModel request);
-  changeCaseRequest(TreatmentRequestProcessingSModel request);
-  toManageRequest(TreatmentRequestProcessingSModel request);
-  addEvaluationRequest(TreatmentRequestProcessingSModel request);
-  finishRequest(TreatmentRequestProcessingSModel request);
+  getProcessingRequest();
+  showRequest(TreatmentRequestModel request);
+  toRejectRequest(TreatmentRequestModel request);
+  rejectRequest(TreatmentRequestModel request);
+  manageRequest(TreatmentRequestModel request);
+  changeCaseRequest(TreatmentRequestModel request);
+  toManageRequest(TreatmentRequestModel request);
+  addEvaluationRequest(TreatmentRequestModel request);
+  finishRequest(TreatmentRequestModel request);
   getAllTreatment();
 }
 
 class OverseerRequestsControllerImpl extends OverseerRequestsController {
-  List<TreatmentRequestProcessingSModel> requestList =
-      <TreatmentRequestProcessingSModel>[];
-  TreatmentRequestProcessingSModel selectRequest =
-      TreatmentRequestProcessingSModel();
+  List<TreatmentRequestModel> requestList =
+      <TreatmentRequestModel>[];
+  TreatmentRequestModel selectRequest =
+      TreatmentRequestModel();
   List<TreatmentModel> treatments = <TreatmentModel>[];
   RequestRemote requestRemote = RequestRemote(Get.find());
   late StatusRequest statusRequest;
@@ -56,15 +57,14 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   void onInit() {
     formatTextEditing();
     getAllTreatment();
-
-    getTreatmentRequests();
+    getProcessingRequest();
     update();
     super.onInit();
     // يمكنك هنا جلب البيانات أو تهيئة المتغيرات اللازمة
   }
 
   @override
-  getTreatmentRequests() async {
+  getProcessingRequest() async {
     requestList = [];
     statusRequest = StatusRequest.loading;
     update();
@@ -73,14 +73,14 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     print("++++++++++++++++++++ $response");
     if (statusRequest == StatusRequest.success) {
       requestList = (response['data'] as List)
-          .map((e) => TreatmentRequestProcessingSModel.fromJson(e))
+          .map((e) => TreatmentRequestModel.fromJson(e))
           .toList();
     }
     update();
   }
 
   @override
-  showRequest(TreatmentRequestProcessingSModel request) {
+  showRequest(TreatmentRequestModel request) {
     selectRequest = request;
     Get.dialog(
       OverseerViewRequestProcessing(requestModel: request),
@@ -88,7 +88,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  toRejectRequest(TreatmentRequestProcessingSModel request) {
+  toRejectRequest(TreatmentRequestModel request) {
     Get.dialog(
       SubmitDialog(
         title: "رفض هذا الطلب",
@@ -105,7 +105,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  toManageRequest(TreatmentRequestProcessingSModel request) {
+  toManageRequest(TreatmentRequestModel request) {
     Get.dialog(
       SubmitDialog(
         title: "متابعة حالة الطلب",
@@ -120,7 +120,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  rejectRequest(TreatmentRequestProcessingSModel request) async {
+  rejectRequest(TreatmentRequestModel request) async {
     if (rejectBool == false) {
       statusRequest = StatusRequest.loading;
       update();
@@ -132,7 +132,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
             title: response['status'] ?? "tm",
             message: response['message'] ?? "");
         Get.close(2);
-        getTreatmentRequests();
+        getProcessingRequest();
       } else {
         showsnack(
             title: response['status'] ?? "no",
@@ -145,7 +145,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  manageRequest(TreatmentRequestProcessingSModel request) async {
+  manageRequest(TreatmentRequestModel request) async {
     if (finishBool) {
       // انتهاء الحالة
       finishRequest(request);
@@ -157,7 +157,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  changeCaseRequest(TreatmentRequestProcessingSModel request) async {
+  changeCaseRequest(TreatmentRequestModel request) async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.changeCaseRequestData(
@@ -171,7 +171,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
           title: response['status'] ?? "tm",
           message: response['message'] ?? "");
       Get.close(2);
-      getTreatmentRequests();
+      getProcessingRequest();
     } else {
       showsnack(
           title: response['status'] ?? "no",
@@ -196,7 +196,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  addEvaluationRequest(TreatmentRequestProcessingSModel request) async {
+  addEvaluationRequest(TreatmentRequestModel request) async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.addEvaluationRequestData({
@@ -209,7 +209,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
         message: response['message'] ?? "",
       );
       Get.close(2);
-      getTreatmentRequests();
+      getProcessingRequest();
     } else {
       showsnack(
         title:
@@ -225,7 +225,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
   }
 
   @override
-  finishRequest(TreatmentRequestProcessingSModel request) async {
+  finishRequest(TreatmentRequestModel request) async {
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.complateRequestData({
@@ -241,7 +241,7 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
         message: response['message'] ?? "",
       );
       Get.close(2);
-      getTreatmentRequests();
+      getProcessingRequest();
     } else {
       showsnack(
         title: response['status'] ?? "no",

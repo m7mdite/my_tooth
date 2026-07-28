@@ -7,10 +7,11 @@ import 'package:gr_flutter/controllers/public_controllers/public_controller.dart
 import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/tooth_constants.dart';
+import '../../../models/requests_models/treatment_request_model.dart';
 import '../../public_views/view_other_profile.dart';
 
 class ShowRequestProcessing extends StatefulWidget {
-  final TreatmentRequestProcessingSModel requestModel;
+  final TreatmentRequestModel requestModel;
   final List<Widget> children;
 
   const ShowRequestProcessing({
@@ -199,7 +200,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       decoration: BoxDecoration(
         image: hasPhoto
             ? DecorationImage(
-                image: NetworkImage("http://localhost:5000/${photo!.url!}"),
+                image: NetworkImage("${photo!.url!}"),
                 fit: BoxFit.cover,
               )
             : null,

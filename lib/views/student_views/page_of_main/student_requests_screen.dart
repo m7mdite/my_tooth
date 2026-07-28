@@ -11,6 +11,7 @@ import '../../public_views/settings/unified_profile_screen.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
 import '../../widgets/custom_photo_app_bar.dart';
+import '../../widgets/requests/card_request_processing.dart';
 import '../../widgets/requests/request_container.dart';
 
 class StudentRequestsScreen extends StatelessWidget {
@@ -91,20 +92,20 @@ class StudentRequestsScreen extends StatelessWidget {
             onRefresh: () async {
               await controller.getPendingRequests();
             },
-            child: controller.requestList.isEmpty
+            child: controller.pendingRequests.isEmpty
                 ? DefaultNoData()
                 : ListView.builder(
-                    itemCount: controller.requestList.length + 1,
+                    itemCount: controller.pendingRequests.length + 1,
                     itemBuilder: (context, index) {
-                      if (index == controller.requestList.length) {
+                      if (index == controller.pendingRequests.length) {
                         return SizedBox(
                           height: 100,
                         );
                       }
-                      return RequestContainer(
-                        requestModel: controller.requestList[index],
+                      return CardRequestProcessing(
+                        requestModel: controller.pendingRequests[index],
                         onTap: () {
-                          controller.showRequest(controller.requestList[index]);
+                          controller.showRequest(controller.pendingRequests[index]);
                         },
                       );
                     },
