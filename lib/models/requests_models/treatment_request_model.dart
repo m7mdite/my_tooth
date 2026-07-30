@@ -11,7 +11,7 @@ class TreatmentRequestModel {
   List<StageEvaluation>? stageEvaluations;
   CourseInfo? courseInfo;
   int? rating; // إضافة خاصية التقييم
-  
+
   // خصائص إضافية من PendingRequestModel
   Course? courseInfoAlt;
   String? caseTypeId;
@@ -36,112 +36,128 @@ class TreatmentRequestModel {
   factory TreatmentRequestModel.fromJson(Map<String, dynamic> json) {
     // التحقق من وجود stage_evaluations لتحديد النوع
     final hasStageEvaluations = json.containsKey('stage_evaluations');
-    
+
     return TreatmentRequestModel(
       sId: json['_id'],
       rating: json['rating'], // إضافة خاصية التقييم
       // patient - موجود في كلا النوعين
-      patient: json['patient'] != null 
-          ? Patient.fromJson(json['patient'] as Map<String, dynamic>) 
+      patient: json['patient'] != null
+          ? Patient.fromJson(json['patient'] as Map<String, dynamic>)
           : null,
-      
+
       // status - فقط في TreatmentRequestProcessingSModel
       status: json['status'],
-      
+
       // requestion - موجود في كلا النوعين
-      requestion: json['Requestion'] != null 
-          ? Requestion.fromJson(json['Requestion']) 
+      requestion: json['Requestion'] != null
+          ? Requestion.fromJson(json['Requestion'])
           : null,
-      
+
       // overseer - فقط في TreatmentRequestProcessingSModel
-      overseer: json['overseer'] != null 
-          ? Patient.fromJson(json['overseer']) 
-          : null,
-      
+      overseer:
+          json['overseer'] != null ? Patient.fromJson(json['overseer']) : null,
+
       // student - فقط في TreatmentRequestProcessingSModel
-      student: json['student'] != null 
-          ? Patient.fromJson(json['student']) 
-          : null,
-      
+      student:
+          json['student'] != null ? Patient.fromJson(json['student']) : null,
+
       // dateOfAccepting - فقط في TreatmentRequestProcessingSModel
       dateOfAccepting: json['date_of_accepting'],
-      
+
       // caseType - موجود في كلا النوعين لكن بشكل مختلف
-      caseType: json['case_type'] != null && json['case_type'] is Map 
-          ? CaseType.fromJson(json['case_type']) 
+      caseType: json['case_type'] != null && json['case_type'] is Map
+          ? CaseType.fromJson(json['case_type'])
           : null,
-      
+
       // stageEvaluations - فقط في TreatmentRequestProcessingSModel
-      stageEvaluations: json['stage_evaluations'] != null 
+      stageEvaluations: json['stage_evaluations'] != null
           ? (json['stage_evaluations'] as List)
               .map((v) => StageEvaluation.fromJson(v))
-              .toList() 
+              .toList()
           : null,
-      
+
       // courseInfo - فقط في TreatmentRequestProcessingSModel
-      courseInfo: json['course_info'] != null && json['course_info'] is Map 
-          ? CourseInfo.fromJson(json['course_info']) 
+      courseInfo: json['course_info'] != null && json['course_info'] is Map
+          ? CourseInfo.fromJson(json['course_info'])
           : null,
-      
+
       // courseInfoAlt - فقط في PendingRequestModel
-      courseInfoAlt: json['course_info'] != null && json['course_info'] is Map 
-          ? Course.fromJson(json['course_info']) 
+      courseInfoAlt: json['course_info'] != null && json['course_info'] is Map
+          ? Course.fromJson(json['course_info'])
           : null,
-      
+
       // caseTypeId - إذا كان case_type عبارة عن String فقط (في PendingRequestModel)
       caseTypeId: json['case_type'] is String ? json['case_type'] : null,
     );
   }
 
   // toJson موحد
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+
+  //   data['_id'] = sId;
+
+  //   if (patient != null) {
+  //     data['patient'] = patient!.toJson();
+  //   }
+
+  //   if (status != null) {
+  //     data['status'] = status;
+  //   }
+
+  //   if (requestion != null) {
+  //     data['Requestion'] = requestion!.toJson();
+  //   }
+
+  //   if (overseer != null) {
+  //     data['overseer'] = overseer!.toJson();
+  //   }
+
+  //   if (student != null) {
+  //     data['student'] = student!.toJson();
+  //   }
+
+  //   if (dateOfAccepting != null) {
+  //     data['date_of_accepting'] = dateOfAccepting;
+  //   }
+
+  //   // handling caseType - إذا كان موجود كـ CaseType نستخدم toJson
+  //   if (caseType != null) {
+  //     data['case_type'] = caseType!.toJson();
+  //   } else if (caseTypeId != null) {
+  //     // إذا كان مجرد String نضيفه مباشرة
+  //     data['case_type'] = caseTypeId;
+  //   }
+
+  //   if (stageEvaluations != null && stageEvaluations!.isNotEmpty) {
+  //     data['stage_evaluations'] =
+  //         stageEvaluations!.map((v) => v.toJson()).toList();
+  //   }
+
+  //   // courseInfo priority: courseInfo > courseInfoAlt
+  //   if (courseInfo != null) {
+  //     data['course_info'] = courseInfo!.toJson();
+  //   } else if (courseInfoAlt != null) {
+  //     data['course_info'] = courseInfoAlt!.toJson();
+  //   }
+
+  //   return data;
+  // }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    
-    data['_id'] = sId;
-    
-    if (patient != null) {
-      data['patient'] = patient!.toJson();
-    }
-    
-    if (status != null) {
-      data['status'] = status;
-    }
-    
-    if (requestion != null) {
-      data['Requestion'] = requestion!.toJson();
-    }
-    
-    if (overseer != null) {
-      data['overseer'] = overseer!.toJson();
-    }
-    
-    if (student != null) {
-      data['student'] = student!.toJson();
-    }
-    
-    if (dateOfAccepting != null) {
-      data['date_of_accepting'] = dateOfAccepting;
-    }
-    
-    // handling caseType - إذا كان موجود كـ CaseType نستخدم toJson
-    if (caseType != null) {
-      data['case_type'] = caseType!.toJson();
-    } else if (caseTypeId != null) {
-      // إذا كان مجرد String نضيفه مباشرة
-      data['case_type'] = caseTypeId;
-    }
-    
-    if (stageEvaluations != null && stageEvaluations!.isNotEmpty) {
-      data['stage_evaluations'] = stageEvaluations!.map((v) => v.toJson()).toList();
-    }
-    
-    // courseInfo priority: courseInfo > courseInfoAlt
-    if (courseInfo != null) {
-      data['course_info'] = courseInfo!.toJson();
-    } else if (courseInfoAlt != null) {
-      data['course_info'] = courseInfoAlt!.toJson();
-    }
-    
+    if (caseType != null) data['case_type'] = caseType!.toJson();
+    if (requestion!.painSeverity != null) data['pain_severity'] = requestion!.painSeverity;
+    if (requestion!.painTime != null) data['pain_time'] = requestion!.painTime;
+    if (requestion!.toothLocation != null) data['tooth_location'] = requestion!.toothLocation;
+    if (requestion!.gender != null) data['gender'] = requestion!.gender;
+    if (requestion!.isPregnant != null && requestion!.gender == "female") data['is_pregnant'] = requestion!.isPregnant;
+    if (requestion!.chronicDiseases != null) data['chronic_diseases'] = requestion!.chronicDiseases;
+    if (requestion!.medicines != null) data['medicines'] = requestion!.medicines;
+    if (requestion!.previousTreatment != null) data['previous_treatment'] = requestion!.previousTreatment;
+    if (requestion!.notes != null) data['notes'] = requestion!.notes;
+    if (requestion!.age != null) data['age'] = requestion!.age;
+    if (requestion!.photo != null) data['photo'] = requestion!.photo!.toJson();
+
     return data;
   }
 
@@ -206,9 +222,12 @@ class Requestion {
   String? toothLocation;
   String? gender;
   bool? isPregnant;
-  MoreDetails? moreDetails;
   String? age;
   Photo? photo;
+  String? medicines;
+  String? chronicDiseases;
+  bool? previousTreatment;
+  String? notes;
   String? createdAt;
   String? updatedAt;
 
@@ -218,9 +237,12 @@ class Requestion {
     this.toothLocation,
     this.gender,
     this.isPregnant,
-    this.moreDetails,
     this.age,
     this.photo,
+    this.medicines,
+    this.chronicDiseases,
+    this.previousTreatment,
+    this.notes,
     this.createdAt,
     this.updatedAt,
   });
@@ -231,13 +253,13 @@ class Requestion {
     toothLocation = json['tooth_location'];
     gender = json['gender'];
     isPregnant = json['is_pregnant'];
-    moreDetails = json['more_details'] != null 
-        ? MoreDetails.fromJson(json['more_details']) 
-        : null;
+
     age = json['age'];
-    photo = json['photo'] != null 
-        ? Photo.fromJson(json['photo']) 
-        : null;
+    photo = json['photo'] != null ? Photo.fromJson(json['photo']) : null;
+    medicines = json['medicines'];
+    chronicDiseases = json['chronic_diseases'];
+    previousTreatment = json['previous_treatment'];
+    notes = json['notes'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -251,43 +273,15 @@ class Requestion {
     if (gender == "female") {
       data['is_pregnant'] = isPregnant;
     }
-    if (moreDetails != null) {
-      data['more_details'] = moreDetails!.toJson();
-    }
+
     data['age'] = age;
     if (photo != null) {
       data['photo'] = photo!.toJson();
     }
-    return data;
-  }
-}
-
-class MoreDetails {
-  String? medicines;
-  String? chronicDiseases;
-  bool? previousTreatment;
-  String? notes;
-
-  MoreDetails({
-    this.medicines,
-    this.chronicDiseases,
-    this.previousTreatment,
-    this.notes
-  });
-
-  MoreDetails.fromJson(Map<String, dynamic> json) {
-    medicines = json['medicines'];
-    chronicDiseases = json['chronic_diseases'];
-    previousTreatment = json['previous_treatment'];
-    notes = json['notes'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['medicines'] = medicines;
-    data['chronic_diseases'] = chronicDiseases;
+    if (medicines != null) data['medicines'] = medicines;
+    if (chronicDiseases != null) data['chronic_diseases'] = chronicDiseases;
     data['previous_treatment'] = previousTreatment;
-    data['notes'] = notes;
+    if (notes != null) data['notes'] = notes;
     return data;
   }
 }
@@ -322,11 +316,9 @@ class CaseType {
     caseType = json['case_type'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['case_type'] = caseType;
-    return data;
+  String toJson() {
+    
+    return sId??"";
   }
 }
 

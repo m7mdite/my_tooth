@@ -440,11 +440,11 @@ class ModifiedRequest extends StatelessWidget {
                     RowContainerWithTitle(
                       title: "اذكر اسم المرض  ",
                       onChanged: (p0) {
-                        controller.treatmentRequestModel.requestion!.moreDetails!
+                        controller.treatmentRequestModel.requestion!
                             .chronicDiseases = p0;
                       },
                       text: controller.treatmentRequestModel.requestion!
-                          .moreDetails!.chronicDiseases,
+                          .chronicDiseases,
                     ),
                   ],
                   BreakContainer(),
@@ -475,11 +475,11 @@ class ModifiedRequest extends StatelessWidget {
                     ColumnContainerWithTitle(
                       title: "اذكر اسم الدواء او المكمل    ",
                       onChanged: (p0) {
-                        controller.treatmentRequestModel.requestion!.moreDetails!
+                        controller.treatmentRequestModel.requestion!
                             .medicines = p0;
                       },
                       text: controller.treatmentRequestModel.requestion!
-                          .moreDetails!.medicines,
+                          .medicines,
                     ),
                   ],
                   BreakContainer(),
@@ -493,7 +493,7 @@ class ModifiedRequest extends StatelessWidget {
                         onTap: () {
                           controller.previousTreatment = false;
                           controller.treatmentRequestModel.requestion!
-                              .moreDetails!.previousTreatment = false;
+                              .previousTreatment = false;
                           controller.update();
                         },
                       ),
@@ -503,7 +503,7 @@ class ModifiedRequest extends StatelessWidget {
                         onTap: () {
                           controller.previousTreatment = true;
                           controller.treatmentRequestModel.requestion!
-                              .moreDetails!.previousTreatment = true;
+                              .previousTreatment = true;
                           controller.update();
                         },
                       ),
@@ -513,9 +513,9 @@ class ModifiedRequest extends StatelessWidget {
                   ColumnContainerWithTitle(
                     title: "هل لديك ملاحظات تود إضافتها؟  ",
                     text: controller
-                        .treatmentRequestModel.requestion!.moreDetails!.notes,
+                        .treatmentRequestModel.requestion!.notes,
                     onChanged: (p0) {
-                      controller.treatmentRequestModel.requestion!.moreDetails!
+                      controller.treatmentRequestModel.requestion!
                           .notes = p0;
                     },
                   ),

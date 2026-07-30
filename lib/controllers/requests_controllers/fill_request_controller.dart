@@ -21,7 +21,7 @@ abstract class FillRequestController extends GetxController {
 class FillRequestControllerImp extends FillRequestController {
   bool chronicDiseases = false;
   bool medicines = false;
-  bool? previousTreatment ;
+  bool? previousTreatment;
   RxInt selectedPainSeverity = 0.obs;
 
   File? image;
@@ -83,14 +83,14 @@ class FillRequestControllerImp extends FillRequestController {
   }
 
   // داخل FillRequestControllerImp
-RxInt currentStep = 0.obs;
-int totalSteps = 12; // حسب عدد العناصر الرئيسية
+  RxInt currentStep = 0.obs;
+  int totalSteps = 12; // حسب عدد العناصر الرئيسية
 
-void goToNextStep() {
-  if (currentStep.value < totalSteps) {
-    currentStep.value++;
+  void goToNextStep() {
+    if (currentStep.value < totalSteps) {
+      currentStep.value++;
+    }
   }
-}
 
   // ===== إرسال الطلب =====
   @override
@@ -163,7 +163,8 @@ void goToNextStep() {
 
     // ✅ التحقق من اختيار شدة الألم
     if (treatmentRequestModel.requestion!.painSeverity == null ||
-        treatmentRequestModel.requestion!.painSeverity! < 1 || treatmentRequestModel.requestion!.painSeverity! >10) {
+        treatmentRequestModel.requestion!.painSeverity! < 1 ||
+        treatmentRequestModel.requestion!.painSeverity! > 10) {
       Get.snackbar('تنبيه', 'الرجاء تحديد شدة الألم');
       return false;
     }
@@ -180,8 +181,7 @@ void goToNextStep() {
       Get.snackbar('تحذير', 'الرجاء إدخال موقع السن');
       return false;
     }
-    if (treatmentRequestModel.requestion!.moreDetails!.previousTreatment ==
-        null) {
+    if (treatmentRequestModel.requestion!.previousTreatment == null) {
       Get.snackbar('تحذير', "حدد في ما إذا قمت بمعالجة هذا السن من قبل أم لا");
       return false;
     }
@@ -191,16 +191,15 @@ void goToNextStep() {
       return false;
     }
     if (medicines == true &&
-        (treatmentRequestModel.requestion!.moreDetails!.medicines == null ||
-            treatmentRequestModel.requestion!.moreDetails!.medicines!.isEmpty)) {
+        (treatmentRequestModel.requestion!.medicines == null ||
+            treatmentRequestModel.requestion!.medicines!.isEmpty)) {
       Get.snackbar(
           'تحذير', 'الرجاء إدخال الأدوية أو المكملات التي تتناولها أو إختر لا');
       return false;
     }
     if (chronicDiseases == true &&
-        (treatmentRequestModel.requestion!.moreDetails!.chronicDiseases == null ||
-            treatmentRequestModel
-                .requestion!.moreDetails!.chronicDiseases!.isEmpty)) {
+        (treatmentRequestModel.requestion!.chronicDiseases == null ||
+            treatmentRequestModel.requestion!.chronicDiseases!.isEmpty)) {
       Get.snackbar(
           'تحذير', 'الرجاء إدخال الأمراض المزمنة التي تعاني منها أو إختر لا');
       return false;
@@ -234,11 +233,9 @@ void goToNextStep() {
         painSeverity: 0,
         painTime: "لا يوجد",
         toothLocation: "",
-        moreDetails: MoreDetails(
-          chronicDiseases: "",
-          medicines: "",
-          previousTreatment: false,
-        ),
+        chronicDiseases: "",
+        medicines: "",
+        previousTreatment: false,
       ),
       caseType: CaseType(sId: "", caseType: ""),
     );

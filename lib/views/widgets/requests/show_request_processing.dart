@@ -244,7 +244,6 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
   // ===================== بطاقات المعلومات =====================
   Widget _buildInfoCards() {
     final req = widget.requestModel.requestion;
-    final more = req?.moreDetails;
 
     final List<Map<String, dynamic>> infoList = [
       {'icon': Icons.medical_services, 'label': 'نوع الحالة', 'value': widget.requestModel.caseType?.caseType ?? ''},
@@ -253,10 +252,10 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       {'icon': Icons.cake, 'label': 'عمر المريض', 'value': req?.age ?? 'غير محدد'},
       {'icon': Icons.person, 'label': 'جنس المريض', 'value': req?.gender ?? 'غير محدد'},
       {'icon': Icons.medical_information, 'label': 'نوع السن', 'value': ToothConstants.toothLocationMap[req?.toothLocation] ?? ''},
-      if (more?.previousTreatment == true) {'icon': Icons.history, 'label': 'معالج سابقًا', 'value': 'نعم'},
-      if (more?.chronicDiseases != null && more!.chronicDiseases!.isNotEmpty) {'icon': Icons.health_and_safety, 'label': 'أمراض مزمنة', 'value': more.chronicDiseases!},
-      if (more?.medicines != null && more!.medicines!.isNotEmpty) {'icon': Icons.medication, 'label': 'أدوية ومكملات', 'value': more.medicines!},
-      if (more?.notes != null && more!.notes!.isNotEmpty) {'icon': Icons.note, 'label': 'ملاحظة', 'value': more.notes!},
+      if (req!.previousTreatment == true) {'icon': Icons.history, 'label': 'معالج سابقًا', 'value': 'نعم'},
+      if (req.chronicDiseases != null && req.chronicDiseases!.isNotEmpty) {'icon': Icons.health_and_safety, 'label': 'أمراض مزمنة', 'value': req.chronicDiseases!},
+      if (req.medicines != null && req.medicines!.isNotEmpty) {'icon': Icons.medication, 'label': 'أدوية ومكملات', 'value': req.medicines!},
+      if (req.notes != null && req.notes!.isNotEmpty) {'icon': Icons.note, 'label': 'ملاحظة', 'value': req.notes!},
       if (widget.requestModel.courseInfo?.courseName != null) {'icon': Icons.book, 'label': 'المادة', 'value': widget.requestModel.courseInfo!.courseName!},
     ];
 

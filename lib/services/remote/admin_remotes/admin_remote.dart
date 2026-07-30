@@ -83,7 +83,7 @@ class AdminRemote {
   }
 
   getAllPendingRequests() async {
-    var response = await crud.getData(ApiLink.getAllPendingRequests);
+    var response = await crud.getData(ApiLink.getPendingRequest);
     return response.fold((l) => l, (r) => r);
   }
 

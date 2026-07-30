@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/app_route.dart';
-import 'package:gr_flutter/controllers/notifications_controllers/websocket_controller.dart';
 import 'package:gr_flutter/services/notification/websocket_service.dart';
 
 import '../../services/remote/crud.dart';
@@ -25,7 +24,7 @@ class LoginControllerImp extends LoginController {
   final storage = Get.find<LocalUserStorage>();
 
   AuthRemote authRemote = AuthRemote(Get.find());
-  WebSocketController webSocketController = WebSocketController();
+  // WebSocketController webSocketController = WebSocketController();
   Map<String, String> data = <String, String>{};
   GlobalKey<FormState> formStateLogin = GlobalKey<FormState>();
   Crud crud = Crud();

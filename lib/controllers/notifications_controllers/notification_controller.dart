@@ -1,14 +1,15 @@
-// controllers/notification_controller.dart
+// controllers/notifications_controllers/notification_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 import '../../models/public_models/notification_model.dart';
 
 class NotificationController extends GetxController {
   final RxList<NotificationModel> notifications = <NotificationModel>[].obs;
   final RxInt unreadCount = 0.obs;
   final RxBool isLoading = false.obs;
-  
+
   final GetStorage _storage = GetStorage();
 
   @override
@@ -23,7 +24,7 @@ class NotificationController extends GetxController {
         .map((json) => NotificationModel.fromJson(json))
         .toList()
       ..sort((a, b) => b.receivedAt.compareTo(a.receivedAt));
-    
+
     _updateUnreadCount();
   }
 
@@ -31,7 +32,7 @@ class NotificationController extends GetxController {
     notifications.insert(0, notification);
     _saveNotifications();
     _updateUnreadCount();
-    
+
     // إظهار Snackbar للإشعار الفوري
     Get.snackbar(
       notification.title,
@@ -80,26 +81,37 @@ class NotificationController extends GetxController {
   }
 
   void _saveNotifications() {
-    _storage.write('notifications', notifications.map((n) => n.toJson()).toList());
+    _storage.write(
+      'notifications',
+      notifications.map((n) => n.toJson()).toList(),
+    );
   }
 
+  /// التنقل حسب نوع الإشعار عند الضغط عليه.
+  ///
+  /// ✅ ملاحظة: هذه الدالة كان فيها باگ حقيقي بالنسخة القديمة — الـ case
+  /// الخاص بـ 'updatecasetype' ما كان منتهي بـ break، وهذا أصلاً خطأ
+  /// compile-time في Dart (أي case غير فاضي لازم ينتهي بـ break/return/إلخ).
+  /// تم تصحيحه هون.
   void navigateToNotification(Map<String, dynamic> payload) {
-    print("$payload");
-    // TODO: التنقل حسب نوع الإشعار
+    debugPrint('📍 navigateToNotification: $payload');
+
     switch (payload['type']) {
       case 'requestAccepted':
         Get.toNamed('/appointment-details', arguments: payload);
-        print("============================accept");
         break;
+
       case 'VerifyAccepted':
         Get.toNamed('/profile');
         break;
-        case 'updatecasetype':
-        // Get.dialog(Text("data"));
-        print("update+++++++++++++ ");
+
+      case 'updatecasetype':
+        // TODO: حدد الوجهة المناسبة لهذا النوع من الإشعارات
+        Get.toNamed('/notifications');
+        break;
+
       default:
         Get.toNamed('/notifications');
     }
   }
-
 }

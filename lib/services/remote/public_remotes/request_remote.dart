@@ -21,7 +21,7 @@ class RequestRemote {
   }
 
   getPendingRequests() async {
-    var response = await crud.getData(ApiLink.requests);
+    var response = await crud.getData(ApiLink.getPendingRequest);
     return response.fold((l) => l, (r) => r);
   }
 
@@ -36,7 +36,7 @@ class RequestRemote {
   }
 
   getPendingPatientRequest() async {
-    var response = await crud.getData(ApiLink.pendingPatientRequest);
+    var response = await crud.getData(ApiLink.getPendingRequest);
     return response.fold((l) => l, (r) => r);
   }
 

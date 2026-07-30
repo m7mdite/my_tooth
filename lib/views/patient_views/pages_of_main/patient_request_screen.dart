@@ -241,8 +241,14 @@ class PatientRequestScreen extends StatelessWidget {
                   builder: (_) {
                     return controller.getListRequest().isNotEmpty
                         ? ListView.builder(
-                            itemCount: controller.getListRequest().length,
+                            itemCount: controller.getListRequest().length + 1,
                             itemBuilder: (context, index) {
+                              if (index ==
+                                  controller.getListRequest().length ) {
+                                return SizedBox(
+                                  height: 60,
+                                );
+                              }
                               return controller.currentPageFilter == 0
                                   ? CardRequestProcessing(
                                       onTap: () {

@@ -1,4 +1,4 @@
-// models/notification_model.dart
+// models/public_models/notification_model.dart
 import 'package:equatable/equatable.dart';
 
 class NotificationModel extends Equatable {
@@ -26,7 +26,8 @@ class NotificationModel extends Equatable {
       title: json['title'] ?? 'إشعار جديد',
       body: json['body'] ?? '',
       type: json['type'] ?? 'general',
-      receivedAt: DateTime.parse(json['receivedAt'] ?? DateTime.now().toIso8601String()),
+      receivedAt:
+          DateTime.parse(json['receivedAt'] ?? DateTime.now().toIso8601String()),
       payload: json['payload'],
       isRead: json['isRead'] ?? false,
     );

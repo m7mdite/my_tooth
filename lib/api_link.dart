@@ -22,19 +22,18 @@ static const String comments = "$servere/posts/comments";
       "$servere/dashboard"; 
 
   // =========================== patient
-  static const String pendingPatientRequest = '$servere/request/my';
   
   static const String treatments = '$servere/admin/treatment';
   // =========================== student
   static const String acceptRequest = '$servere/request/accept';
   static const String dunningOverseer = '$servere/request/reassign-overseer';
-  // static const String getCompletedRequestsForStudent = '$servere/request/finished';
 
   static const String verify = '$servere/auth/verify';
   static const String getOverSeerForCourse =
       '$servere/request/course-overseers';
 
   // =========================== requests
+  static const String getPendingRequest = '$servere/request/pending';
 
   static const String getCompletedRequests = '$servere/request/finished';
 
@@ -68,7 +67,7 @@ static const String comments = "$servere/posts/comments";
   static const String getAllCourses = '$servere/admin/course';
   static const String getAllTreatments = '$servere/admin/treatment';
   static const String getAllCategory = '$servere/admin/category';
-  static const String getAllPendingRequests = '$servere/request';
+  // static const String getAllPendingRequests = '$servere/request';
   static const String advertisements = '$servere/advertisements';
   static const String adminReports = "$servere/reports";
   static String reviewReport(String id) => "$servere/reports/$id";
