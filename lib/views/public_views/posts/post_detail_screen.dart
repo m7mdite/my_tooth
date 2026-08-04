@@ -104,7 +104,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           Text(comment.user.fullName),
           if (comment.user.isVerified) ...[
             const SizedBox(width: 4),
-            const Icon(Icons.verified, size: 14, color: AppColors.primary),
+             Icon(Icons.verified, size: 14, color: AppColors.primary),
           ],
         ],
       ),
@@ -141,7 +141,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: AppColors.primary),
+            icon:  Icon(Icons.send, color: AppColors.primary),
             onPressed: () {
               if (commentController.text.trim().isNotEmpty) {
                 controller.addComment(widget.postId, commentController.text);

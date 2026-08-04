@@ -12,8 +12,8 @@ showToothLocationMap() {
           // width: Get.width * 0.9,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: AppColors.black,
-            border: Border.all(color: AppColors.black, width: 2, strokeAlign: 7),
+            color: AppColors.cardColor,
+            border: Border.all(color: AppColors.borderColor, width: 2, strokeAlign: 7),
             borderRadius: AppThemeConstants.borderRadius
           ),
           child: Column(

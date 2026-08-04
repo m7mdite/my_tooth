@@ -20,9 +20,9 @@ class AddOverSeerPage extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             // أيقونة ورئيسية
-            const Icon(Icons.admin_panel_settings, size: 60, color: AppColors.primaryAccent),
+             Icon(Icons.admin_panel_settings, size: 60, color: AppColors.primaryAccent),
             const SizedBox(height: 10),
-            const Center(
+             Center(
               child: Text(
                 "إضافة مشرف",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primaryAccent),

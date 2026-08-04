@@ -292,7 +292,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: AppColors.primary),
+            icon:  Icon(Icons.send, color: AppColors.primary),
             onPressed: controller.sendMessage,
           ),
         ],

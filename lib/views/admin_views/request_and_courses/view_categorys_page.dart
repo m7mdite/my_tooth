@@ -31,7 +31,7 @@ class ViewCategorysPage extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               itemCount: controller.categorys.length,
               separatorBuilder: (context, index) {
-                return const Divider(
+                return Divider(
                   color: AppColors.primary,
                   endIndent: 50,
                   indent: 50,

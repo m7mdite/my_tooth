@@ -57,7 +57,7 @@ void showImagePreview(String imageUrl) {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundColor: AppColors.black54,
+              backgroundColor: AppColors.background,
               child: IconButton(
                 icon: const Icon(Icons.close, color: AppColors.white),
                 onPressed: () => Get.back(),
@@ -68,6 +68,6 @@ void showImagePreview(String imageUrl) {
       ),
     ),
     barrierDismissible: true,
-    barrierColor: AppColors.black54, // خلفية مغبشة
+    barrierColor: AppColors.background, // خلفية مغبشة
   );
 }

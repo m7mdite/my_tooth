@@ -11,7 +11,7 @@ Future<File?> uploadPicture() async {
   Completer<File?> completer = Completer(); // لإنتظار النتيجة
   
   await Get.bottomSheet(
-    backgroundColor: AppColors.white54,
+    backgroundColor: AppColors.background,
     Column(
       mainAxisSize: MainAxisSize.min,
       children: [

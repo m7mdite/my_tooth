@@ -59,7 +59,7 @@ class PublicProfileScreen extends StatelessWidget {
                   SliverAppBar(
                     expandedHeight: 300,
                     pinned: true,
-                    backgroundColor: AppColors.white,
+                    backgroundColor: AppColors.background,
                     foregroundColor: AppColors.black87,
                     elevation: 0,
                     leading: IconButton(

@@ -154,7 +154,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   color: AppColors.white.withOpacity(0.7),
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  shadows: [Shadow(blurRadius: 8, color: AppColors.black26)],
+                  shadows: [Shadow(blurRadius: 8, color: AppColors.background)],
                 ),
               ),
             ),

@@ -7,7 +7,7 @@ class DefaultContainerProfile extends StatelessWidget {
   final Color? color;
   final IconData? icon;
   final void Function()? onTap;
-  const DefaultContainerProfile({super.key,this.title="ولا شي", this.color=AppColors.primary, this.icon=Icons.delete_forever, this.onTap});
+  const DefaultContainerProfile({super.key,this.title="ولا شي", this.color, this.icon=Icons.delete_forever, this.onTap});
 
   @override
   Widget build(BuildContext context) {

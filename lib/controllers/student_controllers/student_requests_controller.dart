@@ -127,6 +127,8 @@ class StudentRequestsControllerImp extends StudentRequestsController {
   // late int i;
   @override
   showRequest(TreatmentRequestModel requestModel) async {
+    print("======== ${requestModel.toString()}");
+
     // i = index;
     await getOverSeer(requestModel.courseInfo!.sId!);
     print("======== ${requestModel.courseInfo!.sId!}");

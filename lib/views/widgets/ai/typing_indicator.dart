@@ -18,7 +18,7 @@ class TypingIndicator extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient:  LinearGradient(
                 colors: [AppColors.primary, AppColors.successAccent],
               ),
               borderRadius: BorderRadius.circular(18),

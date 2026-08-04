@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'colors_constant.dart';
 
 class AppGradients {
-  static const LinearGradient arcticFrostGradient = LinearGradient(
+  static  LinearGradient arcticFrostGradient = LinearGradient(
     colors: [
       AppColors.white,
       AppColors.white70,

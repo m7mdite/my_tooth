@@ -43,12 +43,12 @@ class AdminNotifyDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // ===== العنوان =====
-                  const Text(
+                   Text(
                     'إرسال إشعار للجميع',
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.black87, // ✅ لون غامق
+                      color: AppColors.textPrimary, // ✅ لون غامق
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -60,11 +60,11 @@ class AdminNotifyDialog extends StatelessWidget {
                   ),
 
                   // ===== اختيار الأدوار =====
-                  const Text(
+                   Text(
                     'اختر الأدوار المستهدفة:',
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.black54, // ✅ لون غامق
+                      color: AppColors.textPrimary, // ✅ لون غامق
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -110,7 +110,7 @@ class AdminNotifyDialog extends StatelessWidget {
                   // ===== حقل العنوان =====
                   TextField(
                     controller: controller.titleController,
-                    style: const TextStyle(color: AppColors.black87),
+                    style:  TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: 'عنوان الإشعار...',
                       hintStyle: TextStyle(color: AppColors.grey.shade500),
@@ -129,7 +129,7 @@ class AdminNotifyDialog extends StatelessWidget {
                   TextField(
                     controller: controller.bodyController,
                     maxLines: 3,
-                    style: const TextStyle(color: AppColors.black87),
+                    style:  TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: 'محتوى الإشعار...',
                       hintStyle: TextStyle(color: AppColors.grey.shade500),

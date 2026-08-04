@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'app_route.dart';
 import 'bindings/general_binding.dart';
 import 'controllers/notifications_controllers/notification_controller.dart';
+import 'controllers/theme_controller.dart';
 import 'services/local_storge/local_user_storage.dart';
 import 'services/local_storge/secure_storage_service.dart';
 import 'services/remote/crud.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(SecureStorageService(), permanent: true);
   Get.put(LocalUserStorage(), permanent: true);
+  Get.put(ThemeController(), permanent: true);
   Get.put(Crud(), permanent: true);
 
   // await initialServices();

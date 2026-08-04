@@ -27,7 +27,7 @@ class ViewPatientesPage extends StatelessWidget {
               return const Center(child: Text("لا يوجد مرضى"));
             }
             return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(
+              separatorBuilder: (context, index) => Divider(
                 height: 12,
                 color: AppColors.primary,
                 endIndent: 50,

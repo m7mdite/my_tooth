@@ -35,12 +35,12 @@ void showsnack( {String? title, String? message}) {
             children: [
               Text(
                 title??" عنوان التنبيه",
-                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
               Text(
                 message??" هذه هي رسالة التنبيه التي تظهر على الصورة.",
-                style: TextStyle(color: AppColors.black),
+                style: TextStyle(color: AppColors.textPrimary),
               ),
             ],
           ),

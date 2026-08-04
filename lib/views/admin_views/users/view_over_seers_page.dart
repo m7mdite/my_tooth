@@ -28,7 +28,7 @@ class ViewOverSeersPage extends StatelessWidget {
               return const Center(child: Text("لا يوجد مشرفين"));
             }
             return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(
+              separatorBuilder: (context, index) => Divider(
                 height: 12,
                 color: AppColors.primary,
                 endIndent: 50,

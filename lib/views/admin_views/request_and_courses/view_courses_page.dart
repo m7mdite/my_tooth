@@ -32,7 +32,7 @@ class ViewCoursesPage extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               itemCount: controller.courses.length,
               separatorBuilder: (context, index) {
-                return const Divider(
+                return  Divider(
                   color: AppColors.primary,
                   endIndent: 50,
                   indent: 50,

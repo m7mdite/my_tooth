@@ -28,7 +28,7 @@ class ViewStudentsPage extends StatelessWidget {
               return const Center(child: Text("لا يوجد طلاب"));
             }
             return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(
+              separatorBuilder: (context, index) => Divider(
                 height: 12,
                 color: AppColors.primary,
                 endIndent: 50,
@@ -86,7 +86,7 @@ class ViewStudentsPage extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         if (student.isVerified == true)
-                          const Padding(
+                           Padding(
                             padding: EdgeInsets.only(left: 4.0),
                             child: Icon(Icons.verified, color: AppColors.primary, size: 16),
                           ),

@@ -61,7 +61,7 @@ class SubmitVerifyStudent extends StatelessWidget {
             // الرقم الجامعي
             Text(
               "الرقم الجامعي: ${profile.universityNumber ?? '--'}",
-              style: const TextStyle(fontSize: 16, color: AppColors.black),
+              style: TextStyle(fontSize: 16, color: AppColors.black),
             ),
             const SizedBox(height: 16),
             // صورة البطاقة الجامعية

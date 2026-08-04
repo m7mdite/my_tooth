@@ -639,7 +639,7 @@ class HomeDashboardScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'أفضل المنشورات',
                       style: TextStyle(
                           fontSize: 18,
@@ -664,7 +664,7 @@ class HomeDashboardScreen extends StatelessWidget {
                           ));
                         }
                       },
-                      child: const Text('عرض الكل',
+                      child:  Text('عرض الكل',
                           style: TextStyle(color: AppColors.primary)),
                     ),
                   ],

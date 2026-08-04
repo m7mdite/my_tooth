@@ -84,7 +84,7 @@ class AdminNotifyController extends GetxController {
       Get.snackbar(
         'نجاح',
         response['message'] ?? 'تم إرسال الإشعار بنجاح',
-        backgroundColor: AppColors.success,
+        backgroundColor: AppColors.background,
         colorText: AppColors.white,
         duration: const Duration(seconds: 4),
       );

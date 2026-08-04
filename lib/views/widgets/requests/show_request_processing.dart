@@ -158,7 +158,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
             icon: const Icon(Icons.close_rounded, color: AppColors.white),
             onPressed: Get.back,
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.white.withValues(alpha: 0.15),
+              backgroundColor: AppColors.background,
               shape: const CircleBorder(),
             ),
           ),

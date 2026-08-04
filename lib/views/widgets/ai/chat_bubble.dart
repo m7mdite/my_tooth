@@ -115,7 +115,7 @@ class ChatBubble extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient:  LinearGradient(
           colors: [AppColors.primaryAccent, AppColors.successAccent],
         ),
         borderRadius: BorderRadius.circular(18),

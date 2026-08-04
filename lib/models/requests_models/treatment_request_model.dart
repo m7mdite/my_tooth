@@ -91,6 +91,25 @@ class TreatmentRequestModel {
     );
   }
 
+  @override
+String toString() {
+  return 'TreatmentRequestModel(\n'
+      '  sId: $sId,\n'
+      '  patient: ${patient != null ? patient!.toJson() : 'null'},\n'
+      '  status: $status,\n'
+      '  requestion: ${requestion != null ? requestion!.toJson() : 'null'},\n'
+      '  overseer: ${overseer != null ? overseer!.toJson() : 'null'},\n'
+      '  student: ${student != null ? student!.toJson() : 'null'},\n'
+      '  dateOfAccepting: $dateOfAccepting,\n'
+      '  caseType: ${caseType != null ? caseType!.toJson() : caseTypeId},\n'
+      '  stageEvaluations: ${stageEvaluations != null ? stageEvaluations!.map((v) => v.toJson()).toList() : 'null'},\n'
+      '  courseInfo: ${courseInfo != null ? courseInfo!.toJson() : 'null'},\n'
+      '  courseInfoAlt: ${courseInfoAlt != null ? courseInfoAlt!.toJson() : 'null'},\n'
+      '  caseTypeId: $caseTypeId,\n'
+      '  rating: $rating,\n'
+      ')';
+}
+
   // toJson موحد
   // Map<String, dynamic> toJson() {
   //   final Map<String, dynamic> data = <String, dynamic>{};
