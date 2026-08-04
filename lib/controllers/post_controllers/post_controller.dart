@@ -15,16 +15,26 @@ class PostController extends GetxController {
   RxInt totalPages = 1.obs;
   RxBool hasMore = true.obs;
   RxBool isLoadingMore = false.obs;
-  String? currentFilter; // يمكنك لاحقاً ربطها بواجهة فلترة
+
+  /// ✅ صار Rx بدل String? عادي — عشان تحديث الفلتر (تظليل الشريحة
+  /// المختارة + التبديل بين "الكل" و"منشوراتي") يصير تفاعلي فعلياً
+  /// بدون الحاجة لإعادة بناء الشاشة كاملة يدوياً.
+  /// value == null → الكل، 'student'/'patient'/'overseer' → فلترة حسب
+  /// الدور، 'me' → منشوراتي الشخصية (مسار مختلف تماماً بالباك).
+  Rx<String?> currentFilter = Rx<String?>(null);
+
   RxBool isLoading = false.obs;
   RxBool isCreating = false.obs;
   Rx<StatusRequest> statusRequest = StatusRequest.none.obs;
+
+  // ===== المنشورات الشخصية (منشوراتي) =====
+  RxList<PostModel> myPosts = <PostModel>[].obs;
+  RxBool isLoadingMy = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchPosts(refresh: true);
-    // fetchPosts();
   }
 
   Future<void> fetchPosts({bool refresh = false}) async {
@@ -43,7 +53,7 @@ class PostController extends GetxController {
     final response = await remote.getAllPosts(
       page: currentPage.value,
       limit: 10,
-      filter: currentFilter,
+      filter: currentFilter.value,
     );
 
     statusRequest.value = handlingData(response);
@@ -74,25 +84,30 @@ class PostController extends GetxController {
     }
   }
 
-  void setFilter(String? filter) {
-    currentFilter = filter;
-    fetchPosts(refresh: true);
+  /// جلب المنشورات الشخصية للمستخدم الحالي (بدون pagination — الباك
+  /// بيرجعها كلها دفعة وحدة عبر GET /posts/my).
+  Future<void> fetchMyPosts() async {
+    isLoadingMy.value = true;
+    final response = await remote.getMyPosts();
+    if (handlingData(response) == StatusRequest.success) {
+      final List<dynamic> data = response['data'] ?? [];
+      myPosts.value = data.map((json) => PostModel.fromJson(json)).toList();
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل منشوراتك');
+    }
+    isLoadingMy.value = false;
   }
 
-  // Future<void> fetchPosts() async {
-  //   isLoading.value = true;
-  //   statusRequest.value = StatusRequest.loading;
-  //   var response = await remote.getAllPosts();
-  //   statusRequest.value = handlingData(response);
-  //   if (statusRequest.value == StatusRequest.success) {
-  //     List<dynamic> data = response['data'] ?? [];
-  //     posts.value = data.map((json) => PostModel.fromJson(json)).toList();
-  //   } else {
-  //     Get.snackbar('خطأ', response['message'] ?? 'فشل تحميل البوستات');
-  //   }
-  //   isLoading.value = false;
-
-  // }
+  /// filter == 'me' → مسار منفصل بالكامل (منشوراتي الشخصية).
+  /// غير هيك → فلترة الفيد العام حسب الدور (أو 'الكل' إذا null).
+  void setFilter(String? filter) {
+    currentFilter.value = filter;
+    if (filter == 'me') {
+      fetchMyPosts();
+    } else {
+      fetchPosts(refresh: true);
+    }
+  }
 
   Future<void> createPost(String content, List<String> imagePaths) async {
     isCreating.value = true;
@@ -111,30 +126,41 @@ class PostController extends GetxController {
     var response = await remote.likePost(postId);
     print('Like Response: $response'); // طباعة الرد للتحقق
     if (handlingData(response) == StatusRequest.success) {
-      // تحديث محلي (زيادة/نقصان)
-      int index = posts.indexWhere((p) => p.sId == postId);
-
-      if (index != -1) {
-        // استخدم update لتعديل القائمة مباشرة
-        posts[index].countLikes = response['data']['count_likes'];
-        posts[index].countDislikes = response['data']['count_dislikes'];
-        print("+++++++${posts[index].countLikes}");
-        posts.refresh(); // إعادة بناء الواجهة
-      }
+      _updateLikeCountsEverywhere(
+        postId,
+        response['data']['count_likes'],
+        response['data']['count_dislikes'],
+      );
     }
   }
 
   Future<void> dislikePost(String postId) async {
     var response = await remote.dislikePost(postId);
     if (handlingData(response) == StatusRequest.success) {
-      int index = posts.indexWhere((p) => p.sId == postId);
-      if (index != -1) {
-        // استخدم update لتعديل القائمة مباشرة
-        posts[index].countLikes = response['data']['count_likes'];
-        posts[index].countDislikes = response['data']['count_dislikes'];
-        print("+++++++${posts[index].countLikes}");
-        posts.refresh(); // إعادة بناء الواجهة
-      }
+      _updateLikeCountsEverywhere(
+        postId,
+        response['data']['count_likes'],
+        response['data']['count_dislikes'],
+      );
+    }
+  }
+
+  /// ✅ تحديث عدّاد اللايك/الديسلايك بكل القوائم يلي ممكن يكون البوست
+  /// ظاهر فيها بنفس الوقت (الفيد العام + منشوراتي)، عشان ما يصير
+  /// تضارب لو المستخدم بدّل بين الفلترين لنفس البوست.
+  void _updateLikeCountsEverywhere(String postId, int? likes, int? dislikes) {
+    final feedIndex = posts.indexWhere((p) => p.sId == postId);
+    if (feedIndex != -1) {
+      posts[feedIndex].countLikes = likes;
+      posts[feedIndex].countDislikes = dislikes;
+      posts.refresh();
+    }
+
+    final myIndex = myPosts.indexWhere((p) => p.sId == postId);
+    if (myIndex != -1) {
+      myPosts[myIndex].countLikes = likes;
+      myPosts[myIndex].countDislikes = dislikes;
+      myPosts.refresh();
     }
   }
 
@@ -193,21 +219,15 @@ class PostController extends GetxController {
     }
   }
 
-  // مساعد لمعالجة الردود (يجب إضافته إن لم يكن موجوداً)
-  // StatusRequest handlingData(Map<String, dynamic> response) {
-  //   if (response['status'] == 'success') return StatusRequest.success;
-  //   return StatusRequest.failure;
-  // }
-
-  // ===== في PostController =====
-
-// ✅ حذف المنشور
+  // ===== حذف المنشور =====
   Future<void> deletePost(String postId) async {
     isLoading.value = true;
     final response = await remote.deletePost(postId);
     if (handlingData(response) == StatusRequest.success) {
       posts.removeWhere((p) => p.sId == postId);
       posts.refresh();
+      myPosts.removeWhere((p) => p.sId == postId);
+      myPosts.refresh();
       Get.snackbar('نجاح', 'تم حذف المنشور');
     } else {
       Get.snackbar('خطأ', response['message'] ?? 'فشل الحذف');
@@ -215,7 +235,7 @@ class PostController extends GetxController {
     isLoading.value = false;
   }
 
-// ✅ تعديل المنشور (سيتم استدعاؤها من شاشة التعديل)
+  // ===== تعديل المنشور (سيتم استدعاؤها من شاشة التعديل) =====
   Future<void> updatePost({
     required String postId,
     required String newContent,
@@ -230,12 +250,20 @@ class PostController extends GetxController {
       deleteImageIds: deleteImageIds,
     );
     if (handlingData(response) == StatusRequest.success) {
-      // تحديث البوست في القائمة
-      final index = posts.indexWhere((p) => p.sId == postId);
-      if (index != -1) {
-        posts[index] = PostModel.fromJson(response['data']);
+      final updatedPost = PostModel.fromJson(response['data']);
+
+      final feedIndex = posts.indexWhere((p) => p.sId == postId);
+      if (feedIndex != -1) {
+        posts[feedIndex] = updatedPost;
         posts.refresh();
       }
+
+      final myIndex = myPosts.indexWhere((p) => p.sId == postId);
+      if (myIndex != -1) {
+        myPosts[myIndex] = updatedPost;
+        myPosts.refresh();
+      }
+
       Get.back(); // إغلاق شاشة التعديل
       Get.snackbar('نجاح', 'تم تحديث المنشور');
     } else {
@@ -245,30 +273,31 @@ class PostController extends GetxController {
   }
 
   Future<void> fetchPendingPosts() async {
-  isLoadingPending.value = true;
-  final response = await remote.getPendingPosts();
-  if (response['status'] == 'success') {
-    final List<dynamic> data = response['data'] ?? [];
-    pendingPosts.value = data.map((json) => PostModel.fromJson(json)).toList();
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل جلب البوستات المعلقة');
+    isLoadingPending.value = true;
+    final response = await remote.getPendingPosts();
+    if (response['status'] == 'success') {
+      final List<dynamic> data = response['data'] ?? [];
+      pendingPosts.value =
+          data.map((json) => PostModel.fromJson(json)).toList();
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل جلب البوستات المعلقة');
+    }
+    isLoadingPending.value = false;
   }
-  isLoadingPending.value = false;
-}
 
-// ===== الموافقة على بوست معلق (للأدمن فقط) =====
-Future<void> acceptPendingPost(String postId) async {
-  isLoadingPending.value = true;
-  final response = await remote.acceptPendingPost(postId);
-  if (response['status'] == 'success') {
-    pendingPosts.removeWhere((p) => p.sId == postId);
-    pendingPosts.refresh();
-    // تحديث قائمة البوستات الرئيسية
-    await fetchPosts(refresh: true);
-    Get.snackbar('نجاح', 'تم الموافقة على المنشور ونشره للعامة');
-  } else {
-    Get.snackbar('خطأ', response['message'] ?? 'فشل الموافقة على البوست');
+  // ===== الموافقة على بوست معلق (للأدمن فقط) =====
+  Future<void> acceptPendingPost(String postId) async {
+    isLoadingPending.value = true;
+    final response = await remote.acceptPendingPost(postId);
+    if (response['status'] == 'success') {
+      pendingPosts.removeWhere((p) => p.sId == postId);
+      pendingPosts.refresh();
+      // تحديث قائمة البوستات الرئيسية
+      await fetchPosts(refresh: true);
+      Get.snackbar('نجاح', 'تم الموافقة على المنشور ونشره للعامة');
+    } else {
+      Get.snackbar('خطأ', response['message'] ?? 'فشل الموافقة على البوست');
+    }
+    isLoadingPending.value = false;
   }
-  isLoadingPending.value = false;
-}
 }

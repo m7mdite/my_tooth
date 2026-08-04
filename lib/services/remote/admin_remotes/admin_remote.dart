@@ -177,10 +177,18 @@ class AdminRemote {
     final result = await crud.getData(ApiLink.weeklySchedule);
     return result.fold((l) => l, (r) => r);
   }
-   notifyAll(String content) async {
+   notifyUsersByRoles({
+    required String title,
+    required String body,
+    required List<String> roles,
+  }) async {
     final response = await crud.postData(
       ApiLink.notifyAll,
-      {'content': content},
+      {
+        'title': title,
+        'body': body,
+        'roles': roles,
+      },
     );
     return response.fold((l) => l, (r) => r);
     

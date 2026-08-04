@@ -25,6 +25,12 @@ class PostRemote {
     return response.fold((l) => l, (r) => r);
   }
 
+  /// جلب المنشورات الشخصية الخاصة بالمستخدم الحالي فقط (GET /posts/my).
+  getMyPosts() async {
+    var response = await crud.getData('${ApiLink.posts}/my');
+    return response.fold((l) => l, (r) => r);
+  }
+
   createPost(String content, List<String> imagePaths) async {
     final result = await crud.postDataWithFiles(
       ApiLink.posts,
@@ -91,13 +97,13 @@ class PostRemote {
     return response.fold((l) => l, (r) => r);
   }
 
-   getPendingPosts() async {
+  getPendingPosts() async {
     final response = await crud.getData(ApiLink.getPendingPosts);
     return response.fold((l) => l, (r) => r);
   }
 
   // الموافقة على بوست معلق (للأدمن فقط)
-   acceptPendingPost(String postId) async {
+  acceptPendingPost(String postId) async {
     final response = await crud.postData('${ApiLink.acceptPendingPosts}/$postId', {});
     return response.fold((l) => l, (r) => r);
   }

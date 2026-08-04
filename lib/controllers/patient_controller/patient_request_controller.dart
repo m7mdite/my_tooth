@@ -17,12 +17,10 @@ import '../../views/widgets/botton_controller.dart';
 
 abstract class PatientRequestController extends GetxController {
   refreshData();
-  // fetchItems();
   getPendingRequest();
   getInProcessingRequest();
   getRejectedRequest();
   getCompletedRequest();
-  // fetchFilterItems();
   showRequest(TreatmentRequestModel request);
   showProcessingRequest(TreatmentRequestModel request);
   toUpdateMode(TreatmentRequestModel request);

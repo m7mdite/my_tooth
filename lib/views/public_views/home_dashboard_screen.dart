@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
@@ -26,7 +27,7 @@ class HomeDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   String role =settingController.role.value;
+    String role = settingController.role.value;
     return Scaffold(
       appBar: CustomAppBar(
         title: "الرئيسية",
@@ -95,6 +96,39 @@ class HomeDashboardScreen extends StatelessWidget {
           );
         }),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton:role == "admin"? InkWell(
+        onTap: () {Get.dialog(
+                            const AdminNotifyDialog(),
+                            barrierDismissible: false,
+                          );},
+        child: Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+              color: Colors.white24,
+              border: Border.all(width: 1, color: Colors.blue, strokeAlign: 10),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.elliptical(100, 10),
+                bottomLeft: Radius.elliptical(10, 100),
+                topRight: Radius.elliptical(10, 100),
+                bottomRight: Radius.elliptical(100, 10),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 3,
+                  spreadRadius: 3,
+                )
+              ]),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.notifications_active),
+              Text("إرسال إشعار للجميع"),
+            ],
+          ),
+        ),
+      ):null,
       body: RefreshIndicator(
         onRefresh: () async {
           controller.onInit();
@@ -124,21 +158,8 @@ class HomeDashboardScreen extends StatelessWidget {
                   children: [
                     // ===== 1. إحصائيات الطلبات =====
                     _buildStatsSection(dashboard.requests!, role),
-                    InkWell(
-  onTap: () {
-    Get.dialog(
-      const AdminNotifyDialog(),
-      barrierDismissible: false,
-    );
-  },
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      Text("إرسال إشعار للجميع"),
-      Icon(Icons.notifications_active),
-    ],
-  ),
-),
+                    
+                      
                     // ===== 2. الإعلانات (كاروسيل) =====
                     if (dashboard.adv != null &&
                         dashboard.adv!.data != null &&
@@ -523,48 +544,50 @@ class HomeDashboardScreen extends StatelessWidget {
     );
   }
 
-  
   Widget _buildQuickActions() {
-  return AnimationConfiguration.staggeredList(
-    position: 2,
-    duration: const Duration(milliseconds: 600),
-    child: SlideAnimation(
-      verticalOffset: 50,
-      child: FadeInAnimation(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Obx(() {
-            final isAdmin = controller.isAdmin.value;
-            
-            return Row(
-              children: [
-               if (!isAdmin) Expanded(
-                  child: _actionButton(
-                    icon: Icons.chat,
-                    label: 'المساعد الذكي',
-                    color: Colors.green,
-                    onTap: () => Get.toNamed(AppRroute.aiChat),
-                  ),
-                ),
-               if(isAdmin)  ...[
-                  // const SizedBox(width: 16),
-                  Expanded(
-                    child: _actionButton(
-                      icon: Icons.ad_units,
-                      label: 'إدارة الإعلانات',
-                      color: Colors.purple.shade700,
-                      onTap: () => Get.to(() =>  AdvertisementManagementScreen()),
+    return AnimationConfiguration.staggeredList(
+      position: 2,
+      duration: const Duration(milliseconds: 600),
+      child: SlideAnimation(
+        verticalOffset: 50,
+        child: FadeInAnimation(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Obx(() {
+              final isAdmin = controller.isAdmin.value;
+
+              return Row(
+                children: [
+                  if (!isAdmin)
+                    Expanded(
+                      child: _actionButton(
+                        icon: Icons.chat,
+                        label: 'المساعد الذكي',
+                        color: Colors.green,
+                        onTap: () => Get.toNamed(AppRroute.aiChat),
+                      ),
                     ),
-                  ),
+                  if (isAdmin) ...[
+                    // const SizedBox(width: 16),
+                    Expanded(
+                      child: _actionButton(
+                        icon: Icons.ad_units,
+                        label: 'إدارة الإعلانات',
+                        color: Colors.purple.shade700,
+                        onTap: () =>
+                            Get.to(() => AdvertisementManagementScreen()),
+                      ),
+                    ),
+                  ],
                 ],
-              ],
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
+
   Widget _actionButton(
       {required IconData icon,
       required String label,

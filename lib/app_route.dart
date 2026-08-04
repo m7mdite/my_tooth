@@ -11,11 +11,9 @@ import 'package:gr_flutter/views/public_views/privacy_policy_screen.dart';
 
 import 'bindings/ai_chat_binding.dart';
 import 'bindings/feed_binding.dart';
-import 'bindings/login_binding.dart';
 import 'bindings/main_overseer_binding.dart';
 import 'bindings/main_patient_binding.dart';
 import 'bindings/main_student_binding.dart';
-import 'bindings/register_binding.dart';
 import 'bindings/student_requests_binding.dart';
 import 'bindings/unified_setting_binding.dart';
 import 'views/admin_views/request_and_courses/add_category_page.dart';
@@ -37,8 +35,6 @@ import 'views/admin_views/users/view_patientes_page.dart';
 import 'views/admin_views/users/view_students_page.dart';
 import 'views/admin_views/users/view_verify_students_page.dart';
 import 'views/auth/auth_screen.dart';
-import 'views/auth/login_screen.dart';
-import 'views/auth/register_screen.dart';
 import 'views/guest_view/main_screen_guest.dart';
 import 'views/onboarding_screen.dart';
 import 'views/public_views/chat_screen.dart';
@@ -60,100 +56,45 @@ import 'views/student_views/view_verify_page.dart';
 import 'views/widgets/ai/ai_chat_screen.dart';
 import 'views/public_views/view_other_profile.dart';
 
-
-
 List<GetPage<dynamic>> routes = [
-
-GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),  
-
-
-  // ========== AUTH ==========
+  GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),
   GetPage(
     name: "/",
     page: () => SplashScreen(),
-    // binding: RegisterBinding()  
   ),
-  // GetPage( 
-  //   name: AppRroute.login,
-  //   page: () => LoginScreen(),
-  //   binding: LoginBinding(),
-  // ),
-  // GetPage(
-  //   name: AppRroute.register,
-  //   page: () => RegisterScreen(),
-  //   binding: RegisterBinding(),
-  // ),
+  // ========== AUTH ==========
+
   GetPage(
     name: AppRroute.auth,
     page: () => AuthScreen(),
-    binding: AuthBinding()
+    binding: AuthBinding(),
   ),
 
   // ========== GENERAL ==========
   GetPage(name: AppRroute.splash, page: () => const SplashScreen()),
-  GetPage(name: AppRroute.mainScreenGuest, page: () =>  MainScreenGuest()),
-  GetPage(
-    name: AppRroute.notificationsView,
-    page: () => NotificationsView(),
-  ),
-  GetPage(
-    name: AppRroute.conversations,
-    page: () => const ConversationsScreen(),
-  ),
-  GetPage(
-    name: AppRroute.viewOtherProfile,
-    page: () => ViewOtherProfile(),
-  ),
-  GetPage(
-    name: AppRroute.aiChat,
-    page: () => AiChatScreen(),
-    binding: AiChatBinding(),
-  ),
-  GetPage(
-    name: AppRroute.changePassword,
-    page: () => ChangePasswordScreen(),
-  ),
-  GetPage(
-    name: AppRroute.privacyPolicy,
-    page: () => PrivacyPolicyScreen(),
-  ),
-  GetPage(
-    name: AppRroute.contactSupport,
-    page: () => ContactSupportScreen(),
-  ),
+  GetPage(name: AppRroute.mainScreenGuest, page: () => MainScreenGuest()),
+  GetPage(name: AppRroute.notificationsView, page: () => NotificationsView()),
+  GetPage(name: AppRroute.conversations, page: () => const ConversationsScreen()),
+  GetPage(name: AppRroute.viewOtherProfile, page: () => ViewOtherProfile()),
+  GetPage(name: AppRroute.aiChat,page: () => AiChatScreen(),binding: AiChatBinding()),
+  GetPage(name: AppRroute.changePassword, page: () => ChangePasswordScreen()),
+  GetPage(name: AppRroute.privacyPolicy, page: () => PrivacyPolicyScreen()),
+  GetPage(name: AppRroute.contactSupport, page: () => ContactSupportScreen()),
 
-  // ============================================================================== CHAT (with arguments) ==========
+  // ================================================== CHAT (with arguments) ==========
   GetPage(
-    name: AppRroute.chat,
-    page: () {
-      final args = Get.arguments as Map<String, dynamic>;
-      return ChatScreen(
-        otherPartyProfile: args['otherPartyProfile'],
-        conversationId: args['conversationId'],
-      );
-    },
-  ),
+      name: AppRroute.chat,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>;
+        return ChatScreen(otherPartyProfile: args['otherPartyProfile'],conversationId: args['conversationId']);
+        }),
+  // =========================================================== POSTS (Feed) ==========
+  GetPage(name: AppRroute.feed, page: () => FeedScreen(), binding: FeedBinding()),
+  GetPage(name: AppRroute.createPost, page: () => CreatePostScreen()),
+  GetPage(name: AppRroute.postDetail,page: () => PostDetailScreen(postId: Get.arguments)),
+  GetPage(name: AppRroute.pendingPosts, page: () => const PendingPostsScreen()),
 
-  // =============================================================== POSTS (Feed) ==========
-  GetPage(
-    name: AppRroute.feed,
-    page: () => FeedScreen(),
-    binding: FeedBinding(),
-  ),
-  GetPage(
-    name: AppRroute.createPost,
-    page: () => CreatePostScreen(),
-  ),
-  GetPage(
-    name: AppRroute.postDetail,
-    page: () => PostDetailScreen(postId: Get.arguments),
-  ),
-  GetPage(
-  name: AppRroute.pendingPosts,
-  page: () => const PendingPostsScreen(),
-),
-
-  // ================================================================= UNIFIED SETTINGS & PROFILE ==========
+  // ======================================================= UNIFIED SETTINGS & PROFILE ==========
   GetPage(
     name: AppRroute.unifiedSetting,
     page: () => UnifiedSettingScreen(),
@@ -221,10 +162,9 @@ GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),
 
   // ========== OVERSEER ==========
   GetPage(
-    name: AppRroute.mainScreenOverseer,
-    page: () => MainScreenOverseer(),
-    binding: MainOverseerBinding()
-  ),
+      name: AppRroute.mainScreenOverseer,
+      page: () => MainScreenOverseer(),
+      binding: MainOverseerBinding()),
 
   // ========== ADMIN ==========
   GetPage(
@@ -310,7 +250,6 @@ GetPage(name: AppRroute.onboarding, page: () => OnboardingScreen()),
 ];
 
 class AppRroute {
-
   static const String onboarding = '/onboarding';
   // ========== AUTH ==========
   static const String login = "/login";

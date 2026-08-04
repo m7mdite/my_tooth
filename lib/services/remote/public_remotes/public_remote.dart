@@ -15,7 +15,7 @@ class PublicRemote {
 
   reportUser(String userId, String reason, String description) async {
     var response = await crud.postData(
-      "${ApiLink.reportUser}/$userId", // يجب إضافة هذا الثابت في ApiLink
+      "${ApiLink.reportUser}/$userId",
       {
         // 'reportedUserId': userId,
         'type': reason,

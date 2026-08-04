@@ -266,16 +266,15 @@ class WebSocketService extends GetxService {
   /// بالبرداية + صوت) + إضافة لصفحة الإشعارات، بدل Snackbar داخلي بس
   /// كان بيختفي إذا التطبيق مو مفتوح بالفورغراوند.
   Future<void> _handleNotify(dynamic data) async {
-    debugPrint('📩 notify: $data');
-    final message = (data is Map && data['message'] != null)
-        ? data['message'].toString()
-        : 'لديك إشعار جديد';
+    print('📩 notify: $data');
+    final title = data['title'] ?? 'إشعار جديد';
+  final body = data['body'] ?? 'لديك إشعار جديد';
 
     await _handleAndPersist(
       data: data,
       type: SocketEvents.notify,
-      title: '📢 إشعار جديد',
-      body: message,
+      title:title?? '📢 إشعار جديد',
+      body: body??"",
     );
   }
 

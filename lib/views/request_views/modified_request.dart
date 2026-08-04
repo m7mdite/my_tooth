@@ -7,6 +7,7 @@ import 'package:gr_flutter/controllers/patient_controller/patient_request_contro
 import 'package:gr_flutter/services/functions/show_tooth_location_map.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
+import 'package:gr_flutter/views/widgets/prediction_light_button.dart';
 import '../../models/requests_models/treatment_request_model.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
@@ -73,18 +74,54 @@ class ModifiedRequest extends StatelessWidget {
                   ),
                   BreakContainer(),
 
-                  // ----- شدة الألم (1-10) مع أنيميشن متقدم -----
-                  // Container(),
                   // ----- شدة الألم (1-10) مع أنيميشن AnimatedContainer -----
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "حدد شدة الألم :",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                        Row(
+                          children: [
+                            const Text(
+                              "حدد شدة الألم :",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            ),
+                            Obx(
+                              () => AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color:
+                                      controller.selectedPainSeverity.value >= 8
+                                          ? Colors.red.shade100
+                                          : controller.selectedPainSeverity
+                                                      .value >=
+                                                  5
+                                              ? Colors.orange.shade100
+                                              : Colors.green.shade100,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'القيمة المختارة: ${controller.selectedPainSeverity.value}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color:
+                                        controller.selectedPainSeverity.value >=
+                                                8
+                                            ? Colors.red.shade700
+                                            : controller.selectedPainSeverity
+                                                        .value >=
+                                                    5
+                                                ? Colors.orange.shade700
+                                                : Colors.green.shade700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
                         Center(
@@ -107,92 +144,108 @@ class ModifiedRequest extends StatelessWidget {
                                     controller.selectedPainSeverity.value >=
                                         number;
 
-                                String emoji;
-                                Color emojiColor;
+                                // نفس تدرّج الألوان (أخضر → أحمر) المستخدم
+                                // سابقاً، بس هلق منلوّن فيه أيقونة سن بدل
+                                // الايموجي، بنفس روح OverseerManageRequest.
+                                Color severityColor;
                                 switch (number) {
                                   case 1:
-                                    emoji = '😊';
-                                    emojiColor = Colors.green.shade400;
+                                    severityColor =
+                                        Colors.blue.shade100; // أزرق فاتح
                                     break;
                                   case 2:
-                                    emoji = '🙂';
-                                    emojiColor = Colors.lightGreen.shade500;
+                                    severityColor =
+                                        Colors.blue.shade300; // أزرق متوسط
                                     break;
                                   case 3:
-                                    emoji = '😐';
-                                    emojiColor = Colors.lime.shade600;
+                                    severityColor =
+                                        Colors.blue.shade500; // أزرق غامق
                                     break;
                                   case 4:
-                                    emoji = '😕';
-                                    emojiColor = Colors.yellow.shade700;
+                                    severityColor =
+                                        Colors.green.shade300; // أخضر فاتح
                                     break;
                                   case 5:
-                                    emoji = '😟';
-                                    emojiColor = Colors.orange.shade400;
+                                    severityColor =
+                                        Colors.green.shade500; // أخضر متوسط
                                     break;
                                   case 6:
-                                    emoji = '😣';
-                                    emojiColor = Colors.deepOrange.shade400;
+                                    severityColor = Colors.lightGreen
+                                        .shade600; // أخضر مائل للأصفر
                                     break;
                                   case 7:
-                                    emoji = '😖';
-                                    emojiColor = Colors.deepOrange.shade600;
+                                    severityColor = Colors
+                                        .yellow.shade700; // أصفر (الانتقال)
                                     break;
                                   case 8:
-                                    emoji = '😫';
-                                    emojiColor = Colors.red.shade400;
+                                    severityColor =
+                                        Colors.orange.shade400; // برتقالي
                                     break;
                                   case 9:
-                                    emoji = '😩';
-                                    emojiColor = Colors.red.shade600;
+                                    severityColor =
+                                        Colors.red.shade400; // أحمر فاتح
                                     break;
                                   case 10:
-                                    emoji = '😱';
-                                    emojiColor = Colors.red.shade900;
+                                    severityColor = Colors.red
+                                        .shade900; // أحمر غامق (الأشد خطورة)
                                     break;
                                   default:
-                                    emoji = '😊';
-                                    emojiColor = Colors.green.shade400;
+                                    severityColor = Colors
+                                        .green.shade400; // القيمة الافتراضية
                                 }
 
-                                // ✅ AnimatedContainer مع transform و decoration
                                 return AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.elasticOut,
                                   transform: Matrix4.identity()
-                                    ..scale(isSelected ? 1.15 : 0.85)
-                                    ..rotateZ(isSelected ? 0.05 : 0.0),
+                                    ..scale(isSelected ? 1.5 : 0.85)
+                                    ..rotateZ(isSelected ? 0.05 : 25.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: isSelected
-                                          ? emojiColor.withValues(alpha: 0.15)
+                                          ? severityColor.withValues(
+                                              alpha: 0.15)
                                           : Colors.transparent,
-                                      border: isSelected
-                                          ? Border.all(
-                                              color: emojiColor, width: 2)
-                                          : null,
-                                      boxShadow: isSelected
-                                          ? [
+                                      // border:  Border.all(
+                                      //         color: severityColor, width: 2),
+                                          
+                                      boxShadow: [
                                               BoxShadow(
-                                                color: emojiColor.withValues(
+                                                color: severityColor.withValues(
                                                     alpha: 0.3),
                                                 blurRadius: 8,
                                                 spreadRadius: 1,
                                               )
-                                            ]
-                                          : null,
+                                            ],
+                                          
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(4.0),
-                                      child: Text(
-                                        emoji,
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          color: isSelected
-                                              ? emojiColor
-                                              : Colors.grey.shade400,
-                                        ),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          FaIcon(
+                                            FontAwesomeIcons.tooth,
+                                            size: 26,
+                                            color: isSelected
+                                                ? severityColor
+                                                : Colors.grey.shade400,
+                                          ),
+                                          Positioned(
+                                            top: 3,
+                                            child: Text(
+                                              '$number',
+                                              style: TextStyle(
+                                                fontSize: 9,
+                                                fontWeight: FontWeight.bold,
+                                                color: isSelected
+                                                    ? Colors.white
+                                                    : Colors.grey.shade600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -210,51 +263,18 @@ class ModifiedRequest extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        // عرض القيمة المختارة مع أنيميشن
-                        Obx(() => AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: controller.selectedPainSeverity.value >=
-                                        8
-                                    ? Colors.red.shade100
-                                    : controller.selectedPainSeverity.value >= 5
-                                        ? Colors.orange.shade100
-                                        : Colors.green.shade100,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                'القيمة المختارة: ${controller.selectedPainSeverity.value}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color:
-                                      controller.selectedPainSeverity.value >= 8
-                                          ? Colors.red.shade700
-                                          : controller.selectedPainSeverity
-                                                      .value >=
-                                                  5
-                                              ? Colors.orange.shade700
-                                              : Colors.green.shade700,
-                                ),
-                              ),
-                            )),
                       ],
                     ),
                   ),
                   BreakContainer(),
 
-                  // ============================================
-                  // باقي الحقول كما هي (بدون تغيير)
-                  // ============================================
-
-                  if (controller.treatmentRequestModel.requestion!.painSeverity !=
+                  if (controller
+                          .treatmentRequestModel.requestion!.painSeverity !=
                       0) ...[
                     RowContainerWithTitle(
                       title: "متى يحصل الألم؟ ",
-                      text: controller.treatmentRequestModel.requestion!.painTime,
+                      text:
+                          controller.treatmentRequestModel.requestion!.painTime,
                       onChanged: (p0) {
                         controller.treatmentRequestModel.requestion!.painTime =
                             p0;
@@ -365,8 +385,8 @@ class ModifiedRequest extends StatelessWidget {
                     text: controller
                         .treatmentRequestModel.requestion!.toothLocation,
                     onChanged: (p0) {
-                      controller.treatmentRequestModel.requestion!.toothLocation =
-                          p0;
+                      controller
+                          .treatmentRequestModel.requestion!.toothLocation = p0;
                     },
                   ),
                   BreakContainer(),
@@ -381,34 +401,34 @@ class ModifiedRequest extends StatelessWidget {
                           await controller.uploadReguestPicture();
                           controller.update();
                         },
-                        child:
-                            controller.treatmentRequestModel.requestion!.photo !=
-                                        null &&
-                                    controller.treatmentRequestModel.requestion!
-                                            .photo!.url !=
-                                        ""
-                                ? SizedBox(
+                        child: controller.treatmentRequestModel.requestion!
+                                        .photo !=
+                                    null &&
+                                controller.treatmentRequestModel.requestion!
+                                        .photo!.url !=
+                                    ""
+                            ? SizedBox(
+                                height: 80,
+                                width: 80,
+                                child: Image.network(
+                                  "${controller.treatmentRequestModel.requestion!.photo!.url!}",
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : controller.image == null
+                                ? FaIcon(
+                                    FontAwesomeIcons.tooth,
+                                    color: Colors.blue,
+                                    size: 80,
+                                  )
+                                : SizedBox(
                                     height: 80,
                                     width: 80,
-                                    child: Image.network(
-                                      "${controller.treatmentRequestModel.requestion!.photo!.url!}",
+                                    child: Image.file(
+                                      controller.image!,
                                       fit: BoxFit.cover,
                                     ),
-                                  )
-                                : controller.image == null
-                                    ? FaIcon(
-                                        FontAwesomeIcons.tooth,
-                                        color: Colors.blue,
-                                        size: 80,
-                                      )
-                                    : SizedBox(
-                                        height: 80,
-                                        width: 80,
-                                        child: Image.file(
-                                          controller.image!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                  ),
                       ),
                     ),
                   ),
@@ -443,8 +463,8 @@ class ModifiedRequest extends StatelessWidget {
                         controller.treatmentRequestModel.requestion!
                             .chronicDiseases = p0;
                       },
-                      text: controller.treatmentRequestModel.requestion!
-                          .chronicDiseases,
+                      text: controller
+                          .treatmentRequestModel.requestion!.chronicDiseases,
                     ),
                   ],
                   BreakContainer(),
@@ -475,11 +495,11 @@ class ModifiedRequest extends StatelessWidget {
                     ColumnContainerWithTitle(
                       title: "اذكر اسم الدواء او المكمل    ",
                       onChanged: (p0) {
-                        controller.treatmentRequestModel.requestion!
-                            .medicines = p0;
+                        controller.treatmentRequestModel.requestion!.medicines =
+                            p0;
                       },
-                      text: controller.treatmentRequestModel.requestion!
-                          .medicines,
+                      text: controller
+                          .treatmentRequestModel.requestion!.medicines,
                     ),
                   ],
                   BreakContainer(),
@@ -512,13 +532,38 @@ class ModifiedRequest extends StatelessWidget {
                   BreakContainer(),
                   ColumnContainerWithTitle(
                     title: "هل لديك ملاحظات تود إضافتها؟  ",
-                    text: controller
-                        .treatmentRequestModel.requestion!.notes,
+                    text: controller.treatmentRequestModel.requestion!.notes,
                     onChanged: (p0) {
-                      controller.treatmentRequestModel.requestion!
-                          .notes = p0;
+                      controller.treatmentRequestModel.requestion!.notes = p0;
                     },
                   ),
+                  BreakContainer(),
+
+                  // ===== تحقق مبدئي اختياري بالذكاء الاصطناعي =====
+                  Column(
+                    children: [
+                      const Text(
+                        "هل يمكن علاج حالتك؟",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        "تحقق مبدئي اختياري بمساعدة خوارزميات التعلم الآلي  غير ملزم",
+                        style: TextStyle(fontSize: 11, color: Colors.black54),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 12),
+                      Obx(
+                        () => PredictionLightButton(
+                          isLoading: controller.isPredicting.value,
+                          onTap: controller.predictTreatment,
+                        ),
+                      ),
+                    ],
+                  ),
+
                   SizedBox(height: 100),
                 ],
               ),
@@ -530,8 +575,6 @@ class ModifiedRequest extends StatelessWidget {
   }
 }
 
-// ===== باقي الويدجت المساعدة كما هي (بدون تغيير) =====
-// ... (RowContainerWithTitle, ColumnContainerWithTitle, SelectFromItems, SelectFromItemsMap, BreakContainer)
 // ===== باقي الويدجت المساعدة (RowContainerWithTitle, ColumnContainerWithTitle, SelectFromItems, SelectFromItemsMap, BreakContainer) =====
 
 class RowContainerWithTitle extends StatelessWidget {

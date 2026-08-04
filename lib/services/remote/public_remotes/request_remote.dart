@@ -16,7 +16,6 @@ class RequestRemote {
 
   getTreatmentRequestsForOverseer() async {
     var response = await crud.getData(ApiLink.treatmentRequestsForOverseer);
-    print("object $response");
     return response.fold((l) => l, (r) => r);
   }
 
@@ -40,12 +39,11 @@ class RequestRemote {
     return response.fold((l) => l, (r) => r);
   }
 
-  
-
   getCompletedRequest() async {
     var response = await crud.getData(ApiLink.getCompletedRequests);
     return response.fold((l) => l, (r) => r);
   }
+
   getRejectedPatientRequest() async {
     var response = await crud.getData(ApiLink.getRejectedRequests);
     return response.fold((l) => l, (r) => r);
@@ -53,17 +51,20 @@ class RequestRemote {
 
   // ========== دوال POST / PUT / DELETE ==========
   acceptRequestData(Map data, String idR, String idO) async {
-    var response = await crud.postData("${ApiLink.acceptRequest}/$idR/$idO", data);
+    var response =
+        await crud.postData("${ApiLink.acceptRequest}/$idR/$idO", data);
     return response.fold((l) => l, (r) => r);
   }
 
   dunningOverseerData(Map data, String idR, String idO) async {
-    var response = await crud.putData("${ApiLink.dunningOverseer}/$idR", data, idO);
+    var response =
+        await crud.putData("${ApiLink.dunningOverseer}/$idR", data, idO);
     return response.fold((l) => l, (r) => r);
   }
 
   changeCaseRequestData(Map data, String idR, String idC) async {
-    var response = await crud.putData("${ApiLink.changeCaseRequest}/$idR", data, idC);
+    var response =
+        await crud.putData("${ApiLink.changeCaseRequest}/$idR", data, idC);
     return response.fold((l) => l, (r) => r);
   }
 
@@ -76,10 +77,6 @@ class RequestRemote {
     var response = await crud.putData(ApiLink.complateRequest, data, id);
     return response.fold((l) => l, (r) => r);
   }
-  // getCompletedRequestsForStudent() async {
-  //   var response = await crud.getData(ApiLink.getcompletedRequest);
-  //   return response.fold((l) => l, (r) => r);
-  // }
 
   addEvaluationRequestData(Map data, String id) async {
     var response = await crud.putData(ApiLink.addEvaluationRequest, data, id);
@@ -91,8 +88,17 @@ class RequestRemote {
     return response.fold((l) => l, (r) => r);
   }
 
+  /// التنبؤ بإمكانية علاج الحالة (اختياري، يستدعيه المريض بنفسه إذا حاب).
+  /// بيرجع نفس شكل باقي الردود: إما StatusRequest (خطأ) أو Map فيه
+  /// {status, message, data: {prediction, prediction_code, confidence}}.
+  Future<dynamic> predictTreatment(Map<String, dynamic> data) async {
+    var response = await crud.postData(ApiLink.predictTreatment, data);
+    return response.fold((l) => l, (r) => r);
+  }
+
   // ========== دوال رفع الملفات (باستخدام Crud) ==========
-  Future<dynamic> sendRequestData(Map<String, dynamic> data, File? image) async {
+  Future<dynamic> sendRequestData(
+      Map<String, dynamic> data, File? image) async {
     if (image == null) {
       // بدون صورة → JSON عادي
       var response = await crud.postData(ApiLink.requests, data);
@@ -113,7 +119,8 @@ class RequestRemote {
     }
   }
 
-  Future<dynamic> updateRequestData(Map<String, dynamic> data, File? image, String id) async {
+  Future<dynamic> updateRequestData(
+      Map<String, dynamic> data, File? image, String id) async {
     if (image == null) {
       // بدون صورة → PUT عادي
       var response = await crud.putData(ApiLink.requests, data, id);

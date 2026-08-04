@@ -6,11 +6,11 @@ import 'package:gr_flutter/controllers/public_controllers/unified_setting_contro
 import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import 'package:gr_flutter/views/public_views/posts/create_post_screen.dart';
 import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
+import 'package:gr_flutter/views/widgets/pending_posts_button.dart';
 import '../../../app_route.dart';
 import '../../../services/local_storge/local_user_storage.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
-import 'pending_posts_screen.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -26,6 +26,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   final List<FilterOption> filterOptions = [
     FilterOption(label: 'الكل', value: null),
+    FilterOption(label: 'منشوراتي', value: 'me'),
     FilterOption(label: 'طلاب', value: 'student'),
     FilterOption(label: 'مرضى', value: 'patient'),
     FilterOption(label: 'مشرفين', value: 'overseer'),
@@ -36,6 +37,9 @@ class _FeedScreenState extends State<FeedScreen> {
     super.initState();
     _loadUserRole();
     _scrollController.addListener(_onScroll);
+    // ✅ نجيب عدد المنشورات المعلقة بدري عشان يظهر Badge زر
+    // "المنشورات المعلقة" مباشرة من غير ما ينتظر المستخدم يفتح الشاشة.
+    controller.fetchPendingPosts();
   }
 
   Future<void> _loadUserRole() async {
@@ -47,6 +51,10 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   void _onScroll() {
+    // ✅ التصفح اللامتناهي (Infinite scroll) خاص فقط بالفيد العام
+    // المرقّم (pagination)؛ "منشوراتي" بترجع كلها دفعة وحدة من الباك.
+    if (controller.currentFilter.value == 'me') return;
+
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       controller.loadMorePosts();
@@ -122,13 +130,14 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          IconButton(
-            icon: const Icon(Icons.hourglass_top, color: Colors.blue),
-            onPressed: () => Get.to(() => const PendingPostsScreen()),
-          ),
+
+          // ✅ زر "المنشورات المعلقة" بتصميم منسجم مع باقي التطبيق،
+          // بدل الأيقونة البسيطة السابقة، مع Badge للعدد.
+          const PendingPostsButton(),
           const SizedBox(height: 16),
 
-          // شريط الفلترة (مع أنيميشن)
+          // شريط الفلترة (مع أنيميشن) — صار Obx عشان تظليل الفلتر
+          // المختار يتحدث تفاعلياً (بما فيه فلتر "منشوراتي" الجديد).
           AnimationConfiguration.staggeredList(
             position: 1,
             duration: const Duration(milliseconds: 600),
@@ -137,35 +146,48 @@ class _FeedScreenState extends State<FeedScreen> {
               child: FadeInAnimation(
                 child: SizedBox(
                   height: 48,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: filterOptions.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 12),
-                    itemBuilder: (context, index) {
-                      final option = filterOptions[index];
-                      final isSelected =
-                          controller.currentFilter == option.value;
-                      return FilterChip(
-                        label: Text(option.label),
-                        selected: isSelected,
-                        onSelected: (_) => controller.setFilter(option.value),
-                        backgroundColor: Colors.grey.shade100,
-                        selectedColor: Colors.blue.shade100,
-                        checkmarkColor: Colors.blue,
-                        labelStyle: TextStyle(
-                          color: isSelected
-                              ? Colors.blue.shade800
-                              : Colors.black87,
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                        shape: StadiumBorder(
-                          side: BorderSide(
-                              color:
-                                  isSelected ? Colors.blue : Colors.transparent,
-                              width: 1.5),
-                        ),
+                  child: Obx(
+                    () {
+                      // ✅ لازم القراءة تصير هون مباشرة (متزامنة جوا
+                      // builder تبع Obx)، مو جوا itemBuilder، لأنه
+                      // itemBuilder بيتنفذ لاحقاً وقت الـ layout —
+                      // فـ Obx ما بيقدر يسجله كـ observable ويطلع خطأ
+                      // "improper use of GetX".
+                      final selectedFilter = controller.currentFilter.value;
+
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: filterOptions.length,
+                        separatorBuilder: (_, __) => const SizedBox(width: 12),
+                        itemBuilder: (context, index) {
+                          final option = filterOptions[index];
+                          final isSelected = selectedFilter == option.value;
+                          return FilterChip(
+                            label: Text(option.label),
+                            selected: isSelected,
+                            onSelected: (_) =>
+                                controller.setFilter(option.value),
+                            backgroundColor: Colors.grey.shade100,
+                            selectedColor: Colors.blue.shade100,
+                            checkmarkColor: Colors.blue,
+                            labelStyle: TextStyle(
+                              color: isSelected
+                                  ? Colors.blue.shade800
+                                  : Colors.black87,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            shape: StadiumBorder(
+                              side: BorderSide(
+                                  color: isSelected
+                                      ? Colors.blue
+                                      : Colors.transparent,
+                                  width: 1.5),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -178,9 +200,56 @@ class _FeedScreenState extends State<FeedScreen> {
           // قائمة البوستات (مع أنيميشن لكل بوست)
           Expanded(
             child: RefreshIndicator(
-              onRefresh: () => controller.fetchPosts(refresh: true),
+              onRefresh: () => controller.currentFilter.value == 'me'
+                  ? controller.fetchMyPosts()
+                  : controller.fetchPosts(refresh: true),
               child: Obx(() {
-                if (controller.isLoading.value && controller.posts.isEmpty) {
+                final bool isMyPosts = controller.currentFilter.value == 'me';
+
+                // ===== وضع "منشوراتي" =====
+                if (isMyPosts) {
+                  if (controller.isLoadingMy.value &&
+                      controller.myPosts.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (controller.myPosts.isEmpty) {
+                    return const Center(
+                        child: Text('لسا ما نشرت أي منشور حتى الآن'));
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    itemCount: controller.myPosts.length,
+                    itemBuilder: (context, index) {
+                      final post = controller.myPosts[index];
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 400),
+                        child: SlideAnimation(
+                          verticalOffset: 50,
+                          child: FadeInAnimation(
+                            child: PostCard(
+                              post: post,
+                              onLike: () => controller.likePost(post.sId!),
+                              onDislike: () =>
+                                  controller.dislikePost(post.sId!),
+                              onComment: () => Get.toNamed(
+                                  AppRroute.postDetail,
+                                  arguments: post.sId),
+                              onEdit: () {
+                                Get.to(() => EditPostScreen(post: post));
+                              },
+                              onDelete: () => controller.deletePost(post.sId!),
+                              currentUserRole: currentUserRole,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                // ===== وضع الفيد العام (مع pagination) =====
+                if (controller.isLoadingMore.value && controller.posts.isEmpty) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (controller.posts.isEmpty) {
@@ -213,7 +282,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             onComment: () => Get.toNamed(AppRroute.postDetail,
                                 arguments: post.sId),
                             onEdit: () {
-                              // سيتم فتح شاشة التعديل (سننشئها لاحقاً)
                               Get.to(() => EditPostScreen(post: post));
                             },
                             onDelete: () => controller.deletePost(post.sId!),

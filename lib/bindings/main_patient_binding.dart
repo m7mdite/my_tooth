@@ -1,4 +1,3 @@
-// bindings/main_patient_binding.dart
 import 'package:get/get.dart';
 import '../controllers/patient_controller/main_patient_controller.dart';
 import '../controllers/patient_controller/home_patient_controller.dart';

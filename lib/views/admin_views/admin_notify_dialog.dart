@@ -1,7 +1,7 @@
-// lib/views/admin_views/admin_notify_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_notify_controller.dart';
+import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 class AdminNotifyDialog extends StatelessWidget {
   const AdminNotifyDialog({super.key});
@@ -10,102 +10,228 @@ class AdminNotifyDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final AdminNotifyController controller = Get.put(AdminNotifyController());
 
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        width: Get.width * 0.9,
-        height: Get.height * 0.6,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // العنوان
-            Row(
-              children: [
-                const Icon(Icons.notifications_active, color: Colors.blue, size: 28),
-                const SizedBox(width: 10),
-                const Text(
-                  'إرسال إشعار للجميع',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
+    return Center(
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          width: Get.width * 0.85,
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(width: 3.5, color: Colors.white),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.elliptical(100, 10),
+              bottomLeft: Radius.elliptical(10, 100),
+              topRight: Radius.elliptical(10, 100),
+              bottomRight: Radius.elliptical(100, 10),
             ),
-            const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 16),
-
-            // وصف الإشعار
-            const Text(
-              'سيتم إرسال هذا الإشعار لجميع مستخدمي التطبيق (الطلاب، المرضى، المشرفين)',
-              style: TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-
-            // حقل النص
-            TextField(
-              controller: controller.messageController,
-              maxLines: 5,
-              decoration: const InputDecoration(
-                hintText: 'اكتب محتوى الإشعار هنا...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                filled: true,
-                fillColor: Colors.grey,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppConstants.defaultBackgroundImage),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.linearToSrgbGamma(),
+                opacity: 0.8,
               ),
             ),
-            const SizedBox(height: 20),
-
-            // أزرار الإجراء
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Get.back(),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // ===== العنوان =====
+                  const Text(
+                    'إرسال إشعار للجميع',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87, // ✅ لون غامق
                     ),
-                    child: const Text('إلغاء'),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Obx(
-                    () => ElevatedButton(
-                      onPressed: controller.isLoading.value
-                          ? null
-                          : controller.sendNotification,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16, top: 10),
+                    height: 2,
+                    color: Colors.white,
+                    width: 200,
+                  ),
+
+                  // ===== اختيار الأدوار =====
+                  const Text(
+                    'اختر الأدوار المستهدفة:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54, // ✅ لون غامق
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+
+                  // أزرار اختيار الأدوار
+                  Obx(
+                    () => Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: controller.availableRoles.map((role) {
+                        final isSelected = controller.isRoleSelected(role['value']);
+                        return FilterChip(
+                          label: Text(role['label']),
+                          selected: isSelected,
+                          onSelected: (_) => controller.toggleRole(role['value']),
+                          avatar: Icon(
+                            role['icon'],
+                            size: 16,
+                            color: isSelected ? Colors.white : Colors.grey.shade600,
+                          ),
+                          backgroundColor: Colors.grey.shade100,
+                          selectedColor: Colors.blue.shade700,
+                          checkmarkColor: Colors.white,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black87,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                          shape: StadiumBorder(
+                            side: BorderSide(
+                              color: isSelected ? Colors.blue : Colors.grey.shade300,
+                              width: 1.5,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // ===== حقل العنوان =====
+                  TextField(
+                    controller: controller.titleController,
+                    style: const TextStyle(color: Colors.black87),
+                    decoration: InputDecoration(
+                      hintText: 'عنوان الإشعار...',
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.85),
+                      prefixIcon: Icon(Icons.title, color: Colors.grey.shade600),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // ===== حقل المحتوى =====
+                  TextField(
+                    controller: controller.bodyController,
+                    maxLines: 3,
+                    style: const TextStyle(color: Colors.black87),
+                    decoration: InputDecoration(
+                      hintText: 'محتوى الإشعار...',
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.85),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // ===== رسالة الخطأ (إن وجدت) =====
+                  Obx(
+                    () => controller.selectedRoles.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              '⚠️ يرجى اختيار دور واحد على الأقل',
+                              style: TextStyle(
+                                color: Colors.red.shade700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+
+                  // ===== الخط الفاصل =====
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 12),
+                    height: 2,
+                    color: Colors.white,
+                    width: 200,
+                  ),
+
+                  // ===== أزرار الإجراء =====
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // زر الإلغاء
+                      InkWell(
+                        onTap: () => Get.back(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(width: 1.5, color: Colors.red),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.elliptical(100, 10),
+                              bottomLeft: Radius.elliptical(10, 100),
+                              topRight: Radius.elliptical(10, 100),
+                              bottomRight: Radius.elliptical(100, 10),
+                            ),
+                          ),
+                          child: const Text(
+                            'إلغاء',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                       ),
-                      child: controller.isLoading.value
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+
+                      // زر الإرسال
+                      Obx(
+                        () => InkWell(
+                          onTap: controller.isLoading.value
+                              ? null
+                              : controller.sendNotification,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 1.5, color: Colors.green),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.elliptical(100, 10),
+                                bottomLeft: Radius.elliptical(10, 100),
+                                topRight: Radius.elliptical(10, 100),
+                                bottomRight: Radius.elliptical(100, 10),
                               ),
-                            )
-                          : const Text(
-                              'إرسال',
-                              style: TextStyle(fontSize: 16),
                             ),
-                    ),
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.green,
+                                    ),
+                                  )
+                                : const Text(
+                                    'إرسال',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

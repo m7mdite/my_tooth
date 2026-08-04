@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
+import 'package:gr_flutter/views/widgets/dialog/prediction_result_dialog.dart';
 
+import '../../models/requests_models/prediction_result_model.dart';
 import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/functions/upload_picture.dart';
@@ -31,6 +33,9 @@ class FillRequestControllerImp extends FillRequestController {
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
   late StatusRequest statusRequest;
   final RequestRemote requestData = RequestRemote(Get.find());
+
+  // ===== حالة التنبؤ بإمكانية العلاج (اختياري) =====
+  final RxBool isPredicting = false.obs;
 
   // ===== عرض الديالوج =====
   showDialog(String status) async {
@@ -138,6 +143,51 @@ class FillRequestControllerImp extends FillRequestController {
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
       );
+    }
+  }
+
+  /// ===== التنبؤ بإمكانية علاج الحالة (اختياري تماماً) =====
+  /// المريض حر يستخدمه أو يتجاهله. نفس شروط التحقق تبع إرسال الطلب
+  /// (validateForm) لازم تنجح أول، لأن نموذج الـ ML مدرّب على نفس
+  /// الحقول المطلوبة بالضبط ومحتاج بيانات كاملة عشان يعطي نتيجة موثوقة.
+  Future<void> predictTreatment() async {
+    if (!validateForm()) {
+      return;
+    }
+
+    isPredicting.value = true;
+
+    try {
+      final formData = treatmentRequestModel.toJson();
+      final response = await requestData.predictTreatment(formData);
+      final predictStatus = handlingData(response);
+
+      if (predictStatus == StatusRequest.success &&
+          response is Map &&
+          response['data'] != null) {
+        final result = PredictionResult.fromJson(
+          Map<String, dynamic>.from(response['data']),
+        );
+        Get.dialog(PredictionResultDialog(result: result));
+      } else {
+        Get.snackbar(
+          'تعذر التنبؤ',
+          'حدث خطأ أثناء محاولة التنبؤ بإمكانية العلاج، حاول مرة أخرى',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'تعذر التنبؤ',
+        'حدث خطأ أثناء محاولة التنبؤ بإمكانية العلاج، حاول مرة أخرى',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+    } finally {
+      isPredicting.value = false;
     }
   }
 

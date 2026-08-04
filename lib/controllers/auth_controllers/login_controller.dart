@@ -21,9 +21,7 @@ class LoginControllerImp extends LoginController {
   late TextEditingController password;
 
   // final AuthService _authService = Get.find<AuthService>();
-  final storage = Get.find<LocalUserStorage>();
-
-  AuthRemote authRemote = AuthRemote(Get.find());
+  
   // WebSocketController webSocketController = WebSocketController();
   Map<String, String> data = <String, String>{};
   GlobalKey<FormState> formStateLogin = GlobalKey<FormState>();
@@ -55,11 +53,13 @@ class LoginControllerImp extends LoginController {
     data['password'] = password.text;
   }
 
+
+  final storage = Get.find<LocalUserStorage>();
+  AuthRemote authRemote = AuthRemote(Get.find());
   @override
   login() async {
     await fillMap();
     print("Data to send: $data");
-
     var formData = formStateLogin.currentState;
     if (formData!.validate()) {
       statusRequest = StatusRequest.loading;
@@ -72,7 +72,6 @@ class LoginControllerImp extends LoginController {
         await  toHome(response);
           print("id ${response['data']['_id']}");
         webSocketService1.connect(response['data']['_id']);
-
         } else {
           Get.snackbar(
             'خطأ',
@@ -81,7 +80,6 @@ class LoginControllerImp extends LoginController {
             colorText: Colors.white,
           );
         }
-
         update();
       } catch (e) {
         statusRequest = StatusRequest.serverFailure;

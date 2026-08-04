@@ -15,14 +15,12 @@ class ApiLink {
   static const String requests = '$servere/request';
   static const String posts = "$servere/posts";
   static const String getPendingPosts = "$servere/posts/pending";
-static const String comments = "$servere/posts/comments";
-  static const String changePassword =
-      "$servere/auth/change-password"; 
-  static const String dashboard =
-      "$servere/dashboard"; 
+  static const String comments = "$servere/posts/comments";
+  static const String changePassword = "$servere/auth/change-password";
+  static const String dashboard = "$servere/dashboard";
 
   // =========================== patient
-  
+
   static const String treatments = '$servere/admin/treatment';
   // =========================== student
   static const String acceptRequest = '$servere/request/accept';
@@ -41,13 +39,19 @@ static const String comments = "$servere/posts/comments";
 
   static const String getProcessingRequests = '$servere/request/processing';
 
+  // =========================== ml (التنبؤ بإمكانية العلاج)
+  static const String predictTreatment = '$servere/ml/predict';
+
   // ================================================= overseer
   static const String treatmentRequestsForOverseer =
       '$servere/overseer/treatment';
   static const String rejectRequest = '$servere/overseer/treatment/reject';
-  static const String changeCaseRequest = '$servere/overseer/treatment/reject';
-  static const String complateRequest = '$servere/overseer/treatment/complete';
-  static const String addEvaluationRequest = '$servere/overseer/add-evaluation';
+  static const String changeCaseRequest =
+      '$servere/overseer/treatment/reject';
+  static const String complateRequest =
+      '$servere/overseer/treatment/complete';
+  static const String addEvaluationRequest =
+      '$servere/overseer/add-evaluation';
 
   // =========================== admin
   static const String addOverSeer = '$servere/admin/overseer';
@@ -56,10 +60,8 @@ static const String comments = "$servere/posts/comments";
   static const String getAllPatientes = '$servere/admin/patients';
   static const String getAllRequests = '$servere/admin/requests';
   static const String getAllVerifyStudents = '$servere/admin/verify';
-  static const String acceptVerifyStudent =
-      '$servere/admin/verify/accept';
-  static const String rejectVerifyStudent =
-      '$servere/admin/verify/reject';
+  static const String acceptVerifyStudent = '$servere/admin/verify/accept';
+  static const String rejectVerifyStudent = '$servere/admin/verify/reject';
   static const String addCourse = '$servere/admin/course';
   static const String addTreatment = '$servere/admin/treatment';
   static const String addCategory = '$servere/admin/category';
@@ -72,9 +74,7 @@ static const String comments = "$servere/posts/comments";
   static const String adminReports = "$servere/reports";
   static String reviewReport(String id) => "$servere/reports/$id";
   static const String deleteOverSeer = "$servere/admin/overseer/delete";
-  static const String notifyAll  = "$servere/admin/notify";
+  static const String notifyAll = "$servere/admin/notify";
   static const String categories = "$servere/admin/categories";
   static const String acceptPendingPosts = "$servere/posts/pending/accept";
-
-
 }
