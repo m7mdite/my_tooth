@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class ReportUserDialog extends StatefulWidget {
   final String reportedUserId;
   const ReportUserDialog({super.key, required this.reportedUserId});
@@ -48,15 +50,15 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: AppThemeConstants.borderRadius,
-          border: Border.all(color: Colors.redAccent, width: 1.5, strokeAlign: 10),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+          border: Border.all(color: AppColors.errorAccent, width: 1.5, strokeAlign: 10),
+          boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 10)],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -65,14 +67,14 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.report, color: Colors.redAccent, size: 28),
+                Icon(Icons.report, color: AppColors.errorAccent, size: 28),
                 Text(
                   'إبلاغ عن مستخدم',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.redAccent),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.errorAccent),
                 ),
                 IconButton(
                   onPressed: () => Get.back(),
-                  icon: Icon(Icons.close, color: Colors.grey),
+                  icon: Icon(Icons.close, color: AppColors.grey),
                 ),
               ],
             ),
@@ -85,7 +87,7 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent),
+                prefixIcon: Icon(Icons.warning_amber_rounded, color: AppColors.errorAccent),
               ),
               items: _reasons.map((reason) {
                 return DropdownMenuItem(value: reason, child: Text(reason));
@@ -108,11 +110,11 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
             // زر إرسال البلاغ بنفس تصميم الأزرار في ViewOtherProfile
             ElevatedButton.icon(
               onPressed: _isSubmitting ? null : _submitReport,
-              icon: _isSubmitting ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2) : Icon(Icons.send),
+              icon: _isSubmitting ? CircularProgressIndicator(color: AppColors.white, strokeWidth: 2) : Icon(Icons.send),
               label: Text(_isSubmitting ? 'جاري الإرسال...' : 'إرسال البلاغ'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.errorAccent,
+                foregroundColor: AppColors.white,
                 elevation: 5,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 shape: RoundedRectangleBorder(

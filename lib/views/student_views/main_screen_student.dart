@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/student_controllers/main_student_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenStudent extends StatelessWidget {
@@ -21,19 +22,19 @@ class MainScreenStudent extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Colors.white,
-                  // Colors.white54,
-                  // Colors.lightBlueAccent,
-                  // Colors.blueAccent,
-                  // Colors.blue,
+                  // AppColors.white,
+                  // AppColors.white54,
+                  // AppColors.primaryLightAccent,
+                  // AppColors.primaryAccent,
+                  // AppColors.primary,
 
-                  // Colors.blue,
-                  Colors.blueAccent,
-                  Colors.lightBlueAccent,
-                  Colors.white70,
-                  Colors.white,
+                  // AppColors.primary,
+                  AppColors.primaryAccent,
+                  AppColors.primaryLightAccent,
+                  AppColors.white70,
+                  AppColors.white,
 
-                  // Colors.pinkAccent,
+                  // AppColors.pinkAccent,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

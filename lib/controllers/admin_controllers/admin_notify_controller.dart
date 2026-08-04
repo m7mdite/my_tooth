@@ -1,10 +1,12 @@
 // controllers/admin_controllers/admin_notify_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:gr_flutter/services/functions/handling_data.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 
 import '../../services/remote/admin_remotes/admin_remote.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class AdminNotifyController extends GetxController {
   final AdminRemote adminRemote = AdminRemote(Get.find());
@@ -82,16 +84,16 @@ class AdminNotifyController extends GetxController {
       Get.snackbar(
         'نجاح',
         response['message'] ?? 'تم إرسال الإشعار بنجاح',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+        backgroundColor: AppColors.success,
+        colorText: AppColors.white,
         duration: const Duration(seconds: 4),
       );
     } else {
       Get.snackbar(
         'خطأ',
         response['message'] ?? 'فشل إرسال الإشعار',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
       );
     }
 

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../controllers/ai_controllers/ai_chat_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 
 class ChatBubble extends StatelessWidget {
   final ChatMessage message;
@@ -34,13 +35,13 @@ class ChatBubble extends StatelessWidget {
                 color: message.isUser
                     ? const Color.fromARGB(217, 68, 137, 255)
                     : message.isError
-                        ? Colors.red.shade50
+                        ? AppColors.error.shade50
                         : const Color.fromARGB(149, 255, 255, 255),
                 border: Border.symmetric(
                   vertical: BorderSide(
-                      color:message.isUser ? Colors.white: Colors.blue, width: 1.5, strokeAlign: 10),
+                      color:message.isUser ? AppColors.white: AppColors.primary, width: 1.5, strokeAlign: 10),
                   horizontal: BorderSide(
-                      color: message.isUser ? Colors.white: Colors.blue,
+                      color: message.isUser ? AppColors.white: AppColors.primary,
                       width: 1.5,
                       strokeAlign: 12),
                 ),
@@ -54,7 +55,7 @@ class ChatBubble extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.white.withOpacity(0.05),
+                    color: AppColors.white.withOpacity(0.05),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
@@ -66,7 +67,7 @@ class ChatBubble extends StatelessWidget {
                   SelectableText(
                     message.text,
                     style: TextStyle(
-                      color: message.isUser ? Colors.white : Colors.black87,
+                      color: message.isUser ? AppColors.white : AppColors.black87,
                       fontSize: 12,
                     ),
                   ),
@@ -78,14 +79,14 @@ class ChatBubble extends StatelessWidget {
                         _formatTime(message.timestamp),
                         style: TextStyle(
                           fontSize: 10,
-                          color: message.isUser ? Colors.white70 : Colors.grey,
+                          color: message.isUser ? AppColors.white70 : AppColors.grey,
                         ),
                       ),
                       const SizedBox(width: 8),
                       if (!message.isUser)
                         IconButton(
                           icon: Icon(Icons.copy,
-                              size: 16, color: Colors.grey[400]),
+                              size: 16, color: AppColors.grey400),
                           onPressed: onCopy,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -93,7 +94,7 @@ class ChatBubble extends StatelessWidget {
                       if (onRetry != null && message.isUser && !message.isError)
                         IconButton(
                           icon: Icon(Icons.refresh,
-                              size: 16, color: Colors.grey[400]),
+                              size: 16, color: AppColors.grey400),
                           onPressed: onRetry,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -115,13 +116,13 @@ class ChatBubble extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Colors.blueAccent, Colors.greenAccent],
+          colors: [AppColors.primaryAccent, AppColors.successAccent],
         ),
         borderRadius: BorderRadius.circular(18),
       ),
       child: const Center(
         child:
-            FaIcon(FontAwesomeIcons.userDoctor, color: Colors.white, size: 20),
+            FaIcon(FontAwesomeIcons.userDoctor, color: AppColors.white, size: 20),
       ),
     );
   }

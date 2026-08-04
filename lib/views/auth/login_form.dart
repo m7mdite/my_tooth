@@ -4,6 +4,7 @@ import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import 'package:gr_flutter/views/widgets/auth_text_form_field.dart';
 
 import '../../controllers/auth_controllers/auth_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -17,12 +18,12 @@ class LoginForm extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 24,vertical: 30),
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.92),
+          color: AppColors.white.withOpacity(0.92),
           borderRadius: AppThemeConstants.borderRadius,
-          border: Border.all(color: Colors.white, width: 1.5),
+          border: Border.all(color: AppColors.white, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColors.black.withOpacity(0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -55,9 +56,9 @@ class LoginForm extends StatelessWidget {
                   width: 120,
                   height: 40,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue,strokeAlign: 10),
+                    border: Border.all(color: AppColors.primary,strokeAlign: 10),
                     gradient: LinearGradient(
-                      colors: [Colors.blue.shade700, Colors.blue.shade400],
+                      colors: [AppColors.primary700, AppColors.primary400],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
@@ -69,7 +70,7 @@ class LoginForm extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blue.shade300.withOpacity(0.4),
+                        color: AppColors.primary300.withOpacity(0.4),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -87,7 +88,7 @@ class LoginForm extends StatelessWidget {
                       child: Text(
                         "تسجيل الدخول",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

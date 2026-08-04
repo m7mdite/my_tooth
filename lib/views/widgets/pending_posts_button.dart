@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/post_controllers/post_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../public_views/posts/pending_posts_screen.dart';
 
 /// زر "المنشورات المعلقة" — بنفس لغة التصميم المستخدمة بباقي التطبيق
@@ -26,7 +27,7 @@ class PendingPostsButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.08),
+          color: AppColors.warning.withOpacity(0.08),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.elliptical(100, 10),
             bottomLeft: Radius.elliptical(10, 100),
@@ -34,8 +35,8 @@ class PendingPostsButton extends StatelessWidget {
             bottomRight: Radius.elliptical(100, 10),
           ),
           border: const Border(
-            right: BorderSide(color: Colors.orange),
-            bottom: BorderSide(color: Colors.orange),
+            right: BorderSide(color: AppColors.warning),
+            bottom: BorderSide(color: AppColors.warning),
           ),
         ),
         child: Row(
@@ -44,7 +45,7 @@ class PendingPostsButton extends StatelessWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                const Icon(Icons.hourglass_top, color: Colors.orange, size: 22),
+                const Icon(Icons.hourglass_top, color: AppColors.warning, size: 22),
                 Obx(() {
                   final count = controller.pendingPosts.length;
                   if (count == 0) return const SizedBox.shrink();
@@ -55,9 +56,9 @@ class PendingPostsButton extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 1),
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: AppColors.error,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white, width: 1),
+                        border: Border.all(color: AppColors.white, width: 1),
                       ),
                       constraints:
                           const BoxConstraints(minWidth: 16, minHeight: 16),
@@ -65,7 +66,7 @@ class PendingPostsButton extends StatelessWidget {
                         '$count',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
@@ -81,7 +82,7 @@ class PendingPostsButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: Colors.orange,
+                color: AppColors.warning,
               ),
             ),
           ],

@@ -5,6 +5,8 @@ import 'package:gr_flutter/controllers/admin_controllers/admin_home_controller.d
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class AdvertisementManagementScreen extends StatelessWidget {
   final AdminHomeController controller = Get.put(AdminHomeController());
   final ImagePicker picker = ImagePicker();
@@ -117,7 +119,7 @@ class AdvertisementManagementScreen extends StatelessWidget {
                   title: Text(adv.content!),
                   subtitle: Text('تاريخ الإضافة: ${adv.createdAt}'),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
+                    icon: Icon(Icons.delete, color: AppColors.error),
                     onPressed: () => _confirmDelete(adv.sId!),
                   ),
                 ),
@@ -141,7 +143,7 @@ class AdvertisementManagementScreen extends StatelessWidget {
               controller.deleteAdvertisement(id);
               Get.back();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: Text('حذف'),
           ),
         ],

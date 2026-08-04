@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class SelectOneOption extends StatelessWidget {
   final void Function()? onTap;
   final bool selectOption;
@@ -17,7 +19,7 @@ class SelectOneOption extends StatelessWidget {
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
           border: selectOption
-              ? Border.all(color: Colors.white, width: 2)
+              ? Border.all(color: AppColors.white, width: 2)
               : Border.all(),
           borderRadius: BorderRadius.circular(30),
           image: DecorationImage(
@@ -31,7 +33,7 @@ class SelectOneOption extends StatelessWidget {
             if (selectOption)
               Icon(
                 Icons.check_circle,
-                color: Colors.white,
+                color: AppColors.white,
               )
           ],
         ),

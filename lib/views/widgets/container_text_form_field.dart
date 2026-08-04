@@ -16,11 +16,11 @@
 //     return Container(
 //       margin: EdgeInsets.all(10),
 //       decoration: BoxDecoration(
-//         color: Colors.white,
+//         color: AppColors.white,
 //         border: Border(
-//           bottom: BorderSide(color: Colors.blueAccent),
-//           right: BorderSide(color: Colors.blueAccent),
-//           top: BorderSide(color: Colors.blueAccent),
+//           bottom: BorderSide(color: AppColors.primaryAccent),
+//           right: BorderSide(color: AppColors.primaryAccent),
+//           top: BorderSide(color: AppColors.primaryAccent),
 //         ),
 //         borderRadius: BorderRadius.only(
 //           topLeft: Radius.elliptical(100, 10),

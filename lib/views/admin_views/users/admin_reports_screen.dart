@@ -5,6 +5,8 @@ import 'package:gr_flutter/controllers/admin_controllers/admin_reports_controlle
 import 'package:gr_flutter/models/admin_models/report_model.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class AdminReportsScreen extends StatelessWidget {
   final AdminReportsController controller = Get.put(AdminReportsController());
   AdminReportsScreen({super.key});
@@ -63,10 +65,10 @@ class AdminReportsScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: AppColors.error,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Text('قيد الانتظار', style: TextStyle(color: Colors.white, fontSize: 12)),
+                    child: const Text('قيد الانتظار', style: TextStyle(color: AppColors.white, fontSize: 12)),
                   ),
               ],
             ),
@@ -75,14 +77,14 @@ class AdminReportsScreen extends StatelessWidget {
             if (report.reason != null && report.reason!.isNotEmpty)
               Text('السبب: ${report.reason}'),
             const SizedBox(height: 8),
-            Text('تاريخ الإبلاغ: ${_formatDateString(report.createdAt)}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            Text('تاريخ الإبلاغ: ${_formatDateString(report.createdAt)}', style: const TextStyle(fontSize: 12, color: AppColors.grey)),
             if (report.adminNote != null && report.adminNote!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
+                    color: AppColors.primary50,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text('📝 ملاحظة الأدمن: ${report.adminNote}'),
@@ -91,7 +93,7 @@ class AdminReportsScreen extends StatelessWidget {
             if (report.reviewedAt != null)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Text('تمت المراجعة: ${_formatDate(report.reviewedAt!)}', style: const TextStyle(fontSize: 11, color: Colors.green)),
+                child: Text('تمت المراجعة: ${_formatDate(report.reviewedAt!)}', style: const TextStyle(fontSize: 11, color: AppColors.success)),
               ),
             const SizedBox(height: 12),
             Row(
@@ -101,14 +103,14 @@ class AdminReportsScreen extends StatelessWidget {
                   _actionButton(
                     icon: Icons.done_all,
                     label: 'تعليم كمقروء',
-                    color: Colors.green,
+                    color: AppColors.success,
                     onTap: () => controller.markAsRead(report.sId!),
                   ),
                 const SizedBox(width: 8),
                 _actionButton(
                   icon: Icons.comment,
                   label: 'ملاحظة',
-                  color: Colors.orange,
+                  color: AppColors.warning,
                   onTap: () => _showAddNoteDialog(report.sId!),
                 ),
               ],

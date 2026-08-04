@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class ContainerProfileItems extends StatelessWidget {
   final Widget? child;
   const ContainerProfileItems({
@@ -15,16 +17,16 @@ class ContainerProfileItems extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black54,
+            color: AppColors.black54,
             spreadRadius: 5,
             blurRadius: 20,
           ),
         ],
-        color: Colors.white,
+        color: AppColors.white,
         border: Border(
-          bottom: BorderSide(color: Colors.blueAccent),
-          right: BorderSide(color: Colors.blueAccent),
-          top: BorderSide(color: Colors.blueAccent),
+          bottom: BorderSide(color: AppColors.primaryAccent),
+          right: BorderSide(color: AppColors.primaryAccent),
+          top: BorderSide(color: AppColors.primaryAccent),
         ),
         borderRadius: AppThemeConstants.borderRadius
       ),

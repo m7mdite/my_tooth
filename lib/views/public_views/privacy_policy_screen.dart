@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/custom_app_bar.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                    icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
                   ),
                 ],
               ),
@@ -45,12 +46,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
-                      BoxShadow(color: Colors.blue, blurRadius: 20, spreadRadius: 1)
+                      BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)
                     ],
-                    color: Colors.white.withOpacity(0.1),
-                    border: Border.all(color: Colors.white, width: 2),
+                    color: AppColors.white.withOpacity(0.1),
+                    border: Border.all(color: AppColors.white, width: 2),
                   ),
-                  child: Icon(Icons.privacy_tip_outlined, color: Colors.white, size: 60),
+                  child: Icon(Icons.privacy_tip_outlined, color: AppColors.white, size: 60),
                 ),
               ),
               SizedBox(height: 20),
@@ -60,8 +61,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                    shadows: [Shadow(color: Colors.white, blurRadius: 5)],
+                    color: AppColors.primary,
+                    shadows: [Shadow(color: AppColors.white, blurRadius: 5)],
                   ),
                 ),
               ),
@@ -70,15 +71,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
+                  color: AppColors.white.withOpacity(0.95),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.elliptical(50, 10),
                     bottomLeft: Radius.elliptical(10, 50),
                     topRight: Radius.elliptical(10, 50),
                     bottomRight: Radius.elliptical(50, 10),
                   ),
-                  border: Border.all(color: Colors.blue, width: 1.5),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+                  border: Border.all(color: AppColors.primary, width: 1.5),
+                  boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 10)],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,8 +120,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                         icon: Icon(Icons.check_circle),
                         label: Text('وافقت وفهمت'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primaryAccent,
+                          foregroundColor: AppColors.white,
                           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
@@ -153,13 +154,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.blue,
+            color: AppColors.primary,
           ),
         ),
         SizedBox(height: 8),
         Text(
           content,
-          style: TextStyle(fontSize: 14, color: Colors.black87, height: 1.3),
+          style: TextStyle(fontSize: 14, color: AppColors.black87, height: 1.3),
           textAlign: TextAlign.justify,
         ),
       ],
@@ -172,7 +173,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       height: 1,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blueAccent, Colors.transparent],
+          colors: [AppColors.primaryAccent, AppColors.transparent],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),

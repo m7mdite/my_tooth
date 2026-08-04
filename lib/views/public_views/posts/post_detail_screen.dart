@@ -5,6 +5,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import '../../../controllers/post_controllers/post_controller.dart';
 import '../../../models/posts_models/comment_model.dart';
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
 
@@ -103,7 +104,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           Text(comment.user.fullName),
           if (comment.user.isVerified) ...[
             const SizedBox(width: 4),
-            const Icon(Icons.verified, size: 14, color: Colors.blue),
+            const Icon(Icons.verified, size: 14, color: AppColors.primary),
           ],
         ],
       ),
@@ -125,8 +126,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.grey.shade300, blurRadius: 2)],
+        color: AppColors.white,
+        boxShadow: [BoxShadow(color: AppColors.grey300, blurRadius: 2)],
       ),
       child: Row(
         children: [
@@ -140,7 +141,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: Colors.blue),
+            icon: const Icon(Icons.send, color: AppColors.primary),
             onPressed: () {
               if (commentController.text.trim().isNotEmpty) {
                 controller.addComment(widget.postId, commentController.text);

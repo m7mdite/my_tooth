@@ -5,6 +5,7 @@ import 'package:gr_flutter/models/requests_models/treatment_request_processing_s
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../models/requests_models/treatment_request_model.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/tooth_constants.dart';
 
 class CardRequestProcessing extends StatelessWidget {
@@ -43,7 +44,7 @@ class CardRequestProcessing extends StatelessWidget {
             fit: BoxFit.cover,
             colorFilter: ColorFilter.linearToSrgbGamma(),
           ),
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.elliptical(100, 10),
             bottomLeft: Radius.elliptical(10, 100),
@@ -53,10 +54,10 @@ class CardRequestProcessing extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: requestModel.requestion!.gender == 'male'
-                  ? Colors.blue
+                  ? AppColors.primary
                   : requestModel.requestion!.gender == 'female'
-                      ? Colors.pink
-                      : Colors.white,
+                      ? AppColors.pink
+                      : AppColors.white,
               blurRadius: 20,
               spreadRadius: 1,
             ),
@@ -64,10 +65,10 @@ class CardRequestProcessing extends StatelessWidget {
           border: Border.all(
             strokeAlign: 10,
             color: requestModel.requestion!.gender == 'male'
-                ? Colors.blue
+                ? AppColors.primary
                 : requestModel.requestion!.gender == 'female'
-                    ? Colors.pink
-                    : Colors.white,
+                    ? AppColors.pink
+                    : AppColors.white,
             width: 0.5,
           ),
         ),
@@ -80,12 +81,12 @@ class CardRequestProcessing extends StatelessWidget {
                   toothLocation?[requestModel.requestion!.toothLocation] ??
                       "غير محدد",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.black,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     shadows: [
                       Shadow(
-                        color: Colors.white,
+                        color: AppColors.white,
                         blurRadius: 1,
                         offset: Offset(1, 1),
                       ),
@@ -97,12 +98,12 @@ class CardRequestProcessing extends StatelessWidget {
                 ),
                 FaIcon(
                   FontAwesomeIcons.tooth,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
               ],
             ),
               Container(
-              color: Colors.white,
+              color: AppColors.white,
               height: 1,
             ),
             Row(
@@ -118,10 +119,10 @@ class CardRequestProcessing extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: AppColors.white,
                             blurRadius: 2,
                             spreadRadius: 2,
                             offset: Offset(1, 1)),
@@ -141,7 +142,7 @@ class CardRequestProcessing extends StatelessWidget {
                 Container(
                   width: 2,
                   height: 20,
-                  color: Colors.white,
+                  color: AppColors.white,
                   margin: EdgeInsets.symmetric(horizontal: 4),
                   // child: Column(mainAxisSize: MainAxisSize.max,),
                 ),
@@ -154,10 +155,10 @@ class CardRequestProcessing extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: AppColors.white,
                             blurRadius: 2,
                             spreadRadius: 2,
                             offset: Offset(1, 1)),
@@ -177,7 +178,7 @@ class CardRequestProcessing extends StatelessWidget {
               ],
             ),
             Container(
-              color: Colors.white,
+              color: AppColors.white,
               height: 1,
             ),
             Row(
@@ -192,10 +193,10 @@ class CardRequestProcessing extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.white,
+                            color: AppColors.white,
                             blurRadius: 2,
                             spreadRadius: 2,
                             offset: Offset(1, 1)),
@@ -215,9 +216,9 @@ class CardRequestProcessing extends StatelessWidget {
                           width: 10,
                           decoration: BoxDecoration(
                               color: requestModel.requestion!.painSeverity! >= 1
-                                  ? Colors.redAccent
-                                  : Colors.white,
-                              border: Border.all(color: Colors.blue),
+                                  ? AppColors.errorAccent
+                                  : AppColors.white,
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(30)),
                         ),
                         SizedBox(
@@ -228,9 +229,9 @@ class CardRequestProcessing extends StatelessWidget {
                           width: 10,
                           decoration: BoxDecoration(
                               color: requestModel.requestion!.painSeverity! >= 2
-                                  ? Colors.red
-                                  : Colors.white,
-                              border: Border.all(color: Colors.blue),
+                                  ? AppColors.error
+                                  : AppColors.white,
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(30)),
                         ),
                         SizedBox(
@@ -241,9 +242,9 @@ class CardRequestProcessing extends StatelessWidget {
                           width: 10,
                           decoration: BoxDecoration(
                               color: requestModel.requestion!.painSeverity! >= 3
-                                  ? Colors.redAccent
-                                  : Colors.white,
-                              border: Border.all(color: Colors.blue),
+                                  ? AppColors.errorAccent
+                                  : AppColors.white,
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(30)),
                         ),
                         SizedBox(
@@ -254,9 +255,9 @@ class CardRequestProcessing extends StatelessWidget {
                           width: 10,
                           decoration: BoxDecoration(
                               color: requestModel.requestion!.painSeverity! >= 4
-                                  ? Colors.red
-                                  : Colors.white,
-                              border: Border.all(color: Colors.blue),
+                                  ? AppColors.error
+                                  : AppColors.white,
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(30)),
                         ),
                         SizedBox(
@@ -267,9 +268,9 @@ class CardRequestProcessing extends StatelessWidget {
                           width: 10,
                           decoration: BoxDecoration(
                               color: requestModel.requestion!.painSeverity! >= 5
-                                  ? Colors.red
-                                  : Colors.white,
-                              border: Border.all(color: Colors.blue),
+                                  ? AppColors.error
+                                  : AppColors.white,
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(30)),
                         ),
                         SizedBox(
@@ -288,10 +289,10 @@ class CardRequestProcessing extends StatelessWidget {
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white,
+                          color: AppColors.white,
                           blurRadius: 2,
                           spreadRadius: 2,
                           offset: Offset(1, 1),
@@ -312,7 +313,7 @@ class CardRequestProcessing extends StatelessWidget {
               ],
             ),
             Container(
-              color: Colors.white,
+              color: AppColors.white,
               height: 1,
             ),
             Row(
@@ -321,12 +322,12 @@ class CardRequestProcessing extends StatelessWidget {
                 // Text(
                 //   requestModel.requestion!.,
                 //   style: TextStyle(
-                //     color: Colors.green,
+                //     color: AppColors.success,
                 //     fontSize: 12,
                 //     fontWeight: FontWeight.w400,
                 //     shadows: [
                 //       Shadow(
-                //         color: Colors.white,
+                //         color: AppColors.white,
                 //         blurRadius: 1,
                 //         offset: Offset(1, 1),
                 //       ),
@@ -336,13 +337,13 @@ class CardRequestProcessing extends StatelessWidget {
                 Text('',
                   // requestModel.dateOfAccepting!.substring(0, 20),
                   style: TextStyle(
-                    color: Colors.green,
+                    color: AppColors.success,
                     overflow: TextOverflow.clip,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     shadows: [
                       Shadow(
-                        color: Colors.white,
+                        color: AppColors.white,
                         blurRadius: 1,
                         offset: Offset(1, 1),
                       ),
@@ -353,12 +354,12 @@ class CardRequestProcessing extends StatelessWidget {
             ),
             if (requestModel.overseer == null  && requestModel.status == "processing" && role == "student") ...[
               Container(
-                color: Colors.white,
+                color: AppColors.white,
                 height: 1,
               ),
               SizedBox(height: 5,),
               Center(
-                child: Text("يتعين عليك تعيين مشرف!" , style: TextStyle(color: Colors.red),)
+                child: Text("يتعين عليك تعيين مشرف!" , style: TextStyle(color: AppColors.error),)
               ),
             ],
           ],

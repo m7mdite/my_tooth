@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/requests_models/treatment_model.dart';
-import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/services/functions/show_snack.dart';
 import 'package:gr_flutter/views/widgets/requests/overseer_manage_request.dart';
 import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';

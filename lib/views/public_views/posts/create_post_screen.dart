@@ -5,6 +5,8 @@ import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gr_flutter/controllers/post_controllers/post_controller.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
 
@@ -51,7 +53,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         actions: [
           Obx(() => TextButton(
                 onPressed: controller.isCreating.value ? null : submit,
-                child: const Text('نشر', style: TextStyle(color: Colors.white)),
+                child: const Text('نشر', style: TextStyle(color: AppColors.white)),
               )),
         ],
       ),
@@ -110,8 +112,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     icon: const Icon(Icons.photo_library),
                     label: const Text('إضافة صور'),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
-                        foregroundColor: Colors.black),
+                        backgroundColor: AppColors.grey200,
+                        foregroundColor: AppColors.black),
                   ),
                 ],
               ),

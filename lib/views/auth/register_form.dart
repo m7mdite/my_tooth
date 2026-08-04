@@ -4,6 +4,7 @@ import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import 'package:gr_flutter/views/widgets/auth_text_form_field.dart';
 
 import '../../controllers/auth_controllers/auth_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
@@ -17,12 +18,12 @@ class RegisterForm extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.92),
+          color: AppColors.white.withOpacity(0.92),
           borderRadius:AppThemeConstants.borderRadius,
-          border: Border.all(color: Colors.white, width: 1.5),
+          border: Border.all(color: AppColors.white, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColors.black.withOpacity(0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -104,17 +105,17 @@ class RegisterForm extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.resolveWith(
                             (states) {
                               if (states.contains(MaterialState.selected)) {
-                                return Colors.blue.shade100;
+                                return AppColors.primary100;
                               }
-                              return Colors.grey.shade200;
+                              return AppColors.grey.shade200;
                             },
                           ),
                           foregroundColor: MaterialStateProperty.resolveWith(
                             (states) {
                               if (states.contains(MaterialState.selected)) {
-                                return Colors.blue.shade700;
+                                return AppColors.primary700;
                               }
-                              return Colors.black87;
+                              return AppColors.black87;
                             },
                           ),
                         ),
@@ -145,17 +146,17 @@ class RegisterForm extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.resolveWith(
                             (states) {
                               if (states.contains(MaterialState.selected)) {
-                                return Colors.blue.shade100;
+                                return AppColors.primary100;
                               }
-                              return Colors.grey.shade200;
+                              return AppColors.grey.shade200;
                             },
                           ),
                           foregroundColor: MaterialStateProperty.resolveWith(
                             (states) {
                               if (states.contains(MaterialState.selected)) {
-                                return Colors.blue.shade700;
+                                return AppColors.primary700;
                               }
-                              return Colors.black87;
+                              return AppColors.black87;
                             },
                           ),
                         ),
@@ -188,15 +189,15 @@ class RegisterForm extends StatelessWidget {
                   height: 40,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.blue.shade700, Colors.blue.shade500],
+                      colors: [AppColors.primary700, AppColors.primary500],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
                     borderRadius: AppThemeConstants.borderRadius,
-                    border: Border.all(color: Colors.blue,strokeAlign: 10),
+                    border: Border.all(color: AppColors.primary,strokeAlign: 10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.shade300.withOpacity(0.4),
+                        color: AppColors.success.shade300.withOpacity(0.4),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -214,7 +215,7 @@ class RegisterForm extends StatelessWidget {
                       child: Text(
                         "إنشاء حساب",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

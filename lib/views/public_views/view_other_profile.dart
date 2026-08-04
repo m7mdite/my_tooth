@@ -6,6 +6,7 @@ import 'package:gr_flutter/services/functions/show_image_preview.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../models/public_models/profile_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/dialog/report_user_dialog.dart';
 
 class ViewOtherProfile extends StatelessWidget {
@@ -49,7 +50,7 @@ class ViewOtherProfile extends StatelessWidget {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.blue, blurRadius: 20, spreadRadius: 1)
+                          color: AppColors.primary, blurRadius: 20, spreadRadius: 1)
                     ],
                     borderRadius: BorderRadius.circular(100),
                     image: DecorationImage(
@@ -58,14 +59,14 @@ class ViewOtherProfile extends StatelessWidget {
                         ),
                         fit: BoxFit.cover),
                     border: Border.all(
-                      color: Colors.white,
+                      color: AppColors.white,
                       strokeAlign: 5,
                       width: 2,
                     ),
                   ),
                   child: CircleAvatar(
                     radius: 70,
-                    backgroundColor: Colors.grey[200],
+                    backgroundColor: AppColors.grey200,
                     backgroundImage: (profile!.profilePhoto!.url != null &&
                             profile!.profilePhoto!.url!.isNotEmpty)
                         ? NetworkImage(
@@ -88,7 +89,7 @@ class ViewOtherProfile extends StatelessWidget {
                   SizedBox(
                     width: 3,
                   ),
-                  Icon(Icons.verified, color: Colors.blue, size: 20),
+                  Icon(Icons.verified, color: AppColors.primary, size: 20),
                 ],
               ),
             ),
@@ -105,14 +106,14 @@ class ViewOtherProfile extends StatelessWidget {
                   label: Text("مراسلة"),
                   icon: Icon(Icons.message),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    iconColor: Colors.white,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.primaryAccent,
+                    iconColor: AppColors.white,
+                    foregroundColor: AppColors.white,
                     elevation: 5,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     side: BorderSide(
-                        color: Colors.blueAccent, width: 2, strokeAlign: 3),
+                        color: AppColors.primaryAccent, width: 2, strokeAlign: 3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.elliptical(1, 10),
@@ -137,14 +138,14 @@ class ViewOtherProfile extends StatelessWidget {
                   label: Text("إبلاغ"),
                   icon: Icon(Icons.report),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    iconColor: Colors.white,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.errorAccent,
+                    iconColor: AppColors.white,
+                    foregroundColor: AppColors.white,
                     elevation: 5,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     side: BorderSide(
-                        color: Colors.redAccent, width: 2, strokeAlign: 3),
+                        color: AppColors.errorAccent, width: 2, strokeAlign: 3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.elliptical(1, 10),
@@ -164,10 +165,10 @@ class ViewOtherProfile extends StatelessWidget {
               height: 1,
               margin: EdgeInsets.symmetric(horizontal: 50),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blueAccent,
+                    color: AppColors.primaryAccent,
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),
@@ -187,12 +188,12 @@ class ViewOtherProfile extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.school, color: Colors.blueAccent, size: 16),
+                      Icon(Icons.school, color: AppColors.primaryAccent, size: 16),
                       Text(
                         "السنة: ",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -205,7 +206,7 @@ class ViewOtherProfile extends StatelessWidget {
                                     "5"
                                 ? "الخامسة"
                                 : "غير محدد",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                        style: TextStyle(fontSize: 14, color: AppColors.black),
                       ),
                     ],
                   ),
@@ -214,10 +215,10 @@ class ViewOtherProfile extends StatelessWidget {
                     height: 15,
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blueAccent,
+                          color: AppColors.primaryAccent,
                           blurRadius: 10,
                           spreadRadius: 2,
                         ),
@@ -227,12 +228,12 @@ class ViewOtherProfile extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.group, color: Colors.blueAccent, size: 16),
+                      Icon(Icons.group, color: AppColors.primaryAccent, size: 16),
                       Text(
                         "الفئة: ",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -240,7 +241,7 @@ class ViewOtherProfile extends StatelessWidget {
                       ),
                       Text(
                         " ${profile!.category!.category!.substring(2)} ",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                        style: TextStyle(fontSize: 14, color: AppColors.black),
                       ),
                     ],
                   ),
@@ -253,10 +254,10 @@ class ViewOtherProfile extends StatelessWidget {
                 height: 1,
                 margin: EdgeInsets.symmetric(horizontal: 50),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.blueAccent,
+                      color: AppColors.primaryAccent,
                       blurRadius: 10,
                       spreadRadius: 2,
                     ),
@@ -277,12 +278,12 @@ class ViewOtherProfile extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.outlet_rounded,
-                            color: Colors.blueAccent, size: 16),
+                            color: AppColors.primaryAccent, size: 16),
                         Text(
                           "العمر: ",
                           style: TextStyle(
                               fontSize: 14,
-                              color: Colors.blue,
+                              color: AppColors.primary,
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
@@ -291,7 +292,7 @@ class ViewOtherProfile extends StatelessWidget {
                         Flexible(
                           child: Text(
                             " ${profile!.phoneNumber ?? 'غير محدد'} ",
-                            style: TextStyle(fontSize: 12, color: Colors.black),
+                            style: TextStyle(fontSize: 12, color: AppColors.black),
                           ),
                         ),
                       ],
@@ -302,10 +303,10 @@ class ViewOtherProfile extends StatelessWidget {
                     height: 15,
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blueAccent,
+                          color: AppColors.primaryAccent,
                           blurRadius: 10,
                           spreadRadius: 2,
                         ),
@@ -316,12 +317,12 @@ class ViewOtherProfile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.sports_gymnastics_outlined,
-                          color: Colors.blueAccent, size: 16),
+                          color: AppColors.primaryAccent, size: 16),
                       Text(
                         "الجنس: ",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blue,
+                            color: AppColors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -329,7 +330,7 @@ class ViewOtherProfile extends StatelessWidget {
                       ),
                       Text(
                         " ${profile!.gender ?? 'غير محدد'} ",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                        style: TextStyle(fontSize: 14, color: AppColors.black),
                       ),
                     ],
                   ),
@@ -344,7 +345,7 @@ class ViewOtherProfile extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.elliptical(1, 10),
                     topRight: Radius.elliptical(10, 1),
@@ -352,7 +353,7 @@ class ViewOtherProfile extends StatelessWidget {
                     bottomRight: Radius.elliptical(1, 10),
                   ),
                   border: Border.all(
-                      color: Colors.blueAccent, width: 1, strokeAlign: 3),
+                      color: AppColors.primaryAccent, width: 1, strokeAlign: 3),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,7 +367,7 @@ class ViewOtherProfile extends StatelessWidget {
                       profile!.bio ?? 'لا يوجد نبذة',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey[700],
+                        color: AppColors.grey[700],
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,

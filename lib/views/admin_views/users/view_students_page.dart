@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -29,7 +30,7 @@ class ViewStudentsPage extends StatelessWidget {
             return ListView.separated(
               separatorBuilder: (context, index) => const Divider(
                 height: 12,
-                color: Colors.blue,
+                color: AppColors.primary,
                 endIndent: 50,
                 indent: 50,
               ),
@@ -59,7 +60,7 @@ class ViewStudentsPage extends StatelessWidget {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColors.primary,
                       backgroundImage: (student.profilePhoto != null &&
                               student.profilePhoto!.url != null &&
                               student.profilePhoto!.url!.isNotEmpty)
@@ -72,7 +73,7 @@ class ViewStudentsPage extends StatelessWidget {
                               student.firstName?.isNotEmpty == true
                                   ? student.firstName![0].toUpperCase()
                                   : "?",
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: AppColors.white),
                             )
                           : null,
                     ),
@@ -87,7 +88,7 @@ class ViewStudentsPage extends StatelessWidget {
                         if (student.isVerified == true)
                           const Padding(
                             padding: EdgeInsets.only(left: 4.0),
-                            child: Icon(Icons.verified, color: Colors.blue, size: 16),
+                            child: Icon(Icons.verified, color: AppColors.primary, size: 16),
                           ),
                       ],
                     ),

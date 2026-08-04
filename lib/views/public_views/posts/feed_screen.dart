@@ -9,6 +9,7 @@ import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
 import 'package:gr_flutter/views/widgets/pending_posts_button.dart';
 import '../../../app_route.dart';
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_post_screen.dart';
 
@@ -110,8 +111,8 @@ class _FeedScreenState extends State<FeedScreen> {
                         bottomRight: Radius.elliptical(100, 10),
                       ),
                       border: Border(
-                        right: BorderSide(color: Colors.green),
-                        bottom: BorderSide(color: Colors.green),
+                        right: BorderSide(color: AppColors.success),
+                        bottom: BorderSide(color: AppColors.success),
                       ),
                     ),
                     child: Center(
@@ -120,7 +121,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          shadows: [Shadow(color: Colors.white, blurRadius: 1)],
+                          shadows: [Shadow(color: AppColors.white, blurRadius: 1)],
                         ),
                       ),
                     ),
@@ -168,13 +169,13 @@ class _FeedScreenState extends State<FeedScreen> {
                             selected: isSelected,
                             onSelected: (_) =>
                                 controller.setFilter(option.value),
-                            backgroundColor: Colors.grey.shade100,
-                            selectedColor: Colors.blue.shade100,
-                            checkmarkColor: Colors.blue,
+                            backgroundColor: AppColors.grey.shade100,
+                            selectedColor: AppColors.primary100,
+                            checkmarkColor: AppColors.primary,
                             labelStyle: TextStyle(
                               color: isSelected
-                                  ? Colors.blue.shade800
-                                  : Colors.black87,
+                                  ? AppColors.primary800
+                                  : AppColors.black87,
                               fontWeight: isSelected
                                   ? FontWeight.bold
                                   : FontWeight.normal,
@@ -182,8 +183,8 @@ class _FeedScreenState extends State<FeedScreen> {
                             shape: StadiumBorder(
                               side: BorderSide(
                                   color: isSelected
-                                      ? Colors.blue
-                                      : Colors.transparent,
+                                      ? AppColors.primary
+                                      : AppColors.transparent,
                                   width: 1.5),
                             ),
                           );

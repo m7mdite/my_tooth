@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class AdminRequestScreen extends StatelessWidget {
@@ -34,7 +35,7 @@ class AdminRequestScreen extends StatelessWidget {
                 second: _buildCard(
                   title: "إضافة معالجة",
                   icon: Icons.add,
-                  color: Colors.green,
+                  color: AppColors.success,
                   onTap: () => controller.toAddTreatmentPage(),
                 ),
               ),
@@ -45,13 +46,13 @@ class AdminRequestScreen extends StatelessWidget {
                 first: _buildCard(
                   title: "عرض المواد",
                   icon: Icons.visibility,
-                  color: Colors.indigo,
+                  color: AppColors.indigo,
                   onTap: () => controller.toViewCoursesPage(),
                 ),
                 second: _buildCard(
                   title: "إضافة مادة",
                   icon: Icons.add,
-                  color: Colors.blue,
+                  color: AppColors.primary,
                   onTap: () => controller.toAddCoursePage(),
                 ),
               ),
@@ -62,14 +63,14 @@ class AdminRequestScreen extends StatelessWidget {
                 first: _buildCard(
                   title: "    إضافة درس    ",
                   icon: Icons.add,
-                  color: Colors.orange,
+                  color: AppColors.warning,
                   onTap: () => controller.toAddLessonsPage(),
                   fullWidth: true,
                 ),
                 second: _buildCard(
                   title: "عرض البرنامج ",
                   icon: Icons.visibility,
-                  color: Colors.orange,
+                  color: AppColors.warning,
                   onTap: () => controller.toViewLessons(),
                   fullWidth: true,
                 ),
@@ -81,13 +82,13 @@ class AdminRequestScreen extends StatelessWidget {
                 first: _buildCard(
                   title: "عرض الفئات",
                   icon: Icons.visibility,
-                  color: Colors.purple,
+                  color: AppColors.purple,
                   onTap: () => controller.toViewCategorysPage(),
                 ),
                 second: _buildCard(
                   title: "إضافة فئة",
                   icon: Icons.add,
-                  color: Colors.deepPurple,
+                  color: AppColors.deepPurple,
                   onTap: () => controller.toAddCategoryPage(),
                 ),
               ),
@@ -99,25 +100,25 @@ class AdminRequestScreen extends StatelessWidget {
                   _buildCard(
                     title: "قيد الانتظار",
                     icon: Icons.hourglass_empty,
-                    color: Colors.orange,
+                    color: AppColors.warning,
                     onTap: () => controller.toViewPendingRequestsPage(),
                   ),
                   _buildCard(
                     title: "قيد المعالجة",
                     icon: Icons.settings,
-                    color: Colors.blue,
+                    color: AppColors.primary,
                     onTap: () => controller.toViewInProcessingRequestsPage(),
                   ),
                   _buildCard(
                     title: "المكتملة",
                     icon: Icons.check_circle,
-                    color: Colors.green,
+                    color: AppColors.success,
                     onTap: () => controller.toViewFinishedRequestsPage(),
                   ),
                   _buildCard(
                     title: "المرفوضة",
                     icon: Icons.cancel,
-                    color: Colors.red,
+                    color: AppColors.error,
                     onTap: () => controller.toViewRejectedRequestsPage(),
                   ),
                 ],
@@ -133,7 +134,7 @@ class AdminRequestScreen extends StatelessWidget {
   Widget _buildSectionTitle(String title, IconData icon) {
     return Row(
       children: [
-        Icon(icon, color: Colors.blueAccent, size: 28),
+        Icon(icon, color: AppColors.primaryAccent, size: 28),
         const SizedBox(width: 8),
         Text(
           title,
@@ -192,14 +193,14 @@ class AdminRequestScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 42, color: Colors.white),
+              Icon(icon, size: 42, color: AppColors.white),
               const SizedBox(height: 12),
               Text(
                 title,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/ai_controllers/ai_chat_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../custom_app_bar.dart';
 import '../custom_icon_app_bar.dart';
 import 'chat_bubble.dart';
@@ -17,7 +18,7 @@ class AiChatScreen extends StatelessWidget {
     final AiChatController controller = Get.find<AiChatController>();
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.grey[50],
       appBar: CustomAppBar(
         title: "المساعد الذكي",
         centerTitle: true,
@@ -68,20 +69,20 @@ class AiChatScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
+                color: AppColors.white.withOpacity(0.85),
                 borderRadius: BorderRadius.circular(40),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.5),
+                  color: AppColors.white.withOpacity(0.5),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: AppColors.black.withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
                   BoxShadow(
-                    color: Colors.blue.shade200.withOpacity(0.2),
+                    color: AppColors.primary200.withOpacity(0.2),
                     blurRadius: 30,
                     offset: const Offset(0, 4),
                   ),
@@ -94,7 +95,7 @@ class AiChatScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.attach_file,
-                        color: Colors.grey.shade500,
+                        color: AppColors.grey.shade500,
                         size: 24,
                       ),
                       onPressed: () {},
@@ -106,7 +107,7 @@ class AiChatScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           hintText: 'رسالتك...',
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
+                          hintStyle: TextStyle(color: AppColors.grey.shade400),
                           border: InputBorder.none,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 12),
@@ -125,14 +126,14 @@ class AiChatScreen extends StatelessWidget {
                                     ? null
                                     : LinearGradient(
                                         colors: [
-                                          Colors.blue.shade600,
-                                          Colors.purple.shade600
+                                          AppColors.primary600,
+                                          AppColors.purple.shade600
                                         ],
                                       ),
                             shape: BoxShape.circle,
                             color:
                                 controller.messageController.text.trim().isEmpty
-                                    ? Colors.blue.shade300
+                                    ? AppColors.primary300
                                     : null,
                           ),
                           child: IconButton(
@@ -143,12 +144,12 @@ class AiChatScreen extends StatelessWidget {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
+                                          AppColors.white),
                                     ),
                                   )
                                 : const Icon(
                                     Icons.send_rounded,
-                                    color: Colors.white,
+                                    color: AppColors.white,
                                     size: 22,
                                   ),
                             onPressed: controller.isLoading.value ||
@@ -184,7 +185,7 @@ class AiChatScreen extends StatelessWidget {
               controller.clearChat();
               Get.back();
             },
-            child: const Text('مسح', style: TextStyle(color: Colors.red)),
+            child: const Text('مسح', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),

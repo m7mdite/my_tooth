@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_notify_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class AdminNotifyDialog extends StatelessWidget {
   const AdminNotifyDialog({super.key});
 
@@ -12,13 +14,13 @@ class AdminNotifyDialog extends StatelessWidget {
 
     return Center(
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparent,
         child: Container(
           width: Get.width * 0.85,
           padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(width: 3.5, color: Colors.white),
+            color: AppColors.transparent,
+            border: Border.all(width: 3.5, color: AppColors.white),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.elliptical(100, 10),
               bottomLeft: Radius.elliptical(10, 100),
@@ -46,14 +48,14 @@ class AdminNotifyDialog extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87, // ✅ لون غامق
+                      color: AppColors.black87, // ✅ لون غامق
                     ),
                     textAlign: TextAlign.center,
                   ),
                   Container(
                     margin: const EdgeInsets.only(bottom: 16, top: 10),
                     height: 2,
-                    color: Colors.white,
+                    color: AppColors.white,
                     width: 200,
                   ),
 
@@ -62,7 +64,7 @@ class AdminNotifyDialog extends StatelessWidget {
                     'اختر الأدوار المستهدفة:',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black54, // ✅ لون غامق
+                      color: AppColors.black54, // ✅ لون غامق
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -83,19 +85,19 @@ class AdminNotifyDialog extends StatelessWidget {
                           avatar: Icon(
                             role['icon'],
                             size: 16,
-                            color: isSelected ? Colors.white : Colors.grey.shade600,
+                            color: isSelected ? AppColors.white : AppColors.grey.shade600,
                           ),
-                          backgroundColor: Colors.grey.shade100,
-                          selectedColor: Colors.blue.shade700,
-                          checkmarkColor: Colors.white,
+                          backgroundColor: AppColors.grey.shade100,
+                          selectedColor: AppColors.primary700,
+                          checkmarkColor: AppColors.white,
                           labelStyle: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black87,
+                            color: isSelected ? AppColors.white : AppColors.black87,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                             fontSize: 12,
                           ),
                           shape: StadiumBorder(
                             side: BorderSide(
-                              color: isSelected ? Colors.blue : Colors.grey.shade300,
+                              color: isSelected ? AppColors.primary : AppColors.grey300,
                               width: 1.5,
                             ),
                           ),
@@ -108,17 +110,17 @@ class AdminNotifyDialog extends StatelessWidget {
                   // ===== حقل العنوان =====
                   TextField(
                     controller: controller.titleController,
-                    style: const TextStyle(color: Colors.black87),
+                    style: const TextStyle(color: AppColors.black87),
                     decoration: InputDecoration(
                       hintText: 'عنوان الإشعار...',
-                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      hintStyle: TextStyle(color: AppColors.grey.shade500),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
+                        borderSide: BorderSide(color: AppColors.grey300),
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.85),
-                      prefixIcon: Icon(Icons.title, color: Colors.grey.shade600),
+                      fillColor: AppColors.white.withOpacity(0.85),
+                      prefixIcon: Icon(Icons.title, color: AppColors.grey.shade600),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -127,16 +129,16 @@ class AdminNotifyDialog extends StatelessWidget {
                   TextField(
                     controller: controller.bodyController,
                     maxLines: 3,
-                    style: const TextStyle(color: Colors.black87),
+                    style: const TextStyle(color: AppColors.black87),
                     decoration: InputDecoration(
                       hintText: 'محتوى الإشعار...',
-                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      hintStyle: TextStyle(color: AppColors.grey.shade500),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
+                        borderSide: BorderSide(color: AppColors.grey300),
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.85),
+                      fillColor: AppColors.white.withOpacity(0.85),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -149,7 +151,7 @@ class AdminNotifyDialog extends StatelessWidget {
                             child: Text(
                               '⚠️ يرجى اختيار دور واحد على الأقل',
                               style: TextStyle(
-                                color: Colors.red.shade700,
+                                color: AppColors.error.shade700,
                                 fontSize: 12,
                               ),
                             ),
@@ -161,7 +163,7 @@ class AdminNotifyDialog extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 12),
                     height: 2,
-                    color: Colors.white,
+                    color: AppColors.white,
                     width: 200,
                   ),
 
@@ -175,8 +177,8 @@ class AdminNotifyDialog extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(width: 1.5, color: Colors.red),
+                            color: AppColors.white,
+                            border: Border.all(width: 1.5, color: AppColors.error),
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.elliptical(100, 10),
                               bottomLeft: Radius.elliptical(10, 100),
@@ -186,7 +188,7 @@ class AdminNotifyDialog extends StatelessWidget {
                           ),
                           child: const Text(
                             'إلغاء',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: AppColors.error),
                           ),
                         ),
                       ),
@@ -200,8 +202,8 @@ class AdminNotifyDialog extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1.5, color: Colors.green),
+                              color: AppColors.white,
+                              border: Border.all(width: 1.5, color: AppColors.success),
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.elliptical(100, 10),
                                 bottomLeft: Radius.elliptical(10, 100),
@@ -215,12 +217,12 @@ class AdminNotifyDialog extends StatelessWidget {
                                     height: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.green,
+                                      color: AppColors.success,
                                     ),
                                   )
                                 : const Text(
                                     'إرسال',
-                                    style: TextStyle(color: Colors.green),
+                                    style: TextStyle(color: AppColors.success),
                                   ),
                           ),
                         ),

@@ -3,12 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_home_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
-import 'package:gr_flutter/views/public_views/chat_screen.dart';
 import 'package:gr_flutter/views/public_views/conversations_screen.dart';
 import 'package:gr_flutter/views/public_views/settings/unified_profile_screen.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/notifications_view.dart';
 import '../../widgets/container_images_home_inbording.dart';
 import '../../widgets/custom_icon_app_bar.dart';
@@ -98,10 +98,10 @@ class StudentHomeScreen extends StatelessWidget {
                   padding: EdgeInsets.all(15),
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.white,
                     // borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: Colors.blue, width: 1, strokeAlign: 15),
+                        color: AppColors.primary, width: 1, strokeAlign: 15),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.elliptical(100, 10),
                       bottomLeft: Radius.elliptical(10, 100),
@@ -115,14 +115,14 @@ class StudentHomeScreen extends StatelessWidget {
                     children: [
                       FaIcon(
                         FontAwesomeIcons.userDoctor,
-                        color: Colors.blue,
+                        color: AppColors.primary,
                       ),
                       SizedBox(
                         width: 30,
                       ),
                       Text(
                         "إسأل خبير ...",
-                        style: TextStyle(color: Colors.blue, fontSize: 16),
+                        style: TextStyle(color: AppColors.primary, fontSize: 16),
                       )
                     ],
                   ),

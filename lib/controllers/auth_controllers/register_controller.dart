@@ -7,6 +7,7 @@ import 'package:gr_flutter/services/remote/public_remotes/auth_remote.dart';
 // import 'package:gr_flutter/services/shared/auth_model.dart';
 
 import '../../services/functions/handling_data.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/status_request.dart';
 import '../../utils/validators/register_validator.dart';
 
@@ -169,7 +170,7 @@ void _showSnackbarAndFocus(String message, TextEditingController controller) {
     message,
     snackPosition: SnackPosition.TOP,
     backgroundColor: const Color.fromARGB(117, 255, 255, 255),
-    colorText: Colors.red,
+    colorText: AppColors.error,
     duration: const Duration(seconds: 3),
   );
   // طلب التركيز على الحقل المخالف

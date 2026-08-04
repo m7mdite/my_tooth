@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 void showImagePreview(String imageUrl) {
   Get.dialog(
     Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       insetPadding: const EdgeInsets.all(1),
       child: Stack(
         alignment: Alignment.topRight,
@@ -15,7 +17,7 @@ void showImagePreview(String imageUrl) {
             child: Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
+                border: Border.all(color: AppColors.white, width: 2),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.elliptical(100, 10),
                   bottomLeft: Radius.elliptical(10, 100),
@@ -44,7 +46,7 @@ void showImagePreview(String imageUrl) {
                     errorWidget: (context, url, error) => const Icon(
                       Icons.broken_image,
                       size: 80,
-                      color: Colors.white,
+                      color: AppColors.white,
                     ),
                   ),
                 ),
@@ -55,9 +57,9 @@ void showImagePreview(String imageUrl) {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundColor: Colors.black54,
+              backgroundColor: AppColors.black54,
               child: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
+                icon: const Icon(Icons.close, color: AppColors.white),
                 onPressed: () => Get.back(),
               ),
             ),
@@ -66,6 +68,6 @@ void showImagePreview(String imageUrl) {
       ),
     ),
     barrierDismissible: true,
-    barrierColor: Colors.black54, // خلفية مغبشة
+    barrierColor: AppColors.black54, // خلفية مغبشة
   );
 }

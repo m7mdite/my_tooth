@@ -7,6 +7,7 @@ import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 
 import '../../../controllers/overseer_controllers/overseer_requests_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 
 class OverseerManageRequest extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =
@@ -39,8 +40,8 @@ class OverseerManageRequest extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             color: controller.finishBool == false
-                                ? Colors.green
-                                : Colors.grey,
+                                ? AppColors.success
+                                : AppColors.grey,
                           ),
                         ),
                         SizedBox(
@@ -49,8 +50,8 @@ class OverseerManageRequest extends StatelessWidget {
                         Container(
                           height: 2,
                           color: controller.finishBool == false
-                              ? Colors.green
-                              : Colors.grey,
+                              ? AppColors.success
+                              : AppColors.grey,
                           width: Get.width * 0.1,
                         ),
                       ],
@@ -73,8 +74,8 @@ class OverseerManageRequest extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             color: !controller.finishBool
-                                ? Colors.grey
-                                : Colors.blue,
+                                ? AppColors.grey
+                                : AppColors.primary,
                           ),
                         ),
                         SizedBox(
@@ -83,8 +84,8 @@ class OverseerManageRequest extends StatelessWidget {
                         Container(
                           height: 2,
                           color: !controller.finishBool
-                              ? Colors.grey
-                              : Colors.blue,
+                              ? AppColors.grey
+                              : AppColors.primary,
                           width: Get.width * 0.1,
                         ),
                       ],
@@ -133,8 +134,8 @@ class OverseerManageRequest extends StatelessWidget {
                                   Icon(
                                     FontAwesomeIcons.tooth,
                                     color: isSelected
-                                        ? Colors.blue.shade700
-                                        : Colors.grey.shade300,
+                                        ? AppColors.primary700
+                                        : AppColors.grey300,
                                     size: 40,
                                   ),
                                   // الرقم في المنتصف
@@ -144,8 +145,8 @@ class OverseerManageRequest extends StatelessWidget {
                                       '$number',
                                       style: TextStyle(
                                         color: isSelected
-                                            ? Colors.white
-                                            : Colors.grey.shade600,
+                                            ? AppColors.white
+                                            : AppColors.grey.shade600,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
                                       ),

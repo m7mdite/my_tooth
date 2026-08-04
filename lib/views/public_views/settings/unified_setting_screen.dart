@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../services/functions/upload_picture.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
 import '../conversations_screen.dart';
@@ -87,7 +88,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.blue,
+                                    color: AppColors.primary,
                                     blurRadius: 20,
                                     spreadRadius: 1,
                                   ),
@@ -104,7 +105,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                                 border:
-                                    Border.all(color: Colors.white, width: 2),
+                                    Border.all(color: AppColors.white, width: 2),
                               ),
                             ),
                           ),
@@ -125,18 +126,18 @@ class UnifiedSettingScreen extends StatelessWidget {
                           children: [
                             Text(
                               controller.fullName.value,
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: AppColors.black),
                             ),
                             if (controller.isVerified.value) ...[
                               const SizedBox(width: 8),
-                              Icon(Icons.star, color: Colors.blue, size: 20),
+                              Icon(Icons.star, color: AppColors.primary, size: 20),
                             ],
                             const SizedBox(width: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade100,
+                                color: AppColors.primary100,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
@@ -157,7 +158,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     position: 2,
                     child: Center(
                       child: DefaultContainerProfile(
-                        color: Colors.blue,
+                        color: AppColors.primary,
                         title: "الملف الشخصي",
                         icon: Icons.person_2_sharp,
                         onTap: controller.toShowProfile,
@@ -177,7 +178,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                           ),
                           Center(
                             child: DefaultContainerProfile(
-                              color: Colors.blue,
+                              color: AppColors.primary,
                               title: "طلب التوثيق",
                               icon: Icons.real_estate_agent_outlined,
                               onTap: controller.toVerifypage,
@@ -192,7 +193,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     position: 4,
                     child: Center(
                       child: DefaultContainerProfile(
-                        color: Colors.blue,
+                        color: AppColors.primary,
                         title: "تغيير اللغة",
                         icon: Icons.language_rounded,
                         onTap: () {},
@@ -209,7 +210,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                       onTap: () => Get.to(() => PrivacyPolicyScreen()),
                       child: Center(
                         child: DefaultContainerProfile(
-                          color: Colors.blue,
+                          color: AppColors.primary,
                           title: "سياسة الخصوصية",
                           icon: Icons.privacy_tip_outlined,
                         ),
@@ -224,7 +225,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     position: 6,
                     child: Center(
                       child: DefaultContainerProfile(
-                        color: Colors.blue,
+                        color: AppColors.primary,
                         title: "تغيير كلمة المرور",
                         icon: Icons.lock_outline,
                         onTap: () => Get.to(() => ChangePasswordScreen()),
@@ -241,7 +242,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                       onTap: () => Get.to(() => ContactSupportScreen()),
                       child: Center(
                         child: DefaultContainerProfile(
-                          color: Colors.blue,
+                          color: AppColors.primary,
                           title: "مراسلة الدعم",
                           icon: Icons.support_agent_outlined,
                         ),
@@ -256,7 +257,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     position: 8,
                     child: Center(
                       child: DefaultContainerProfile(
-                        color: Colors.blue,
+                        color: AppColors.primary,
                         title: "تسجيل الخروج",
                         icon: Icons.logout_outlined,
                         onTap: controller.confirmLogOut,

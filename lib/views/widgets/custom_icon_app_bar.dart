@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/public_views/conversations_screen.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class CustomIconAppBar extends StatelessWidget {
   final void Function()? onTap;
   final bool reverseColors;
@@ -26,21 +28,21 @@ class CustomIconAppBar extends StatelessWidget {
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          // color: Colors.blue,
-          color: reverseColors ? Colors.white : Colors.lightBlueAccent,
+          // color: AppColors.primary,
+          color: reverseColors ? AppColors.white : AppColors.primaryLightAccent,
           // border: Border.all(
-          //     color: reverseColors ? Colors.white : Colors.lightBlueAccent,
+          //     color: reverseColors ? AppColors.white : AppColors.primaryLightAccent,
           //     width: 1,
           //     strokeAlign: 5),
           boxShadow: [
             BoxShadow(
-              color: reverseColors ? Colors.lightBlueAccent : Colors.white,
+              color: reverseColors ? AppColors.primaryLightAccent : AppColors.white,
               spreadRadius: 5,
               blurRadius: 5,
               offset: Offset(0, 3), // تغيير اتجاه الظل
             ),
             BoxShadow(
-              color: reverseColors ? Colors.lightBlueAccent : Colors.white,
+              color: reverseColors ? AppColors.primaryLightAccent : AppColors.white,
               spreadRadius: 5,
               blurRadius: 5,
               offset: Offset(0, -3), // تغيير اتجاه الظل
@@ -49,7 +51,7 @@ class CustomIconAppBar extends StatelessWidget {
         ),
         child: Icon(
           iconData,
-          color: reverseColors ? Colors.blue : Colors.white,
+          color: reverseColors ? AppColors.primary : AppColors.white,
         ),
       ),
     );

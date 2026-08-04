@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 
 class RegisterValidator {
   // التحقق من أن الحقل غير فارغ

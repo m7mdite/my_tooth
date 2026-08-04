@@ -11,7 +11,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: Colors.blueAccent,
+//       backgroundColor: AppColors.primaryAccent,
 //       body: Container(
 //         height: double.maxFinite,
 //         width: double.maxFinite,
@@ -25,7 +25,7 @@
 //               vertical: 30),
 //           decoration: BoxDecoration(
 //             border: Border.all(
-//               color: Colors.white,
+//               color: AppColors.white,
 //               width: 1.5,
 //             ),
 //             borderRadius: BorderRadius.only(
@@ -85,7 +85,7 @@
 
 //                   Center(
 //                     child: BottonContainer(
-//                       color: Colors.black,
+//                       color: AppColors.black,
 //                       fontSize: 18,
 //                       paddingHorizontal: 20,
 //                       paddingVertical: 4,

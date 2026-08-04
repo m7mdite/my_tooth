@@ -16,7 +16,7 @@
 //     // String? studentId;
 
 //     return Scaffold(
-//       backgroundColor: Colors.blueAccent,
+//       backgroundColor: AppColors.primaryAccent,
 //       body: Container(
 //         height: double.maxFinite,
 //         width: double.maxFinite,
@@ -30,7 +30,7 @@
 //               vertical: 30),
 //           decoration: BoxDecoration(
 //             border: Border.all(
-//               color: Colors.white,
+//               color: AppColors.white,
 //               width: 1.5,
 //             ),
 //             borderRadius: AppThemeConstants.borderRadius,
@@ -121,7 +121,7 @@
 //                     suffix: controller.confirmPass
 //                         ? Icon(
 //                             Icons.check_circle_outline,
-//                             color: Colors.blue,
+//                             color: AppColors.primary,
 //                           )
 //                         : null,
 //                     textEditingController: controller.confirmPassword,
@@ -163,7 +163,7 @@
 //                     margin: EdgeInsets.symmetric(vertical: 5,horizontal: Get.width*0.2),
 //                     height: 1.0,
 //                     width: Get.width*0.8,
-//                     color: Colors.white,
+//                     color: AppColors.white,
 //                   ),
 //                   // اختيار الدور
 //                   Center(
@@ -213,7 +213,7 @@
 //             return ElevatedButton(
 //               onPressed: controller.register,
 //               style: ElevatedButton.styleFrom(
-//                 backgroundColor: Colors.blueAccent,
+//                 backgroundColor: AppColors.primaryAccent,
 //                 padding: const EdgeInsets.symmetric(vertical: 14),
 //                 shape: RoundedRectangleBorder(
 //                   borderRadius: BorderRadius.circular(30),
@@ -221,7 +221,7 @@
 //               ),
 //               child: const Text(
 //                 "إنشاء حساب",
-//                 style: TextStyle(fontSize: 18, color: Colors.white),
+//                 style: TextStyle(fontSize: 18, color: AppColors.white),
 //               ),
 //             );
 //           }),

@@ -14,7 +14,7 @@ import '../../utils/app_constants/tooth_constants.dart';
 
 abstract class StudentRequestsController extends GetxController {
   showRequest(TreatmentRequestModel requestModel);
-  // getPendingRequests();
+  getPendingRequests();
 
   agreeRequest(String idR, String idO);
   getProcessingRequest();

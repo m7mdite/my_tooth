@@ -7,6 +7,7 @@ import 'package:web_socket_channel/io.dart' as io;
 import 'dart:convert';
 
 import '../services/local_storge/local_user_storage.dart';
+import '../utils/app_constants/colors_constant.dart';
 
 class WebSocketController extends GetxController {
   WebSocketChannel? _channel;
@@ -109,7 +110,7 @@ class WebSocketController extends GetxController {
       ),
       textConfirm: 'حفظ التفاصيل',
       textCancel: 'إغلاق',
-      confirmTextColor: Colors.white,
+      confirmTextColor: AppColors.white,
       onConfirm: () {
         Get.back();
         _saveNotificationDetails(data);

@@ -5,6 +5,7 @@ import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 import '../services/local_storge/local_user_storage.dart';
+import '../utils/app_constants/colors_constant.dart';
 import '../utils/app_constants/onboarding_constants.dart';
 
 class OnboardingController extends GetxController {
@@ -150,10 +151,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               child: Text(
                 "تخطي",
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: AppColors.white.withOpacity(0.7),
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  shadows: [Shadow(blurRadius: 8, color: Colors.black26)],
+                  shadows: [Shadow(blurRadius: 8, color: AppColors.black26)],
                 ),
               ),
             ),
@@ -173,15 +174,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       decoration: BoxDecoration(
         gradient: isActive
             ? LinearGradient(
-                colors: [Colors.blue.shade700, Colors.blue.shade400],
+                colors: [AppColors.primary700, AppColors.primary400],
               )
             : null,
-        color: isActive ? null : Colors.grey.shade300,
+        color: isActive ? null : AppColors.grey300,
         borderRadius: BorderRadius.circular(10),
         boxShadow: isActive
             ? [
                 BoxShadow(
-                  color: Colors.blue.shade400.withOpacity(0.4),
+                  color: AppColors.primary400.withOpacity(0.4),
                   blurRadius: 10,
                 ),
               ]
@@ -205,15 +206,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isLast
-                      ? [Colors.green.shade600, Colors.green.shade400]
-                      : [Colors.blue.shade700, Colors.blue.shade500],
+                      ? [AppColors.success.shade600, AppColors.success.shade400]
+                      : [AppColors.primary700, AppColors.primary500],
                 ),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
                     color: (isLast
-                            ? Colors.green.shade400
-                            : Colors.blue.shade400)
+                            ? AppColors.success.shade400
+                            : AppColors.primary400)
                         .withOpacity(0.5),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
@@ -226,7 +227,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   Text(
                     isLast ? "ابدأ الآن" : "التالي",
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -237,7 +238,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     turns: isLast ? 1 : 0,
                     child: Icon(
                       isLast ? Icons.check_circle : Icons.arrow_forward_ios,
-                      color: Colors.white,
+                      color: AppColors.white,
                       size: 18,
                     ),
                   ),
@@ -283,9 +284,9 @@ class _WavePainter extends CustomPainter {
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          Colors.blue.shade700,
-          Colors.blue.shade500,
-          Colors.blue.shade300,
+          AppColors.primary700,
+          AppColors.primary500,
+          AppColors.primary300,
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -380,7 +381,7 @@ class _OnboardingPageState extends State<_OnboardingPage>
                   width: screenWidth * 0.8,
                   decoration: BoxDecoration(
                     borderRadius: AppThemeConstants.borderRadius,
-                    border: Border.all(color: Colors.white,strokeAlign: 10),
+                    border: Border.all(color: AppColors.white,strokeAlign: 10),
                     image: DecorationImage(
                       image: AssetImage(widget.item.image),
                       fit: BoxFit.cover,
@@ -411,8 +412,8 @@ class _OnboardingPageState extends State<_OnboardingPage>
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [Shadow(blurRadius: 6, color: Colors.black26)],
+                color: AppColors.white,
+                shadows: [Shadow(blurRadius: 6, color: AppColors.black26)],
               ),
               textAlign: TextAlign.center,
             ),
@@ -437,7 +438,7 @@ class _OnboardingPageState extends State<_OnboardingPage>
               widget.item.description,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.white70,
+                color: AppColors.white70,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,

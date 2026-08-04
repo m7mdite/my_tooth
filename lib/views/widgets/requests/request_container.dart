@@ -36,7 +36,7 @@
 //             fit: BoxFit.cover,
 //             colorFilter: ColorFilter.linearToSrgbGamma(),
 //           ),
-//           color: Colors.white,
+//           color: AppColors.white,
 //           borderRadius: BorderRadius.only(
 //             topLeft: Radius.elliptical(100, 10),
 //             bottomLeft: Radius.elliptical(10, 100),
@@ -46,10 +46,10 @@
 //           boxShadow: [
 //             BoxShadow(
 //               color: requestModel.requestion!.gender == 'male'
-//                   ? Colors.blue
+//                   ? AppColors.primary
 //                   : requestModel.requestion!.gender == 'female'
-//                       ? Colors.pink
-//                       : Colors.white,
+//                       ? AppColors.pink
+//                       : AppColors.white,
 //               blurRadius: 20,
 //               spreadRadius: 1,
 //             ),
@@ -57,10 +57,10 @@
 //           border: Border.all(
 //             strokeAlign: 10,
 //             color: requestModel.requestion!.gender == 'male'
-//                 ? Colors.blue
+//                 ? AppColors.primary
 //                 : requestModel.requestion!.gender == 'female'
-//                     ? Colors.pink
-//                     : Colors.white,
+//                     ? AppColors.pink
+//                     : AppColors.white,
 //             width: 0.5,
 //           ),
 //         ),
@@ -72,12 +72,12 @@
 //                 Text(
 //                   toothLocation?[requestModel.requestion!.toothLocation] ?? "غير محدد",
 //                   style: TextStyle(
-//                     color: Colors.black,
+//                     color: AppColors.black,
 //                     fontSize: 12,
 //                     fontWeight: FontWeight.w400,
 //                     shadows: [
 //                       Shadow(
-//                         color: Colors.white,
+//                         color: AppColors.white,
 //                         blurRadius: 1,
 //                         offset: Offset(1, 1),
 //                       ),
@@ -89,12 +89,12 @@
 //                 ),
 //                 FaIcon(
 //                   FontAwesomeIcons.tooth,
-//                   color: Colors.white,
+//                   color: AppColors.white,
 //                 ),
 //               ],
 //             ),
 //             Container(
-//               color: Colors.white,
+//               color: AppColors.white,
 //               height: 1,
 //             ),
 //             Row(
@@ -106,10 +106,10 @@
 //                     padding: EdgeInsets.all(2),
 //                     margin: EdgeInsets.all(3),
 //                     decoration: BoxDecoration(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       boxShadow: [
 //                         BoxShadow(
-//                             color: Colors.white,
+//                             color: AppColors.white,
 //                             blurRadius: 2,
 //                             spreadRadius: 2,
 //                             offset: Offset(1, 1)),
@@ -129,12 +129,12 @@
 //                 ),
 //                 // if(requestModel.overseerNote != null) ...[
 //                 //   SizedBox(width: 5,),
-//                 //   FaIcon(FontAwesomeIcons.squareCheck, size: 12,color: Colors.blue,)
+//                 //   FaIcon(FontAwesomeIcons.squareCheck, size: 12,color: AppColors.primary,)
 //                 // ],
 //                 Container(
 //                   width: 1,
 //                   height: 20,
-//                   color: Colors.white,
+//                   color: AppColors.white,
 //                   margin: EdgeInsets.symmetric(horizontal: 4),
 //                   // child: Column(mainAxisSize: MainAxisSize.max,),
 //                 ),
@@ -144,10 +144,10 @@
 //                     padding: EdgeInsets.all(2),
 //                     margin: EdgeInsets.all(3),
 //                     decoration: BoxDecoration(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       boxShadow: [
 //                         BoxShadow(
-//                             color: Colors.white,
+//                             color: AppColors.white,
 //                             blurRadius: 2,
 //                             spreadRadius: 2,
 //                             offset: Offset(1, 1)),
@@ -169,9 +169,9 @@
 //                           width: 10,
 //                           decoration: BoxDecoration(
 //                               color: requestModel.requestion!.painSeverity! >= 1
-//                                   ? Colors.redAccent
-//                                   : Colors.white,
-//                               border: Border.all(color: Colors.blue),
+//                                   ? AppColors.errorAccent
+//                                   : AppColors.white,
+//                               border: Border.all(color: AppColors.primary),
 //                               borderRadius: BorderRadius.circular(30)),
 //                         ),
 //                         SizedBox(
@@ -182,9 +182,9 @@
 //                           width: 10,
 //                           decoration: BoxDecoration(
 //                               color: requestModel.requestion!.painSeverity! >= 2
-//                                   ? Colors.red
-//                                   : Colors.white,
-//                               border: Border.all(color: Colors.blue),
+//                                   ? AppColors.error
+//                                   : AppColors.white,
+//                               border: Border.all(color: AppColors.primary),
 //                               borderRadius: BorderRadius.circular(30)),
 //                         ),
 //                         SizedBox(
@@ -195,9 +195,9 @@
 //                           width: 10,
 //                           decoration: BoxDecoration(
 //                               color: requestModel.requestion!.painSeverity! >= 3
-//                                   ? Colors.redAccent
-//                                   : Colors.white,
-//                               border: Border.all(color: Colors.blue),
+//                                   ? AppColors.errorAccent
+//                                   : AppColors.white,
+//                               border: Border.all(color: AppColors.primary),
 //                               borderRadius: BorderRadius.circular(30)),
 //                         ),
 //                         SizedBox(
@@ -208,9 +208,9 @@
 //                           width: 10,
 //                           decoration: BoxDecoration(
 //                               color: requestModel.requestion!.painSeverity! >= 4
-//                                   ? Colors.red
-//                                   : Colors.white,
-//                               border: Border.all(color: Colors.blue),
+//                                   ? AppColors.error
+//                                   : AppColors.white,
+//                               border: Border.all(color: AppColors.primary),
 //                               borderRadius: BorderRadius.circular(30)),
 //                         ),
 //                         SizedBox(
@@ -220,8 +220,8 @@
 //                           height: 10,
 //                           width: 10,
 //                           decoration: BoxDecoration(
-//                             color: requestModel.requestion!.painSeverity!>=5?Colors.red:Colors.white,
-//                             border: Border.all(color: Colors.blue)
+//                             color: requestModel.requestion!.painSeverity!>=5?AppColors.error:AppColors.white,
+//                             border: Border.all(color: AppColors.primary)
 //                             ,
 //                             borderRadius: BorderRadius.circular(30)
 //                           ),
@@ -234,7 +234,7 @@
 //               ],
 //             ),
 //             Container(
-//               color: Colors.white,
+//               color: AppColors.white,
 //               height: 1,
 //             ),
 //             Row(
@@ -246,10 +246,10 @@
 //                     padding: EdgeInsets.all(2),
 //                     margin: EdgeInsets.all(3),
 //                     decoration: BoxDecoration(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       boxShadow: [
 //                         BoxShadow(
-//                           color: Colors.white,
+//                           color: AppColors.white,
 //                           blurRadius: 2,
 //                           spreadRadius: 2,
 //                           offset: Offset(1, 1),
@@ -270,7 +270,7 @@
 //               ],
 //             ),
 //             Container(
-//               color: Colors.white,
+//               color: AppColors.white,
 //               height: 1,
 //             ),
 //             Row(
@@ -280,12 +280,12 @@
 //                   // requestModel.status!,
 //                   "",
 //                   style: TextStyle(
-//                     color: Colors.green,
+//                     color: AppColors.success,
 //                     fontSize: 12,
 //                     fontWeight: FontWeight.w400,
 //                     shadows: [
 //                       Shadow(
-//                         color: Colors.white,
+//                         color: AppColors.white,
 //                         blurRadius: 1,
 //                         offset: Offset(1, 1),
 //                       ),
@@ -295,12 +295,12 @@
 //                 Text("",
 //                   // "${requestModel.updatedAt!.day}/${requestModel.updatedAt!.month}/${requestModel.updatedAt!.year}",
 //                   style: TextStyle(
-//                     color: Colors.green,
+//                     color: AppColors.success,
 //                     fontSize: 12,
 //                     fontWeight: FontWeight.w400,
 //                     shadows: [
 //                       Shadow(
-//                         color: Colors.white,
+//                         color: AppColors.white,
 //                         blurRadius: 1,
 //                         offset: Offset(1, 1),
 //                       ),

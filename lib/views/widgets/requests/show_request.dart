@@ -43,7 +43,7 @@
 //             topRight: Radius.elliptical(10, 100),
 //             bottomRight: Radius.elliptical(100, 10),
 //           ),
-//           border: Border.all(color: Colors.white, width: 1.5, strokeAlign: 10),
+//           border: Border.all(color: AppColors.white, width: 1.5, strokeAlign: 10),
 //         ),
 //         child: Column(
 //           children: [
@@ -57,20 +57,20 @@
 //                   child: Icon(
 //                     Icons.cancel_outlined,
 //                     size: 32,
-//                     color: Colors.black,
-//                     shadows: [Shadow(color: Colors.white, blurRadius: 10)],
+//                     color: AppColors.black,
+//                     shadows: [Shadow(color: AppColors.white, blurRadius: 10)],
 //                   ),
 //                 ),
 //                 Text(
 //                   "",
 //                   // requestModel.status!,
 //                   style: TextStyle(
-//                     color: Colors.green,
+//                     color: AppColors.success,
 //                     fontSize: 12,
 //                     fontWeight: FontWeight.w400,
 //                     shadows: [
 //                       Shadow(
-//                         color: Colors.white,
+//                         color: AppColors.white,
 //                         blurRadius: 1,
 //                         offset: Offset(1, 1),
 //                       ),
@@ -81,12 +81,12 @@
 //                   "",
 //                   // "${requestModel.updatedAt!.day}/${requestModel.updatedAt!.month}/${requestModel.updatedAt!.year}",
 //                   style: TextStyle(
-//                     color: Colors.green,
+//                     color: AppColors.success,
 //                     fontSize: 12,
 //                     fontWeight: FontWeight.w400,
 //                     shadows: [
 //                       Shadow(
-//                         color: Colors.white,
+//                         color: AppColors.white,
 //                         blurRadius: 1,
 //                         offset: Offset(1, 1),
 //                       ),
@@ -121,7 +121,7 @@
 //                             bottomRight: Radius.elliptical(100, 10),
 //                           ),
 //                           border: Border.all(
-//                             color: Colors.grey,
+//                             color: AppColors.grey,
 //                             width: 1.5,
 //                           ),
 //                         ),
@@ -130,14 +130,14 @@
 //                               ? null
 //                               : FaIcon(
 //                                   FontAwesomeIcons.tooth,
-//                                   color: Colors.white,
+//                                   color: AppColors.white,
 //                                 ),
 //                         )
 //                         // :
 //                         // Image.network("${requestModel.photo!.url}",fit: BoxFit.cover,),
 //                         ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -147,7 +147,7 @@
 //                       isUpdate: true,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -156,7 +156,7 @@
 //                       isUpdate: false,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -165,7 +165,7 @@
 //                       isUpdate: false,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -174,7 +174,7 @@
 //                       isUpdate: false,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -183,7 +183,7 @@
 //                       isUpdate: false,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     RowItemRequest(
@@ -193,7 +193,7 @@
 //                       isUpdate: false,
 //                     ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     if (requestModel.requestion!.moreDetails != null &&
@@ -205,7 +205,7 @@
 //                         isUpdate: false,
 //                       ),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     if (requestModel.requestion!.moreDetails != null &&
@@ -216,7 +216,7 @@
 //                           valueItem: requestModel.requestion!.moreDetails!.chronicDiseases!,
 //                           isUpdate: false),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     if (requestModel.requestion!.moreDetails != null &&
@@ -227,7 +227,7 @@
 //                           valueItem: requestModel.requestion!.moreDetails!.medicines!,
 //                           isUpdate: false),
 //                     Container(
-//                       color: Colors.white,
+//                       color: AppColors.white,
 //                       height: 1,
 //                     ),
 //                     if (requestModel.requestion!.moreDetails != null &&

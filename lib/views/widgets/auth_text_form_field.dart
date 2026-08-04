@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class AuthTextFormField extends StatelessWidget {
   final String label;
   final TextEditingController textEditingController;
@@ -33,10 +35,10 @@ class AuthTextFormField extends StatelessWidget {
           color: const Color.fromARGB(255, 255, 254, 254),
           border: Border(
               right: BorderSide(
-                color: Colors.blueAccent,
+                color: AppColors.primaryAccent,
               ),
               bottom: BorderSide(
-                color: Colors.blueAccent,
+                color: AppColors.primaryAccent,
               )),
           borderRadius: AppThemeConstants.borderRadius),
       child: TextFormField(
@@ -47,7 +49,7 @@ class AuthTextFormField extends StatelessWidget {
         controller: textEditingController,
         decoration: InputDecoration(
           prefixIcon: icon != null
-              ? Icon(icon, size: 20, color: Colors.blue.shade700)
+              ? Icon(icon, size: 20, color: AppColors.primary700)
               : null,
           suffix: suffix,
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -56,10 +58,10 @@ class AuthTextFormField extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                     top: BorderSide(
-                      color: Colors.blueAccent,
+                      color: AppColors.primaryAccent,
                     ),
                     left: BorderSide(
-                      color: Colors.blueAccent,
+                      color: AppColors.primaryAccent,
                     )),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.elliptical(100, 10),
@@ -67,7 +69,7 @@ class AuthTextFormField extends StatelessWidget {
                   topRight: Radius.elliptical(10, 100),
                   bottomRight: Radius.elliptical(100, 10),
                 ),
-                color: Colors.white,
+                color: AppColors.white,
               ),
               child: Text(
                 label,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/requests/show_request_processing.dart';
@@ -30,7 +31,7 @@ class ShowOwnedStudentRequest extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                // color: Colors.grey.shade200,
+                // color: AppColors.grey.shade200,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Obx(
@@ -142,17 +143,17 @@ class ShowOwnedStudentRequest extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.white,
             border: Border(bottom: BorderSide(
-              color: isActive ? Colors.blue : Colors.white,
+              color: isActive ? AppColors.primary : AppColors.white,
               width: 2,
             )),
-            // color: isActive ? Colors.blue.shade700 : Colors.transparent,
+            // color: isActive ? AppAppColors.primary700 : AppColors.transparent,
             borderRadius: BorderRadius.circular(30),
             boxShadow: isActive
                 ? [
                     BoxShadow(
-                      color: Colors.blue.shade200.withOpacity(0.4),
+                      color: AppColors.primary200,
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -163,7 +164,7 @@ class ShowOwnedStudentRequest extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: isActive ? Colors.blue : Colors.grey.shade600,
+                color: isActive ? AppColors.primary : AppColors.grey.shade600,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 fontSize: 14,
               ),

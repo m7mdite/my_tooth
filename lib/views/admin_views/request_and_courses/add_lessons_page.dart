@@ -9,6 +9,8 @@ import 'package:gr_flutter/models/admin_models/course_model.dart';
 import 'package:gr_flutter/models/public_models/profile_model.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class AddLessonsPage extends StatelessWidget {
   final AdminRequestControllerImpl controller =
       Get.find<AdminRequestControllerImpl>();
@@ -67,7 +69,7 @@ class AddLessonsPage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: SingleChildScrollView(
                     child: Table(
-                      border: TableBorder.all(color: Colors.grey.shade300),
+                      border: TableBorder.all(color: AppColors.grey300),
                       columnWidths: {
                         0: const FixedColumnWidth(100), // عمود الأيام
                         for (int i = 0; i < periods.length; i++)
@@ -79,7 +81,7 @@ class AddLessonsPage extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(8),
-                              color: Colors.grey.shade200,
+                              color: AppColors.grey200,
                               child: const Text(
                                 "اليوم \\ الفترة",
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -88,7 +90,7 @@ class AddLessonsPage extends StatelessWidget {
                             ),
                             ...periods.map((period) => Container(
                                   padding: const EdgeInsets.all(8),
-                                  color: Colors.grey.shade200,
+                                  color: AppColors.grey200,
                                   child: Text(
                                     period,
                                     textAlign: TextAlign.center,
@@ -103,7 +105,7 @@ class AddLessonsPage extends StatelessWidget {
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(8),
-                                color: Colors.grey.shade100,
+                                color: AppColors.grey200,
                                 child: Text(
                                   day,
                                   textAlign: TextAlign.center,
@@ -176,8 +178,8 @@ class AddLessonsPage extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Colors.green.shade50,
-          border: Border.all(color: Colors.green.shade200),
+          color: AppColors.success.withOpacity(0.1),
+          border: Border.all(color: AppColors.success.withOpacity(0.5)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -190,7 +192,7 @@ class AddLessonsPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red, size: 16),
+              icon: const Icon(Icons.delete, color: AppColors.error, size: 16),
               onPressed: () {
                 controller.lessonsQueue.removeWhere(
                   (l) => l['time'] == '$day-$period',
@@ -214,11 +216,11 @@ class AddLessonsPage extends StatelessWidget {
         child: Container(
           height: 80,
           decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            border: Border.all(color: Colors.grey.shade300),
+            color: AppColors.grey50,
+            border: Border.all(color: AppColors.grey300),
           ),
           child: const Center(
-            child: Icon(Icons.add_circle_outline, color: Colors.grey),
+            child: Icon(Icons.add_circle_outline, color: AppColors.grey),
           ),
         ),
       );

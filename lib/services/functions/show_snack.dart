@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 void showsnack( {String? title, String? message}) {
   // يجب أن يكون التطبيق مغلفًا بـ GetMaterialApp
   Get.showSnackbar(
@@ -9,7 +11,7 @@ void showsnack( {String? title, String? message}) {
       snackPosition: SnackPosition.TOP,
       duration: Duration(seconds: 3),
       // تعيين الخلفية كلون شفاف لإظهار الصورة
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       // منع المحتوى من أخذ مساحة إضافية
       padding: EdgeInsets.zero,
       margin: EdgeInsets.all(10),
@@ -33,12 +35,12 @@ void showsnack( {String? title, String? message}) {
             children: [
               Text(
                 title??" عنوان التنبيه",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
               Text(
                 message??" هذه هي رسالة التنبيه التي تظهر على الصورة.",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: AppColors.black),
               ),
             ],
           ),

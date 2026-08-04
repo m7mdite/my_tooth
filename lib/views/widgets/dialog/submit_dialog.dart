@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class SubmitDialog extends StatelessWidget {
   final String title;
   final String question;
@@ -31,7 +33,7 @@ class SubmitDialog extends StatelessWidget {
           padding: EdgeInsets.all(7),
           decoration: BoxDecoration(
             color: const Color.fromARGB(0, 255, 255, 255),
-            border: Border.all(width: 3.5, color: Colors.white),
+            border: Border.all(width: 3.5, color: AppColors.white),
             borderRadius: BorderRadius.only(
               topLeft: Radius.elliptical(100, 10),
               bottomLeft: Radius.elliptical(10, 100),
@@ -68,7 +70,7 @@ class SubmitDialog extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(bottom: 20, top: 10),
                   height: 2,
-                  color: Colors.white,
+                  color: AppColors.white,
                   width: 200,
                 ),
                 if(question!="") Flexible(
@@ -86,7 +88,7 @@ class SubmitDialog extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 10),
                   height: 2,
-                  color: Colors.white,
+                  color: AppColors.white,
                   width: 200,
                 ),
                 Row(
@@ -102,8 +104,8 @@ class SubmitDialog extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1.5, color: Colors.red),
+                          color: AppColors.white,
+                          border: Border.all(width: 1.5, color: AppColors.error),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.elliptical(100, 10),
                             bottomLeft: Radius.elliptical(10, 100),
@@ -113,7 +115,7 @@ class SubmitDialog extends StatelessWidget {
                         ),
                         child: Text(
                           cancelBottonTitle,
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(color: AppColors.error),
                         ),
                       ),
                     ),
@@ -123,8 +125,8 @@ class SubmitDialog extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1.5, color: Colors.green),
+                          color: AppColors.white,
+                          border: Border.all(width: 1.5, color: AppColors.success),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.elliptical(100, 10),
                             bottomLeft: Radius.elliptical(10, 100),
@@ -134,7 +136,7 @@ class SubmitDialog extends StatelessWidget {
                         ),
                         child: Text(
                           agreeBottontitle,
-                          style: TextStyle(color: Colors.green),
+                          style: TextStyle(color: AppColors.success),
                         ),
                       ),
                     ),

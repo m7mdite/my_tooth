@@ -8,6 +8,7 @@ import 'package:gr_flutter/models/requests_models/treatment_request_processing_s
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/tooth_constants.dart';
 import '../../../models/requests_models/treatment_request_model.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/view_other_profile.dart';
 
 class ShowRequestProcessing extends StatefulWidget {
@@ -58,7 +59,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       insetPadding: const EdgeInsets.all(16),
       child: FadeTransition(
         opacity: _fadeAnimation,
@@ -81,16 +82,16 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
                 topRight: Radius.elliptical(15, 120),
                 bottomRight: Radius.elliptical(120, 15),
               ),
-              border: Border.all(color: Colors.white, width: 2.5),
+              border: Border.all(color: AppColors.white, width: 2.5),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blue.withValues(alpha: 0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                   blurRadius: 30,
                   spreadRadius: 5,
                   offset: const Offset(0, 10),
                 ),
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.15),
+                  color: AppColors.black.withValues(alpha: 0.15),
                   blurRadius: 20,
                   offset: const Offset(0, 5),
                 ),
@@ -142,7 +143,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade800, Colors.blue.shade500],
+          colors: [AppColors.primary800, AppColors.primary500],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -154,10 +155,10 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.close_rounded, color: Colors.white),
+            icon: const Icon(Icons.close_rounded, color: AppColors.white),
             onPressed: Get.back,
             style: IconButton.styleFrom(
-              backgroundColor: Colors.white.withValues(alpha: 0.15),
+              backgroundColor: AppColors.white.withValues(alpha: 0.15),
               shape: const CircleBorder(),
             ),
           ),
@@ -165,10 +166,10 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
           Text(
             'تفاصيل الطلب',
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              shadows: [Shadow(color: Colors.black26, blurRadius: 4)],
+              shadows: [Shadow(color: AppColors.black26, blurRadius: 4)],
             ),
           ),
           const Spacer(),
@@ -176,12 +177,12 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: AppColors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 _formatDate(widget.requestModel.dateOfAccepting!),
-                style: const TextStyle(color: Colors.white, fontSize: 11),
+                style: const TextStyle(color: AppColors.white, fontSize: 11),
               ),
             ),
         ],
@@ -210,10 +211,10 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
           topRight: Radius.elliptical(10, 80),
           bottomRight: Radius.elliptical(80, 10),
         ),
-        border: Border.all(color: Colors.white, width: 1.5),
+        border: Border.all(color: AppColors.white, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: AppColors.black.withValues(alpha: 0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -228,12 +229,12 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
                   Icon(
                     Icons.image_outlined,
                     size: 40,
-                    color: Colors.grey.shade400,
+                    color: AppColors.grey.shade400,
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'لا توجد صورة',
-                    style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey.shade500, fontSize: 12),
                   ),
                 ],
               ),
@@ -274,17 +275,17 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       margin: EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.9),
+        color: AppColors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.only(
           topLeft: Radius.elliptical(40, 6),
           bottomLeft: Radius.elliptical(6, 40),
           topRight: Radius.elliptical(6, 40),
           bottomRight: Radius.elliptical(40, 6),
         ),
-        border: Border.all(color: Colors.blueAccent.withAlpha(100), width: 1.5,strokeAlign: 5),
+        border: Border.all(color: AppColors.primaryAccent.withAlpha(100), width: 1.5,strokeAlign: 5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: AppColors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -295,22 +296,22 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.blue.shade50,
+              color: AppColors.primary50,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 18, color: Colors.blue.shade700),
+            child: Icon(icon, size: 18, color: AppColors.primary700),
           ),
           const SizedBox(width: 12),
           Text(
             label,
-            style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
+            style: TextStyle(color: AppColors.grey.shade700, fontSize: 13),
           ),
           const Spacer(),
           Flexible(
             child: Text(
               value,
               style: TextStyle(
-                color: Colors.black87,
+                color: AppColors.black87,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
@@ -335,7 +336,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
         'lastName': widget.requestModel.overseer!.lastName,
         'icon': FontAwesomeIcons.userDoctor,
         'label': 'المشرف',
-        'color': Colors.green.shade700,
+        'color': AppColors.success.shade700,
       });
     }
 
@@ -347,7 +348,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
         'lastName': widget.requestModel.patient!.lastName,
         'icon': FontAwesomeIcons.user,
         'label': 'المريض',
-        'color': Colors.blue.shade700,
+        'color': AppColors.primary700,
       });
     }
 
@@ -359,7 +360,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
         'lastName': widget.requestModel.student!.lastName,
         'icon': FontAwesomeIcons.userGraduate,
         'label': 'الطالب',
-        'color': Colors.purple.shade700,
+        'color': AppColors.purple.shade700,
       });
     }
 
@@ -394,7 +395,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
                 bottomLeft: Radius.elliptical(10, 1),
                 bottomRight: Radius.elliptical(1, 10),
               ),
-              border: Border.all(color: Colors.white, width: 1.5),
+              border: Border.all(color: AppColors.white, width: 1.5),
             ),
             child: ViewOtherProfile(profile: controller.otherProfile),
           ),
@@ -403,14 +404,14 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.9),
+          color: AppColors.white.withValues(alpha: 0.9),
           borderRadius: BorderRadius.only(
             topLeft: Radius.elliptical(40, 6),
             bottomLeft: Radius.elliptical(6, 40),
             topRight: Radius.elliptical(6, 40),
             bottomRight: Radius.elliptical(40, 6),
           ),
-          border: Border.all(color: Colors.white, width: 1.5),
+          border: Border.all(color: AppColors.white, width: 1.5),
         ),
         child: Row(
           children: [
@@ -426,7 +427,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
             const SizedBox(width: 12),
             Text(
               user['label'],
-              style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
+              style: TextStyle(color: AppColors.grey.shade700, fontSize: 13),
             ),
             const Spacer(),
             Flexible(

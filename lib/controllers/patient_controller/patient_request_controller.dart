@@ -12,6 +12,7 @@ import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/remote/public_remotes/request_remote.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/status_request.dart';
 import '../../views/widgets/botton_controller.dart';
 
@@ -233,7 +234,7 @@ class PatientRequestControllerImp extends PatientRequestController {
           curve: Curves.easeIn,
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.white,
+              color: AppColors.white,
               width: 1.5,
             ),
             color: const Color.fromARGB(40, 255, 255, 255),

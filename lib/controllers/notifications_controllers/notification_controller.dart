@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../models/public_models/notification_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class NotificationController extends GetxController {
   final RxList<NotificationModel> notifications = <NotificationModel>[].obs;
@@ -41,7 +42,7 @@ class NotificationController extends GetxController {
       duration: const Duration(seconds: 4),
       margin: const EdgeInsets.all(10),
       backgroundColor: Get.theme.primaryColor.withOpacity(0.9),
-      colorText: Colors.white,
+      colorText: AppColors.white,
     );
   }
 

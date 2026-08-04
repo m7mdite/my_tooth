@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/requests_models/prediction_result_model.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 
 /// ديالوغ عرض نتيجة التنبؤ بإمكانية علاج الحالة.
 /// ملاحظة: هاي نتيجة تقديرية بالذكاء الاصطناعي فقط، مش تشخيص نهائي —
@@ -13,7 +14,7 @@ class PredictionResultDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = result.isAccepted ? Colors.green : Colors.red;
+    final Color color = result.isAccepted ? AppColors.success : AppColors.error;
 
     return Center(
       child: Material(
@@ -23,7 +24,7 @@ class PredictionResultDialog extends StatelessWidget {
           padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
             color: const Color.fromARGB(0, 255, 255, 255),
-            border: Border.all(width: 3.5, color: Colors.white),
+            border: Border.all(width: 3.5, color: AppColors.white),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.elliptical(100, 10),
               bottomLeft: Radius.elliptical(10, 100),
@@ -64,7 +65,7 @@ class PredictionResultDialog extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 14),
                   height: 2,
-                  color: Colors.white,
+                  color: AppColors.white,
                   width: 180,
                 ),
                 if (result.confidence.isNotEmpty)
@@ -82,7 +83,7 @@ class PredictionResultDialog extends StatelessWidget {
                     'هذا تقدير مبدئي بمساعدة خوارزميات التعلم  بناءً على البيانات '
                     'المدخلة، وليس تشخيصاً طبياً نهائياً. القرار الفعلي يعود '
                     'للمشرف المختص بعد مراجعة طلبك.',
-                    style: TextStyle(fontSize: 12, color: Colors.black87),
+                    style: TextStyle(fontSize: 12, color: AppColors.black87),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -93,7 +94,7 @@ class PredictionResultDialog extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 6, horizontal: 26),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       border: Border.all(width: 1.5, color: color),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.elliptical(100, 10),

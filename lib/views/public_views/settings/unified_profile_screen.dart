@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import 'unified_edit_profile_screen.dart';
 
@@ -70,10 +71,10 @@ class UnifiedProfileScreen extends StatelessWidget {
                                   : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
                               fit: BoxFit.cover,
                             ),
-                            border: Border.all(color: Colors.white, width: 3),
+                            border: Border.all(color: AppColors.white, width: 3),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.blue.withValues(alpha: 0.3),
+                                color: AppColors.primary.withValues(alpha: 0.3),
                                 blurRadius: 20,
                                 spreadRadius: 2,
                                 offset: const Offset(0, 6),
@@ -97,7 +98,7 @@ class UnifiedProfileScreen extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: AppColors.black87,
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -105,7 +106,7 @@ class UnifiedProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.blue.shade400, Colors.blue.shade600],
+                              colors: [AppColors.primary400, AppColors.primary600],
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
                             ),
@@ -113,7 +114,7 @@ class UnifiedProfileScreen extends StatelessWidget {
                           ),
                           child: Text(
                             controller.getRoleTitle(),
-                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                            style: const TextStyle(color: AppColors.white, fontSize: 13),
                           ),
                         ),
                       ],
@@ -302,13 +303,13 @@ class UnifiedProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue.shade400, Colors.blue.shade600],
+                colors: [AppColors.primary400, AppColors.primary600],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 18, color: Colors.white),
+            child: Icon(icon, size: 18, color: AppColors.white),
           ),
           const SizedBox(width: 12),
           Text(
@@ -316,7 +317,7 @@ class UnifiedProfileScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
-              color: Colors.blue.shade800,
+              color: AppColors.primary800,
             ),
           ),
         ],
@@ -336,7 +337,7 @@ class UnifiedProfileScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.9),
+        color: AppColors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.only(
           topLeft: Radius.elliptical(40, 6),
           bottomLeft: Radius.elliptical(6, 40),
@@ -344,13 +345,13 @@ class UnifiedProfileScreen extends StatelessWidget {
           bottomRight: Radius.elliptical(40, 6),
         ),
         border: Border.all(
-          color: isVerified ? Colors.green.shade300 : Colors.blueAccent.withAlpha(100),
+          color: isVerified ? AppColors.success.shade300 : AppColors.primaryAccent.withAlpha(100),
           width: 1.5,
           strokeAlign: 5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: AppColors.black.withValues(alpha: 0.04),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -369,20 +370,20 @@ class UnifiedProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: isVerified ? Colors.green.shade50 : Colors.blue.shade50,
+                color: isVerified ? AppColors.success.shade50 : AppColors.primary50,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
                 size: 18,
-                color: isVerified ? Colors.green.shade700 : Colors.blue.shade700,
+                color: isVerified ? AppColors.success.shade700 : AppColors.primary700,
               ),
             ),
             const SizedBox(width: 12),
             Text(
               label,
               style: TextStyle(
-                color: Colors.grey.shade700,
+                color: AppColors.grey.shade700,
                 fontSize: 13,
               ),
             ),
@@ -391,7 +392,7 @@ class UnifiedProfileScreen extends StatelessWidget {
               child: Text(
                 value,
                 style: TextStyle(
-                  color: isVerified ? Colors.green.shade800 : Colors.black87,
+                  color: isVerified ? AppColors.success.shade800 : AppColors.black87,
                   fontSize: 14,
                   fontWeight: isVerified ? FontWeight.bold : FontWeight.w500,
                 ),
@@ -403,7 +404,7 @@ class UnifiedProfileScreen extends StatelessWidget {
               Icon(
                 Icons.copy,
                 size: 16,
-                color: Colors.grey.shade400,
+                color: AppColors.grey.shade400,
               ),
             ],
           ],
@@ -418,7 +419,7 @@ class UnifiedProfileScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue.shade50, Colors.white],
+          colors: [AppColors.primary50, AppColors.white],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -428,10 +429,10 @@ class UnifiedProfileScreen extends StatelessWidget {
           topRight: Radius.elliptical(10, 60),
           bottomRight: Radius.elliptical(60, 10),
         ),
-        border: Border.all(color: Colors.blue.shade200, width: 1.2),
+        border: Border.all(color: AppColors.primary200, width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withValues(alpha: 0.08),
+            color: AppColors.primary.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -445,12 +446,12 @@ class UnifiedProfileScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Colors.green,
+                    color: AppColors.success,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.check_circle_outline,
-                    color: Colors.white,
+                    color: AppColors.white,
                     size: 24,
                   ),
                 ),
@@ -460,12 +461,12 @@ class UnifiedProfileScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                    color: AppColors.success,
                   ),
                 ),
                 const Text(
                   'مكتملة',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: AppColors.grey, fontSize: 12),
                 ),
               ],
             ),
@@ -473,7 +474,7 @@ class UnifiedProfileScreen extends StatelessWidget {
           Container(
             width: 1,
             height: 50,
-            color: Colors.grey.shade200,
+            color: AppColors.grey.shade200,
           ),
           Expanded(
             child: Column(
@@ -481,12 +482,12 @@ class UnifiedProfileScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Colors.orange,
+                    color: AppColors.warning,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.pending_actions,
-                    color: Colors.white,
+                    color: AppColors.white,
                     size: 24,
                   ),
                 ),
@@ -496,12 +497,12 @@ class UnifiedProfileScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange,
+                    color: AppColors.warning,
                   ),
                 ),
                 const Text(
                   'قيد المعالجة',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: AppColors.grey, fontSize: 12),
                 ),
               ],
             ),

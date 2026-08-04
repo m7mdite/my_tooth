@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -29,7 +30,7 @@ class ViewOverSeersPage extends StatelessWidget {
             return ListView.separated(
               separatorBuilder: (context, index) => const Divider(
                 height: 12,
-                color: Colors.blue,
+                color: AppColors.primary,
                 endIndent: 50,
                 indent: 50,
               ),
@@ -47,12 +48,12 @@ class ViewOverSeersPage extends StatelessWidget {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColors.primary,
                       child: Text(
                         (overSeer.firstName?.isNotEmpty ?? false)
                             ? overSeer.firstName![0].toUpperCase()
                             : "?",
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.white),
                       ),
                     ),
                     title: Text(
@@ -75,7 +76,7 @@ class ViewOverSeersPage extends StatelessWidget {
                       ],
                     ),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
+                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
                       onPressed: () => _confirmDelete(overSeer.user!),
                     ),
                     // isThreeLine: true,
@@ -101,7 +102,7 @@ class ViewOverSeersPage extends StatelessWidget {
               Get.back();
               controller.deleteOverSeer(id);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text("حذف"),
           ),
         ],

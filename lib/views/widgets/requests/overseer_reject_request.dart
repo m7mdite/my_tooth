@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/overseer_controllers/overseer_requests_controller.dart';
 import 'package:gr_flutter/models/requests_models/treatment_model.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
 import '../auth_text_form_field.dart';
 
 class OverseerRejectRequest extends StatelessWidget {
@@ -36,8 +37,8 @@ class OverseerRejectRequest extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             color: controller.rejectBool == false
-                                ? Colors.redAccent
-                                : Colors.grey,
+                                ? AppColors.errorAccent
+                                : AppColors.grey,
                           ),
                         ),
                         SizedBox(
@@ -46,8 +47,8 @@ class OverseerRejectRequest extends StatelessWidget {
                         Container(
                           height: 2,
                           color: controller.rejectBool == false
-                              ? Colors.redAccent
-                              : Colors.grey,
+                              ? AppColors.errorAccent
+                              : AppColors.grey,
                           width: Get.width * 0.1,
                         ),
                       ],
@@ -70,8 +71,8 @@ class OverseerRejectRequest extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             color: !controller.rejectBool
-                                ? Colors.grey
-                                : Colors.blue,
+                                ? AppColors.grey
+                                : AppColors.primary,
                           ),
                         ),
                         SizedBox(
@@ -80,8 +81,8 @@ class OverseerRejectRequest extends StatelessWidget {
                         Container(
                           height: 2,
                           color: !controller.rejectBool
-                              ? Colors.grey
-                              : Colors.blue,
+                              ? AppColors.grey
+                              : AppColors.primary,
                           width: Get.width * 0.1,
                         ),
                       ],

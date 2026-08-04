@@ -6,6 +6,8 @@ import 'package:gr_flutter/models/admin_models/course_model.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class AddTreatmentPage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
 
@@ -99,7 +101,7 @@ class AddTreatmentPage extends StatelessWidget {
                       controller.addTreatment();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: AppColors.primaryAccent,
                       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -107,7 +109,7 @@ class AddTreatmentPage extends StatelessWidget {
                     ),
                     child: const Text(
                       "حفظ المعالجة",
-                      style: TextStyle(fontSize: 18,color: Colors.white),
+                      style: TextStyle(fontSize: 18,color: AppColors.white),
                     ),
                   ),
                 ),

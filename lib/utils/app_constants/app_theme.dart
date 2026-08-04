@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'colors_constant.dart';
+
 class AppGradients {
   static const LinearGradient arcticFrostGradient = LinearGradient(
     colors: [
-      Colors.white,
-      Colors.white70,
-      Colors.lightBlueAccent,
-      Colors.blueAccent,
-      // Colors.pinkAccent,
+      AppColors.white,
+      AppColors.white70,
+      AppColors.primaryLightAccent,
+      AppColors.primaryAccent,
+      // AppColors.pinkAccent,
     ],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -67,7 +69,7 @@ class AppGradients {
   //     Color(0xFFFF758C), // وردي
   //     Color(0xFFFF7EB3), // وردي فاتح
   //     Color(0xFFF9D423), // ذهبي
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   // );
 
@@ -80,7 +82,7 @@ class AppGradients {
   //     Color(0xFF8E2DE2), // أرجواني
   //     Color(0xFFFF512F), // برتقالي محمر
   //     Color(0xFFF09819), // برتقالي فاتح
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   // );
 
@@ -93,7 +95,7 @@ class AppGradients {
   //     Color(0xFF00B4DB), // أزرق فاتح
   //     Color(0xFF11998E), // أخضر غامق
   //     Color(0xFF38EF7D), // أخضر نيون
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   // );
 
@@ -107,7 +109,7 @@ class AppGradients {
   //     Color(0xFF00C9FF), // أزرق سماوي نيون
   //     Color(0xFF92FE9D), // أخضر نيون
   //     Color(0xFFFADB5F), // ذهبي فاتح
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   //   stops: [0.0, 0.15, 0.3, 0.5, 0.7, 0.85, 1.0],
   // );
@@ -141,7 +143,7 @@ class AppGradients {
   //     Color(0xFF4ECDC4), // تركواز ناعم (يشبه لون مياه البحر)
   //     Color(0xFFA8E6CF), // أخضر نعناعي فاتح جداً (نقاء)
   //     Color(0xFFF0FFF0), // أبيض مخضر (نضارة)
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   //   stops: [0.0, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0],
   // );
@@ -154,7 +156,7 @@ class AppGradients {
   //     Color(0xFF4ECDC4), // تركواز
   //     Color(0xFFA8E6CF), // نعناعي فاتح
   //     Color(0xFFD4F1F9), // أزرق شاحب جداً
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   //   stops: [0.0, 0.3, 0.5, 0.7, 0.9, 1.0],
   // );
@@ -168,7 +170,7 @@ class AppGradients {
   //     Color(0xFF6EC7D6), // أزرق جليدي
   //     Color(0xFFA5D8D3), // نعناعي شاحب
   //     Color(0xFFE0F7FA), // أزرق مثلج
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   // );
   // static const LinearGradient blueSerenityWaveGradient = LinearGradient(
@@ -181,7 +183,7 @@ class AppGradients {
   //     Color(0xFF6DD5FA), // أزرق فاتح جداً (كالسماء الصافية)
   //     Color(0xFFB3E5FC), // أزرق شاحب كالثلج
   //     Color(0xFFE3F2FD), // أزرق أبيض خفيف جداً
-  //     Colors.white, // الأبيض الناصع في النهاية
+  //     AppColors.white, // الأبيض الناصع في النهاية
   //   ],
   //   stops: [0.0, 0.2, 0.4, 0.6, 0.8, 0.9, 1.0],
   // );
@@ -195,7 +197,7 @@ class AppGradients {
   //     Color(0xFF7FDBFF), // أزرق جليدي فاتح
   //     Color(0xFFADD8E6), // أزرق فاتح جداً
   //     Color(0xFFF0F8FF), // أبيض أزرق (أليس)
-  //     Colors.white,
+  //     AppColors.white,
   //   ],
   // );
 }

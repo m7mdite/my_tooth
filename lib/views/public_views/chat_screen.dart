@@ -7,6 +7,7 @@ import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 import '../../controllers/conversations_controllers/chat_controller.dart';
 import '../../models/conversations_models/message_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import 'profile_screen_public.dart'; // تأكد من المسار الصحيح
 
 class ChatScreen extends StatelessWidget {
@@ -50,7 +51,7 @@ class ChatScreen extends StatelessWidget {
         title: otherPartyProfile.fullName ?? "ماكو اسم",
 
         // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        //   icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
         //   onPressed: () => Get.back(),
         // ),
         titleWidget: InkWell(
@@ -75,7 +76,7 @@ class ChatScreen extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 otherPartyProfile.fullName ?? "ماكو اسم",
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: AppColors.white, fontSize: 18),
               ),
             ],
           ),
@@ -124,11 +125,11 @@ class ChatScreen extends StatelessWidget {
   // AppBar مخصص ومتوافق مع التصميم
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: AppColors.primaryAccent,
       elevation: 0,
       automaticallyImplyLeading: false, // إزالة السهم الافتراضي
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
         onPressed: () => Get.back(),
       ),
       title: InkWell(
@@ -152,7 +153,7 @@ class ChatScreen extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               otherPartyProfile.fullName ?? "ماكو اسم",
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: AppColors.white, fontSize: 18),
             ),
           ],
         ),
@@ -162,7 +163,7 @@ class ChatScreen extends StatelessWidget {
       actions: [
         // مثال: زر معلومات إضافية
         // IconButton(
-        //   icon: const Icon(Icons.more_vert, color: Colors.white),
+        //   icon: const Icon(Icons.more_vert, color: AppColors.white),
         //   onPressed: () {},
         // ),
       ],
@@ -192,11 +193,11 @@ class ChatScreen extends StatelessWidget {
                   : const Color.fromARGB(149, 255, 255, 255),
               border: Border.symmetric(
                 vertical: BorderSide(
-                    color: isMe ? Colors.white : Colors.blue,
+                    color: isMe ? AppColors.white : AppColors.primary,
                     width: 1,
                     strokeAlign: 10),
                 horizontal: BorderSide(
-                    color: isMe ? Colors.white : Colors.blue,
+                    color: isMe ? AppColors.white : AppColors.primary,
                     width: 1.5,
                     strokeAlign: 12),
               ),
@@ -208,7 +209,7 @@ class ChatScreen extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.white.withOpacity(0.05),
+                  color: AppColors.white.withOpacity(0.05),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -222,7 +223,7 @@ class ChatScreen extends StatelessWidget {
                       SelectableText(
                         message.content,
                         style: TextStyle(
-                          color: isMe ? Colors.white : Colors.black87,
+                          color: isMe ? AppColors.white : AppColors.black87,
                           fontSize: 12,
                         ),
                       ),
@@ -235,13 +236,13 @@ class ChatScreen extends StatelessWidget {
                             _formatTime(message.createdAt),
                             style: TextStyle(
                               fontSize: 10,
-                              color: isMe ? Colors.white70 : Colors.grey,
+                              color: isMe ? AppColors.white70 : AppColors.grey,
                             ),
                           ),
                           const SizedBox(width: 8),
                           IconButton(
                             icon: Icon(Icons.copy,
-                                size: 16, color: Colors.grey[400]),
+                                size: 16, color: AppColors.grey400),
                             onPressed: () {},
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
@@ -270,8 +271,8 @@ class ChatScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.grey.shade300, blurRadius: 2)],
+        color: AppColors.white,
+        boxShadow: [BoxShadow(color: AppColors.grey300, blurRadius: 2)],
       ),
       child: Row(
         children: [
@@ -291,7 +292,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: Colors.blue),
+            icon: const Icon(Icons.send, color: AppColors.primary),
             onPressed: controller.sendMessage,
           ),
         ],

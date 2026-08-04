@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/overseer_controllers/main_overseer_controller.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
 
 class MainScreenOverseer extends StatelessWidget {
@@ -23,12 +24,12 @@ class MainScreenOverseer extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.white,
-                  Colors.white54,
-                  Colors.lightBlueAccent,
+                  AppColors.white,
+                  AppColors.white54,
+                  AppColors.primaryLightAccent,
                   // const Color.fromARGB(147, 233, 30, 98),
-                  Colors.blueAccent,
-                  // Colors.pinkAccent,
+                  AppColors.primaryAccent,
+                  // AppColors.pinkAccent,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

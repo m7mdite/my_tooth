@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 /// زر دائري "مضيء" (بستايل ضوء/lightbulb) لتشغيل التنبؤ بإمكانية العلاج.
 /// اختياري بالكامل — المريض حر يستخدمه أو يتجاهله.
 class PredictionLightButton extends StatelessWidget {
@@ -16,7 +18,7 @@ class PredictionLightButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const glowColor = Colors.amber;
+    const glowColor = AppColors.amber;
 
     return InkWell(
       onTap: isLoading ? null : onTap,
@@ -65,7 +67,7 @@ class PredictionLightButton extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: AppColors.black87,
             ),
           ),
         ],

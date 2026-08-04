@@ -7,13 +7,13 @@ import 'package:gr_flutter/views/widgets/default_no_data.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/conversations_screen.dart';
 import '../../public_views/notifications_view.dart';
 import '../../public_views/settings/unified_profile_screen.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
 import '../../widgets/custom_photo_app_bar.dart';
-import '../../widgets/requests/request_container.dart';
 
 // import 'request_details_screen.dart';
 // import 'requests_list_screen.dart';
@@ -96,10 +96,10 @@ class PatientRequestScreen extends StatelessWidget {
                 ),
                 border: Border(
                     right: BorderSide(
-                      color: Colors.green,
+                      color: AppColors.success,
                     ),
                     bottom: BorderSide(
-                      color: Colors.green,
+                      color: AppColors.success,
                     )),
               ),
               child: Center(
@@ -110,7 +110,7 @@ class PatientRequestScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.white,
+                        color: AppColors.white,
                         blurRadius: 1,
                       ),
                     ],
@@ -142,7 +142,7 @@ class PatientRequestScreen extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.refresh_outlined,
-                  color: Colors.blue,
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -153,7 +153,7 @@ class PatientRequestScreen extends StatelessWidget {
           Container(
             height: 2,
             width: Get.width * 0.75,
-            color: Colors.blue,
+            color: AppColors.primary,
           ),
           SizedBox(
             height: 10,
@@ -171,8 +171,8 @@ class PatientRequestScreen extends StatelessWidget {
                       "قيد الإنتظار",
                       style: TextStyle(
                         color: controller.currentPageFilter == 0
-                            ? Colors.blue
-                            : Colors.black,
+                            ? AppColors.primary
+                            : AppColors.black,
                       ),
                     ),
                   ),
@@ -186,8 +186,8 @@ class PatientRequestScreen extends StatelessWidget {
                       "قيد المعالجة ",
                       style: TextStyle(
                         color: controller.currentPageFilter == 1
-                            ? Colors.blue
-                            : Colors.black,
+                            ? AppColors.primary
+                            : AppColors.black,
                       ),
                     ),
                   ),
@@ -201,8 +201,8 @@ class PatientRequestScreen extends StatelessWidget {
                       "الطلبات المعالجة",
                       style: TextStyle(
                         color: controller.currentPageFilter == 2
-                            ? Colors.blue
-                            : Colors.black,
+                            ? AppColors.primary
+                            : AppColors.black,
                       ),
                     ),
                   ),
@@ -216,8 +216,8 @@ class PatientRequestScreen extends StatelessWidget {
                       "الطلبات المرفوضة",
                       style: TextStyle(
                         color: controller.currentPageFilter == 3
-                            ? Colors.blue
-                            : Colors.black,
+                            ? AppColors.primary
+                            : AppColors.black,
                       ),
                     ),
                   ),

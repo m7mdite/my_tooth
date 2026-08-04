@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 showToothLocationMap() {
   Get.dialog(
       Dialog(
@@ -10,8 +12,8 @@ showToothLocationMap() {
           // width: Get.width * 0.9,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.black,
-            border: Border.all(color: Colors.black, width: 2, strokeAlign: 7),
+            color: AppColors.black,
+            border: Border.all(color: AppColors.black, width: 2, strokeAlign: 7),
             borderRadius: AppThemeConstants.borderRadius
           ),
           child: Column(
@@ -22,7 +24,7 @@ showToothLocationMap() {
               Text(
                 "اكتب رقم السن بناءً على المخطط التالي",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -37,5 +39,5 @@ showToothLocationMap() {
           ),
         ),
       ),
-      barrierColor: Colors.transparent);
+      barrierColor: AppColors.transparent);
 }

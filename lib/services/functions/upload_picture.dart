@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 Future<File?> uploadPicture() async {
   Completer<File?> completer = Completer(); // لإنتظار النتيجة
   
   await Get.bottomSheet(
-    backgroundColor: Colors.white54,
+    backgroundColor: AppColors.white54,
     Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -33,7 +35,7 @@ Future<File?> uploadPicture() async {
                       Get.back();
                     }
                   },
-                  icon: Icon(Icons.camera, size: 60, color: Colors.blue),
+                  icon: Icon(Icons.camera, size: 60, color: AppColors.primary),
                 ),
                 Text("الكاميرا"),
               ],
@@ -52,7 +54,7 @@ Future<File?> uploadPicture() async {
                       Get.back();
                     }
                   },
-                  icon: Icon(Icons.photo_library_rounded, size: 60, color: Colors.blue),
+                  icon: Icon(Icons.photo_library_rounded, size: 60, color: AppColors.primary),
                 ),
                 Text("المعرض")
               ],

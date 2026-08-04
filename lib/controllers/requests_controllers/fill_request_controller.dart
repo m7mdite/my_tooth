@@ -11,6 +11,7 @@ import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/functions/upload_picture.dart';
 import '../../services/remote/public_remotes/request_remote.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/status_request.dart';
 import '../../views/request_views/modified_request.dart';
 
@@ -119,8 +120,8 @@ class FillRequestControllerImp extends FillRequestController {
         Get.snackbar(
           'نجاح',
           'تم إرسال الطلب بنجاح',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          backgroundColor: AppColors.success,
+          colorText: AppColors.white,
           duration: const Duration(seconds: 3),
         );
         onClose();
@@ -129,8 +130,8 @@ class FillRequestControllerImp extends FillRequestController {
         Get.snackbar(
           'خطأ',
           'فشل في إرسال الطلب. الرجاء المحاولة مرة أخرى',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: AppColors.error,
+          colorText: AppColors.white,
           duration: const Duration(seconds: 3),
         );
       }
@@ -139,8 +140,8 @@ class FillRequestControllerImp extends FillRequestController {
       Get.snackbar(
         'خطأ',
         'فشل في إرسال الطلب. الرجاء المحاولة مرة أخرى',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
         duration: const Duration(seconds: 3),
       );
     }
@@ -173,8 +174,8 @@ class FillRequestControllerImp extends FillRequestController {
         Get.snackbar(
           'تعذر التنبؤ',
           'حدث خطأ أثناء محاولة التنبؤ بإمكانية العلاج، حاول مرة أخرى',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: AppColors.error,
+          colorText: AppColors.white,
           duration: const Duration(seconds: 3),
         );
       }
@@ -182,8 +183,8 @@ class FillRequestControllerImp extends FillRequestController {
       Get.snackbar(
         'تعذر التنبؤ',
         'حدث خطأ أثناء محاولة التنبؤ بإمكانية العلاج، حاول مرة أخرى',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
         duration: const Duration(seconds: 3),
       );
     } finally {
@@ -328,8 +329,8 @@ class FillRequestControllerImp extends FillRequestController {
         Get.snackbar(
           'نجاح',
           'تم تعديل الطلب بنجاح',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          backgroundColor: AppColors.success,
+          colorText: AppColors.white,
           duration: const Duration(seconds: 3),
         );
         onClose();
@@ -337,8 +338,8 @@ class FillRequestControllerImp extends FillRequestController {
         Get.snackbar(
           'خطأ',
           'فشل في إرسال الطلب. الرجاء المحاولة مرة أخرى',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          backgroundColor: AppColors.error,
+          colorText: AppColors.white,
           duration: const Duration(seconds: 3),
         );
       }
@@ -347,8 +348,8 @@ class FillRequestControllerImp extends FillRequestController {
       Get.snackbar(
         'خطأ',
         'فشل في إرسال الطلب. الرجاء المحاولة مرة أخرى',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
         duration: const Duration(seconds: 3),
       );
     }

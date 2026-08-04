@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/public_views/posts/edit_post_screen.dart'; // �
 
 import '../../../services/functions/show_image_preview.dart';
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 
 class PostCard extends StatelessWidget {
   final PostModel post;
@@ -81,7 +82,7 @@ class PostCard extends StatelessWidget {
                       ),
                       Text(
                         _getRoleName(post.publisherRole!),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 12, color: AppColors.grey[600]),
                       ),
                     ],
                   ),
@@ -131,7 +132,7 @@ class PostCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             width: 150,
                             placeholder: (context, url) =>
-                                Container(color: Colors.grey[200]),
+                                Container(color: AppColors.grey200),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.broken_image),
                           ),
@@ -150,20 +151,20 @@ class PostCard extends StatelessWidget {
                   icon: Icons.thumb_up_outlined,
                   count: post.countLikes!,
                   onTap: onLike,
-                  color: Colors.blue,
+                  color: AppColors.primary,
                 ),
                 _actionButton(
                   icon: Icons.thumb_down_outlined,
                   count: post.countDislikes!,
                   onTap: onDislike,
-                  color: Colors.red,
+                  color: AppColors.error,
                 ),
                 _actionButton(
                   icon: Icons.comment_outlined,
                   count: post.countComments!,
                   onTap: onComment ??
                       () => Get.to(() => PostDetailScreen(postId: post.sId!)),
-                  color: Colors.grey,
+                  color: AppColors.grey,
                 ),
               ],
             ),
@@ -229,7 +230,7 @@ class PostCard extends StatelessWidget {
               Get.back();
               onDelete?.call();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text('حذف'),
           ),
         ],

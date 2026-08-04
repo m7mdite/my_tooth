@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class BottomNavigationBarIcon extends StatelessWidget {
   final bool selected;
   final void Function()? onPressed;
@@ -19,10 +21,10 @@ class BottomNavigationBarIcon extends StatelessWidget {
       height: 60,
       width: Get.width * 0.2,
       decoration: BoxDecoration(
-        color:selected?Colors.blueAccent: const Color.fromARGB(180, 255, 255, 255),
+        color:selected?AppColors.primaryAccent: const Color.fromARGB(180, 255, 255, 255),
         border: Border.symmetric(
           horizontal: BorderSide(
-            color:selected?Colors.white: Colors.blue,
+            color:selected?AppColors.white: AppColors.primary,
             width:selected?2: 1,
           ),
         ),
@@ -38,11 +40,11 @@ class BottomNavigationBarIcon extends StatelessWidget {
           children: [
             Icon(
                 icon,
-                color:selected?Colors.white: Colors.blue,
+                color:selected?AppColors.white: AppColors.primary,
                 size: 30,
               ),
             
-            Text(text,style: TextStyle(fontSize: 8,color:selected?Colors.white: Colors.blue,fontWeight: FontWeight.bold ),)
+            Text(text,style: TextStyle(fontSize: 8,color:selected?AppColors.white: AppColors.primary,fontWeight: FontWeight.bold ),)
           ],
         ),
       ),

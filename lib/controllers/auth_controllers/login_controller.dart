@@ -8,6 +8,7 @@ import '../../services/remote/crud.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/local_storge/local_user_storage.dart';
 import '../../services/remote/public_remotes/auth_remote.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/status_request.dart';
 
 abstract class LoginController extends GetxController {
@@ -76,8 +77,8 @@ class LoginControllerImp extends LoginController {
           Get.snackbar(
             'خطأ',
             'فشل في الاتصال بالخادم',
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
+            backgroundColor: AppColors.error,
+            colorText: AppColors.white,
           );
         }
         update();
@@ -111,7 +112,7 @@ class LoginControllerImp extends LoginController {
         print(response['token']);
         await  storage.saveRole('admin');
         Get.snackbar('  نجاح التسجيل', 'اهلا بك مديري',
-            backgroundColor: Colors.green, colorText: Colors.white);
+            backgroundColor: AppColors.success, colorText: AppColors.white);
         Get.offAndToNamed(
           AppRroute.mainScreenAdmin,
           arguments: {'role': 'admin'},
@@ -133,7 +134,7 @@ class LoginControllerImp extends LoginController {
           Get.offAndToNamed(AppRroute.mainScreenOverseer);
         }
         Get.snackbar('نجاح', 'اهلا بك ${response['data']['first_name']}',
-            backgroundColor: Colors.green, colorText: Colors.white);
+            backgroundColor: AppColors.success, colorText: AppColors.white);
         
         
         // storage.saveRole(response['data']['role']);
@@ -143,8 +144,8 @@ class LoginControllerImp extends LoginController {
       Get.snackbar(
         'خطأ',
         errorMessage,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
       );
     }
   }

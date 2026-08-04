@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class AddOverSeerPage extends StatelessWidget {
@@ -19,12 +20,12 @@ class AddOverSeerPage extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             // أيقونة ورئيسية
-            const Icon(Icons.admin_panel_settings, size: 60, color: Colors.blueAccent),
+            const Icon(Icons.admin_panel_settings, size: 60, color: AppColors.primaryAccent),
             const SizedBox(height: 10),
             const Center(
               child: Text(
                 "إضافة مشرف",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primaryAccent),
               ),
             ),
             const SizedBox(height: 30),
@@ -94,8 +95,8 @@ class AddOverSeerPage extends StatelessWidget {
               icon: const Icon(Icons.add),
               label: const Text("إضافة المشرف", style: TextStyle(fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.primaryAccent,
+                foregroundColor: AppColors.white,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -31,7 +32,7 @@ class ViewCategorysPage extends StatelessWidget {
               itemCount: controller.categorys.length,
               separatorBuilder: (context, index) {
                 return const Divider(
-                  color: Colors.blue,
+                  color: AppColors.primary,
                   endIndent: 50,
                   indent: 50,
                   thickness: 1,
@@ -48,10 +49,10 @@ class ViewCategorysPage extends StatelessWidget {
                   ),
                   child: ListTile(
                     // leading: CircleAvatar(
-                    //   backgroundColor: Colors.blue,
+                    //   backgroundColor: AppColors.primary,
                     //   child: Text(
                     //     "${index + 1}",
-                    //     style: const TextStyle(color: Colors.white),
+                    //     style: const TextStyle(color: AppColors.white),
                     //   ),
                     // ),
                     title: Text(
@@ -59,7 +60,7 @@ class ViewCategorysPage extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
+                      icon: const Icon(Icons.delete_outline, color: AppColors.error),
                       onPressed: () => _confirmDelete(category['_id'] ?? category['id']!),
                     ),
                   ),
@@ -84,7 +85,7 @@ class ViewCategorysPage extends StatelessWidget {
               Get.back();
               controller.deleteCategory(id);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text("حذف"),
           ),
         ],

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 
 import '../../models/admin_models/veify_student_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/auth_text_form_field.dart';
 import '../widgets/dialog/submit_dialog.dart';
 
@@ -23,12 +24,12 @@ class SubmitVerifyStudent extends StatelessWidget {
     }
 
     return Material(
-      color: Colors.transparent,
+      color: AppColors.transparent,
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue, width: 2),
+            border: Border.all(color: AppColors.primary, width: 2),
             borderRadius: BorderRadius.all(Radius.elliptical(10, 10)),
-            color: Colors.white
+            color: AppColors.white
             // image: DecorationImage(image: AssetImage(AppConstants.defaultBackgroundImage), fit: BoxFit.cover),
             ),
         margin: const EdgeInsets.all(20),
@@ -40,7 +41,7 @@ class SubmitVerifyStudent extends StatelessWidget {
             // صورة الطالب
             CircleAvatar(
               radius: 48,
-              backgroundColor: Colors.grey[200],
+              backgroundColor: AppColors.grey200,
               backgroundImage: profile.profilePhoto!.url != null
                   ? NetworkImage(
                       profile.profilePhoto!.url!)
@@ -60,7 +61,7 @@ class SubmitVerifyStudent extends StatelessWidget {
             // الرقم الجامعي
             Text(
               "الرقم الجامعي: ${profile.universityNumber ?? '--'}",
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+              style: const TextStyle(fontSize: 16, color: AppColors.black),
             ),
             const SizedBox(height: 16),
             // صورة البطاقة الجامعية
@@ -94,7 +95,7 @@ class SubmitVerifyStudent extends StatelessWidget {
                     controller.acceptVerifyStudent(studentModel!.sId!);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColors.success,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -104,7 +105,7 @@ class SubmitVerifyStudent extends StatelessWidget {
                 // ElevatedButton(
                 //   onPressed: () {},
                 //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.green,
+                //     backgroundColor: AppColors.success,
                 //     shape: RoundedRectangleBorder(
                 //       borderRadius: BorderRadius.circular(8),
                 //     ),
@@ -133,7 +134,7 @@ class SubmitVerifyStudent extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: AppColors.errorAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

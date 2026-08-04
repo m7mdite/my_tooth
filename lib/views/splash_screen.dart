@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/services/local_storge/local_user_storage.dart';
 
+import '../utils/app_constants/colors_constant.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -64,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade700, Colors.blue.shade300],
+            colors: [AppColors.primary700, AppColors.primary300],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -77,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Icon(
                 Icons.health_and_safety,
                 size: 80,
-                color: Colors.white,
+                color: AppColors.white,
               ),
               const SizedBox(height: 20),
               Text(
@@ -85,17 +87,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
               ),
               const SizedBox(height: 30),
               const CircularProgressIndicator(
-                color: Colors.white,
+                color: AppColors.white,
               ),
               const SizedBox(height: 20),
               Text(
                 'جاري التحميل...',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: AppColors.white70),
               ),
             ],
           ),

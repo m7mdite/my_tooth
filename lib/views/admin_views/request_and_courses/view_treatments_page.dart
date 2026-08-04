@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_request_controller.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class ViewTreatmentsPage extends StatelessWidget {
@@ -24,7 +25,7 @@ class ViewTreatmentsPage extends StatelessWidget {
             itemCount: controller.treatments.length,
             separatorBuilder: (context, index) {
               return Divider(endIndent: 50,indent: 50,
-                color: Colors.blue,
+                color: AppColors.primary,
                 thickness: 1,
               );
             },

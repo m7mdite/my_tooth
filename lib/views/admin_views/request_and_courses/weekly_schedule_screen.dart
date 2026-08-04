@@ -7,6 +7,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../../models/admin_models/lesson_model.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 
 class WeeklyScheduleScreen extends StatelessWidget {
   final AdminRequestControllerImpl controller =
@@ -58,7 +59,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                     _buildScheduleTable(
                       lessons: controller.year5Lessons,
                       title: 'السنة الخامسة',
-                      color: Colors.orange,
+                      color: AppColors.warning,
                       controller: controller,
                       allLessons: controller.allLessons,
                       context: context,
@@ -116,10 +117,10 @@ class WeeklyScheduleScreen extends StatelessWidget {
     final bool hasLesson = period1Lesson != null || period2Lesson != null;
 
     final Color? cellColor = isOccupiedByOther
-        ? Colors.red.shade100
+        ? AppColors.error100
         : (hasLesson
-            ? Colors.blue.shade50
-            : Colors.grey.shade100);
+            ? AppColors.primary50
+            : AppColors.grey100);
 
     return GestureDetector(
       onLongPress: onLongPress,
@@ -131,8 +132,8 @@ class WeeklyScheduleScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: cellColor,
           border: Border(
-            right: BorderSide(color: Colors.grey.shade300, width: 0.5),
-            bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+            right: BorderSide(color: AppColors.grey300, width: 0.5),
+            bottom: BorderSide(color: AppColors.grey300, width: 0.5),
           ),
         ),
         child: Row(
@@ -143,8 +144,8 @@ class WeeklyScheduleScreen extends StatelessWidget {
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   color: period1Lesson != null
-                      ? Colors.blue.shade50
-                      : Colors.transparent,
+                      ? AppColors.primary50
+                      : AppColors.transparent,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: period1Lesson != null
@@ -167,7 +168,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: (period1Lesson.category?.category ?? '').startsWith('4')
                                   ? Colors.teal.withValues(alpha: 0.2)
-                                  : Colors.orange.withValues(alpha: 0.2),
+                                  : AppColors.warning.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -177,7 +178,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 color: (period1Lesson.category?.category ?? '').startsWith('4')
                                     ? Colors.teal.shade700
-                                    : Colors.orange.shade700,
+                                    : AppColors.warning.shade700,
                               ),
                             ),
                           ),
@@ -187,7 +188,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                               _getOverseersNames(period1Lesson.overseers),
                               style: TextStyle(
                                 fontSize: 7,
-                                color: Colors.grey.shade700,
+                                color: AppColors.grey.shade700,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -201,7 +202,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                           '08:00',
                           style: TextStyle(
                             fontSize: 9,
-                            color: Colors.grey,
+                            color: AppColors.grey,
                           ),
                         ),
                       ),
@@ -213,8 +214,8 @@ class WeeklyScheduleScreen extends StatelessWidget {
                 margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   color: period2Lesson != null
-                      ? Colors.green.shade50
-                      : Colors.transparent,
+                      ? AppColors.success.shade50
+                      : AppColors.transparent,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: period2Lesson != null
@@ -237,7 +238,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: (period2Lesson.category?.category ?? '').startsWith('4')
                                   ? Colors.teal.withValues(alpha: 0.2)
-                                  : Colors.orange.withValues(alpha: 0.2),
+                                  : AppColors.warning.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -247,7 +248,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 color: (period2Lesson.category?.category ?? '').startsWith('4')
                                     ? Colors.teal.shade700
-                                    : Colors.orange.shade700,
+                                    : AppColors.warning.shade700,
                               ),
                             ),
                           ),
@@ -257,7 +258,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                               _getOverseersNames(period2Lesson.overseers),
                               style: TextStyle(
                                 fontSize: 7,
-                                color: Colors.grey.shade700,
+                                color: AppColors.grey700,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -271,7 +272,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                           '12:00',
                           style: TextStyle(
                             fontSize: 9,
-                            color: Colors.grey,
+                            color: AppColors.grey,
                           ),
                         ),
                       ),
@@ -306,7 +307,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.95),
+              color: AppColors.white.withValues(alpha: 0.95),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.elliptical(80, 12),
                 bottomLeft: Radius.elliptical(12, 80),
@@ -336,11 +337,11 @@ class WeeklyScheduleScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Divider(color: Colors.grey, thickness: 0.5),
+                const Divider(color: AppColors.grey, thickness: 0.5),
                 // ===== الجدول مع تمرير موحد =====
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                    border: Border.all(color: AppColors.grey300, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: SingleChildScrollView(
@@ -377,9 +378,9 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                 height: 110,
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade50,
+                                  color: AppColors.grey50,
                                   border: Border(
-                                    bottom: BorderSide(color: Colors.grey.shade300, width: 0.5),
+                                    bottom: BorderSide(color: AppColors.grey300, width: 0.5),
                                   ),
                                 ),
                                 child: Center(

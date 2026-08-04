@@ -4,6 +4,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../controllers/public_controllers/public_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   final TextEditingController oldPasswordController = TextEditingController();
@@ -39,11 +40,11 @@ class ChangePasswordScreen extends StatelessWidget {
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 20, spreadRadius: 1)],
-                      color: Colors.white.withOpacity(0.1),
-                      border: Border.all(color: Colors.white, width: 2),
+                      boxShadow: [BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)],
+                      color: AppColors.white.withOpacity(0.1),
+                      border: Border.all(color: AppColors.white, width: 2),
                     ),
-                    child: Icon(Icons.lock_outline, color: Colors.white, size: 60),
+                    child: Icon(Icons.lock_outline, color: AppColors.white, size: 60),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -51,7 +52,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     'تغيير كلمة المرور',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue, shadows: [Shadow(color: Colors.white, blurRadius: 5)]),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.primary, shadows: [Shadow(color: AppColors.white, blurRadius: 5)]),
                   ),
                 ),
                 SizedBox(height: 40),
@@ -59,15 +60,15 @@ class ChangePasswordScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.95),
+                    color: AppColors.white.withOpacity(0.95),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.elliptical(50, 10),
                       bottomLeft: Radius.elliptical(10, 50),
                       topRight: Radius.elliptical(10, 50),
                       bottomRight: Radius.elliptical(50, 10),
                     ),
-                    border: Border.all(color: Colors.blue, width: 1.5),
-                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+                    border: Border.all(color: AppColors.primary, width: 1.5),
+                    boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 8)],
                   ),
                   child: Column(
                     children: [
@@ -110,8 +111,8 @@ class ChangePasswordScreen extends StatelessWidget {
                         icon: Icon(Icons.save),
                         label: Text('تغيير كلمة المرور', style: TextStyle(fontSize: 16)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primaryAccent,
+                          foregroundColor: AppColors.white,
                           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(

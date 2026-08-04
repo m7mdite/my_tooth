@@ -6,6 +6,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../controllers/conversations_controllers/conversations_controller.dart';
 import '../../models/conversations_models/conversation_model.dart';
 import '../../services/functions/show_image_preview.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/custom_app_bar.dart';
 
 class ConversationsScreen extends StatelessWidget {
@@ -39,7 +40,7 @@ class ConversationsScreen extends StatelessWidget {
               subtitle: Text("مرحبا كيف حالك؟"),
               trailing: Text(
                 "12:30",
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 12, color: AppColors.grey),
               ),
             ),
           ),
@@ -124,7 +125,7 @@ class ConversationsScreen extends StatelessWidget {
       trailing: Text(
         "",
         // _formatDate(conversation.updatedAt),
-        style: const TextStyle(fontSize: 12, color: Colors.grey),
+        style: const TextStyle(fontSize: 12, color: AppColors.grey),
       ),
       onTap: () => controller.goToChat(conversation.conversationId!, other),
     );
@@ -150,27 +151,27 @@ class ConversationsScreen extends StatelessWidget {
 
     switch (role) {
       case 'student':
-        color = Colors.blue;
+        color = AppColors.primary;
         icon = Icons.school;
         // label = 'طالب';
         break;
       case 'patient':
         icon = Icons.supervised_user_circle_sharp;
-        color = Colors.green;
+        color = AppColors.success;
         // label = 'مريض';
         break;
       case 'overseer':
-        color = Colors.orange;
+        color = AppColors.warning;
         icon = Icons.health_and_safety;
         // label = 'مشرف';
         break;
       case 'admin':
-        color = Colors.red;
+        color = AppColors.error;
         icon = Icons.admin_panel_settings;
         // label = 'أدمن';
         break;
       default:
-        color = Colors.grey;
+        color = AppColors.grey;
         icon = Icons.person;
       // label = 'مستخدم';
     }
@@ -196,19 +197,19 @@ class ConversationsScreen extends StatelessWidget {
     );
   }
 
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-    if (difference.inDays > 7) {
-      return '${date.day}/${date.month}/${date.year}';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays} يوم';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} ساعة';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} دقيقة';
-    } else {
-      return 'الآن';
-    }
-  }
+  // String _formatDate(DateTime date) {
+  //   final now = DateTime.now();
+  //   final difference = now.difference(date);
+  //   if (difference.inDays > 7) {
+  //     return '${date.day}/${date.month}/${date.year}';
+  //   } else if (difference.inDays > 0) {
+  //     return '${difference.inDays} يوم';
+  //   } else if (difference.inHours > 0) {
+  //     return '${difference.inHours} ساعة';
+  //   } else if (difference.inMinutes > 0) {
+  //     return '${difference.inMinutes} دقيقة';
+  //   } else {
+  //     return 'الآن';
+  //   }
+  // }
 }

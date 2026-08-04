@@ -4,6 +4,7 @@ import 'package:gr_flutter/views/public_views/notifications_view.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 import '../../services/local_storge/local_user_storage.dart';
 import '../../utils/app_constants/app_theme.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   // 🆕 أصبح title اختيارياً (String?)
@@ -58,13 +59,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       titleTextStyle: TextStyle(
-        color: titleColor ?? Colors.white,
+        color: titleColor ?? AppColors.white,
         fontWeight: FontWeight.bold,
         fontSize: titleSize,
         shadows: titleShadows ??
             const [
               BoxShadow(
-                color: Colors.black,
+                color: AppColors.black,
                 blurRadius: 10,
               ),
             ],
@@ -83,7 +84,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 gradient: effectiveGradient,
                 boxShadow: const [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: AppColors.black26,
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -98,12 +99,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Container(
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: AppColors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                        color: Colors.white, size: 20),
+                        color: AppColors.white, size: 20),
                     onPressed: onLeadingPressed ?? () => Get.back(),
                   ),
                 )
@@ -124,13 +125,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Text(
           displayText,
           style: TextStyle(
-            color: titleColor ?? Colors.white,
+            color: titleColor ?? AppColors.white,
             fontWeight: FontWeight.bold,
             fontSize: titleSize,
             shadows: titleShadows ??
                 [
                   const BoxShadow(
-                    color: Colors.black,
+                    color: AppColors.black,
                     blurRadius: 10,
                   ),
                 ],
@@ -138,7 +139,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         if (showVerifiedBadge && title != null) ...[
           const SizedBox(width: 6),
-          const Icon(Icons.verified, color: Colors.white, size: 18),
+          const Icon(Icons.verified, color: AppColors.white, size: 18),
         ],
       ],
     );
@@ -155,7 +156,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       if (isStudent && !isVerified)
         IconButton(
-          icon: const Icon(Icons.verified_user_outlined, color: Colors.white),
+          icon: const Icon(Icons.verified_user_outlined, color: AppColors.white),
           onPressed: () => Get.toNamed('/viewVerify'),
         ),
     ];

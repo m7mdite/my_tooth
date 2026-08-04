@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 
 class ViewCoursesPage extends StatelessWidget {
@@ -32,7 +33,7 @@ class ViewCoursesPage extends StatelessWidget {
               itemCount: controller.courses.length,
               separatorBuilder: (context, index) {
                 return const Divider(
-                  color: Colors.blue,
+                  color: AppColors.primary,
                   endIndent: 50,
                   indent: 50,
                   thickness: 1,
@@ -46,8 +47,8 @@ class ViewCoursesPage extends StatelessWidget {
                 //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 //   child: ExpansionTile(
                 //     leading: CircleAvatar(
-                //       backgroundColor: Colors.blue,
-                //       child: Text("${index + 1}", style: const TextStyle(color: Colors.white)),
+                //       backgroundColor: AppColors.primary,
+                //       child: Text("${index + 1}", style: const TextStyle(color: AppColors.white)),
                 //     ),
                 //     title: Text(
                 //       course.courseName ?? "اسم غير متوفر",

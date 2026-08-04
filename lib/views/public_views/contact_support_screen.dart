@@ -4,6 +4,8 @@ import 'package:gr_flutter/controllers/public_controllers/support_controller.dar
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class ContactSupportScreen extends StatelessWidget {
   final SupportController controller = Get.put(SupportController());
 
@@ -36,12 +38,12 @@ class ContactSupportScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       boxShadow: [
-                        BoxShadow(color: Colors.blue, blurRadius: 20, spreadRadius: 1)
+                        BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)
                       ],
-                      color: Colors.white.withOpacity(0.1),
-                      border: Border.all(color: Colors.white, width: 2),
+                      color: AppColors.white.withOpacity(0.1),
+                      border: Border.all(color: AppColors.white, width: 2),
                     ),
-                    child: Icon(Icons.support_agent_outlined, color: Colors.white, size: 60),
+                    child: Icon(Icons.support_agent_outlined, color: AppColors.white, size: 60),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -51,8 +53,8 @@ class ContactSupportScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                      shadows: [Shadow(color: Colors.white, blurRadius: 5)],
+                      color: AppColors.primary,
+                      shadows: [Shadow(color: AppColors.white, blurRadius: 5)],
                     ),
                   ),
                 ),
@@ -61,15 +63,15 @@ class ContactSupportScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.95),
+                    color: AppColors.white.withOpacity(0.95),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.elliptical(50, 10),
                       bottomLeft: Radius.elliptical(10, 50),
                       topRight: Radius.elliptical(10, 50),
                       bottomRight: Radius.elliptical(50, 10),
                     ),
-                    border: Border.all(color: Colors.blue, width: 1.5),
-                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+                    border: Border.all(color: AppColors.primary, width: 1.5),
+                    boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 10)],
                   ),
                   child: Form(
                     key: controller.formKey,
@@ -81,7 +83,7 @@ class ContactSupportScreen extends StatelessWidget {
                           controller: controller.subjectController,
                           decoration: InputDecoration(
                             labelText: 'الموضوع',
-                            prefixIcon: Icon(Icons.subject, color: Colors.blue),
+                            prefixIcon: Icon(Icons.subject, color: AppColors.primary),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -96,7 +98,7 @@ class ContactSupportScreen extends StatelessWidget {
                           maxLines: 6,
                           decoration: InputDecoration(
                             labelText: 'الرسالة',
-                            prefixIcon: Icon(Icons.message, color: Colors.blue),
+                            prefixIcon: Icon(Icons.message, color: AppColors.primary),
                             alignLabelWithHint: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -111,12 +113,12 @@ class ContactSupportScreen extends StatelessWidget {
                           child: Obx(() => ElevatedButton.icon(
                             onPressed: controller.isLoading.value ? null : () => controller.sendMessage(),
                             icon: controller.isLoading.value
-                                ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                                ? CircularProgressIndicator(color: AppColors.white, strokeWidth: 2)
                                 : Icon(Icons.send),
                             label: Text(controller.isLoading.value ? 'جاري الإرسال...' : 'إرسال'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueAccent,
-                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.primaryAccent,
+                              foregroundColor: AppColors.white,
                               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(

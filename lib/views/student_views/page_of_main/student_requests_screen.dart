@@ -5,6 +5,7 @@ import 'package:gr_flutter/views/widgets/default_no_data.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../controllers/student_controllers/student_requests_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/conversations_screen.dart';
 import '../../public_views/notifications_view.dart';
 import '../../public_views/settings/unified_profile_screen.dart';
@@ -12,7 +13,6 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
 import '../../widgets/custom_photo_app_bar.dart';
 import '../../widgets/requests/card_request_processing.dart';
-import '../../widgets/requests/request_container.dart';
 
 class StudentRequestsScreen extends StatelessWidget {
   final StudentRequestsControllerImp controller =
@@ -63,9 +63,9 @@ class StudentRequestsScreen extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  color: Colors.white24,
+                  color: AppColors.white24,
                   border:
-                      Border.all(width: 1, color: Colors.blue, strokeAlign: 10),
+                      Border.all(width: 1, color: AppColors.primary, strokeAlign: 10),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.elliptical(100, 10),
                     bottomLeft: Radius.elliptical(10, 100),
@@ -74,7 +74,7 @@ class StudentRequestsScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.white,
+                      color: AppColors.white,
                       blurRadius: 3,
                       spreadRadius: 3,
                     )

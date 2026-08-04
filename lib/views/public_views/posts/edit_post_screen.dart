@@ -6,6 +6,8 @@ import 'package:gr_flutter/controllers/post_controllers/post_controller.dart';
 import 'package:gr_flutter/models/posts_models/post_model.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class EditPostScreen extends StatefulWidget {
   final PostModel post;
   const EditPostScreen({super.key, required this.post});
@@ -75,7 +77,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
         actions: [
           TextButton(
             onPressed: submit,
-            child: const Text('حفظ', style: TextStyle(color: Colors.white)),
+            child: const Text('حفظ', style: TextStyle(color: AppColors.white)),
           ),
         ],
       ),

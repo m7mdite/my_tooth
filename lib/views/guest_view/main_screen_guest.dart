@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/patient_controller/main_patient_controller.dart';
 import '../../controllers/guest_controllers/main_guest_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/bottom_navigation_bar_icon.dart';
 import '../widgets/dialog/submit_dialog.dart';
 
@@ -20,10 +21,10 @@ class MainScreenGuest extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.blueAccent,
-                  Colors.lightBlueAccent,
-                  Colors.white54,
-                  Colors.white,
+                  AppColors.primaryAccent,
+                  AppColors.primaryLightAccent,
+                  AppColors.white54,
+                  AppColors.white,
 
 
                 ],

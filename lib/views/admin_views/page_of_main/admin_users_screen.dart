@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class AdminUsersScreen extends StatelessWidget {
   final AdminUsersControllerImpl controller =
       Get.put(AdminUsersControllerImpl());
@@ -19,7 +21,7 @@ class AdminUsersScreen extends StatelessWidget {
           IconButton(
             icon: Icon(
               Icons.exit_to_app_outlined,
-              color: Colors.white,
+              color: AppColors.white,
             ),
             onPressed: () => controller.logout(),
           ),
@@ -37,13 +39,13 @@ class AdminUsersScreen extends StatelessWidget {
             _buildCard(
               title: 'إضافة مشرف',
               icon: Icons.person_add,
-              color: Colors.green,
+              color: AppColors.success,
               onTap: () => controller.toAddOverSeerPage(),
             ),
             _buildCard(
               title: 'عرض المشرفين',
               icon: Icons.people,
-              color: Colors.blue,
+              color: AppColors.primary,
               onTap: () {
                 controller.getAllOverSeers();
                 controller.toViewOverSeersPage();
@@ -52,7 +54,7 @@ class AdminUsersScreen extends StatelessWidget {
             _buildCard(
               title: 'عرض الطلاب',
               icon: Icons.school,
-              color: Colors.orange,
+              color: AppColors.warning,
               onTap: () {
                 controller.getAllStudents();
                 controller.toViewStudentsPage();
@@ -61,7 +63,7 @@ class AdminUsersScreen extends StatelessWidget {
             _buildCard(
               title: 'طلبات التوثيق',
               icon: Icons.verified,
-              color: Colors.purple,
+              color: AppColors.purple,
               onTap: () {
                 controller.getAllVerifyStudents();
                 controller.toViewVerifyStudentsPage();
@@ -79,7 +81,7 @@ class AdminUsersScreen extends StatelessWidget {
             _buildCard(
               title: 'البلاغات',
               icon: Icons.report_problem,
-              color: Colors.red,
+              color: AppColors.error,
               onTap: () => controller.toReportsPage(),
             ),
           ],
@@ -112,14 +114,14 @@ class AdminUsersScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 48, color: Colors.white),
+              Icon(icon, size: 48, color: AppColors.white),
               const SizedBox(height: 12),
               Text(
                 title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: AppColors.white,
                 ),
                 textAlign: TextAlign.center,
               ),

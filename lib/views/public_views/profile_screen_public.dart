@@ -5,6 +5,7 @@ import 'package:gr_flutter/controllers/public_controllers/public_controller.dart
 import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/dialog/report_user_dialog.dart';
 
 class PublicProfileScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class PublicProfileScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.grey[50],
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => controller.getOtherProfile(userId),
@@ -43,9 +44,9 @@ class PublicProfileScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline, size: 60, color: Colors.grey[400]),
+                        Icon(Icons.error_outline, size: 60, color: AppColors.grey400),
                         const SizedBox(height: 16),
-                        Text('حدث خطأ أثناء تحميل الملف الشخصي', style: TextStyle(color: Colors.grey[600])),
+                        Text('حدث خطأ أثناء تحميل الملف الشخصي', style: TextStyle(color: AppColors.grey[600])),
                       ],
                     ),
                   ),
@@ -58,16 +59,16 @@ class PublicProfileScreen extends StatelessWidget {
                   SliverAppBar(
                     expandedHeight: 300,
                     pinned: true,
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black87,
+                    backgroundColor: AppColors.white,
+                    foregroundColor: AppColors.black87,
                     elevation: 0,
                     leading: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black87),
+                      icon: const Icon(Icons.arrow_back_ios, color: AppColors.black87),
                       onPressed: () => Get.back(),
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: Container(
-                        color: Colors.white,
+                        color: AppColors.white,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -79,12 +80,12 @@ class PublicProfileScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   boxShadow: [
-                                    BoxShadow(color: Colors.black12, blurRadius: 12, offset: const Offset(0, 4)),
+                                    BoxShadow(color: AppColors.black12, blurRadius: 12, offset: const Offset(0, 4)),
                                   ],
                                 ),
                                 child: CircleAvatar(
                                   radius: 70,
-                                  backgroundColor: Colors.grey[200],
+                                  backgroundColor: AppColors.grey200,
                                   backgroundImage: (profile.profilePhoto != null && profile.profilePhoto!.url!.isNotEmpty)
                                       ? NetworkImage("${profile.profilePhoto!.url}")
                                       : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
@@ -94,18 +95,18 @@ class PublicProfileScreen extends StatelessWidget {
                             const SizedBox(height: 16),
                             Text(
                               '${profile.firstName} ${profile.fatherName} ${profile.lastName}',
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.black87),
                             ),
                             const SizedBox(height: 6),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
+                                color: AppColors.primary50,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
                                 _getRoleTitle(profile.role??""),
-                                style: TextStyle(color: Colors.blue.shade700, fontSize: 14),
+                                style: TextStyle(color: AppColors.primary700, fontSize: 14),
                               ),
                             ),
                             const SizedBox(height: 24),
@@ -131,8 +132,8 @@ class PublicProfileScreen extends StatelessWidget {
                                     icon: const Icon(Icons.chat_bubble_outline, size: 18),
                                     label: const Text('مراسلة'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
                                       padding: const EdgeInsets.symmetric(vertical: 12),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                                       elevation: 0,
@@ -146,8 +147,8 @@ class PublicProfileScreen extends StatelessWidget {
                                     icon: const Icon(Icons.flag_outlined, size: 18),
                                     label: const Text('إبلاغ'),
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.red,
-                                      side: const BorderSide(color: Colors.red),
+                                      foregroundColor: AppColors.error,
+                                      side: const BorderSide(color: AppColors.error),
                                       padding: const EdgeInsets.symmetric(vertical: 12),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                                     ),
@@ -197,7 +198,7 @@ class PublicProfileScreen extends StatelessWidget {
                               Card(
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                color: Colors.white,
+                                color: AppColors.white,
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Text(
@@ -225,7 +226,7 @@ class PublicProfileScreen extends StatelessWidget {
   Widget _sectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87),
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.black87),
     );
   }
 
@@ -233,7 +234,7 @@ class PublicProfileScreen extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: Colors.white,
+      color: AppColors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(children: children),
@@ -243,9 +244,9 @@ class PublicProfileScreen extends StatelessWidget {
 
   Widget _infoTile(IconData icon, String text, [VoidCallback? onTap]) {
     return ListTile(
-      leading: Icon(icon, color: Colors.blue.shade700, size: 24),
+      leading: Icon(icon, color: AppColors.primary700, size: 24),
       title: Text(text, style: const TextStyle(fontSize: 16)),
-      trailing: onTap != null ? Icon(Icons.copy, size: 18, color: Colors.grey[500]) : null,
+      trailing: onTap != null ? Icon(Icons.copy, size: 18, color: AppColors.grey[500]) : null,
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
     );

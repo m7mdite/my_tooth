@@ -5,6 +5,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'dart:io';
 
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class UnifiedEditProfileScreen extends StatefulWidget {
@@ -74,13 +75,13 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
         title: "تعديل الملف الشخصي",
         automaticallyImplyLeading: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios, color: AppColors.white),
           onPressed: () => Get.back(),
         ),
         actions: [
           TextButton(
             onPressed: _save,
-            child: Text('حفظ', style: TextStyle(color: Colors.white, fontSize: 16)),
+            child: Text('حفظ', style: TextStyle(color: AppColors.white, fontSize: 16)),
           ),
         ],
       ),
@@ -109,7 +110,7 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                         height: Get.width * 0.35,
                         width: Get.width * 0.35,
                         decoration: BoxDecoration(
-                          boxShadow: [BoxShadow(color: Colors.blue, blurRadius: 20, spreadRadius: 1)],
+                          boxShadow: [BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)],
                           borderRadius: BorderRadius.circular(100),
                           image: DecorationImage(
                             image: controller.profilePicture.value.isNotEmpty
@@ -117,16 +118,16 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                                 : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
                             fit: BoxFit.cover,
                           ),
-                          border: Border.all(color: Colors.white, width: 2),
+                          border: Border.all(color: AppColors.white, width: 2),
                         ),
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: InkWell(
                             onTap: _pickImage,
                             child: CircleAvatar(
-                              backgroundColor: Colors.blueAccent,
+                              backgroundColor: AppColors.primaryAccent,
                               radius: 18,
-                              child: Icon(Icons.camera_alt, size: 18, color: Colors.white),
+                              child: Icon(Icons.camera_alt, size: 18, color: AppColors.white),
                             ),
                           ),
                         ),
@@ -135,15 +136,15 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.95),
+                          color: AppColors.white.withOpacity(0.95),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.elliptical(80, 10),
                             bottomLeft: Radius.elliptical(10, 80),
                             topRight: Radius.elliptical(10, 80),
                             bottomRight: Radius.elliptical(80, 10),
                           ),
-                          border: Border.all(color: Colors.blue, width: 1.5),
-                          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+                          border: Border.all(color: AppColors.primary, width: 1.5),
+                          boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 8)],
                         ),
                         child: Form(
                           key: _formKey,
@@ -196,12 +197,12 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
       style: const TextStyle(fontSize: 16),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.blue.shade700),
+        labelStyle: TextStyle(color: AppColors.primary700),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: Colors.blue.shade200)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: Colors.blue, width: 2)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: AppColors.primary200)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: AppColors.primary, width: 2)),
         filled: true,
-        fillColor: enabled ? Colors.white : Colors.grey.shade100,
+        fillColor: enabled ? AppColors.white : AppColors.grey.shade100,
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) return "هذا الحقل مطلوب";
@@ -215,12 +216,12 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
       value: genderController.text.isEmpty ? null : genderController.text,
       decoration: InputDecoration(
         labelText: "الجنس",
-        labelStyle: TextStyle(color: Colors.blue.shade700),
+        labelStyle: TextStyle(color: AppColors.primary700),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: Colors.blue.shade200)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: Colors.blue, width: 2)),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: AppColors.primary200)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(color: AppColors.primary, width: 2)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.white,
       ),
       items: const [
         DropdownMenuItem(value: 'ذكر', child: Text('ذكر')),
@@ -242,14 +243,14 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(Icons.camera, size: 50, color: Colors.blue),
+              icon: Icon(Icons.camera, size: 50, color: AppColors.primary),
               onPressed: () {
                 // استخدام ImagePicker حقيقي
                 Get.back();
               },
             ),
             IconButton(
-              icon: Icon(Icons.photo_library, size: 50, color: Colors.blue),
+              icon: Icon(Icons.photo_library, size: 50, color: AppColors.primary),
               onPressed: () {
                 // استخدام ImagePicker حقيقي
                 Get.back();

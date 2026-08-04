@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class ItemProfile extends StatelessWidget {
   final String title;
   final String value;
@@ -17,8 +19,8 @@ class ItemProfile extends StatelessWidget {
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(width: 1, color: Colors.white, strokeAlign: 5),
+        color: AppColors.white,
+        border: Border.all(width: 1, color: AppColors.white, strokeAlign: 5),
         borderRadius: BorderRadius.only(
           topLeft: Radius.elliptical(100, 10),
           bottomLeft: Radius.elliptical(10, 100),
@@ -35,7 +37,7 @@ class ItemProfile extends StatelessWidget {
               ),
               Icon(
                 icon,
-                color: Colors.blue,
+                color: AppColors.primary,
               ),
               SizedBox(
                 width: 5,
@@ -45,7 +47,7 @@ class ItemProfile extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: AppColors.primary,
                 ),
               ),
             ],

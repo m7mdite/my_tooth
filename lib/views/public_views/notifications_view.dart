@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/notifications_controllers/notification_controller.dart';
 import '../../models/public_models/notification_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/custom_app_bar.dart';
 
 class NotificationsView extends GetView<NotificationController> {
@@ -27,7 +28,7 @@ class NotificationsView extends GetView<NotificationController> {
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: AppColors.error,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     constraints: const BoxConstraints(
@@ -37,7 +38,7 @@ class NotificationsView extends GetView<NotificationController> {
                     child: Text(
                       '${controller.unreadCount.value}',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.white,
                         fontSize: 10,
                       ),
                       textAlign: TextAlign.center,
@@ -101,7 +102,7 @@ class NotificationsView extends GetView<NotificationController> {
                 child: Container(
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: AppColors.error,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   constraints: const BoxConstraints(
@@ -111,7 +112,7 @@ class NotificationsView extends GetView<NotificationController> {
                   child: Text(
                     '${controller.unreadCount.value}',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.white,
                       fontSize: 10,
                     ),
                     textAlign: TextAlign.center,
@@ -154,14 +155,14 @@ class NotificationsView extends GetView<NotificationController> {
           Icon(
             Icons.notifications_none,
             size: 80,
-            color: Colors.grey[400],
+            color: AppColors.grey400,
           ),
           const SizedBox(height: 16),
           Text(
             'لا توجد إشعارات',
             style: TextStyle(
               fontSize: 18,
-              color: Colors.grey[600],
+              color: AppColors.grey[600],
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -170,7 +171,7 @@ class NotificationsView extends GetView<NotificationController> {
             'سيتم عرض الإشعارات الجديدة هنا',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[500],
+              color: AppColors.grey[500],
             ),
           ),
         ],
@@ -195,21 +196,21 @@ class NotificationsView extends GetView<NotificationController> {
       direction: DismissDirection.endToStart,
       onDismissed: (_) => controller.deleteNotification(notification.id),
       background: Container(
-        color: Colors.red,
+        color: AppColors.error,
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        child: const Icon(Icons.delete, color: Colors.white),
+        child: const Icon(Icons.delete, color: AppColors.white),
       ),
       child: InkWell(
         onTap: () => controller.markAsRead(notification.id),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           decoration: BoxDecoration(
-            color: notification.isRead ? Colors.white : Colors.blue[50],
+            color: notification.isRead ? AppColors.white : AppColors.primary50,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
+                color: AppColors.grey.withOpacity(0.1),
                 spreadRadius: 1,
                 blurRadius: 4,
                 offset: const Offset(0, 2),
@@ -244,7 +245,7 @@ class NotificationsView extends GetView<NotificationController> {
                             _formatTime(notification.receivedAt),
                             style: TextStyle(
                               fontSize: 11,
-                              color: Colors.grey[600],
+                              color: AppColors.grey[600],
                             ),
                           ),
                         ],
@@ -255,8 +256,8 @@ class NotificationsView extends GetView<NotificationController> {
                         style: TextStyle(
                           fontSize: 14,
                           color: notification.isRead 
-                              ? Colors.grey[700] 
-                              : Colors.grey[900],
+                              ? AppColors.grey[700] 
+                              : AppColors.grey[900],
                         ),
                       ),
                       if (!notification.isRead)
@@ -266,7 +267,7 @@ class NotificationsView extends GetView<NotificationController> {
                             width: 8,
                             height: 8,
                             decoration: const BoxDecoration(
-                              color: Colors.blue,
+                              color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -289,15 +290,15 @@ class NotificationsView extends GetView<NotificationController> {
     switch (type) {
       case 'requestAccepted':
         iconData = Icons.check_circle;
-        color = Colors.green;
+        color = AppColors.success;
         break;
       case 'VerifyAccepted':
         iconData = Icons.verified;
-        color = Colors.blue;
+        color = AppColors.primary;
         break;
       default:
         iconData = Icons.notifications;
-        color = Colors.orange;
+        color = AppColors.warning;
     }
     
     return Container(
@@ -342,7 +343,7 @@ class NotificationsView extends GetView<NotificationController> {
               controller.deleteAllNotifications();
               Get.back();
             },
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+            child: const Text('حذف', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),

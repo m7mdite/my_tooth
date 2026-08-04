@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/auth_controllers/auth_controller.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import 'login_form.dart';
 import 'register_form.dart';
 
@@ -14,7 +15,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -40,7 +41,7 @@ class AuthScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: AppColors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Obx(
@@ -98,12 +99,12 @@ class AuthScreen extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isActive ? Colors.white : Colors.transparent,
+            color: isActive ? AppColors.white : AppColors.transparent,
             borderRadius: BorderRadius.circular(30),
             boxShadow: isActive
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: AppColors.black.withOpacity(0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     )
@@ -114,7 +115,7 @@ class AuthScreen extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: isActive ? Colors.blue.shade700 : Colors.white,
+                color: isActive ? AppColors.primary700 : AppColors.white,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 fontSize: 14,
               ),
@@ -133,18 +134,18 @@ class AuthScreen extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.1)],
+          colors: [AppColors.white.withOpacity(0.2), AppColors.white.withOpacity(0.1)],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
         borderRadius: AppThemeConstants.borderRadius,
         border: Border.all(
-          color: Colors.white.withOpacity(0.5),
+          color: AppColors.white.withOpacity(0.5),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.1),
+            color: AppColors.white.withOpacity(0.1),
             blurRadius: 10,
             spreadRadius: 1,
             offset: const Offset(0, 2),
@@ -167,14 +168,14 @@ class AuthScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.person_outline,
-              color: Colors.white70,
+              color: AppColors.white70,
               size: 22,
             ),
             SizedBox(width: 10),
             Text(
               "الدخول كضيف",
               style: TextStyle(
-                color: Colors.white70,
+                color: AppColors.white70,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -182,7 +183,7 @@ class AuthScreen extends StatelessWidget {
             SizedBox(width: 6),
             Icon(
               Icons.arrow_forward_ios,
-              color: Colors.white54,
+              color: AppColors.white54,
               size: 14,
             ),
           ],

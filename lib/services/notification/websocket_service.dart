@@ -16,7 +16,6 @@ import '../../models/public_models/notification_model.dart';
 import 'websocket_events.dart';
 
 /// عنوان سيرفر الـ Socket.IO.
-/// TODO: انقلها لملف إعدادات/env منفصل (dev / staging / prod) قبل الإصدار.
 const String _kSocketBaseUrl = 'http://localhost:5000';
 
 class WebSocketService extends GetxService {

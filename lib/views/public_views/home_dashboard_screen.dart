@@ -14,6 +14,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../controllers/home_dashboard_controller.dart';
 import '../../models/dashboard_model.dart';
 import '../../services/local_storge/local_user_storage.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../admin_views/admin_notify_dialog.dart';
 import '../admin_views/advertisement_management_screen.dart';
 import '../widgets/dialog/submit_dialog.dart';
@@ -105,8 +106,8 @@ class HomeDashboardScreen extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-              color: Colors.white24,
-              border: Border.all(width: 1, color: Colors.blue, strokeAlign: 10),
+              color: AppColors.white24,
+              border: Border.all(width: 1, color: AppColors.primary, strokeAlign: 10),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.elliptical(100, 10),
                 bottomLeft: Radius.elliptical(10, 100),
@@ -115,7 +116,7 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.white,
+                  color: AppColors.white,
                   blurRadius: 3,
                   spreadRadius: 3,
                 )
@@ -201,11 +202,11 @@ class HomeDashboardScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue.shade800, Colors.blue.shade500],
+                colors: [AppColors.primary800, AppColors.primary500],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              border: Border.all(color: Colors.blue, width: 2, strokeAlign: 10),
+              border: Border.all(color: AppColors.primary, width: 2, strokeAlign: 10),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.elliptical(80, 10),
                 bottomLeft: Radius.elliptical(10, 80),
@@ -214,7 +215,7 @@ class HomeDashboardScreen extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blue.shade300.withOpacity(0.3),
+                  color: AppColors.primary300,
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 )
@@ -232,12 +233,12 @@ class HomeDashboardScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: const BoxDecoration(
-                            color: Colors.white24,
+                            color: AppColors.white24,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.assessment,
-                            color: Colors.white,
+                            color: AppColors.white,
                             size: 16,
                           ),
                         ),
@@ -245,7 +246,7 @@ class HomeDashboardScreen extends StatelessWidget {
                         const Text(
                           'طلبات العلاج',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.white,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
@@ -256,13 +257,13 @@ class HomeDashboardScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.white24,
+                        color: AppColors.white24,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         'الإجمالي: ${stats.total ?? 0}',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -279,34 +280,34 @@ class HomeDashboardScreen extends StatelessWidget {
                         icon: Icons.hourglass_empty,
                         count: stats.pending ?? 0,
                         label: 'انتظار',
-                        color: Colors.orange),
+                        color: AppColors.warning),
                     _buildStatItem(
                         icon: Icons.settings,
                         count: stats.processing ?? 0,
                         label: 'معالجة',
-                        color: Colors.lightBlueAccent),
+                        color: AppColors.primaryLightAccent),
                     _buildStatItem(
                         icon: Icons.check_circle,
                         count: stats.finished ?? 0,
                         label: 'مكتملة',
-                        color: Colors.lightGreenAccent),
+                        color: AppColors.lightGreenAccent),
                   ],
                 ),
                 if (users != null) ...[
                   const SizedBox(height: 10),
                   Container(
                     height: 1,
-                    color: Colors.white24,
+                    color: AppColors.white24,
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.person, color: Colors.white60, size: 14),
+                      Icon(Icons.person, color: AppColors.white60, size: 14),
                       const SizedBox(width: 6),
                       const Text(
                         'عدد المستخدمين الكلي',
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: AppColors.white70,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -315,7 +316,7 @@ class HomeDashboardScreen extends StatelessWidget {
                       _buildMiniStat(
                           count: users.countUsers ?? 0,
                           label: 'مستخدم',
-                          color: Colors.lightGreenAccent),
+                          color: AppColors.lightGreenAccent),
                     ],
                   ),
                 ],
@@ -324,17 +325,17 @@ class HomeDashboardScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Container(
                     height: 1,
-                    color: Colors.white24,
+                    color: AppColors.white24,
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.person, color: Colors.white60, size: 14),
+                      Icon(Icons.person, color: AppColors.white60, size: 14),
                       const SizedBox(width: 6),
                       const Text(
                         'حالاتي',
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: AppColors.white70,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -347,17 +348,17 @@ class HomeDashboardScreen extends StatelessWidget {
                             _buildMiniStat(
                                 count: myCases.pending!,
                                 label: 'انتظار',
-                                color: Colors.orange),
+                                color: AppColors.warning),
                           const SizedBox(width: 10),
                           _buildMiniStat(
                               count: myCases.inProcess ?? 0,
                               label: 'معالجة',
-                              color: Colors.lightBlueAccent),
+                              color: AppColors.primaryLightAccent),
                           const SizedBox(width: 10),
                           _buildMiniStat(
                               count: myCases.finished ?? 0,
                               label: 'مكتملة',
-                              color: Colors.lightGreenAccent),
+                              color: AppColors.lightGreenAccent),
                         ],
                       ),
                     ],
@@ -381,12 +382,12 @@ class HomeDashboardScreen extends StatelessWidget {
   }) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white, size: 24),
+        Icon(icon, color: AppColors.white, size: 24),
         const SizedBox(height: 2),
         Text(
           count.toString(),
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -394,7 +395,7 @@ class HomeDashboardScreen extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Colors.white70,
+            color: AppColors.white70,
             fontSize: 10,
           ),
         ),
@@ -422,7 +423,7 @@ class HomeDashboardScreen extends StatelessWidget {
         Text(
           '$count',
           style: const TextStyle(
-            color: Colors.white,
+            color: AppColors.white,
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),
@@ -431,7 +432,7 @@ class HomeDashboardScreen extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: Colors.white60,
+            color: AppColors.white60,
             fontSize: 9,
           ),
         ),
@@ -469,12 +470,12 @@ class HomeDashboardScreen extends StatelessWidget {
                                 )
                               : null,
                           color: adv.image?.url == null
-                              ? Colors.blue.shade400
+                              ? AppColors.primary400
                               : null,
                           borderRadius: AppThemeConstants.borderRadius,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.black12,
+                                color: AppColors.black12,
                                 blurRadius: 8,
                                 offset: const Offset(0, 3))
                           ],
@@ -497,15 +498,15 @@ class HomeDashboardScreen extends StatelessWidget {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      Colors.black.withValues(alpha: 0.8),
-                                      Colors.transparent,
+                                      AppColors.black.withValues(alpha: 0.8),
+                                      AppColors.transparent,
                                     ],
                                   ),
                                 ),
                                 child: Text(
                                   adv.content ?? '',
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -530,8 +531,8 @@ class HomeDashboardScreen extends StatelessWidget {
                         height: 6,
                         decoration: BoxDecoration(
                           color: controller.currentAdvIndex.value == i
-                              ? Colors.blue
-                              : Colors.grey.shade300,
+                              ? AppColors.primary
+                              : AppColors.grey300,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ));
@@ -563,7 +564,7 @@ class HomeDashboardScreen extends StatelessWidget {
                       child: _actionButton(
                         icon: Icons.chat,
                         label: 'المساعد الذكي',
-                        color: Colors.green,
+                        color: AppColors.success,
                         onTap: () => Get.toNamed(AppRroute.aiChat),
                       ),
                     ),
@@ -573,7 +574,7 @@ class HomeDashboardScreen extends StatelessWidget {
                       child: _actionButton(
                         icon: Icons.ad_units,
                         label: 'إدارة الإعلانات',
-                        color: Colors.purple.shade700,
+                        color: AppColors.purple.shade700,
                         onTap: () =>
                             Get.to(() => AdvertisementManagementScreen()),
                       ),
@@ -599,12 +600,12 @@ class HomeDashboardScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.95),
+          color: AppColors.white.withValues(alpha: 0.95),
           borderRadius: AppThemeConstants.borderRadius,
           border: Border.all(color: color, width: 1.2),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: AppColors.black.withValues(alpha: 0.05),
                 blurRadius: 6,
                 offset: const Offset(0, 2))
           ],
@@ -643,7 +644,7 @@ class HomeDashboardScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue),
+                          color: AppColors.primary),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -664,7 +665,7 @@ class HomeDashboardScreen extends StatelessWidget {
                         }
                       },
                       child: const Text('عرض الكل',
-                          style: TextStyle(color: Colors.blue)),
+                          style: TextStyle(color: AppColors.primary)),
                     ),
                   ],
                 ),
@@ -688,17 +689,17 @@ class HomeDashboardScreen extends StatelessWidget {
                           horizontal: 6, vertical: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.95),
+                        color: AppColors.white.withValues(alpha: 0.95),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.elliptical(80, 10),
                           bottomLeft: Radius.elliptical(10, 80),
                           topRight: Radius.elliptical(10, 80),
                           bottomRight: Radius.elliptical(80, 10),
                         ),
-                        border: Border.all(color: Colors.blue, width: 1),
+                        border: Border.all(color: AppColors.primary, width: 1),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.12),
+                              color: AppColors.black.withValues(alpha: 0.12),
                               blurRadius: 6,
                               offset: const Offset(0, 2))
                         ],
@@ -747,9 +748,9 @@ class HomeDashboardScreen extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => Container(
                                   height: 120,
-                                  color: Colors.grey.shade300,
+                                  color: AppColors.grey300,
                                   child: const Icon(Icons.broken_image,
-                                      color: Colors.grey),
+                                      color: AppColors.grey),
                                 ),
                               ),
                             ),
@@ -769,13 +770,13 @@ class HomeDashboardScreen extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.thumb_up_outlined,
-                                  size: 14, color: Colors.blue),
+                                  size: 14, color: AppColors.primary),
                               const SizedBox(width: 2),
                               Text('${post.countLikes ?? 0}',
                                   style: const TextStyle(fontSize: 12)),
                               const SizedBox(width: 12),
                               Icon(Icons.comment_outlined,
-                                  size: 14, color: Colors.grey),
+                                  size: 14, color: AppColors.grey),
                               const SizedBox(width: 2),
                               Text('${post.countComments ?? 0}',
                                   style: const TextStyle(fontSize: 12)),

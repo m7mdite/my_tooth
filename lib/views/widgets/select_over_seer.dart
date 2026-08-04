@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 
 class SelectOverSeer extends StatelessWidget {
   final StudentRequestsControllerImp controller =
@@ -21,7 +23,7 @@ class SelectOverSeer extends StatelessWidget {
               padding: EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(0, 255, 255, 255),
-                border: Border.all(width: 3.5, color: Colors.white),
+                border: Border.all(width: 3.5, color: AppColors.white),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.elliptical(100, 10),
                   bottomLeft: Radius.elliptical(10, 100),

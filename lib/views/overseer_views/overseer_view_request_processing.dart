@@ -5,7 +5,7 @@ import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 
 import '../../controllers/overseer_controllers/overseer_requests_controller.dart';
 import '../../models/requests_models/treatment_request_model.dart';
-import '../../models/requests_models/treatment_request_processing_s_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 
 class OverseerViewRequestProcessing extends StatelessWidget {
   final OverseerRequestsControllerImpl controller =
@@ -32,7 +32,7 @@ class OverseerViewRequestProcessing extends StatelessWidget {
             children: [
               BottonContainer(
                 body: "رفض",
-                color: Colors.red,
+                color: AppColors.error,
                 onTap: () {
                   controller.toRejectRequest(requestModel);
                 },

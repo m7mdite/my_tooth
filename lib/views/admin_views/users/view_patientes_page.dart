@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -28,7 +29,7 @@ class ViewPatientesPage extends StatelessWidget {
             return ListView.separated(
               separatorBuilder: (context, index) => const Divider(
                 height: 12,
-                color: Colors.blue,
+                color: AppColors.primary,
                 endIndent: 50,
                 indent: 50,
               ),
@@ -44,7 +45,7 @@ class ViewPatientesPage extends StatelessWidget {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColors.primary,
                       backgroundImage: (patient.profilePhoto != null &&
                               patient.profilePhoto!.url != null &&
                               patient.profilePhoto!.url!.isNotEmpty)
@@ -57,7 +58,7 @@ class ViewPatientesPage extends StatelessWidget {
                               patient.firstName?.isNotEmpty == true
                                   ? patient.firstName![0].toUpperCase()
                                   : "?",
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: AppColors.white),
                             )
                           : null,
                     ),

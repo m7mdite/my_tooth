@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class BottonContainer extends StatelessWidget {
   final String body;
   final void Function()? onTap;
@@ -16,7 +18,7 @@ class BottonContainer extends StatelessWidget {
       this.paddingHorizontal = 3,
       this.paddingVertical = 1,
       this.fontSize = 16,
-      this.color = Colors.black});
+      this.color = AppColors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,9 @@ class BottonContainer extends StatelessWidget {
                   fit: BoxFit.cover,
                 )
               : null,
-          color: selected ? Colors.white : Colors.grey,
+          color: selected ? AppColors.white : AppColors.grey,
           border: Border.all(
-            color: !selected ? Colors.greenAccent : Colors.blueAccent,
+            color: !selected ? AppColors.successAccent : AppColors.primaryAccent,
             width: 1,
           ),
           borderRadius: BorderRadius.only(

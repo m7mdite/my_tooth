@@ -9,6 +9,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/prediction_light_button.dart';
 import '../../models/requests_models/treatment_request_model.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
 
@@ -39,7 +40,7 @@ class ModifiedRequest extends StatelessWidget {
             colorFilter: ColorFilter.linearToSrgbGamma()),
         color: const Color.fromARGB(0, 255, 255, 255),
         border: Border.all(
-          color: Colors.white,
+          color: AppColors.white,
           width: 2,
           strokeAlign: 10,
         ),
@@ -95,12 +96,12 @@ class ModifiedRequest extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color:
                                       controller.selectedPainSeverity.value >= 8
-                                          ? Colors.red.shade100
+                                          ? AppColors.error.shade100
                                           : controller.selectedPainSeverity
                                                       .value >=
                                                   5
-                                              ? Colors.orange.shade100
-                                              : Colors.green.shade100,
+                                              ? AppColors.warning.shade100
+                                              : AppColors.success.shade100,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
@@ -111,12 +112,12 @@ class ModifiedRequest extends StatelessWidget {
                                     color:
                                         controller.selectedPainSeverity.value >=
                                                 8
-                                            ? Colors.red.shade700
+                                            ? AppColors.error.shade700
                                             : controller.selectedPainSeverity
                                                         .value >=
                                                     5
-                                                ? Colors.orange.shade700
-                                                : Colors.green.shade700,
+                                                ? AppColors.warning.shade700
+                                                : AppColors.success.shade700,
                                   ),
                                 ),
                               ),
@@ -151,26 +152,26 @@ class ModifiedRequest extends StatelessWidget {
                                 switch (number) {
                                   case 1:
                                     severityColor =
-                                        Colors.blue.shade100; // أزرق فاتح
+                                        AppColors.primary100; // أزرق فاتح
                                     break;
                                   case 2:
                                     severityColor =
-                                        Colors.blue.shade300; // أزرق متوسط
+                                        AppColors.primary300; // أزرق متوسط
                                     break;
                                   case 3:
                                     severityColor =
-                                        Colors.blue.shade500; // أزرق غامق
+                                        AppColors.primary500; // أزرق غامق
                                     break;
                                   case 4:
                                     severityColor =
-                                        Colors.green.shade300; // أخضر فاتح
+                                        AppColors.success.shade300; // أخضر فاتح
                                     break;
                                   case 5:
                                     severityColor =
-                                        Colors.green.shade500; // أخضر متوسط
+                                        AppColors.success.shade500; // أخضر متوسط
                                     break;
                                   case 6:
-                                    severityColor = Colors.lightGreen
+                                    severityColor = AppColors.lightGreen
                                         .shade600; // أخضر مائل للأصفر
                                     break;
                                   case 7:
@@ -179,14 +180,14 @@ class ModifiedRequest extends StatelessWidget {
                                     break;
                                   case 8:
                                     severityColor =
-                                        Colors.orange.shade400; // برتقالي
+                                        AppColors.warning.shade400; // برتقالي
                                     break;
                                   case 9:
                                     severityColor =
-                                        Colors.red.shade400; // أحمر فاتح
+                                        AppColors.error.shade400; // أحمر فاتح
                                     break;
                                   case 10:
-                                    severityColor = Colors.red
+                                    severityColor = AppColors.error
                                         .shade900; // أحمر غامق (الأشد خطورة)
                                     break;
                                   default:
@@ -206,7 +207,7 @@ class ModifiedRequest extends StatelessWidget {
                                       color: isSelected
                                           ? severityColor.withValues(
                                               alpha: 0.15)
-                                          : Colors.transparent,
+                                          : AppColors.transparent,
                                       // border:  Border.all(
                                       //         color: severityColor, width: 2),
                                           
@@ -230,7 +231,7 @@ class ModifiedRequest extends StatelessWidget {
                                             size: 26,
                                             color: isSelected
                                                 ? severityColor
-                                                : Colors.grey.shade400,
+                                                : AppColors.grey.shade400,
                                           ),
                                           Positioned(
                                             top: 3,
@@ -240,8 +241,8 @@ class ModifiedRequest extends StatelessWidget {
                                                 fontSize: 9,
                                                 fontWeight: FontWeight.bold,
                                                 color: isSelected
-                                                    ? Colors.white
-                                                    : Colors.grey.shade600,
+                                                    ? AppColors.white
+                                                    : AppColors.grey.shade600,
                                               ),
                                             ),
                                           ),
@@ -371,9 +372,9 @@ class ModifiedRequest extends StatelessWidget {
                         },
                         child: Column(
                           children: [
-                            FaIcon(FontAwesomeIcons.tooth, color: Colors.blue),
+                            FaIcon(FontAwesomeIcons.tooth, color: AppColors.primary),
                             Text("تلميح!",
-                                style: TextStyle(color: Colors.blue)),
+                                style: TextStyle(color: AppColors.primary)),
                           ],
                         ),
                       ),
@@ -395,7 +396,7 @@ class ModifiedRequest extends StatelessWidget {
                   Center(
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.white)),
+                          border: Border.all(width: 1, color: AppColors.white)),
                       child: InkWell(
                         onTap: () async {
                           await controller.uploadReguestPicture();
@@ -418,7 +419,7 @@ class ModifiedRequest extends StatelessWidget {
                             : controller.image == null
                                 ? FaIcon(
                                     FontAwesomeIcons.tooth,
-                                    color: Colors.blue,
+                                    color: AppColors.primary,
                                     size: 80,
                                   )
                                 : SizedBox(
@@ -551,7 +552,7 @@ class ModifiedRequest extends StatelessWidget {
                       const SizedBox(height: 4),
                       const Text(
                         "تحقق مبدئي اختياري بمساعدة خوارزميات التعلم الآلي  غير ملزم",
-                        style: TextStyle(fontSize: 11, color: Colors.black54),
+                        style: TextStyle(fontSize: 11, color: AppColors.black54),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 12),
@@ -598,10 +599,10 @@ class RowContainerWithTitle extends StatelessWidget {
             onChanged: onChanged,
             controller: TextEditingController(text: text),
             decoration: InputDecoration(
-              fillColor: Colors.white,
-              focusColor: Colors.white,
+              fillColor: AppColors.white,
+              focusColor: AppColors.white,
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: AppColors.white),
               ),
             ),
           ),
@@ -636,10 +637,10 @@ class ColumnContainerWithTitle extends StatelessWidget {
             onChanged: onChanged,
             controller: TextEditingController(text: text),
             decoration: InputDecoration(
-              fillColor: Colors.white,
-              focusColor: Colors.white,
+              fillColor: AppColors.white,
+              focusColor: AppColors.white,
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: AppColors.white),
               ),
             ),
           ),
@@ -678,11 +679,11 @@ class SelectFromItems extends StatelessWidget {
         Flexible(child: Text(title ?? "")),
         Flexible(
           child: DropdownButtonFormField<String>(
-            dropdownColor: Colors.white,
-            focusColor: Colors.white,
+            dropdownColor: AppColors.white,
+            focusColor: AppColors.white,
             alignment: Alignment.center,
             isExpanded: false,
-            icon: FaIcon(FontAwesomeIcons.tooth, color: Colors.blue),
+            icon: FaIcon(FontAwesomeIcons.tooth, color: AppColors.primary),
             menuMaxHeight: Get.height * 0.5,
             borderRadius: BorderRadius.circular(30),
             decoration: InputDecoration(
@@ -736,7 +737,7 @@ class SelectFromItemsMap extends StatelessWidget {
         child: Center(
           child: Text(
             "لا توجد بيانات",
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: AppColors.error),
           ),
         ),
       );
@@ -781,11 +782,11 @@ class SelectFromItemsMap extends StatelessWidget {
             value: currentValue,
             items: dropdownItems,
             onChanged: onChanged,
-            dropdownColor: Colors.white,
+            dropdownColor: AppColors.white,
             isExpanded: true,
             icon: FaIcon(
               FontAwesomeIcons.tooth,
-              color: Colors.blue,
+              color: AppColors.primary,
               size: 16,
             ),
             menuMaxHeight: Get.height * 0.5,
@@ -799,7 +800,7 @@ class SelectFromItemsMap extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.white,
             ),
           ),
         ),
@@ -816,8 +817,8 @@ class BreakContainer extends StatelessWidget {
     return Container(
       height: 1,
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: Get.width * 0.15),
-      decoration: BoxDecoration(color: Colors.blue, boxShadow: [
-        BoxShadow(color: Colors.white, blurRadius: 2, spreadRadius: 1)
+      decoration: BoxDecoration(color: AppColors.primary, boxShadow: [
+        BoxShadow(color: AppColors.white, blurRadius: 2, spreadRadius: 1)
       ]),
     );
   }

@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
 import '../../../app_route.dart';
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class PendingPostsScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.hourglass_empty, size: 64, color: Colors.grey),
+                  Icon(Icons.hourglass_empty, size: 64, color: AppColors.grey),
                   SizedBox(height: 16),
                   Text(
                     'لا توجد منشورات معلقة',
@@ -84,7 +85,7 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.orange.withOpacity(0.5), width: 2),
+                        border: Border.all(color: AppColors.warning.withOpacity(0.5), width: 2),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Stack(
@@ -103,12 +104,12 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Colors.orange,
+                                color: AppColors.warning,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
                                 'قيد الانتظار',
-                                style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                                style: TextStyle(color: AppColors.white, fontSize: 11, fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -122,8 +123,8 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
                                 icon: const Icon(Icons.check_circle, size: 16),
                                 label: const Text('موافقة'),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: AppColors.success,
+                                  foregroundColor: AppColors.white,
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
@@ -159,7 +160,7 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
               Get.back();
               controller.acceptPendingPost(postId);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.green),
+            style: TextButton.styleFrom(foregroundColor: AppColors.success),
             child: const Text('موافقة'),
           ),
         ],

@@ -4,6 +4,8 @@ import 'package:gr_flutter/controllers/admin_controllers/admin_request_controlle
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../../utils/app_constants/colors_constant.dart';
+
 class AddCategoryPage extends StatelessWidget {
   final AdminRequestControllerImpl controller = Get.find<AdminRequestControllerImpl>();
 
@@ -53,7 +55,7 @@ class AddCategoryPage extends StatelessWidget {
                     controller.addCategory();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: AppColors.primaryAccent,
                     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -61,7 +63,7 @@ class AddCategoryPage extends StatelessWidget {
                   ),
                   child: const Text(
                     "إضافة",
-                    style: TextStyle(fontSize: 18,color: Colors.white),
+                    style: TextStyle(fontSize: 18,color: AppColors.white),
                   ),
                 ),
               ],

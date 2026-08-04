@@ -15,6 +15,7 @@ import '../../models/requests_models/treatment_model.dart';
 import '../../services/functions/handling_data.dart';
 import '../../services/remote/admin_remotes/admin_remote.dart';
 import '../../utils/app_constants/app_constants.dart';
+import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/status_request.dart';
 
 abstract class AdminRequestController extends GetxController {
@@ -767,7 +768,7 @@ void showAddLessonDialog(BuildContext context, String day, String period) {
                 selectedItems: selectedOverseers,
                 dropdownBuilder: (context, selectedItems) {
                   if (selectedItems.isEmpty) {
-                    return Text("اختر المشرفين...", style: TextStyle(color: Colors.grey));
+                    return Text("اختر المشرفين...", style: TextStyle(color: AppColors.grey));
                   }
                   return Text("تم اختيار ${selectedItems.length} مشرف");
                 },

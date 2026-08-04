@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_constants/colors_constant.dart';
+
 class RowItemRequest extends StatelessWidget {
   final String keyItem;
   final String valueItem;
@@ -24,7 +26,7 @@ class RowItemRequest extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
-                color: Colors.white54,
+                color: AppColors.white54,
                 
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.elliptical(100, 10),
@@ -41,10 +43,10 @@ class RowItemRequest extends StatelessWidget {
               padding: EdgeInsets.all(5),
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.white,
+                    color: AppColors.white,
                     blurRadius: 2,
                     spreadRadius: 2,
                     offset: Offset(1, 1),
@@ -61,7 +63,7 @@ class RowItemRequest extends StatelessWidget {
               // child: TextFormField(
                 
               //   enabled: isUpdate,
-              //   style: TextStyle(fontSize: 14,color: Colors.black),
+              //   style: TextStyle(fontSize: 14,color: AppColors.black),
               //   decoration: InputDecoration(
               //     border: InputBorder.none,
               //     constraints: BoxConstraints(

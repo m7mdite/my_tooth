@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/patient_controller/main_patient_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/bottom_navigation_bar_icon.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -25,16 +26,16 @@ class MainScreenPatient extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Colors.white,
-                  // Colors.white54,
-                  // Colors.lightBlueAccent,
+                  // AppColors.white,
+                  // AppColors.white54,
+                  // AppColors.primaryLightAccent,
                   // // const Color.fromARGB(147, 233, 30, 98),
-                  // Colors.blueAccent,
-                  // Colors.pinkAccent,
-                  Colors.blueAccent,
-                  Colors.lightBlueAccent,
-                  Colors.white54,
-                  Colors.white,
+                  // AppColors.primaryAccent,
+                  // AppColors.pinkAccent,
+                  AppColors.primaryAccent,
+                  AppColors.primaryLightAccent,
+                  AppColors.white54,
+                  AppColors.white,
 
 
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/colors_constant.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../../controllers/admin_controllers/admin_users_controller.dart';
@@ -36,10 +37,10 @@ class ViewVerifyStudentsPage extends StatelessWidget {
                   margin: EdgeInsets.all(10),
                   
                   child: ListTile(
-                    iconColor: Colors.blue,
+                    iconColor: AppColors.primary,
                     horizontalTitleGap: 10,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.blue),
+                      side: BorderSide(color: AppColors.primary),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     trailing: Icon(Icons.person),
@@ -57,7 +58,7 @@ class ViewVerifyStudentsPage extends StatelessWidget {
                       )
                         // child: Image.network("${student.profilePhoto!.url!}", fit: BoxFit.cover))
                       : Icon(Icons.person),
-                    textColor: Colors.blue,
+                    textColor: AppColors.primary,
                     title: Text(
                       "${student.studentProfile?.firstName ?? ''} ${student.studentProfile?.lastName ?? ''}".trim().isEmpty
                         ? "No Name"
