@@ -23,7 +23,7 @@ class DefaultContainerProfile extends StatelessWidget {
           ],
           border: Border.all(
             width: 2,
-            color: AppColors.white,
+            color: AppColors.primaryLightAccent,
             strokeAlign: 7,
           ),
           borderRadius: BorderRadius.only(

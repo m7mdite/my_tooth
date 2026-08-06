@@ -11,6 +11,7 @@ class TreatmentRequestModel {
   List<StageEvaluation>? stageEvaluations;
   CourseInfo? courseInfo;
   int? rating; // إضافة خاصية التقييم
+  String? feedback; // إضافة خاصية التعليقات
 
   // خصائص إضافية من PendingRequestModel
   Course? courseInfoAlt;
@@ -30,6 +31,7 @@ class TreatmentRequestModel {
     this.courseInfoAlt,
     this.caseTypeId,
     this.rating, // إضافة خاصية التقييم
+    this.feedback, // إضافة خاصية التعليقات
   });
 
   // fromJson موحد يتعامل مع كلا النوعين
@@ -40,6 +42,7 @@ class TreatmentRequestModel {
     return TreatmentRequestModel(
       sId: json['_id'],
       rating: json['rating'], // إضافة خاصية التقييم
+      feedback: json['feedback'], // إضافة خاصية التعليقات
       // patient - موجود في كلا النوعين
       patient: json['patient'] != null
           ? Patient.fromJson(json['patient'] as Map<String, dynamic>)
@@ -107,6 +110,7 @@ String toString() {
       '  courseInfoAlt: ${courseInfoAlt != null ? courseInfoAlt!.toJson() : 'null'},\n'
       '  caseTypeId: $caseTypeId,\n'
       '  rating: $rating,\n'
+      '  feedback: $feedback\n'
       ')';
 }
 

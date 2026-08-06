@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../services/functions/upload_picture.dart';
 import '../../../utils/app_constants/colors_constant.dart';
+import '../../widgets/build_developer_credit.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
 import '../../widgets/theme_switcher_widget.dart';
@@ -37,10 +38,7 @@ class UnifiedSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.background, // ✅
       appBar: CustomAppBar(
-        // backgroundColor: Colors.red,
-        
         title: "الاعدادات",
         automaticallyImplyLeading: false,
         notifacation: false,
@@ -100,17 +98,14 @@ class UnifiedSettingScreen extends StatelessWidget {
                                 ],
                                 borderRadius: BorderRadius.circular(100),
                                 image: DecorationImage(
-                                  image: controller
-                                          .profilePicture.value.isNotEmpty
-                                      ? NetworkImage(
-                                              controller.profilePicture.value)
+                                  image: controller.profilePicture.value.isNotEmpty
+                                      ? NetworkImage(controller.profilePicture.value)
                                           as ImageProvider
-                                      : AssetImage(
-                                          AppImages.authBackground),
+                                      : AssetImage(AppImages.authBackground),
                                   fit: BoxFit.cover,
                                 ),
                                 border: Border.all(
-                                    color: AppColors.primary, width: 2), // ✅ بدل white
+                                    color: AppColors.primary, width: 2),
                               ),
                             ),
                           ),
@@ -132,14 +127,15 @@ class UnifiedSettingScreen extends StatelessWidget {
                             Text(
                               controller.fullName.value,
                               style: TextStyle(
-                                color: AppColors.textPrimary, // ✅ بدل AppColors.black
+                                color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
                               ),
                             ),
                             if (controller.isVerified.value) ...[
                               const SizedBox(width: 8),
-                              Icon(Icons.star, color: AppColors.primary, size: 20),
+                              Icon(Icons.star,
+                                  color: AppColors.primary, size: 20),
                             ],
                             const SizedBox(width: 8),
                             Container(
@@ -153,7 +149,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                                 controller.getRoleTitle(),
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: AppColors.primary700, // ✅
+                                  color: AppColors.primary700,
                                 ),
                               ),
                             ),
@@ -178,7 +174,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // === 4. طلب التوثيق (للطالب غير الموثق) ===
+                  // === 4. طلب التوثيق ===
                   if (controller.role.value == 'student' &&
                       !controller.isVerified.value)
                     _buildAnimatedItem(
@@ -199,7 +195,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                     ),
                   const SizedBox(height: 30),
 
-                  // === 5. تغيير اللغة ===
+                  // === 5. تغيير الثيم ===
                   _buildAnimatedItem(
                     position: 4,
                     child: Center(
@@ -207,17 +203,15 @@ class UnifiedSettingScreen extends StatelessWidget {
                         color: AppColors.primary,
                         title: "تغيير الثيم",
                         icon: Icons.brightness_4_outlined,
-                        onTap: () {
-                          _showThemeDialog();
-                        },
+                        onTap: _showThemeDialog,
                       ),
                     ),
                   ),
                   const SizedBox(height: 30),
 
-                  // === 5. تغيير اللغة ===
+                  // === 6. تغيير اللغة ===
                   _buildAnimatedItem(
-                    position: 4,
+                    position: 5,
                     child: Center(
                       child: DefaultContainerProfile(
                         color: AppColors.primary,
@@ -227,29 +221,25 @@ class UnifiedSettingScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
 
-                  // === 6. سياسة الخصوصية ===
+                  // === 7. سياسة الخصوصية ===
                   _buildAnimatedItem(
-                    position: 5,
-                    child: InkWell(
-                      onTap: () => Get.to(() => PrivacyPolicyScreen()),
-                      child: Center(
-                        child: DefaultContainerProfile(
-                          color: AppColors.primary,
-                          title: "سياسة الخصوصية",
-                          icon: Icons.privacy_tip_outlined,
-                        ),
+                    position: 6,
+                    child: Center(
+                      child: DefaultContainerProfile(
+                        color: AppColors.primary,
+                        title: "سياسة الخصوصية",
+                        icon: Icons.privacy_tip_outlined,
+                        onTap: () => Get.to(() => PrivacyPolicyScreen()),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
 
-                  // === 7. تغيير كلمة المرور ===
+                  // === 8. تغيير كلمة المرور ===
                   _buildAnimatedItem(
-                    position: 6,
+                    position: 7,
                     child: Center(
                       child: DefaultContainerProfile(
                         color: AppColors.primary,
@@ -259,29 +249,25 @@ class UnifiedSettingScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
 
-                  // === 8. مراسلة الدعم ===
+                  // === 9. مراسلة الدعم ===
                   _buildAnimatedItem(
-                    position: 7,
-                    child: InkWell(
-                      onTap: () => Get.to(() => ContactSupportScreen()),
-                      child: Center(
-                        child: DefaultContainerProfile(
-                          color: AppColors.primary,
-                          title: "مراسلة الدعم",
-                          icon: Icons.support_agent_outlined,
-                        ),
+                    position: 8,
+                    child: Center(
+                      child: DefaultContainerProfile(
+                        color: AppColors.primary,
+                        title: "مراسلة الدعم",
+                        icon: Icons.support_agent_outlined,
+                        onTap: () => Get.to(() => ContactSupportScreen()),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
 
-                  // === 9. تسجيل الخروج ===
+                  // === 10. تسجيل الخروج ===
                   _buildAnimatedItem(
-                    position: 8,
+                    position: 9,
                     child: Center(
                       child: DefaultContainerProfile(
                         color: AppColors.primary,
@@ -290,6 +276,13 @@ class UnifiedSettingScreen extends StatelessWidget {
                         onTap: controller.confirmLogOut,
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // === 11. توقيع المطور ===
+                  _buildAnimatedItem(
+                    position: 10,
+                    child: buildDeveloperCredit(),
                   ),
 
                   const SizedBox(height: 30),
@@ -301,6 +294,9 @@ class UnifiedSettingScreen extends StatelessWidget {
       ),
     );
   }
+
+  // ===================== توقيع المطور =====================
+  
 
   Widget _buildAnimatedItem({
     required int position,
@@ -315,19 +311,22 @@ class UnifiedSettingScreen extends StatelessWidget {
       ),
     );
   }
+
   void _showThemeDialog() {
-  Get.dialog(
-    AlertDialog(
-      backgroundColor: AppColors.surface,
-      title: Text('اختر الثيم', style: TextStyle(color: AppColors.textPrimary)),
-      content: const ThemeSwitcherWidget(), // ✅ بسيطة وما تعمل overflow
-      actions: [
-        TextButton(
-          onPressed: () => Get.back(),
-          child: Text('إغلاق', style: TextStyle(color: AppColors.primary)),
-        ),
-      ],
-    ),
-  );
-}
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: Text('اختر الثيم',
+            style: TextStyle(color: AppColors.textPrimary)),
+        content: const ThemeSwitcherWidget(),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child:
+                Text('إغلاق', style: TextStyle(color: AppColors.primary)),
+          ),
+        ],
+      ),
+    );
+  }
 }

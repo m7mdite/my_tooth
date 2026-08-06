@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/bindings/auth_binding.dart';
-import 'package:gr_flutter/views/admin_views/page_of_main/admin_home_screen.dart';
 import 'package:gr_flutter/views/admin_views/page_of_main/main_screen__admin.dart';
 import 'package:gr_flutter/views/patient_views/pages_of_main/main_screen_patient.dart';
 import 'package:gr_flutter/views/public_views/settings/unified_profile_screen.dart';
@@ -171,10 +170,7 @@ List<GetPage<dynamic>> routes = [
     name: AppRroute.mainScreenAdmin,
     page: () => MainScreenAdmin(),
   ),
-  GetPage(
-    name: AppRroute.adminHomeScreen,
-    page: () => AdminHomeScreen(),
-  ),
+  
   GetPage(
     name: AppRroute.addOverSeer,
     page: () => AddOverSeerPage(),
