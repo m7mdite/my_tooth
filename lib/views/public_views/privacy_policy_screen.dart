@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -20,7 +21,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(AppConstants.defaultBackgroundImage),
+              image: AssetImage(AppImages.authBackground),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.linearToSrgbGamma(),
             ),

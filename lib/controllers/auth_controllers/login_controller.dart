@@ -29,7 +29,8 @@ class LoginControllerImp extends LoginController {
   Crud crud = Crud();
   late StatusRequest statusRequest;
   // WebSocketService webSocketService = WebSocketService();
-  WebSocketService webSocketService1 = WebSocketService();
+  // WebSocketService webSocketService = WebSocketService();
+  WebSocketService get webSocketService => Get.find<WebSocketService>();
 
   @override
   void onInit() {
@@ -72,7 +73,7 @@ class LoginControllerImp extends LoginController {
         if (statusRequest == StatusRequest.success) {
         await  toHome(response);
           print("id ${response['data']['_id']}");
-        webSocketService1.connect(response['data']['_id']);
+        webSocketService.connect(response['data']['_id']);
         } else {
           Get.snackbar(
             'خطأ',

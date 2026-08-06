@@ -4,6 +4,7 @@ import 'package:gr_flutter/controllers/auth_controllers/auth_controller.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import '../../utils/app_constants/colors_constant.dart';
+import '../../utils/app_constants/app_images_constant.dart'; // ✅ مضاف
 import 'login_form.dart';
 import 'register_form.dart';
 
@@ -21,7 +22,7 @@ class AuthScreen extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/images_asnan/asnan6.jpeg"),
+            image: AssetImage(AppImages.authBackground), // ✅ ثيم-أوير بدل "images/images_asnan/asnan6.jpeg"
             fit: BoxFit.cover,
           ),
         ),
@@ -31,9 +32,9 @@ class AuthScreen extends StatelessWidget {
               // === الشعار والنص العلوي ===
               Container(
                 margin: const EdgeInsets.only(top: 20),
-                child: Column(
+                child: const Column(
                   children: [
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                   ],
                 ),
               ),
@@ -130,7 +131,6 @@ class AuthScreen extends StatelessWidget {
   Widget _buildGuestButton() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      // width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -156,7 +156,7 @@ class AuthScreen extends StatelessWidget {
         onTap: () {
           controller.loginAsGuest();
         },
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.elliptical(100, 10),
           bottomLeft: Radius.elliptical(10, 100),
           topRight: Radius.elliptical(10, 100),

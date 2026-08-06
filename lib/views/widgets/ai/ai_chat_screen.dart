@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/ai_controllers/ai_chat_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../custom_app_bar.dart';
 import '../custom_icon_app_bar.dart';
@@ -34,7 +35,7 @@ class AiChatScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(AppConstants.defaultBackgroundImage),
+              image: AssetImage(AppImages.authBackground),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.linearToSrgbGamma()),
         ),

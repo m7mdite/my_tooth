@@ -26,7 +26,9 @@ class ThemeController extends GetxController {
     currentTheme = AppThemeType.values.firstWhere(
       (e) => e.name == saved,
       orElse: () => AppThemeType.blue,
+      
     );
+    print('🎨 Loaded theme: ${currentTheme.name}');
   }
 
   bool get isDark => currentTheme == AppThemeType.dark;
@@ -35,8 +37,10 @@ class ThemeController extends GetxController {
     if (currentTheme == theme) return;
     currentTheme = theme;
     _box.write(_storageKey, theme.name);
+    update(); 
     // يعيد بناء كامل الشجرة عشان كل الودجت يلي بتستخدم AppColors
     // مباشرة (مش عن طريق Theme.of(context)) تتحدث فورًا.
     Get.forceAppUpdate();
+    // Get.offAllNamed(Get.currentRoute);
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_images_constant.dart';
 import 'package:gr_flutter/views/widgets/default_container_profile.dart';
 import 'package:gr_flutter/views/public_views/change_password_screen.dart';
 import 'package:gr_flutter/views/public_views/privacy_policy_screen.dart';
@@ -15,6 +16,7 @@ import '../../../services/functions/upload_picture.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
+import '../../widgets/theme_switcher_widget.dart';
 import '../conversations_screen.dart';
 import '../notifications_view.dart';
 
@@ -35,7 +37,10 @@ class UnifiedSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: AppColors.background, // ✅
       appBar: CustomAppBar(
+        // backgroundColor: Colors.red,
+        
         title: "الاعدادات",
         automaticallyImplyLeading: false,
         notifacation: false,
@@ -55,7 +60,7 @@ class UnifiedSettingScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage),
+            image: AssetImage(AppImages.authBackground),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.linearToSrgbGamma(),
           ),
@@ -95,17 +100,17 @@ class UnifiedSettingScreen extends StatelessWidget {
                                 ],
                                 borderRadius: BorderRadius.circular(100),
                                 image: DecorationImage(
-                                  image:
-                                      controller.profilePicture.value.isNotEmpty
-                                          ? NetworkImage(
+                                  image: controller
+                                          .profilePicture.value.isNotEmpty
+                                      ? NetworkImage(
                                               controller.profilePicture.value)
-                                          : AssetImage(AppConstants
-                                                  .defaultBackgroundImage)
-                                              as ImageProvider,
+                                          as ImageProvider
+                                      : AssetImage(
+                                          AppImages.authBackground),
                                   fit: BoxFit.cover,
                                 ),
-                                border:
-                                    Border.all(color: AppColors.white, width: 2),
+                                border: Border.all(
+                                    color: AppColors.primary, width: 2), // ✅ بدل white
                               ),
                             ),
                           ),
@@ -126,7 +131,11 @@ class UnifiedSettingScreen extends StatelessWidget {
                           children: [
                             Text(
                               controller.fullName.value,
-                              style: TextStyle(color: AppColors.black),
+                              style: TextStyle(
+                                color: AppColors.textPrimary, // ✅ بدل AppColors.black
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
                             ),
                             if (controller.isVerified.value) ...[
                               const SizedBox(width: 8),
@@ -142,7 +151,10 @@ class UnifiedSettingScreen extends StatelessWidget {
                               ),
                               child: Text(
                                 controller.getRoleTitle(),
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.primary700, // ✅
+                                ),
                               ),
                             ),
                           ],
@@ -173,9 +185,7 @@ class UnifiedSettingScreen extends StatelessWidget {
                       position: 3,
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 30,
-                          ),
+                          const SizedBox(height: 30),
                           Center(
                             child: DefaultContainerProfile(
                               color: AppColors.primary,
@@ -188,6 +198,23 @@ class UnifiedSettingScreen extends StatelessWidget {
                       ),
                     ),
                   const SizedBox(height: 30),
+
+                  // === 5. تغيير اللغة ===
+                  _buildAnimatedItem(
+                    position: 4,
+                    child: Center(
+                      child: DefaultContainerProfile(
+                        color: AppColors.primary,
+                        title: "تغيير الثيم",
+                        icon: Icons.brightness_4_outlined,
+                        onTap: () {
+                          _showThemeDialog();
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+
                   // === 5. تغيير اللغة ===
                   _buildAnimatedItem(
                     position: 4,
@@ -275,7 +302,6 @@ class UnifiedSettingScreen extends StatelessWidget {
     );
   }
 
-  // ✅ دالة مساعدة لتغليف العناصر بالأنيميشن الموحد
   Widget _buildAnimatedItem({
     required int position,
     required Widget child,
@@ -285,10 +311,23 @@ class UnifiedSettingScreen extends StatelessWidget {
       duration: const Duration(milliseconds: 600),
       child: SlideAnimation(
         verticalOffset: 50,
-        child: FadeInAnimation(
-          child: child,
-        ),
+        child: FadeInAnimation(child: child),
       ),
     );
   }
+  void _showThemeDialog() {
+  Get.dialog(
+    AlertDialog(
+      backgroundColor: AppColors.surface,
+      title: Text('اختر الثيم', style: TextStyle(color: AppColors.textPrimary)),
+      content: const ThemeSwitcherWidget(), // ✅ بسيطة وما تعمل overflow
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(),
+          child: Text('إغلاق', style: TextStyle(color: AppColors.primary)),
+        ),
+      ],
+    ),
+  );
+}
 }

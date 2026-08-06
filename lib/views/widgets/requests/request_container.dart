@@ -31,7 +31,7 @@
 //         decoration: BoxDecoration(
 //           image: DecorationImage(
 //             image: AssetImage(
-//               AppConstants.defaultBackgroundImage,
+//               AppImages.authBackground,
 //             ),
 //             fit: BoxFit.cover,
 //             colorFilter: ColorFilter.linearToSrgbGamma(),

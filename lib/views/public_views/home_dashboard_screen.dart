@@ -14,6 +14,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../controllers/home_dashboard_controller.dart';
 import '../../models/dashboard_model.dart';
 import '../../services/local_storge/local_user_storage.dart';
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../admin_views/admin_notify_dialog.dart';
 import '../admin_views/advertisement_management_screen.dart';
@@ -30,6 +31,7 @@ class HomeDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String role = settingController.role.value;
     return Scaffold(
+      backgroundColor: AppColors.background, // ✅
       appBar: CustomAppBar(
         title: "الرئيسية",
         actions: [
@@ -98,38 +100,47 @@ class HomeDashboardScreen extends StatelessWidget {
         }),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton:role == "admin"? InkWell(
-        onTap: () {Get.dialog(
-                            const AdminNotifyDialog(),
-                            barrierDismissible: false,
-                          );},
-        child: Container(
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-              color: AppColors.white24,
-              border: Border.all(width: 1, color: AppColors.primary, strokeAlign: 10),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.elliptical(100, 10),
-                bottomLeft: Radius.elliptical(10, 100),
-                topRight: Radius.elliptical(10, 100),
-                bottomRight: Radius.elliptical(100, 10),
+      floatingActionButton: role == "admin"
+          ? InkWell(
+              onTap: () {
+                Get.dialog(
+                  const AdminNotifyDialog(),
+                  barrierDismissible: false,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    color: AppColors.surface.withValues(alpha: 0.9), // ✅ بدل white24
+                    border: Border.all(
+                        width: 1, color: AppColors.primary, strokeAlign: 10),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.elliptical(100, 10),
+                      bottomLeft: Radius.elliptical(10, 100),
+                      topRight: Radius.elliptical(10, 100),
+                      bottomRight: Radius.elliptical(100, 10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.2), // ✅ بدل white
+                        blurRadius: 3,
+                        spreadRadius: 3,
+                      )
+                    ]),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.notifications_active, color: AppColors.primary), // ✅
+                    const SizedBox(width: 8),
+                    Text(
+                      "إرسال إشعار للجميع",
+                      style: TextStyle(color: AppColors.textPrimary), // ✅
+                    ),
+                  ],
+                ),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.white,
-                  blurRadius: 3,
-                  spreadRadius: 3,
-                )
-              ]),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.notifications_active),
-              Text("إرسال إشعار للجميع"),
-            ],
-          ),
-        ),
-      ):null,
+            )
+          : null,
       body: RefreshIndicator(
         onRefresh: () async {
           controller.onInit();
@@ -140,13 +151,18 @@ class HomeDashboardScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (controller.dashboard.value == null) {
-            return const Center(child: Text('حدث خطأ في تحميل البيانات'));
+            return Center(
+              child: Text(
+                'حدث خطأ في تحميل البيانات',
+                style: TextStyle(color: AppColors.textPrimary), // ✅
+              ),
+            );
           }
           final dashboard = controller.dashboard.value!;
           return Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(AppConstants.defaultBackgroundImage),
+                image: AssetImage(AppImages.authBackground),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.linearToSrgbGamma(),
               ),
@@ -159,8 +175,7 @@ class HomeDashboardScreen extends StatelessWidget {
                   children: [
                     // ===== 1. إحصائيات الطلبات =====
                     _buildStatsSection(dashboard.requests!, role),
-                    
-                      
+
                     // ===== 2. الإعلانات (كاروسيل) =====
                     if (dashboard.adv != null &&
                         dashboard.adv!.data != null &&
@@ -190,7 +205,6 @@ class HomeDashboardScreen extends StatelessWidget {
   Widget _buildStatsSection(Requests stats, String role) {
     final myCases = controller.dashboard.value?.myCases;
     final users = controller.dashboard.value?.users;
-    print(role);
     return AnimationConfiguration.staggeredList(
       position: 0,
       duration: const Duration(milliseconds: 600),
@@ -206,7 +220,8 @@ class HomeDashboardScreen extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              border: Border.all(color: AppColors.primary, width: 2, strokeAlign: 10),
+              border: Border.all(
+                  color: AppColors.primary, width: 2, strokeAlign: 10),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.elliptical(80, 10),
                 bottomLeft: Radius.elliptical(10, 80),
@@ -224,7 +239,6 @@ class HomeDashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // العنوان والإجمالي في صف واحد
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -272,7 +286,6 @@ class HomeDashboardScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                // الإحصائيات العامة (شبكة 3 أعمدة)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -295,10 +308,7 @@ class HomeDashboardScreen extends StatelessWidget {
                 ),
                 if (users != null) ...[
                   const SizedBox(height: 10),
-                  Container(
-                    height: 1,
-                    color: AppColors.white24,
-                  ),
+                  Container(height: 1, color: AppColors.white24),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -320,13 +330,9 @@ class HomeDashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ],
-                // حالاتي الخاصة (إن وجدت)
                 if (myCases != null && role != 'admin') ...[
                   const SizedBox(height: 10),
-                  Container(
-                    height: 1,
-                    color: AppColors.white24,
-                  ),
+                  Container(height: 1, color: AppColors.white24),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -341,7 +347,6 @@ class HomeDashboardScreen extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      // إحصائيات حالاتي (مضغوطة)
                       Row(
                         children: [
                           if (myCases.pending != null)
@@ -364,7 +369,6 @@ class HomeDashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ],
-                // =======================================================
               ],
             ),
           ),
@@ -373,7 +377,6 @@ class HomeDashboardScreen extends StatelessWidget {
     );
   }
 
-// دالة لعنصر إحصائي فردي (شبكي)
   Widget _buildStatItem({
     required IconData icon,
     required int count,
@@ -394,16 +397,12 @@ class HomeDashboardScreen extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
-            color: AppColors.white70,
-            fontSize: 10,
-          ),
+          style: const TextStyle(color: AppColors.white70, fontSize: 10),
         ),
       ],
     );
   }
 
-// دالة لعنصر إحصائي مصغر (للحالات الخاصة)
   Widget _buildMiniStat({
     required int count,
     required String label,
@@ -414,10 +413,7 @@ class HomeDashboardScreen extends StatelessWidget {
         Container(
           width: 6,
           height: 6,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 4),
         Text(
@@ -429,18 +425,14 @@ class HomeDashboardScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 2),
-        Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.white60,
-            fontSize: 9,
-          ),
+        const Text(
+          '',
+          style: TextStyle(color: AppColors.white60, fontSize: 9),
         ),
       ],
     );
   }
 
-  // ===== قسم الإعلانات (باستخدام AdvItem) =====
   Widget _buildAdvSection(List<AdvItem> advs) {
     return AnimationConfiguration.staggeredList(
       position: 1,
@@ -451,8 +443,9 @@ class HomeDashboardScreen extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                height: 150, // زدنا الارتفاع قليلاً للراحة
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                height: 150,
                 child: PageView.builder(
                   controller: controller.advPageController,
                   onPageChanged: controller.onAdvPageChanged,
@@ -482,15 +475,14 @@ class HomeDashboardScreen extends StatelessWidget {
                         ),
                         child: Stack(
                           children: [
-                            // ✅ نص الإعلان في الأسفل مع خلفية شفافة
                             Positioned(
                               bottom: 0,
                               left: 0,
                               right: 0,
                               child: Container(
                                 padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.elliptical(80, 10),
                                     bottomRight: Radius.elliptical(80, 10),
                                   ),
@@ -498,8 +490,8 @@ class HomeDashboardScreen extends StatelessWidget {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      AppColors.black.withValues(alpha: 0.8),
-                                      AppColors.transparent,
+                                      Color(0xCC000000),
+                                      Colors.transparent,
                                     ],
                                   ),
                                 ),
@@ -521,7 +513,6 @@ class HomeDashboardScreen extends StatelessWidget {
                   },
                 ),
               ),
-              // نقاط التقدم
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(advs.length, (i) {
@@ -569,7 +560,6 @@ class HomeDashboardScreen extends StatelessWidget {
                       ),
                     ),
                   if (isAdmin) ...[
-                    // const SizedBox(width: 16),
                     Expanded(
                       child: _actionButton(
                         icon: Icons.ad_units,
@@ -589,18 +579,19 @@ class HomeDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _actionButton(
-      {required IconData icon,
-      required String label,
-      required Color color,
-      required VoidCallback onTap}) {
+  Widget _actionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.white.withValues(alpha: 0.95),
+          color: AppColors.surface.withValues(alpha: 0.95), // ✅ بدل AppColors.white
           borderRadius: AppThemeConstants.borderRadius,
           border: Border.all(color: color, width: 1.2),
           boxShadow: [
@@ -639,7 +630,7 @@ class HomeDashboardScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Text(
+                    Text(
                       'أفضل المنشورات',
                       style: TextStyle(
                           fontSize: 18,
@@ -664,21 +655,20 @@ class HomeDashboardScreen extends StatelessWidget {
                           ));
                         }
                       },
-                      child:  Text('عرض الكل',
+                      child: Text('عرض الكل',
                           style: TextStyle(color: AppColors.primary)),
                     ),
                   ],
                 ),
               ),
               SizedBox(
-                height: 320, // ⬅️ زدنا الارتفاع قليلاً ليتسع للصورة
+                height: 320,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
                     final post = posts[index];
-                    // الصورة الأولى إن وجدت
                     final String? firstImageUrl =
                         post.images != null && post.images!.isNotEmpty
                             ? post.images!.first.url
@@ -689,7 +679,7 @@ class HomeDashboardScreen extends StatelessWidget {
                           horizontal: 6, vertical: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.white.withValues(alpha: 0.95),
+                        color: AppColors.cardColor.withValues(alpha: 0.95), // ✅ بدل white
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.elliptical(80, 10),
                           bottomLeft: Radius.elliptical(10, 80),
@@ -707,17 +697,18 @@ class HomeDashboardScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 1. رأس البوست (اسم المستخدم)
                           Row(
                             children: [
                               CircleAvatar(
                                 radius: 14,
-                                backgroundImage: post.publisher?.profilePhoto !=
-                                            null &&
-                                        post.publisher!.profilePhoto!.isNotEmpty
-                                    ? NetworkImage(
-                                        post.publisher!.profilePhoto!)
-                                    : null,
+                                backgroundColor: AppColors.grey200,
+                                backgroundImage:
+                                    post.publisher?.profilePhoto != null &&
+                                            post.publisher!.profilePhoto!
+                                                .isNotEmpty
+                                        ? NetworkImage(
+                                            post.publisher!.profilePhoto!)
+                                        : null,
                                 child: post.publisher?.profilePhoto == null ||
                                         post.publisher!.profilePhoto!.isEmpty
                                     ? const Icon(Icons.person, size: 14)
@@ -727,17 +718,17 @@ class HomeDashboardScreen extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   post.publisher?.fullName ?? '',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    color: AppColors.textPrimary, // ✅
+                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 6),
-
-                          // 2. ✅ صورة البوست (الجديد)
                           if (firstImageUrl != null) ...[
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
@@ -756,30 +747,35 @@ class HomeDashboardScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                           ],
-
-                          // 3. محتوى النص (مقتطف)
                           Text(
                             post.content ?? '',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 13),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textPrimary, // ✅
+                            ),
                           ),
                           const SizedBox(height: 6),
-
-                          // 4. أزرار التفاعل
                           Row(
                             children: [
                               Icon(Icons.thumb_up_outlined,
                                   size: 14, color: AppColors.primary),
                               const SizedBox(width: 2),
                               Text('${post.countLikes ?? 0}',
-                                  style: const TextStyle(fontSize: 12)),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textSecondary, // ✅
+                                  )),
                               const SizedBox(width: 12),
                               Icon(Icons.comment_outlined,
                                   size: 14, color: AppColors.grey),
                               const SizedBox(width: 2),
                               Text('${post.countComments ?? 0}',
-                                  style: const TextStyle(fontSize: 12)),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textSecondary, // ✅
+                                  )),
                             ],
                           ),
                         ],

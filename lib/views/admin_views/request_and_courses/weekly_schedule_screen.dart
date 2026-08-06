@@ -7,6 +7,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../../models/admin_models/lesson_model.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 
 class WeeklyScheduleScreen extends StatelessWidget {
@@ -24,7 +25,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage),
+            image: AssetImage(AppImages.authBackground),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.linearToSrgbGamma(),
           ),

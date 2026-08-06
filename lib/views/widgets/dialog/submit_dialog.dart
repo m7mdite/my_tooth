@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_images_constant.dart';
 
 import '../../../utils/app_constants/colors_constant.dart';
 
@@ -27,13 +28,13 @@ class SubmitDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Material(
-        color: const Color.fromARGB(0, 255, 255, 255),
+        color: AppColors.transparent,
         child: Container(
           width: Get.width * 0.7,
           padding: EdgeInsets.all(7),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(0, 255, 255, 255),
-            border: Border.all(width: 3.5, color: AppColors.white),
+            color: AppColors.transparent,
+            border: Border.all(width: 3.5, color: AppColors.borderColor),
             borderRadius: BorderRadius.only(
               topLeft: Radius.elliptical(100, 10),
               bottomLeft: Radius.elliptical(10, 100),
@@ -46,7 +47,7 @@ class SubmitDialog extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  "images/images_asnan/a73e4065-5ddb-48a0-abdb-07db5334d9e9.jpeg",
+                  AppImages.authBackground,
                 ),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.linearToSrgbGamma(),
@@ -64,6 +65,7 @@ class SubmitDialog extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -80,6 +82,7 @@ class SubmitDialog extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
+                      color: AppColors.textPrimary,
                     ),
                     textAlign: TextAlign.right,
                   ),

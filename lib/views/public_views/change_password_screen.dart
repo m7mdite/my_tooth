@@ -4,6 +4,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../controllers/public_controllers/public_controller.dart';
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class ChangePasswordScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage),
+            image: AssetImage(AppImages.authBackground),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.linearToSrgbGamma(),
           ),

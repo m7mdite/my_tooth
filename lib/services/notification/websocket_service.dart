@@ -20,9 +20,12 @@ const String _kSocketBaseUrl = 'http://localhost:5000';
 
 class WebSocketService extends GetxService {
   static WebSocketService get to => Get.find();
+  int _initAttempts = 0;
+  bool _isLoggedOut = false; 
 
-  late IO.Socket _socket;
 
+  // late IO.Socket _socket;
+IO.Socket? _socket;
   final RxString connectionStatus = 'غير متصل'.obs;
   final RxBool isConnected = false.obs;
 
@@ -46,15 +49,26 @@ class WebSocketService extends GetxService {
   // (قد يُسجَّل بعد هذا الـ service حسب ترتيب Get.put في main.dart،
   // فبنعيد المحاولة لحد ما يصير جاهز).
   // ---------------------------------------------------------------------
+  // void _initController() {
+  //   if (Get.isRegistered<NotificationController>()) {
+  //     _notificationController = Get.find<NotificationController>();
+  //     debugPrint('✅ NotificationController جاهز');
+  //   } else {
+  //     debugPrint('⚠️ NotificationController غير مسجل بعد، إعادة محاولة...');
+  //     Future.delayed(const Duration(milliseconds: 500), _initController);
+  //   }
+  // }
   void _initController() {
-    if (Get.isRegistered<NotificationController>()) {
-      _notificationController = Get.find<NotificationController>();
-      debugPrint('✅ NotificationController جاهز');
-    } else {
-      debugPrint('⚠️ NotificationController غير مسجل بعد، إعادة محاولة...');
-      Future.delayed(const Duration(milliseconds: 500), _initController);
-    }
+  if (Get.isRegistered<NotificationController>()) {
+    _notificationController = Get.find<NotificationController>();
+    debugPrint('✅ NotificationController جاهز');
+  } else if (_initAttempts < 10) { // ✅ حد أقصى
+    _initAttempts++;
+    Future.delayed(const Duration(milliseconds: 500), _initController);
+  } else {
+    debugPrint('❌ فشل إيجاد NotificationController بعد 10 محاولات');
   }
+}
 
   Future<bool> _ensureController() async {
     int attempts = 0;
@@ -193,34 +207,65 @@ class WebSocketService extends GetxService {
   // ---------------------------------------------------------------------
   // الاتصال
   // ---------------------------------------------------------------------
+  // Future<void> connect(String userId) async {
+  //   _isLoggedOut = false;
+  //   _userId = userId;
+  //   await initializeNotifications();
+  //   await _ensureController();
+
+  //   try {
+  //     // ✅ ملاحظة: extraHeaders غير موثوق دائماً مع transport 'websocket' فقط
+  //     // (لا تُرسَل على كل المنصات، خصوصاً الويب والموبايل). تمرير userId
+  //     // عبر query أضمن ويوصل فعلياً بالـ handshake.
+  //     _socket = IO.io(
+  //       _kSocketBaseUrl,
+  //       IO.OptionBuilder()
+  //           .setTransports(['websocket'])
+  //           .setQuery({'userId': userId})
+  //           .disableAutoConnect()
+  //           .build(),
+  //     );
+
+  //     _registerEventHandlers();
+  //     _socket!.connect();
+  //   } catch (e) {
+  //     debugPrint('❌ خطأ بالاتصال: $e');
+  //     connectionStatus.value = 'خطأ في الاتصال';
+  //   }
+  // }
   Future<void> connect(String userId) async {
-    _userId = userId;
-    await initializeNotifications();
-    await _ensureController();
-
-    try {
-      // ✅ ملاحظة: extraHeaders غير موثوق دائماً مع transport 'websocket' فقط
-      // (لا تُرسَل على كل المنصات، خصوصاً الويب والموبايل). تمرير userId
-      // عبر query أضمن ويوصل فعلياً بالـ handshake.
-      _socket = IO.io(
-        _kSocketBaseUrl,
-        IO.OptionBuilder()
-            .setTransports(['websocket'])
-            .setQuery({'userId': userId})
-            .disableAutoConnect()
-            .build(),
-      );
-
-      _registerEventHandlers();
-      _socket.connect();
-    } catch (e) {
-      debugPrint('❌ خطأ بالاتصال: $e');
-      connectionStatus.value = 'خطأ في الاتصال';
-    }
+  _isLoggedOut = false;
+  _userId = userId;
+  
+  // ✅ إذا في socket قديم، اسكره أولاً
+  if (_socket != null) {
+    _socket!.disconnect();
+    _socket!.dispose();
+    _socket = null;
   }
+  
+  await initializeNotifications();
+  await _ensureController();
+
+  try {
+    _socket = IO.io(
+      _kSocketBaseUrl,
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .setQuery({'userId': userId})
+          .disableAutoConnect()
+          .build(),
+    );
+    _registerEventHandlers();
+    _socket!.connect(); // ✅ null-safe
+  } catch (e) {
+    debugPrint('❌ خطأ بالاتصال: $e');
+    connectionStatus.value = 'خطأ في الاتصال';
+  }
+}
 
   void _registerEventHandlers() {
-    _socket
+    _socket!
       ..on(SocketEvents.connect, _handleConnect)
       ..on(SocketEvents.disconnect, _handleDisconnect)
       ..on(SocketEvents.error, _handleError)
@@ -237,7 +282,7 @@ class WebSocketService extends GetxService {
     debugPrint('✅ تم الاتصال بالسوكيت');
     isConnected.value = true;
     connectionStatus.value = 'متصل';
-    _socket.emit(SocketEvents.registerPatient, _userId);
+    _socket!.emit(SocketEvents.registerPatient, _userId);
   }
 
   void _handleDisconnect(dynamic _) {
@@ -252,13 +297,20 @@ class WebSocketService extends GetxService {
     connectionStatus.value = 'خطأ في الاتصال';
   }
 
+  // void _attemptReconnect() {
+  //   Future.delayed(const Duration(seconds: 5), () {
+  //     if (!isConnected.value && _userId != null) {
+  //       connect(_userId!);
+  //     }
+  //   });
+  // }
   void _attemptReconnect() {
-    Future.delayed(const Duration(seconds: 5), () {
-      if (!isConnected.value && _userId != null) {
-        connect(_userId!);
-      }
-    });
-  }
+  Future.delayed(const Duration(seconds: 5), () {
+    if (!isConnected.value && _userId != null && !_isLoggedOut) { // ✅
+      connect(_userId!);
+    }
+  });
+}
 
   /// إشعار عام (يجي من notifyAll بالباك عبر حدث 'notify').
   /// ✅ صار يمر بنفس مسار باقي الإشعارات: إشعار نظام حقيقي (يظهر
@@ -409,17 +461,69 @@ class WebSocketService extends GetxService {
   }
 
   // ---------------------------------------------------------------------
-  void disconnect() {
-    _socket.dispose();
-    isConnected.value = false;
-    connectionStatus.value = 'غير متصل';
+  // void disconnect() {
+  //   _socket.dispose();
+  //   isConnected.value = false;
+  //   connectionStatus.value = 'غير متصل';
+  // }
+//   void disconnect() {
+//   if (isConnected.value) {  // ✅ بس disconnet إذا فعلاً متصل
+//     _socket.disconnect(); // ✅ أولاً disconnect نظيف
+//     _socket.dispose(); 
+//   }
+//   isConnected.value = false;
+//   connectionStatus.value = 'غير متصل';
+// }
+// Future<void> disconnect() async {
+//   if (isConnected.value) {
+//     _socket.disconnect();
+//     await Future.delayed(const Duration(milliseconds: 500)); // ✅ وقت للـ packet يوصل
+//     _socket.dispose();
+//   }
+//   isConnected.value = false;
+//   connectionStatus.value = 'غير متصل';
+// }
+// Future<void> disconnect() async {
+//   _isLoggedOut = true;  // ✅ وقف الـ reconnect
+//   _userId = null;       // ✅ امسح الـ userId
+//   if (isConnected.value) {
+//     _socket.disconnect();
+//     await Future.delayed(const Duration(milliseconds: 500));
+//     _socket.dispose();
+//   }
+//   isConnected.value = false;
+//   connectionStatus.value = 'غير متصل';
+// }
+Future<void> disconnect() async {
+  _isLoggedOut = true;
+  _userId = null;
+  if (isConnected.value && _socket != null) { // ✅ null check
+    _socket!.disconnect();
+    await Future.delayed(const Duration(milliseconds: 500));
+    _socket!.dispose();
+    _socket = null; // ✅ امسحه بعد dispose
   }
-
+  isConnected.value = false;
+  connectionStatus.value = 'غير متصل';
+}
+  // @override
+  // void onClose() {
+  //   disconnect();
+  //   super.onClose();
+  // }
   @override
-  void onClose() {
-    disconnect();
-    super.onClose();
+void onClose() {
+  // لا تستخدم await هون، بس نادي disconnect بدون انتظار
+  _isLoggedOut = true;
+  _userId = null;
+  if (_socket != null) {
+    _socket!.disconnect();
+    _socket!.dispose();
+    _socket = null;
   }
+  isConnected.value = false;
+  super.onClose();
+}
 }
 
 

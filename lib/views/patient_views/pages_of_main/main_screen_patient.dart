@@ -50,13 +50,15 @@ class MainScreenPatient extends StatelessWidget {
                 int index = entry.key;
                 Map<String, dynamic> item = entry.value;
                 
-                return BottomNavigationBarIcon(
-                  text: item["title"],
-                  icon: item["icon"],
-                  selected: controller.selectedPage == index,
-                  onPressed: () {
-                    controller.toPage(index);
-                  },
+                return Flexible(
+                  child: BottomNavigationBarIcon(
+                    text: item["title"],
+                    icon: item["icon"],
+                    selected: controller.selectedPage == index,
+                    onPressed: () {
+                      controller.toPage(index);
+                    },
+                  ),
                 );
               }).toList(),
             ),

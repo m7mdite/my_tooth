@@ -27,23 +27,36 @@ class AppColors {
   // =========================================================
   // 1) الألوان الأساسية (Brand / Primary) -- بتتغير حسب الثيم
   // =========================================================
-   static MaterialColor get primary {
+  static const MaterialColor _blackMaterial = MaterialColor(
+  0xFF000000,
+  <int, Color>{
+    50:  Color(0xFF424242),
+    100: Color(0xFF383838),
+    200: Color(0xFF2E2E2E),
+    300: Color(0xFF242424),
+    400: Color(0xFF1A1A1A),
+    500: Color(0xFF000000),
+    600: Color(0xFF000000),
+    700: Color(0xFF000000),
+    800: Color(0xFF000000),
+    900: Color(0xFF000000),
+  },
+);
+  static MaterialColor get primary {
     switch (_theme) {
       case AppThemeType.dark:
-        return Colors.indigo;
+        return _blackMaterial;
       case AppThemeType.pink:
         return Colors.pink;
       case AppThemeType.blue:
         return Colors.blue;
-      
     }
-    
   }
 
   static Color get primaryAccent {
     switch (_theme) {
       case AppThemeType.dark:
-        return Colors.indigoAccent;
+        return Colors.blueGrey.shade200;
       case AppThemeType.pink:
         return Colors.pinkAccent;
       case AppThemeType.blue:
@@ -81,7 +94,7 @@ class AppColors {
   static Color get surface {
     switch (_theme) {
       case AppThemeType.dark:
-        return const Color(0xFF1E1E1E);
+        return const Color(0xFFFFFFFF);
       case AppThemeType.pink:
         return const Color(0xFFFFFFFF);
       case AppThemeType.blue:
@@ -222,14 +235,6 @@ class AppColors {
   static const Color onboarding4Start = Color(0xFFE17055);
   static const Color onboarding4End = Color(0xFFFAB1A0);
 }
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 

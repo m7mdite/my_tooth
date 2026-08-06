@@ -5,6 +5,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'dart:io';
 
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/custom_app_bar.dart';
 
@@ -88,7 +89,7 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage),
+            image: AssetImage(AppImages.authBackground),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.linearToSrgbGamma(),
           ),
@@ -114,8 +115,8 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                           borderRadius: BorderRadius.circular(100),
                           image: DecorationImage(
                             image: controller.profilePicture.value.isNotEmpty
-                                ? NetworkImage("${controller.profilePicture.value}")
-                                : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                                ? NetworkImage(controller.profilePicture.value)
+                                : AssetImage(AppImages.authBackground) as ImageProvider,
                             fit: BoxFit.cover,
                           ),
                           border: Border.all(color: AppColors.white, width: 2),

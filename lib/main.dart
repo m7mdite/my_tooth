@@ -17,16 +17,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(SecureStorageService(), permanent: true);
   Get.put(LocalUserStorage(), permanent: true);
+  await GetStorage.init();
   Get.put(ThemeController(), permanent: true);
   Get.put(Crud(), permanent: true);
 
   // await initialServices();
-  await GetStorage.init();
 
-  
-  Get.put(NotificationController());
+  Get.put(NotificationController(), permanent: true);
   // Get.put(AuthModel(), permanent: true);
-  Get.put(WebSocketService());
+  Get.put(WebSocketService(), permanent: true);
   // Get.put(WebSocketService(), permanent: true);
   Get.put(UnifiedProfileRemote(Get.find()), permanent: true);
   // Get.put(AuthService(), permanent: true);
@@ -35,7 +34,7 @@ Future<void> main() async {
   //   await Get.find<SecureStorageService>().saveToken(oldToken);
   //   GetStorage().remove('token');
   // }
-  
+
   runApp(const MyApp());
 }
 
@@ -45,14 +44,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      locale: Locale('ar'),
-      initialBinding: GeneralBinding(),
-       initialRoute: AppRroute.splash,
-      getPages: routes,
-      debugShowCheckedModeBanner: false,
-      title: 'final',
-      
+    return GetBuilder<ThemeController>(
+     
+      builder: (_) {
+        return GetMaterialApp(
+          locale: Locale('ar'),
+          initialBinding: GeneralBinding(),
+          initialRoute: AppRroute.splash,
+          getPages: routes,
+          debugShowCheckedModeBanner: false,
+          title: 'final',
+        );
+      },
     );
   }
 }

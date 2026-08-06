@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/public_views/posts/edit_post_screen.dart'; // �
 
 import '../../../services/functions/show_image_preview.dart';
 import '../../../services/local_storge/local_user_storage.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 
 class PostCard extends StatelessWidget {
@@ -38,6 +39,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context)  {
     final bool canEditOrDelete = (post.isForMe == true) || (currentUserRole == 'admin');
     return Card(
+      color: AppColors.background,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -52,21 +54,18 @@ class PostCard extends StatelessWidget {
                 // صورة المستخدم (تعطيل النقر إذا كان المنشور للمستخدم نفسه)
                 InkWell(
                   onTap: post.isForMe == true 
-                      ? null // ❌ تعطيل النقر على صورة المستخدم إذا كان صاحب المنشور
+                      ? null 
                       : () {
-                          // ✅ فتح الملف الشخصي للمستخدم الآخر (من خلال PublicController)
-                          // Get.toNamed(AppRroute.viewOtherProfile, arguments: post.publisher?.sId);
-                          // أو عرض الصورة كما في السابق:
                           showImagePreview(
                             post.publisher?.profilePhoto != null
                                 ? '${post.publisher!.profilePhoto}'
-                                : AppConstants.defaultBackgroundImage,
+                                : AppImages.authBackground,
                           );
                         },
                   child: CircleAvatar(
                     backgroundImage: post.publisher?.profilePhoto != null
                         ? NetworkImage('${post.publisher!.profilePhoto}')
-                        : const AssetImage(AppConstants.defaultBackgroundImage)
+                        :  AssetImage(AppImages.authBackground)
                             as ImageProvider,
                     radius: 20,
                   ),
@@ -78,11 +77,11 @@ class PostCard extends StatelessWidget {
                     children: [
                       Text(
                         post.publisher?.fullName ?? "اسم غير معروف",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style:  TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                       ),
                       Text(
                         _getRoleName(post.publisherRole!),
-                        style: TextStyle(fontSize: 12, color: AppColors.grey[600]),
+                        style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                       ),
                     ],
                   ),
@@ -109,7 +108,7 @@ class PostCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             // ===== المحتوى النصي =====
-            Text(post.content!, style: const TextStyle(fontSize: 15)),
+            Text(post.content!, style:  TextStyle(fontSize: 15,color: AppColors.textPrimary)),
             const SizedBox(height: 8),
             // ===== الصور =====
             if (post.images!.isNotEmpty)

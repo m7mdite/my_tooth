@@ -41,7 +41,9 @@ class ApiLink {
 
   // =========================== ml (التنبؤ بإمكانية العلاج)
   static const String predictTreatment = '$servere/ml/predict';
-
+ // =========================== treatment-ml (التنبؤ بنوع المعالجة)
+  static const String predictCaseType =
+      '$servere/treatment-ml/predict-with-image';
   // ================================================= overseer
   static const String treatmentRequestsForOverseer =
       '$servere/overseer/treatment';

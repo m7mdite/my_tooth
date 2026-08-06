@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/app_constants/colors_constant.dart';
-
-/// زر دائري "مضيء" (بستايل ضوء/lightbulb) لتشغيل التنبؤ بإمكانية العلاج.
-/// اختياري بالكامل — المريض حر يستخدمه أو يتجاهله.
+/// زر دائري "مضيء" (بستايل ضوء/lightbulb) لتشغيل أي عملية تنبؤ اختيارية.
+/// قابل لإعادة الاستخدام: التنبؤ بإمكانية العلاج (كهرماني/lightbulb
+/// افتراضياً) أو التنبؤ بنوع المعالجة (بلون وأيقونة مختلفين مثلاً).
 class PredictionLightButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onTap;
   final String label;
+  final Color color;
+  final IconData icon;
 
   const PredictionLightButton({
     super.key,
     required this.isLoading,
     required this.onTap,
     this.label = 'تحقق مبدئي',
+    this.color = Colors.amber,
+    this.icon = Icons.lightbulb,
   });
 
   @override
   Widget build(BuildContext context) {
-    const glowColor = AppColors.amber;
-
     return InkWell(
       onTap: isLoading ? null : onTap,
       borderRadius: BorderRadius.circular(100),
@@ -32,13 +33,13 @@ class PredictionLightButton extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: glowColor.withOpacity(isLoading ? 0.08 : 0.15),
-              border: Border.all(color: glowColor, width: 2),
+              color: color.withOpacity(isLoading ? 0.08 : 0.15),
+              border: Border.all(color: color, width: 2),
               boxShadow: isLoading
                   ? []
                   : [
                       BoxShadow(
-                        color: glowColor.withOpacity(0.55),
+                        color: color.withOpacity(0.55),
                         blurRadius: 18,
                         spreadRadius: 2,
                       ),
@@ -46,17 +47,17 @@ class PredictionLightButton extends StatelessWidget {
             ),
             child: Center(
               child: isLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       height: 26,
                       width: 26,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
-                        color: glowColor,
+                        color: color,
                       ),
                     )
-                  : const Icon(
-                      Icons.lightbulb,
-                      color: glowColor,
+                  : Icon(
+                      icon,
+                      color: color,
                       size: 32,
                     ),
             ),
@@ -64,10 +65,11 @@ class PredictionLightButton extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             isLoading ? 'جاري التحقق...' : label,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: AppColors.black87,
+              color: Colors.black87,
             ),
           ),
         ],

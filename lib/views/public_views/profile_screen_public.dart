@@ -5,6 +5,7 @@ import 'package:gr_flutter/controllers/public_controllers/public_controller.dart
 import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/dialog/report_user_dialog.dart';
 
@@ -24,7 +25,7 @@ class PublicProfileScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.grey[50],
+      backgroundColor: AppColors.background, // ✅ بدل AppColors.grey[50]
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => controller.getOtherProfile(userId),
@@ -39,14 +40,18 @@ class PublicProfileScreen extends StatelessWidget {
 
               if (profile == null) {
                 return Scaffold(
-                  appBar: AppBar(),
+                  backgroundColor: AppColors.background, // ✅
+                  appBar: AppBar(backgroundColor: AppColors.surface), // ✅
                   body: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.error_outline, size: 60, color: AppColors.grey400),
                         const SizedBox(height: 16),
-                        Text('حدث خطأ أثناء تحميل الملف الشخصي', style: TextStyle(color: AppColors.grey[600])),
+                        Text(
+                          'حدث خطأ أثناء تحميل الملف الشخصي',
+                          style: TextStyle(color: AppColors.textSecondary), // ✅
+                        ),
                       ],
                     ),
                   ),
@@ -59,16 +64,16 @@ class PublicProfileScreen extends StatelessWidget {
                   SliverAppBar(
                     expandedHeight: 300,
                     pinned: true,
-                    backgroundColor: AppColors.background,
-                    foregroundColor: AppColors.black87,
+                    backgroundColor: AppColors.background, // ✅
+                    foregroundColor: AppColors.textPrimary, // ✅
                     elevation: 0,
                     leading: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: AppColors.black87),
+                      icon: Icon(Icons.arrow_back_ios, color: AppColors.textPrimary), // ✅
                       onPressed: () => Get.back(),
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: Container(
-                        color: AppColors.white,
+                        color: AppColors.surface, // ✅ بدل AppColors.white
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -88,14 +93,18 @@ class PublicProfileScreen extends StatelessWidget {
                                   backgroundColor: AppColors.grey200,
                                   backgroundImage: (profile.profilePhoto != null && profile.profilePhoto!.url!.isNotEmpty)
                                       ? NetworkImage("${profile.profilePhoto!.url}")
-                                      : const AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                                      :  AssetImage(AppImages.authBackground) as ImageProvider,
                                 ),
                               ),
                             ),
                             const SizedBox(height: 16),
                             Text(
                               '${profile.firstName} ${profile.fatherName} ${profile.lastName}',
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.black87),
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary, // ✅
+                              ),
                             ),
                             const SizedBox(height: 6),
                             Container(
@@ -105,7 +114,7 @@ class PublicProfileScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                _getRoleTitle(profile.role??""),
+                                _getRoleTitle(profile.role ?? ""),
                                 style: TextStyle(color: AppColors.primary700, fontSize: 14),
                               ),
                             ),
@@ -128,7 +137,7 @@ class PublicProfileScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: ElevatedButton.icon(
-                                    onPressed: () => convController.openConversation(profile.user??""),
+                                    onPressed: () => convController.openConversation(profile.user ?? ""),
                                     icon: const Icon(Icons.chat_bubble_outline, size: 18),
                                     label: const Text('مراسلة'),
                                     style: ElevatedButton.styleFrom(
@@ -198,12 +207,16 @@ class PublicProfileScreen extends StatelessWidget {
                               Card(
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                color: AppColors.white,
+                                color: AppColors.cardColor, // ✅ بدل AppColors.white
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Text(
                                     profile.bio!,
-                                    style: const TextStyle(fontSize: 15, height: 1.4),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.4,
+                                      color: AppColors.textPrimary, // ✅
+                                    ),
                                   ),
                                 ),
                               ),
@@ -226,7 +239,11 @@ class PublicProfileScreen extends StatelessWidget {
   Widget _sectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.black87),
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimary, // ✅
+      ),
     );
   }
 
@@ -234,7 +251,7 @@ class PublicProfileScreen extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: AppColors.white,
+      color: AppColors.cardColor, // ✅ بدل AppColors.white
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(children: children),
@@ -245,8 +262,11 @@ class PublicProfileScreen extends StatelessWidget {
   Widget _infoTile(IconData icon, String text, [VoidCallback? onTap]) {
     return ListTile(
       leading: Icon(icon, color: AppColors.primary700, size: 24),
-      title: Text(text, style: const TextStyle(fontSize: 16)),
-      trailing: onTap != null ? Icon(Icons.copy, size: 18, color: AppColors.grey[500]) : null,
+      title: Text(
+        text,
+        style: TextStyle(fontSize: 16, color: AppColors.textPrimary), // ✅
+      ),
+      trailing: onTap != null ? Icon(Icons.copy, size: 18, color: AppColors.textSecondary) : null, // ✅
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
     );
@@ -254,10 +274,14 @@ class PublicProfileScreen extends StatelessWidget {
 
   String _getRoleTitle(String role) {
     switch (role) {
-      case 'student': return 'طالب';
-      case 'patient': return 'مريض';
-      case 'overseer': return 'مشرف';
-      default: return role;
+      case 'student':
+        return 'طالب';
+      case 'patient':
+        return 'مريض';
+      case 'overseer':
+        return 'مشرف';
+      default:
+        return role;
     }
   }
 

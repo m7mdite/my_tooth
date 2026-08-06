@@ -1,215 +1,184 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/conversations_models/conversation_model.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import 'package:gr_flutter/utils/app_constants/app_images_constant.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 import '../../controllers/conversations_controllers/chat_controller.dart';
+import '../../controllers/theme_controller.dart';
 import '../../models/conversations_models/message_model.dart';
 import '../../utils/app_constants/colors_constant.dart';
-import 'profile_screen_public.dart'; // تأكد من المسار الصحيح
+import 'profile_screen_public.dart';
 
 class ChatScreen extends StatelessWidget {
   final String conversationId;
   final OtherPartyProfile otherPartyProfile;
-  // final String otherPartyName;
-  // final String otherUserId;      // userId الخاص بالطرف الآخر
-  // final String? otherProfilePhotoUrl; // رابط صورة المستخدم الآخر
 
   const ChatScreen({
     super.key,
-    // required this.otherUserId,
     required this.conversationId,
     required this.otherPartyProfile,
-
-    // required this.otherPartyName,
-    // this.otherProfilePhotoUrl,
   });
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ChatController(
-        conversationId: conversationId, otherPartyProfile: otherPartyProfile));
+        conversationId: conversationId,
+        otherPartyProfile: otherPartyProfile));
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        actions: [
-          CustomIconAppBar(
-            iconData: Icons.menu_outlined,
-            onTap: () {
-              // الانتقال إلى صفحة تفاصيل المحادثة أو الملف الشخصي للطرف الآخر
-              Get.to(
-                  () => PublicProfileScreen(userId: otherPartyProfile.userId!));
-            },
-          )
-        ],
-        automaticallyImplyLeading: true,
-        notifacation: false,
-        showVerifiedBadge: true,
-        centerTitle: false,
-        title: otherPartyProfile.fullName ?? "ماكو اسم",
-
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
-        //   onPressed: () => Get.back(),
-        // ),
-        titleWidget: InkWell(
-          onTap: () {
-            // الانتقال إلى الملف الشخصي العام للمستخدم الآخر
-            Get.to(
-                () => PublicProfileScreen(userId: otherPartyProfile.userId!));
-          },
-          borderRadius: BorderRadius.circular(30),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundImage: (otherPartyProfile.profilePhoto != null &&
-                        otherPartyProfile.profilePhoto!.url != null)
-                    ? NetworkImage(
-                        "${otherPartyProfile.profilePhoto!.url}")
-                    : AssetImage(AppConstants.defaultBackgroundImage)
-                        as ImageProvider,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                otherPartyProfile.fullName ?? "ماكو اسم",
-                style: const TextStyle(color: AppColors.white, fontSize: 18),
-              ),
+    return GetBuilder<ThemeController>(
+      builder: (_) {
+        return Scaffold(
+          backgroundColor: AppColors.background, // ✅
+          appBar: CustomAppBar(
+            actions: [
+              CustomIconAppBar(
+                iconData: Icons.menu_outlined,
+                onTap: () => Get.to(
+                    () => PublicProfileScreen(userId: otherPartyProfile.userId!)),
+              )
             ],
-          ),
-        ),
-        // onTitleTap: () {
-        //   // الانتقال إلى الملف الشخصي العام للمستخدم الآخر
-        //   Get.to(() => PublicProfileScreen(userId: otherPartyProfile.userId!));
-        // },
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.linearToSrgbGamma(),
-          ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() {
-                if (controller.isLoading.value && controller.messages.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (controller.messages.isEmpty) {
-                  return const Center(
-                      child: Text('لا توجد رسائل بعد، ابدأ المحادثة'));
-                }
-                return ListView.builder(
-                  reverse: true,
-                  itemCount: controller.messages.length,
-                  itemBuilder: (context, index) {
-                    final message = controller.messages[index];
-                    return _buildMessageBubble(message);
-                  },
-                );
-              }),
+            automaticallyImplyLeading: true,
+            notifacation: false,
+            showVerifiedBadge: true,
+            centerTitle: false,
+            title: otherPartyProfile.fullName ?? "ماكو اسم",
+            titleWidget: InkWell(
+              onTap: () => Get.to(
+                  () => PublicProfileScreen(userId: otherPartyProfile.userId!)),
+              borderRadius: BorderRadius.circular(30),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: (otherPartyProfile.profilePhoto != null &&
+                            otherPartyProfile.profilePhoto!.url != null)
+                        ? NetworkImage(
+                                "${otherPartyProfile.profilePhoto!.url}")
+                            as ImageProvider
+                        : AssetImage(AppImages.authBackground),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    otherPartyProfile.fullName ?? "ماكو اسم",
+                    style:
+                        const TextStyle(color: AppColors.white, fontSize: 18),
+                  ),
+                ],
+              ),
             ),
-            _buildMessageInput(controller),
-          ],
-        ),
-      ),
+          ),
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.authBackground), // ✅ ثيم-أوير
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.linearToSrgbGamma(),
+              ),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Obx(() {
+                    if (controller.isLoading.value &&
+                        controller.messages.isEmpty) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                            color: AppColors.primary),
+                      );
+                    }
+                    if (controller.messages.isEmpty) {
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface.withOpacity(0.8), // ✅
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            'لا توجد رسائل بعد، ابدأ المحادثة',
+                            style:
+                                TextStyle(color: AppColors.textSecondary), // ✅
+                          ),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      reverse: true,
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, index) {
+                        return _buildMessageBubble(controller.messages[index]);
+                      },
+                    );
+                  }),
+                ),
+                _buildMessageInput(controller),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
-
-  // AppBar مخصص ومتوافق مع التصميم
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: AppColors.primaryAccent,
-      elevation: 0,
-      automaticallyImplyLeading: false, // إزالة السهم الافتراضي
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
-        onPressed: () => Get.back(),
-      ),
-      title: InkWell(
-        onTap: () {
-          // الانتقال إلى الملف الشخصي العام للمستخدم الآخر
-          Get.to(() => PublicProfileScreen(userId: otherPartyProfile.userId!));
-        },
-        borderRadius: BorderRadius.circular(30),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: 18,
-              backgroundImage: (otherPartyProfile.profilePhoto != null &&
-                      otherPartyProfile.profilePhoto!.url != null)
-                  ? NetworkImage(
-                      "${otherPartyProfile.profilePhoto!.url}")
-                  : AssetImage(AppConstants.defaultBackgroundImage)
-                      as ImageProvider,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              otherPartyProfile.fullName ?? "ماكو اسم",
-              style: const TextStyle(color: AppColors.white, fontSize: 18),
-            ),
-          ],
-        ),
-      ),
-      centerTitle: false, // العنوان ليس في الوسط، بل على اليسار بجانب السهم
-      // يمكن إضافة أزرار إضافية في actions إذا لزم الأمر
-      actions: [
-        // مثال: زر معلومات إضافية
-        // IconButton(
-        //   icon: const Icon(Icons.more_vert, color: AppColors.white),
-        //   onPressed: () {},
-        // ),
-      ],
-    );
-  }
-
-  // باقي الكود كما هو (_buildMessageBubble, _buildMessageInput, _formatTime)
-  // ... (سأضعه كاملاً في الأسفل للحفاظ على التكامل)
 
   Widget _buildMessageBubble(MessageModel message) {
     final isMe = !message.isFromMe;
 
+    // ✅ ألوان الفقاعة حسب الثيم
+    final Color myBubbleColor = AppColors.isDark
+        ? AppColors.primary.withOpacity(0.85)
+        : const Color.fromARGB(217, 68, 137, 255);
+
+    final Color otherBubbleColor = AppColors.isDark
+        ? AppColors.surface.withOpacity(0.85)
+        : const Color.fromARGB(149, 255, 255, 255);
+
     return Row(
-      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             margin: EdgeInsets.only(
-                bottom: 12.5,
-                top: 12.5,
-                right: isMe ? 50 : 10,
-                left: isMe ? 10 : 50),
+              bottom: 12.5,
+              top: 12.5,
+              right: isMe ? 50 : 10,
+              left: isMe ? 10 : 50,
+            ),
             decoration: BoxDecoration(
               color: isMe && message.messageType == 'text'
-                  ? const Color.fromARGB(217, 68, 137, 255)
-                  : const Color.fromARGB(149, 255, 255, 255),
+                  ? myBubbleColor
+                  : otherBubbleColor,
               border: Border.symmetric(
                 vertical: BorderSide(
-                    color: isMe ? AppColors.white : AppColors.primary,
-                    width: 1,
-                    strokeAlign: 10),
+                  color: isMe ? AppColors.white : AppColors.primary,
+                  width: 1,
+                  strokeAlign: 10,
+                ),
                 horizontal: BorderSide(
-                    color: isMe ? AppColors.white : AppColors.primary,
-                    width: 1.5,
-                    strokeAlign: 12),
+                  color: isMe ? AppColors.white : AppColors.primary,
+                  width: 1.5,
+                  strokeAlign: 12,
+                ),
               ),
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(10),
                 topRight: const Radius.circular(10),
-                bottomLeft: !isMe ? const Radius.circular(20) : Radius.zero,
-                bottomRight: !isMe ? Radius.zero : const Radius.circular(20),
+                bottomLeft:
+                    !isMe ? const Radius.circular(20) : Radius.zero,
+                bottomRight:
+                    !isMe ? Radius.zero : const Radius.circular(20),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.white.withOpacity(0.05),
+                  color: AppColors.black.withOpacity(0.05),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -223,29 +192,37 @@ class ChatScreen extends StatelessWidget {
                       SelectableText(
                         message.content,
                         style: TextStyle(
-                          color: isMe ? AppColors.white : AppColors.black87,
+                          // ✅ النص دايماً مقروء بكل الثيمات
+                          color: isMe
+                              ? AppColors.white
+                              : AppColors.textPrimary,
                           fontSize: 12,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             _formatTime(message.createdAt),
                             style: TextStyle(
                               fontSize: 10,
-                              color: isMe ? AppColors.white70 : AppColors.grey,
+                              color: isMe
+                                  ? AppColors.white70
+                                  : AppColors.textSecondary, // ✅
                             ),
                           ),
                           const SizedBox(width: 8),
-                          IconButton(
-                            icon: Icon(Icons.copy,
-                                size: 16, color: AppColors.grey400),
-                            onPressed: () {},
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
+                          GestureDetector(
+                            onTap: () => Clipboard.setData(
+                                ClipboardData(text: message.content)),
+                            child: Icon(
+                              Icons.copy,
+                              size: 16,
+                              color: isMe
+                                  ? AppColors.white60
+                                  : AppColors.textSecondary, // ✅
+                            ),
                           ),
                         ],
                       ),
@@ -255,10 +232,11 @@ class ChatScreen extends StatelessWidget {
                     height: 250,
                     width: 250,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "${message.content}"),
-                          fit: BoxFit.cover),
+                        image: NetworkImage("${message.content}"),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
           ),
@@ -271,13 +249,19 @@ class ChatScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        boxShadow: [BoxShadow(color: AppColors.grey300, blurRadius: 2)],
+        color: AppColors.surface, // ✅ بدل white
+        border: Border(
+          top: BorderSide(color: AppColors.borderColor), // ✅
+        ),
+        boxShadow: [
+          BoxShadow(color: AppColors.borderColor, blurRadius: 2),
+        ],
       ),
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.attach_file),
+            icon: Icon(Icons.attach_file,
+                color: AppColors.textSecondary), // ✅
             onPressed: controller.pickAndSendImage,
           ),
           Expanded(
@@ -285,14 +269,17 @@ class ChatScreen extends StatelessWidget {
               maxLines: 4,
               minLines: 1,
               controller: controller.textController,
-              decoration: const InputDecoration(
+              style: TextStyle(color: AppColors.textPrimary), // ✅
+              decoration: InputDecoration(
                 hintText: 'اكتب رسالة...',
+                hintStyle:
+                    TextStyle(color: AppColors.textSecondary), // ✅
                 border: InputBorder.none,
               ),
             ),
           ),
           IconButton(
-            icon:  Icon(Icons.send, color: AppColors.primary),
+            icon: Icon(Icons.send, color: AppColors.primary),
             onPressed: controller.sendMessage,
           ),
         ],

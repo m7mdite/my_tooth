@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class ViewVerifyPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class ViewVerifyPage extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(AppConstants.defaultBackgroundImage),
+              image: AssetImage(AppImages.authBackground),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.linearToSrgbGamma(),
             ),

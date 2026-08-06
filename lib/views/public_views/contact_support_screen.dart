@@ -4,6 +4,7 @@ import 'package:gr_flutter/controllers/public_controllers/support_controller.dar
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class ContactSupportScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class ContactSupportScreen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(AppConstants.defaultBackgroundImage),
+              image: AssetImage(AppImages.authBackground),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.linearToSrgbGamma(),
             ),

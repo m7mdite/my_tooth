@@ -31,8 +31,8 @@
 //         margin: EdgeInsets.all(30),
 //         decoration: BoxDecoration(
 //           image: DecorationImage(
-//             image: AssetImage(
-//               AppConstants.defaultBackgroundImage,
+//             image: AssetImage(AppImages.authBackground
+//               ,
 //             ),
 //             fit: BoxFit.cover,
 //             colorFilter: ColorFilter.linearToSrgbGamma(),

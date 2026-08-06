@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 
 import '../../../controllers/post_controllers/post_controller.dart';
+import '../../../controllers/theme_controller.dart';
 import '../../../models/posts_models/comment_model.dart';
 import '../../../services/local_storge/local_user_storage.dart';
 import '../../../utils/app_constants/colors_constant.dart';
@@ -28,6 +29,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     _loadUserRole();
     controller.fetchPostDetails(widget.postId);
   }
+
   Future<void> _loadUserRole() async {
     final storage = Get.find<LocalUserStorage>();
     final role = await storage.getRole();
@@ -38,85 +40,122 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "تفاصيل المنشور",
-        centerTitle: true,
-      ),
-      body: Obx(() {
-        if (controller.isLoadingDetails.value &&
-            controller.selectedPost.value == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final post = controller.selectedPost.value;
-        if (post == null) return const Center(child: Text('البوست غير موجود'));
-        return Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  PostCard(
-                    post: post,
-                    onLike: () => controller.likePost(post.sId!),
-                    onDislike: () => controller.dislikePost(post.sId!),
-                    onComment: null, // منع فتح الشاشة مرة أخرى
-                    onEdit: () => Get.to(() => EditPostScreen(post: post)),
-                    onDelete: () => controller.deletePost(post.sId!),
-                    currentUserRole: currentUserRole,
+    return GetBuilder<ThemeController>(
+      builder: (_) {
+        return Scaffold(
+          backgroundColor: AppColors.background, // ✅
+          appBar: CustomAppBar(
+            title: "تفاصيل المنشور",
+            centerTitle: true,
+          ),
+          body: Obx(() {
+            if (controller.isLoadingDetails.value &&
+                controller.selectedPost.value == null) {
+              return Center(
+                child: CircularProgressIndicator(color: AppColors.primary),
+              );
+            }
+            final post = controller.selectedPost.value;
+            if (post == null) {
+              return Center(
+                child: Text(
+                  'البوست غير موجود',
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+              );
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      PostCard(
+                        post: post,
+                        onLike: () => controller.likePost(post.sId!),
+                        onDislike: () => controller.dislikePost(post.sId!),
+                        onComment: null,
+                        onEdit: () => Get.to(() => EditPostScreen(post: post)),
+                        onDelete: () => controller.deletePost(post.sId!),
+                        currentUserRole: currentUserRole,
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: AppColors.borderColor, // ✅
+                      ),
+                      if (controller.postComments.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Center(
+                            child: Text(
+                              'لا توجد تعليقات بعد، كن أول من يعلق',
+                              style:
+                                  TextStyle(color: AppColors.textSecondary), // ✅
+                            ),
+                          ),
+                        )
+                      else
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.postComments.length,
+                          itemBuilder: (context, index) {
+                            return _buildCommentTile(
+                                controller.postComments[index]);
+                          },
+                        ),
+                    ],
                   ),
-                  const Divider(thickness: 1, height: 1),
-                  if (controller.postComments.isEmpty)
-                    const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Center(
-                          child: Text('لا توجد تعليقات بعد، كن أول من يعلق')),
-                    )
-                  else
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.postComments.length,
-                      itemBuilder: (context, index) {
-                        final comment = controller.postComments[index];
-                        return _buildCommentTile(comment);
-                      },
-                    ),
-                ],
-              ),
-            ),
-            _buildCommentInput(),
-          ],
+                ),
+                _buildCommentInput(),
+              ],
+            );
+          }),
         );
-      }),
+      },
     );
   }
 
   Widget _buildCommentTile(CommentModel comment) {
     return ListTile(
+      tileColor: AppColors.surface, // ✅
       leading: CircleAvatar(
+        backgroundColor: AppColors.grey200, // ✅
         backgroundImage: comment.user.profilePhoto != null
             ? NetworkImage('${comment.user.profilePhoto}')
             : null,
-        child: const Icon(Icons.person),
+        child: comment.user.profilePhoto == null
+            ? Icon(Icons.person, color: AppColors.textSecondary)
+            : null,
       ),
       title: Row(
         children: [
-          Text(comment.user.fullName),
+          Text(
+            comment.user.fullName,
+            style: TextStyle(color: AppColors.textPrimary), // ✅
+          ),
           if (comment.user.isVerified) ...[
             const SizedBox(width: 4),
-             Icon(Icons.verified, size: 14, color: AppColors.primary),
+            Icon(Icons.verified, size: 14, color: AppColors.primary),
           ],
         ],
       ),
-      subtitle: Text(comment.content),
+      subtitle: Text(
+        comment.content,
+        style: TextStyle(color: AppColors.textSecondary), // ✅
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: const Icon(Icons.thumb_up_outlined, size: 18),
+            icon: Icon(Icons.thumb_up_outlined,
+                size: 18, color: AppColors.primary), // ✅
             onPressed: () => controller.likeComment(comment.id),
           ),
-          Text('${comment.likesCount}'),
+          Text(
+            '${comment.likesCount}',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
         ],
       ),
     );
@@ -126,22 +165,29 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        boxShadow: [BoxShadow(color: AppColors.grey300, blurRadius: 2)],
+        color: AppColors.surface, // ✅ بدل white
+        border: Border(
+          top: BorderSide(color: AppColors.borderColor), // ✅
+        ),
+        boxShadow: [
+          BoxShadow(color: AppColors.borderColor, blurRadius: 2),
+        ],
       ),
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: commentController,
-              decoration: const InputDecoration(
+              style: TextStyle(color: AppColors.textPrimary), // ✅
+              decoration: InputDecoration(
                 hintText: 'اكتب تعليقاً...',
+                hintStyle: TextStyle(color: AppColors.textSecondary), // ✅
                 border: InputBorder.none,
               ),
             ),
           ),
           IconButton(
-            icon:  Icon(Icons.send, color: AppColors.primary),
+            icon: Icon(Icons.send, color: AppColors.primary),
             onPressed: () {
               if (commentController.text.trim().isNotEmpty) {
                 controller.addComment(widget.postId, commentController.text);
@@ -154,99 +200,3 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:gr_flutter/controllers/post_controllers/comment_controller.dart';
-// import 'package:gr_flutter/models/post_model.dart';
-
-// class PostDetailScreen extends StatefulWidget {
-//   final String postId;
-//   const PostDetailScreen({super.key, required this.postId});
-
-//   @override
-//   State<PostDetailScreen> createState() => _PostDetailScreenState();
-// }
-
-// class _PostDetailScreenState extends State<PostDetailScreen> {
-//   final CommentController commentController = Get.put(CommentController());
-//   final TextEditingController commentTextController = TextEditingController();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     commentController.fetchComments(widget.postId);
-//   }
-
-//   void addComment() async {
-//     await commentController.addComment(widget.postId, commentTextController.text);
-//     commentTextController.clear();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('التعليقات'), centerTitle: true),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             child: Obx(() {
-//               if (commentController.isLoading.value && commentController.comments.isEmpty) {
-//                 return const Center(child: CircularProgressIndicator());
-//               }
-//               if (commentController.comments.isEmpty) {
-//                 return const Center(child: Text('لا توجد تعليقات بعد'));
-//               }
-//               return ListView.builder(
-//                 itemCount: commentController.comments.length,
-//                 itemBuilder: (context, index) {
-//                   final comment = commentController.comments[index];
-//                   return ListTile(
-//                     leading: CircleAvatar(
-//                       backgroundImage: comment.userInfo.profilePhoto != null
-//                           ? NetworkImage('${comment.userInfo.profilePhoto}')
-//                           : null,
-//                       child: const Icon(Icons.person),
-//                     ),
-//                     title: Text(comment.userInfo.fullName),
-//                     subtitle: Text(comment.content),
-//                     trailing: Text(_formatDate(comment.createdAt)),
-//                   );
-//                 },
-//               );
-//             }),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: TextField(
-//                     controller: commentTextController,
-//                     decoration: const InputDecoration(hintText: 'اكتب تعليقاً...'),
-//                   ),
-//                 ),
-//                 IconButton(
-//                   icon: const Icon(Icons.send),
-//                   onPressed: addComment,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   String _formatDate(DateTime date) {
-//     return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
-//   }
-// }

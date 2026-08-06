@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../../../utils/app_constants/status_request.dart';
 import 'unified_edit_profile_screen.dart';
@@ -39,7 +40,7 @@ class UnifiedProfileScreen extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(AppConstants.defaultBackgroundImage),
+              image: AssetImage(AppImages.authBackground),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.linearToSrgbGamma(),
             ),
@@ -68,7 +69,7 @@ class UnifiedProfileScreen extends StatelessWidget {
                             image: DecorationImage(
                               image: controller.profilePicture.value.isNotEmpty
                                   ? NetworkImage(controller.profilePicture.value)
-                                  : AssetImage(AppConstants.defaultBackgroundImage) as ImageProvider,
+                                  : AssetImage(AppImages.authBackground) as ImageProvider,
                               fit: BoxFit.cover,
                             ),
                             border: Border.all(color: AppColors.white, width: 3),

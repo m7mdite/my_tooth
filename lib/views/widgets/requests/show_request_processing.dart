@@ -8,6 +8,7 @@ import 'package:gr_flutter/models/requests_models/treatment_request_processing_s
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/tooth_constants.dart';
 import '../../../models/requests_models/treatment_request_model.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/view_other_profile.dart';
 
@@ -72,7 +73,7 @@ class _ShowRequestProcessingState extends State<ShowRequestProcessing>
             ),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(AppConstants.defaultBackgroundImage),
+                image: AssetImage(AppImages.authBackground),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.linearToSrgbGamma(),
               ),

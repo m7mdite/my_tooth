@@ -30,7 +30,7 @@ class SubmitVerifyStudent extends StatelessWidget {
             border: Border.all(color: AppColors.primary, width: 2),
             borderRadius: BorderRadius.all(Radius.elliptical(10, 10)),
             color: AppColors.white
-            // image: DecorationImage(image: AssetImage(AppConstants.defaultBackgroundImage), fit: BoxFit.cover),
+            // image: DecorationImage(image: AssetImage(AppImages.authBackground), fit: BoxFit.cover),
             ),
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(20),

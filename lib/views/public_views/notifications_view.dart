@@ -12,6 +12,7 @@ class NotificationsView extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background, // ✅ بدل الافتراضي الأبيض
       appBar: CustomAppBar(
         title: "الإشعارات",
         actions: [
@@ -48,6 +49,7 @@ class NotificationsView extends GetView<NotificationController> {
             ],
           )),
           PopupMenuButton<String>(
+            color: AppColors.surface, // ✅
             onSelected: (value) {
               switch (value) {
                 case 'mark_all_read':
@@ -59,13 +61,19 @@ class NotificationsView extends GetView<NotificationController> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'mark_all_read',
-                child: Text('تحديد الكل كمقروء'),
+                child: Text(
+                  'تحديد الكل كمقروء',
+                  style: TextStyle(color: AppColors.textPrimary), // ✅
+                ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete_all',
-                child: Text('حذف الكل'),
+                child: Text(
+                  'حذف الكل',
+                  style: TextStyle(color: AppColors.textPrimary), // ✅
+                ),
               ),
             ],
           ),
@@ -75,75 +83,13 @@ class NotificationsView extends GetView<NotificationController> {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (controller.notifications.isEmpty) {
           return _buildEmptyState();
         }
-        
+
         return _buildNotificationsList();
       }),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      title: const Text('الإشعارات'),
-      actions: [
-        Obx(() => Stack(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.notifications_active),
-              onPressed: () {},
-            ),
-            if (controller.unreadCount.value > 0)
-              Positioned(
-                right: 5,
-                top: 5,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: AppColors.error,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Text(
-                    '${controller.unreadCount.value}',
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontSize: 10,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-          ],
-        )),
-        PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case 'mark_all_read':
-                controller.markAllAsRead();
-                break;
-              case 'delete_all':
-                _showDeleteAllDialog();
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'mark_all_read',
-              child: Text('تحديد الكل كمقروء'),
-            ),
-            const PopupMenuItem(
-              value: 'delete_all',
-              child: Text('حذف الكل'),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -162,7 +108,7 @@ class NotificationsView extends GetView<NotificationController> {
             'لا توجد إشعارات',
             style: TextStyle(
               fontSize: 18,
-              color: AppColors.grey[600],
+              color: AppColors.textSecondary, // ✅
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -171,7 +117,7 @@ class NotificationsView extends GetView<NotificationController> {
             'سيتم عرض الإشعارات الجديدة هنا',
             style: TextStyle(
               fontSize: 14,
-              color: AppColors.grey[500],
+              color: AppColors.textSecondary, // ✅
             ),
           ),
         ],
@@ -206,7 +152,8 @@ class NotificationsView extends GetView<NotificationController> {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           decoration: BoxDecoration(
-            color: notification.isRead ? AppColors.white : AppColors.primary50,
+            // ✅ الإشعار المقروء يأخذ cardColor، وغير المقروء يأخذ primary50
+            color: notification.isRead ? AppColors.cardColor : AppColors.primary50,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -234,10 +181,11 @@ class NotificationsView extends GetView<NotificationController> {
                             child: Text(
                               notification.title,
                               style: TextStyle(
-                                fontWeight: notification.isRead 
-                                    ? FontWeight.normal 
+                                fontWeight: notification.isRead
+                                    ? FontWeight.normal
                                     : FontWeight.bold,
                                 fontSize: 16,
+                                color: AppColors.textPrimary, // ✅
                               ),
                             ),
                           ),
@@ -245,7 +193,7 @@ class NotificationsView extends GetView<NotificationController> {
                             _formatTime(notification.receivedAt),
                             style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.grey[600],
+                              color: AppColors.textSecondary, // ✅
                             ),
                           ),
                         ],
@@ -255,9 +203,7 @@ class NotificationsView extends GetView<NotificationController> {
                         notification.body,
                         style: TextStyle(
                           fontSize: 14,
-                          color: notification.isRead 
-                              ? AppColors.grey[700] 
-                              : AppColors.grey[900],
+                          color: AppColors.textSecondary, // ✅ بدل grey[700]/grey[900]
                         ),
                       ),
                       if (!notification.isRead)
@@ -266,7 +212,7 @@ class NotificationsView extends GetView<NotificationController> {
                           child: Container(
                             width: 8,
                             height: 8,
-                            decoration:  BoxDecoration(
+                            decoration: BoxDecoration(
                               color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
@@ -286,7 +232,7 @@ class NotificationsView extends GetView<NotificationController> {
   Widget _buildNotificationIcon(String type) {
     IconData iconData;
     Color color;
-    
+
     switch (type) {
       case 'requestAccepted':
         iconData = Icons.check_circle;
@@ -300,7 +246,7 @@ class NotificationsView extends GetView<NotificationController> {
         iconData = Icons.notifications;
         color = AppColors.warning;
     }
-    
+
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -314,7 +260,7 @@ class NotificationsView extends GetView<NotificationController> {
   String _formatTime(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays > 7) {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
     } else if (difference.inDays > 0) {
@@ -331,19 +277,26 @@ class NotificationsView extends GetView<NotificationController> {
   void _showDeleteAllDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('حذف الكل'),
-        content: const Text('هل أنت متأكد من حذف جميع الإشعارات؟'),
+        backgroundColor: AppColors.surface, // ✅
+        title: Text(
+          'حذف الكل',
+          style: TextStyle(color: AppColors.textPrimary), // ✅
+        ),
+        content: Text(
+          'هل أنت متأكد من حذف جميع الإشعارات؟',
+          style: TextStyle(color: AppColors.textSecondary), // ✅
+        ),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('إلغاء'),
+            child: Text('إلغاء', style: TextStyle(color: AppColors.textSecondary)),
           ),
           TextButton(
             onPressed: () {
               controller.deleteAllNotifications();
               Get.back();
             },
-            child: const Text('حذف', style: TextStyle(color: AppColors.error)),
+            child: Text('حذف', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),

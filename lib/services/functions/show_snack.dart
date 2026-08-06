@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 void showsnack( {String? title, String? message}) {
@@ -21,7 +22,7 @@ void showsnack( {String? title, String? message}) {
         decoration: BoxDecoration(
           // هنا نحدد الصورة كخلفية
           image: DecorationImage(
-            image: AssetImage(AppConstants.defaultBackgroundImage), // استبدل هذا بالرابط الصحيح للصورة
+            image: AssetImage(AppImages.authBackground), // استبدل هذا بالرابط الصحيح للصورة
             fit: BoxFit.cover, // تغطية المساحة بالكامل
             colorFilter: ColorFilter.linearToSrgbGamma()
           ),

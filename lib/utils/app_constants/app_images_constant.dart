@@ -19,11 +19,15 @@ class AppImages {
   static String get authBackground {
     switch (_theme) {
       case AppThemeType.dark:
-        return "images/images_asnan/aa3834e3-b727-425b-8556-6025c312cf46.jpeg";
+        return "images/images_asnan/back_dark.png";
+        // return "images/images_asnan/aa3834e3-b727-425b-8556-6025c312cf46.jpeg";
       case AppThemeType.pink:
-        return "images/images_asnan/b72d5768-c706-4146-aba1-9c1450bea5fa.jpeg";
+        return "images/images_asnan/back_pink.png";
+        // return "images/images_asnan/b72d5768-c706-4146-aba1-9c1450bea5fa.jpeg";
       case AppThemeType.blue:
-        return "images/images_asnan/a73e4065-5ddb-48a0-abdb-07db5334d9e9.jpeg"; // نفس صورتك الحالية
+        // return "images/images_asnan/a73e4065-5ddb-48a0-abdb-07db5334d9e9.jpeg"; // نفس صورتك الحالية
+        return "images/images_asnan/back_blue.png"; // نفس صورتك الحالية
+
     }
   }
 

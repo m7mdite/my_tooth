@@ -76,15 +76,15 @@ class PendingPostsButton extends StatelessWidget {
                 }),
               ],
             ),
-            const SizedBox(width: 8),
-            const Text(
-              'المنشورات المعلقة',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: AppColors.warning,
-              ),
-            ),
+            // const SizedBox(width: 8),
+            // const Text(
+            //   'المنشورات المعلقة',
+            //   style: TextStyle(
+            //     fontSize: 10,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.warning,
+            //   ),
+            // ),
           ],
         ),
       ),

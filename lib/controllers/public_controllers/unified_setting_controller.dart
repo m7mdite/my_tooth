@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gr_flutter/services/local_storge/local_user_storage.dart'; // المستورد الجديد
 import 'package:gr_flutter/services/remote/public_remotes/unified_profile_remote.dart';
 import 'package:gr_flutter/services/functions/handling_data.dart';
@@ -7,9 +8,13 @@ import 'package:gr_flutter/utils/app_constants/status_request.dart';
 import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 import 'package:gr_flutter/app_route.dart';
 import '../../services/functions/upload_picture.dart';
+import '../../services/notification/websocket_service.dart';
+import '../theme_controller.dart';
 
 class UnifiedSettingController extends GetxController {
   final localStorage = Get.find<LocalUserStorage>(); // استخدم الكلاس الموحد
+  WebSocketService webSocketService = Get.find<WebSocketService>();
+
   final UnifiedProfileRemote remote = UnifiedProfileRemote(Get.find());
   File? document;
   Rx<StatusRequest> statusRequest = StatusRequest.none.obs;
@@ -175,10 +180,53 @@ class UnifiedSettingController extends GetxController {
       SubmitDialog(
         title: "تسجيل الخروج",
         question: "هل أنت متأكد من رغبتك بتسجيل الخروج؟",
+        // onTapSubmit: () async {
+        //   // 1. قطع الـ WebSocket أولاً وانتظر
+        //   await webSocketService.disconnect();
+        //   // 2. انتظر إضافي عشان يوصل للسيرفر
+        //   await Future.delayed(const Duration(milliseconds: 800));
+
+        //   // 3. مسح البيانات
+        //   await localStorage.clearAll();
+        //   GetStorage().remove('app_theme');
+
+        //   if (Get.isRegistered<ThemeController>()) {
+        //     Get.find<ThemeController>().currentTheme = AppThemeType.blue;
+        //     Get.forceAppUpdate();
+        //   }
+
+        //   // 4. الانتقال بعد ما كل شي اتمسح
+        //   Get.offAllNamed(AppRroute.register);
+        // },
         onTapSubmit: () async {
-          await localStorage.clearAll(); // مسح كل البيانات (توكن، دور، بروفايل)
-          Get.offAllNamed(AppRroute.register);
-        },
+  await webSocketService.disconnect();
+  await Future.delayed(const Duration(milliseconds: 800)); // ✅ انتظر الـ packet
+  await localStorage.clearAll();
+  GetStorage().remove('app_theme');
+  if (Get.isRegistered<ThemeController>()) {
+    Get.find<ThemeController>().currentTheme = AppThemeType.blue;
+    Get.forceAppUpdate();
+  }
+  Get.offAllNamed(AppRroute.register);
+},
+        // onTapSubmit: () async {
+        //   // 1. قطع الـ WebSocket
+        //  await webSocketService.disconnect();
+
+        //   // 2. مسح بيانات المستخدم
+        //   await localStorage.clearAll();
+
+        //   // 3. مسح الثيم ورجعه للافتراضي
+        //   GetStorage().remove('app_theme');
+        //   if (Get.isRegistered<ThemeController>()) {
+        //     final themeController = Get.find<ThemeController>();
+        //     themeController.currentTheme = AppThemeType.blue;
+        //     Get.forceAppUpdate();
+        //   }
+
+        //   // 4. الانتقال مباشرة بدون deleteAll
+        //   Get.offAllNamed(AppRroute.register);
+        // },
       ),
     );
   }

@@ -59,13 +59,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       titleTextStyle: TextStyle(
-        color: titleColor ?? AppColors.white,
+        color: titleColor ?? AppColors.background,
         fontWeight: FontWeight.bold,
         fontSize: titleSize,
         shadows: titleShadows ??
-            const [
+             [
               BoxShadow(
-                color: AppColors.black,
+                color: AppColors.surface.withOpacity(0.5),
                 blurRadius: 10,
               ),
             ],
@@ -125,13 +125,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Text(
           displayText,
           style: TextStyle(
-            color: titleColor ?? AppColors.white,
+            color: titleColor ?? AppColors.background,
             fontWeight: FontWeight.bold,
             fontSize: titleSize,
             shadows: titleShadows ??
                 [
-                  const BoxShadow(
-                    color: AppColors.black,
+                   BoxShadow(
+                    color: AppColors.surface,
                     blurRadius: 10,
                   ),
                 ],

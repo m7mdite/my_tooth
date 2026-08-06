@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
+import 'package:gr_flutter/views/widgets/dialog/case_type_prediction_dialog.dart';
 import 'package:gr_flutter/views/widgets/dialog/prediction_result_dialog.dart';
 
+import '../../models/requests_models/case_type_prediction_result_model.dart';
 import '../../models/requests_models/prediction_result_model.dart';
 import '../../models/requests_models/treatment_request_model.dart';
 import '../../services/functions/handling_data.dart';
@@ -37,6 +39,9 @@ class FillRequestControllerImp extends FillRequestController {
 
   // ===== حالة التنبؤ بإمكانية العلاج (اختياري) =====
   final RxBool isPredicting = false.obs;
+
+  // ===== حالة التنبؤ بنوع المعالجة (اختياري) =====
+  final RxBool isPredictingCaseType = false.obs;
 
   // ===== عرض الديالوج =====
   showDialog(String status) async {
@@ -189,6 +194,98 @@ class FillRequestControllerImp extends FillRequestController {
       );
     } finally {
       isPredicting.value = false;
+    }
+  }
+
+  /// ✅ تحقق مخصص للتنبؤ بنوع المعالجة — عن قصد مختلف عن validateForm().
+  /// ما بنشترط اختيار نوع المعالجة (caseType) هون، لأن هدف هالزر أصلاً
+  /// هو مساعدة المريض يعرف نوع المعالجة المتوقع *قبل* ما يختاره يدوياً.
+  /// بنتحقق فقط من نفس الحقول اللي الباك نفسه بيرفض الطلب بدونها
+  /// (age, gender, pain_severity, pain_time, tooth_location).
+  bool _validateForCaseTypePrediction() {
+    final r = treatmentRequestModel.requestion;
+    if (r == null) {
+      Get.snackbar('تنبيه', 'الرجاء تعبئة بيانات الطلب أولاً');
+      return false;
+    }
+    if (r.age == null || r.age!.isEmpty) {
+      Get.snackbar('تنبيه', 'الرجاء إدخال العمر أولاً');
+      return false;
+    }
+    if (r.gender != "male" && r.gender != "female" && r.gender != "other") {
+      Get.snackbar('تنبيه', 'الرجاء تحديد الجنس أولاً');
+      return false;
+    }
+    if (r.painSeverity == null ||
+        r.painSeverity! < 1 ||
+        r.painSeverity! > 10) {
+      Get.snackbar('تنبيه', 'الرجاء تحديد شدة الألم أولاً');
+      return false;
+    }
+    if (r.painTime == null || r.painTime!.isEmpty) {
+      Get.snackbar('تنبيه', 'الرجاء تحديد وقت الألم أولاً');
+      return false;
+    }
+    if (r.toothLocation == null || r.toothLocation!.isEmpty) {
+      Get.snackbar('تنبيه', 'الرجاء إدخال موقع/رقم السن أولاً');
+      return false;
+    }
+    return true;
+  }
+
+  /// ===== التنبؤ بنوع المعالجة المتوقع (اختياري تماماً) =====
+  Future<void> predictCaseType() async {
+    if (!_validateForCaseTypePrediction()) {
+      return;
+    }
+
+    isPredictingCaseType.value = true;
+
+    try {
+      final r = treatmentRequestModel.requestion!;
+      final data = <String, dynamic>{
+        'age': r.age,
+        'gender': r.gender,
+        'pain_severity': r.painSeverity,
+        'pain_time': r.painTime,
+        'tooth_location': r.toothLocation,
+        'is_pregnant': r.isPregnant ?? false,
+        'previous_treatment': r.previousTreatment ?? false,
+        'takes_medication': medicines,
+        // ⚠️ الفورم الحالي ما بيجمع نوع الدواء كرقم مصنّف، فبنبعت 0
+        // كافتراضي (نفس الـ fallback يلي الباك نفسه بيعمله).
+        'medication_type': 0,
+      };
+
+      final response = await requestData.predictCaseType(data, image);
+      final predictStatus = handlingData(response);
+
+      if (predictStatus == StatusRequest.success &&
+          response is Map &&
+          response['data'] != null) {
+        final result = CaseTypePredictionResult.fromJson(
+          Map<String, dynamic>.from(response['data']),
+        );
+        Get.dialog(CaseTypePredictionDialog(result: result));
+      } else {
+        Get.snackbar(
+          'تعذر التنبؤ',
+          'حدث خطأ أثناء محاولة التنبؤ بنوع المعالجة، حاول مرة أخرى',
+          backgroundColor: AppColors.error,
+          colorText: AppColors.white,
+          duration: const Duration(seconds: 3),
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'تعذر التنبؤ',
+        'حدث خطأ أثناء محاولة التنبؤ بنوع المعالجة، حاول مرة أخرى',
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
+        duration: const Duration(seconds: 3),
+      );
+    } finally {
+      isPredictingCaseType.value = false;
     }
   }
 

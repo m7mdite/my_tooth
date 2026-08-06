@@ -9,6 +9,7 @@ import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/prediction_light_button.dart';
 import '../../models/requests_models/treatment_request_model.dart';
+import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
@@ -33,7 +34,7 @@ class ModifiedRequest extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage(
-              AppConstants.defaultBackgroundImage,
+              AppImages.authBackground,
             ),
             fit: BoxFit.cover,
             opacity: 0.9,
@@ -541,26 +542,44 @@ class ModifiedRequest extends StatelessWidget {
                   BreakContainer(),
 
                   // ===== تحقق مبدئي اختياري بالذكاء الاصطناعي =====
+                  // زرّين جنب بعض: إمكانية العلاج + نوع المعالجة المتوقع
                   Column(
                     children: [
                       const Text(
-                        "هل يمكن علاج حالتك؟",
+                        "تحقق مبدئي اختياري بمساعدة خوارزميات التعلم الآلي",
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 13, fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 4),
                       const Text(
-                        "تحقق مبدئي اختياري بمساعدة خوارزميات التعلم الآلي  غير ملزم",
+                        "غير ملزم — بيساعدك تاخد فكرة قبل الإرسال بس",
                         style: TextStyle(fontSize: 11, color: AppColors.black54),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 12),
-                      Obx(
-                        () => PredictionLightButton(
-                          isLoading: controller.isPredicting.value,
-                          onTap: controller.predictTreatment,
-                        ),
+                      const SizedBox(height: 14),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Obx(
+                            () => PredictionLightButton(
+                              isLoading: controller.isPredicting.value,
+                              onTap: controller.predictTreatment,
+                              label: "هل يمكن علاجها؟",
+                              color: AppColors.warning,
+                              icon: Icons.lightbulb,
+                            ),
+                          ),
+                          Obx(
+                            () => PredictionLightButton(
+                              isLoading: controller.isPredictingCaseType.value,
+                              onTap: controller.predictCaseType,
+                              label: "نوع المعالجة المتوقع",
+                              color: AppColors.primary,
+                              icon: FontAwesomeIcons.tooth,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

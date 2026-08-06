@@ -8,6 +8,7 @@ import 'package:gr_flutter/views/public_views/settings/unified_profile_screen.da
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../../public_views/notifications_view.dart';
 import '../../widgets/container_images_home_inbording.dart';
@@ -57,7 +58,7 @@ class StudentHomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(
-                  AppConstants.defaultBackgroundImage,
+                  AppImages.authBackground,
                 ),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.linearToSrgbGamma())),
