@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
-import '../../controllers/post_controllers/post_controller.dart';
-import '../../utils/app_constants/colors_constant.dart';
-import '../public_views/posts/pending_posts_screen.dart';
+import '../../../controllers/post_controllers/post_controller.dart';
+import '../../../utils/app_constants/colors_constant.dart';
+import '../../public_views/posts/pending_posts_screen.dart';
 
-/// زر "المنشورات المعلقة" — بنفس لغة التصميم المستخدمة بباقي التطبيق
-/// (شكل بيضاوي بحدود ملونة، زي زر "إنشاء منشور" وأزرار الطلبات).
-/// بيعرض Badge بعدد المنشورات المعلقة لو موجودة (لسهولة الانتباه لها
-/// بدون فتح الشاشة).
+
 class PendingPostsButton extends StatelessWidget {
   const PendingPostsButton({super.key});
 
@@ -18,22 +16,12 @@ class PendingPostsButton extends StatelessWidget {
 
     return InkWell(
       onTap: () => Get.to(() => const PendingPostsScreen()),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.elliptical(100, 10),
-        bottomLeft: Radius.elliptical(10, 100),
-        topRight: Radius.elliptical(10, 100),
-        bottomRight: Radius.elliptical(100, 10),
-      ),
+      borderRadius: AppThemeConstants.borderRadius,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.warning.withOpacity(0.08),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.elliptical(100, 10),
-            bottomLeft: Radius.elliptical(10, 100),
-            topRight: Radius.elliptical(10, 100),
-            bottomRight: Radius.elliptical(100, 10),
-          ),
+          color: AppColors.warning.withValues(alpha: 0.08),
+          borderRadius: AppThemeConstants.borderRadius,
           border: const Border(
             right: BorderSide(color: AppColors.warning),
             bottom: BorderSide(color: AppColors.warning),
@@ -76,15 +64,7 @@ class PendingPostsButton extends StatelessWidget {
                 }),
               ],
             ),
-            // const SizedBox(width: 8),
-            // const Text(
-            //   'المنشورات المعلقة',
-            //   style: TextStyle(
-            //     fontSize: 10,
-            //     fontWeight: FontWeight.w600,
-            //     color: AppColors.warning,
-            //   ),
-            // ),
+            
           ],
         ),
       ),

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/posts_models/post_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/public_views/posts/post_detail_screen.dart';
-import 'package:gr_flutter/views/public_views/posts/edit_post_screen.dart'; // سننشئها لاحقاً
+import 'package:gr_flutter/views/public_views/posts/edit_post_screen.dart'; 
 
 import '../../../services/functions/show_image_preview.dart';
-import '../../../services/local_storge/local_user_storage.dart';
 import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 
@@ -16,14 +14,9 @@ class PostCard extends StatelessWidget {
   final VoidCallback onLike;
   final VoidCallback onDislike;
   final VoidCallback? onComment;
-  final VoidCallback? onEdit;    // ← جديد
-  final VoidCallback? onDelete; // ← جديد
+  final VoidCallback? onEdit;    
+  final VoidCallback? onDelete;
   final String currentUserRole;
-    _getRole() async {
-    final storage = Get.find<LocalUserStorage>();
-    final role = await storage.getRole();
-    return role!;
-  }
   const PostCard({
     super.key,
     required this.post,

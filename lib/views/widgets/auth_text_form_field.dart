@@ -9,7 +9,7 @@ class AuthTextFormField extends StatelessWidget {
   final bool isPassword;
   final Widget? suffix;
   final bool showPassword;
-  final IconData? icon; // جديد
+  final IconData? icon; 
 
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
@@ -31,7 +31,6 @@ class AuthTextFormField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
-          // image: DecorationImage(image: AssetImage("images/asnan3.jpg"),fit: BoxFit.cover),
           color: const Color.fromARGB(255, 255, 254, 254),
           border: Border(
               right: BorderSide(
@@ -63,12 +62,7 @@ class AuthTextFormField extends StatelessWidget {
                     left: BorderSide(
                       color: AppColors.primaryAccent,
                     )),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.elliptical(100, 10),
-                  bottomLeft: Radius.elliptical(10, 100),
-                  topRight: Radius.elliptical(10, 100),
-                  bottomRight: Radius.elliptical(100, 10),
-                ),
+                borderRadius:AppThemeConstants.borderRadius,
                 color: AppColors.white,
               ),
               child: Text(

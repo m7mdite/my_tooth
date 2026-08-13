@@ -8,7 +8,6 @@ import 'package:gr_flutter/views/widgets/default_container_profile.dart';
 import 'package:gr_flutter/views/public_views/change_password_screen.dart';
 import 'package:gr_flutter/views/public_views/privacy_policy_screen.dart';
 import 'package:gr_flutter/views/public_views/contact_support_screen.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
@@ -17,6 +16,7 @@ import '../../../utils/app_constants/colors_constant.dart';
 import '../../widgets/build_developer_credit.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_icon_app_bar.dart';
+import '../../widgets/dialog/submit_dialog.dart';
 import '../../widgets/theme_switcher_widget.dart';
 import '../conversations_screen.dart';
 import '../notifications_view.dart';
@@ -312,21 +312,36 @@ class UnifiedSettingScreen extends StatelessWidget {
     );
   }
 
+  // void _showThemeDialog() {
+  //   Get.dialog(
+  //     AlertDialog(
+  //       backgroundColor: AppColors.surface,
+  //       title: Text('اختر الثيم',
+  //           style: TextStyle(color: AppColors.textPrimary)),
+  //       content: const ThemeSwitcherWidget(),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Get.back(),
+  //           child:
+  //               Text('إغلاق', style: TextStyle(color: AppColors.primary)),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
   void _showThemeDialog() {
-    Get.dialog(
-      AlertDialog(
-        backgroundColor: AppColors.surface,
-        title: Text('اختر الثيم',
-            style: TextStyle(color: AppColors.textPrimary)),
-        content: const ThemeSwitcherWidget(),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child:
-                Text('إغلاق', style: TextStyle(color: AppColors.primary)),
-          ),
-        ],
-      ),
-    );
-  }
+  Get.dialog(
+    SubmitDialog(
+      title: "اختر الثيم",
+      question: "",
+      agreeBottontitle: "تم",
+      cancelBottonTitle: "إلغاء",
+      onTapSubmit: () => Get.back(),
+      onTapCansel: () {},
+      children: const [
+        ThemeSwitcherWidget(),
+      ],
+    ),
+  );
+}
 }

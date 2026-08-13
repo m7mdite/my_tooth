@@ -18,12 +18,12 @@ class LoginForm extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 24,vertical: 30),
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.92),
+          color: AppColors.white.withValues(alpha: 0.92),
           borderRadius: AppThemeConstants.borderRadius,
           border: Border.all(color: AppColors.white, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.1),
+              color: AppColors.black.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -70,7 +70,7 @@ class LoginForm extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary300.withOpacity(0.4),
+                        color: AppColors.primary300.withValues(alpha: 0.4),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),

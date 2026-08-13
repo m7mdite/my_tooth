@@ -14,7 +14,6 @@ class PublicController extends GetxController {
     update();
     var response = await publicRemote.getOtherProfile(id);
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       otherProfile = ProfileModel.fromJson(response['data']);
     }

@@ -48,9 +48,8 @@ import 'views/public_views/settings/unified_edit_profile_screen.dart';
 import 'views/public_views/settings/unified_setting_screen.dart';
 import 'views/splash_screen.dart';
 import 'views/student_views/main_screen_student.dart';
-import 'views/student_views/page_of_main/student_home_screen.dart';
-import 'views/student_views/page_of_main/student_requests_screen.dart';
-import 'views/student_views/page_of_main/show_owned_student_request.dart';
+import 'views/student_views/student_requests_screen.dart';
+import 'views/student_views/show_owned_student_request.dart';
 import 'views/student_views/view_verify_page.dart';
 import 'views/widgets/ai/ai_chat_screen.dart';
 import 'views/public_views/view_other_profile.dart';
@@ -114,10 +113,7 @@ List<GetPage<dynamic>> routes = [
     page: () => MainScreenStudent(),
     binding: MainStudentBinding(),
   ),
-  GetPage(
-    name: AppRroute.homeScreenStudent,
-    page: () => StudentHomeScreen(),
-  ),
+ 
   GetPage(
     name: AppRroute.studentRequests,
     page: () => StudentRequestsScreen(),
@@ -278,7 +274,6 @@ class AppRroute {
 
   // ========== STUDENT ==========
   static const String mainScreenStudent = "/mainScreenStudent";
-  static const String homeScreenStudent = "/homeScreenStudent";
   static const String studentRequests = "/studentRequests";
   static const String studentProfileInfoScreen = "/studentProfileInfoScreen";
   static const String showOwnedStudentRequest = "/showOwnedStudentRequest";

@@ -185,7 +185,7 @@ class AdminRequestScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [color.withOpacity(0.8), color],
+              colors: [color.withValues(alpha: 0.8), color],
             ),
           ),
           // إزالة الارتفاع الثابت للبطاقات ذات العرض الكامل

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../../controllers/public_controllers/unified_setting_controller.dart';
 import '../../../controllers/theme_controller.dart';
 import '../../../models/requests_models/treatment_request_model.dart';
@@ -87,7 +86,7 @@ class CardRequestProcessing extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         shadows: [
                           Shadow(
-                            color: AppColors.black.withOpacity(0.3),
+                            color: AppColors.black.withValues(alpha: 0.3),
                             blurRadius: 1,
                             offset: const Offset(1, 1),
                           ),

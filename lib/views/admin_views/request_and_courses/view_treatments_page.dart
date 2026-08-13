@@ -32,11 +32,9 @@ class ViewTreatmentsPage extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(
-                    "اسم المعالجة : ${controller.treatments[index].caseType!.caseType}" ??
-                        "اسم المعالجة غير متوفر"),
+                    "اسم المعالجة : ${controller.treatments[index].caseType!.caseType}"),
                 subtitle: Text(
-                    "اسم المادة : ${controller.treatments[index].courseInfo!.courseName}" ??
-                        "اسم الكورس غير متوفر"),
+                    "اسم المادة : ${controller.treatments[index].courseInfo!.courseName}"),
               );
             },
           );

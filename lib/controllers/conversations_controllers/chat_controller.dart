@@ -38,10 +38,8 @@ class ChatController extends GetxController {
     isLoading.value = true;
     statusRequest = StatusRequest.loading;
     var response = await _chatRemote.getConversationMessages(otherUserId);
-    print("++++++++++$response");
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("5555555555");
       messages.value = (response['data']['messages'] as List)
           .map((item) => MessageModel.fromJson(item))
           .toList();

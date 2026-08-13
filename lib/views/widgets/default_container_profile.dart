@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/app_constants/app_theme_constants.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class DefaultContainerProfile extends StatelessWidget {
@@ -23,15 +24,10 @@ class DefaultContainerProfile extends StatelessWidget {
           ],
           border: Border.all(
             width: 2,
-            color: AppColors.primaryLightAccent,
+            color: AppColors.white,
             strokeAlign: 7,
           ),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.elliptical(100, 10),
-            bottomLeft: Radius.elliptical(10, 100),
-            topRight: Radius.elliptical(10, 100),
-            bottomRight: Radius.elliptical(100, 10),
-          ),
+          borderRadius: AppThemeConstants.borderRadius
         ),
         child: Row(
           // mainAxisSize: MainAxisSize.min,

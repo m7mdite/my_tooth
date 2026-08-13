@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'dart:io';
 
 import '../../../services/local_storge/local_user_storage.dart';
@@ -13,10 +12,10 @@ class UnifiedEditProfileScreen extends StatefulWidget {
   const UnifiedEditProfileScreen({super.key});
 
   @override
-  _UnifiedEditProfileScreenState createState() => _UnifiedEditProfileScreenState();
+  UnifiedEditProfileScreenState createState() => UnifiedEditProfileScreenState();
 }
 
-class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
+class UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
   final UnifiedSettingController controller = Get.find();
   final localStorage = Get.find<LocalUserStorage>();
 
@@ -137,7 +136,7 @@ class _UnifiedEditProfileScreenState extends State<UnifiedEditProfileScreen> {
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AppColors.white.withOpacity(0.95),
+                          color: AppColors.white.withValues(alpha: 0.95),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.elliptical(80, 10),
                             bottomLeft: Radius.elliptical(10, 80),

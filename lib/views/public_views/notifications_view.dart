@@ -157,7 +157,7 @@ class NotificationsView extends GetView<NotificationController> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: AppColors.grey.withOpacity(0.1),
+                color: AppColors.grey.withValues(alpha: 0.1),
                 spreadRadius: 1,
                 blurRadius: 4,
                 offset: const Offset(0, 2),
@@ -250,7 +250,7 @@ class NotificationsView extends GetView<NotificationController> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Icon(iconData, color: color, size: 24),
@@ -284,7 +284,7 @@ class NotificationsView extends GetView<NotificationController> {
         ),
         content: Text(
           'هل أنت متأكد من حذف جميع الإشعارات؟',
-          style: TextStyle(color: AppColors.textSecondary), // ✅
+          style: TextStyle(color: AppColors.textSecondary), 
         ),
         actions: [
           TextButton(

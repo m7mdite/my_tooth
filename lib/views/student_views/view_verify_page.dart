@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../utils/app_constants/app_images_constant.dart';
+import '../../utils/app_constants/app_theme_constants.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class ViewVerifyPage extends StatelessWidget {
@@ -41,8 +41,6 @@ class ViewVerifyPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // SizedBox(height: 10),
-                  // أيقونة التوثيق الدائرية
                   Center(
                     child: Container(
                       padding: EdgeInsets.all(15),
@@ -75,13 +73,8 @@ class ViewVerifyPage extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.95),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.elliptical(50, 10),
-                        bottomLeft: Radius.elliptical(10, 50),
-                        topRight: Radius.elliptical(10, 50),
-                        bottomRight: Radius.elliptical(50, 10),
-                      ),
+                      color: AppColors.white.withValues(alpha: 0.95),
+                      borderRadius: AppThemeConstants.borderRadius,
                       border: Border.all(color: AppColors.primary, width: 1.5),
                       boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 10)],
                     ),
@@ -102,7 +95,7 @@ class ViewVerifyPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 15),
-                        // مربع رفع الصورة بنفس تصميم الحاويات المائلة
+                        
                         InkWell(
                           onTap: () async {
                             await controller.uploadVerifyDocument();
@@ -112,24 +105,14 @@ class ViewVerifyPage extends StatelessWidget {
                             height: 180,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.elliptical(40, 10),
-                                bottomLeft: Radius.elliptical(10, 40),
-                                topRight: Radius.elliptical(10, 40),
-                                bottomRight: Radius.elliptical(40, 10),
-                              ),
+                              borderRadius: AppThemeConstants.borderRadius,
                               border: Border.all(color: AppColors.primary, width: 2, style: BorderStyle.solid),
                               color: AppColors.white,
-                              boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.2), blurRadius: 8)],
+                              boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.2), blurRadius: 8)],
                             ),
                             child: controller.document != null
                                 ? ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.elliptical(40, 10),
-                                      bottomLeft: Radius.elliptical(10, 40),
-                                      topRight: Radius.elliptical(10, 40),
-                                      bottomRight: Radius.elliptical(40, 10),
-                                    ),
+                                    borderRadius: AppThemeConstants.borderRadius,
                                     child: Image.file(
                                       controller.document!,
                                       fit: BoxFit.cover,
@@ -167,12 +150,7 @@ class ViewVerifyPage extends StatelessWidget {
                             elevation: 5,
                             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.elliptical(1, 10),
-                                topRight: Radius.elliptical(10, 1),
-                                bottomLeft: Radius.elliptical(10, 1),
-                                bottomRight: Radius.elliptical(1, 10),
-                              ),
+                              borderRadius: AppThemeConstants.borderRadius,
                             ),
                           ),
                         ),

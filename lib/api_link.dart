@@ -79,4 +79,8 @@ class ApiLink {
   static const String notifyAll = "$servere/admin/notify";
   static const String categories = "$servere/admin/categories";
   static const String acceptPendingPosts = "$servere/posts/pending/accept";
+//   static const String requests = '/api/request';
+// static const String acceptRequest = '/api/request/accept';
+static const String reassignOverseer = '/api/request/reassign-overseer';
+static const String courseOverseers = '/api/request/course-overseers';
 }

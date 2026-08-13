@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_notify_controller.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
@@ -120,7 +119,7 @@ class AdminNotifyDialog extends StatelessWidget {
                         borderSide: BorderSide(color: AppColors.grey300),
                       ),
                       filled: true,
-                      fillColor: AppColors.white.withOpacity(0.85),
+                      fillColor: AppColors.white24,
                       prefixIcon: Icon(Icons.title, color: AppColors.grey.shade600),
                     ),
                   ),
@@ -139,7 +138,7 @@ class AdminNotifyDialog extends StatelessWidget {
                         borderSide: BorderSide(color: AppColors.grey300),
                       ),
                       filled: true,
-                      fillColor: AppColors.white.withOpacity(0.85),
+                      fillColor: AppColors.white60,
                     ),
                   ),
                   const SizedBox(height: 12),

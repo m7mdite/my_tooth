@@ -5,13 +5,10 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/requests_controllers/fill_request_controller.dart';
 import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
 import 'package:gr_flutter/services/functions/show_tooth_location_map.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/prediction_light_button.dart';
-import '../../models/requests_models/treatment_request_model.dart';
 import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
-import '../../utils/app_constants/tooth_constants.dart';
 import '../widgets/select_one_option.dart';
 
 class ModifiedRequest extends StatelessWidget {
@@ -413,7 +410,7 @@ class ModifiedRequest extends StatelessWidget {
                                 height: 80,
                                 width: 80,
                                 child: Image.network(
-                                  "${controller.treatmentRequestModel.requestion!.photo!.url!}",
+                                  controller.treatmentRequestModel.requestion!.photo!.url!,
                                   fit: BoxFit.cover,
                                 ),
                               )

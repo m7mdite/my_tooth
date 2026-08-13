@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
+import 'package:gr_flutter/views/widgets/requests/show_request.dart';
 
 import '../../controllers/overseer_controllers/overseer_requests_controller.dart';
 import '../../models/requests_models/treatment_request_model.dart';
@@ -15,7 +15,7 @@ class OverseerViewRequestProcessing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShowRequestProcessing(
+    return ShowRequest(
       requestModel: requestModel,
       children: [
         Container(

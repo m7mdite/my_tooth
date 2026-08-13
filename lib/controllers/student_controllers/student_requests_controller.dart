@@ -4,7 +4,7 @@ import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/models/student_models/accept_request_model.dart';
 import 'package:gr_flutter/services/remote/public_remotes/request_remote.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
+import 'package:gr_flutter/views/widgets/requests/show_request.dart';
 import 'package:gr_flutter/views/widgets/requests/student_dunning_request.dart';
 
 import '../../models/requests_models/treatment_request_model.dart';
@@ -68,7 +68,6 @@ class StudentRequestsControllerImp extends StudentRequestsController {
     var response = await requestRemote.acceptRequestData({}, idR, idO);
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("===========================$response");
       Get.snackbar("${response['status']}", "${response['message']}");
 
       getPendingRequests();
@@ -115,7 +114,6 @@ class StudentRequestsControllerImp extends StudentRequestsController {
         await requestRemote.dunningOverseerData(data.toJson(), idR, idO);
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("$response");
       Get.snackbar("${response['status']}", "${response['message']}");
 
       getPendingRequests();
@@ -127,11 +125,9 @@ class StudentRequestsControllerImp extends StudentRequestsController {
   // late int i;
   @override
   showRequest(TreatmentRequestModel requestModel) async {
-    print("======== ${requestModel.toString()}");
 
     // i = index;
     await getOverSeer(requestModel.courseInfo!.sId!);
-    print("======== ${requestModel.courseInfo!.sId!}");
     Get.dialog(StudentDunningRequest(requestModel: requestModel));
   }
 
@@ -139,7 +135,7 @@ class StudentRequestsControllerImp extends StudentRequestsController {
     // i = index;
     getOverSeer(requestModel.courseInfo!.sId ?? "");
     Get.dialog(
-      ShowRequestProcessing(
+      ShowRequest(
         requestModel: requestModel,
         children: [
           if (requestModel.overseer == null)
@@ -179,7 +175,6 @@ class StudentRequestsControllerImp extends StudentRequestsController {
           .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
     }
-    print("${response['data']}");
     update();
   }
 
@@ -201,8 +196,6 @@ class StudentRequestsControllerImp extends StudentRequestsController {
       response['data'] == null || response['data'] == []
           ? overseersCourse = []
           : overseersCourse = response['data'] as List;
-
-      print("$overseersCourse");
     }
     update();
   }

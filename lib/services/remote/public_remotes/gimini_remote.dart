@@ -23,7 +23,6 @@ class GeminiRemote {
       }
       
     } catch (e) {
-      print('❌ خطأ: $e');
       return 'حدث خطأ: ${e.toString().substring(0, e.toString().length > 100 ? 100 : e.toString().length)}';
     }
   }

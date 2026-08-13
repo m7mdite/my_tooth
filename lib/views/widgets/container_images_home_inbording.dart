@@ -1,6 +1,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 class ContainerImagesHomeInbording extends StatelessWidget {
   final String image;
@@ -15,12 +16,7 @@ class ContainerImagesHomeInbording extends StatelessWidget {
       width: Get.width * 0.4,
       margin: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(100, 10),
-          bottomLeft: Radius.elliptical(10, 100),
-          topRight: Radius.elliptical(10, 100),
-          bottomRight: Radius.elliptical(100, 10),
-        ),
+        borderRadius: AppThemeConstants.borderRadius,
         image: DecorationImage(
           image: AssetImage("images/images_asnan/$image"),
           fit: BoxFit.cover,

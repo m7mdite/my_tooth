@@ -75,7 +75,6 @@ class Crud {
         return right(responsebody);
       }
     } catch (e) {
-      print('Exception in postManyData: $e');
       return left(StatusRequest.serverFailure);
     }
   }
@@ -103,11 +102,9 @@ class Crud {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return right(responsebody);
       } else {
-        print('${responsebody['message']} ${responsebody['status']}');
         return right(responsebody);
       }
     } catch (e) {
-      print('Exception in getData: $e');
       return left(StatusRequest.serverFailure);
     }
   }
@@ -144,7 +141,6 @@ class Crud {
         return right(responsebody);
       }
     } catch (e) {
-      print('Exception in putData: $e');
       return left(StatusRequest.serverFailure);
     }
   }
@@ -172,11 +168,9 @@ class Crud {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return right(responsebody);
       } else {
-        print('Delete failed: ${responsebody['message']}');
         return left(StatusRequest.serverFailure);
       }
     } catch (e) {
-      print('Exception in deleteData: $e');
       return left(StatusRequest.serverFailure);
     }
   }
@@ -222,7 +216,6 @@ class Crud {
         return Right(responseBody);
       }
     } catch (e) {
-      print('Exception in postDataWithFiles: $e');
       return Left(StatusRequest.serverFailure);
     }
   }
@@ -268,7 +261,6 @@ class Crud {
         return Right(responseBody);
       }
     } catch (e) {
-      print('Exception in putDataWithFiles: $e');
       return Left(StatusRequest.serverFailure);
     }
   }

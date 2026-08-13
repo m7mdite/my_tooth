@@ -64,7 +64,7 @@ class ViewStudentsPage extends StatelessWidget {
                       backgroundImage: (student.profilePhoto != null &&
                               student.profilePhoto!.url != null &&
                               student.profilePhoto!.url!.isNotEmpty)
-                          ? NetworkImage("${student.profilePhoto!.url!}")
+                          ? NetworkImage(student.profilePhoto!.url!)
                           : null,
                       child: (student.profilePhoto == null ||
                               student.profilePhoto!.url == null ||

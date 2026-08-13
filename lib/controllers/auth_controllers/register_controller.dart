@@ -59,7 +59,6 @@ class RegisterControllerImp extends RegisterController {
       role: role,
       universityNumber: universityNumber.text,
     ).toJson();
-    print("Data to send: $data");
     var formData = formStateRegister.currentState;
     if (formData!.validate()) {
       isLoading.value = true;
@@ -79,7 +78,6 @@ class RegisterControllerImp extends RegisterController {
       } catch (e) {
         statusRequest = StatusRequest.serverFailure;
         update();
-        print("Exception in register: $e");
       }finally{
         isLoading.value = false;
       }

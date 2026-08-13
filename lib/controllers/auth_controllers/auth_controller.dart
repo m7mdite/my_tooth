@@ -50,7 +50,6 @@ class AuthController extends GetxController {
   
   loginAsGuest() {
     Get.toNamed(AppRroute.mainScreenGuest);
-    print("Logged in as guest");
   }
 
   void goToPage(int index) {

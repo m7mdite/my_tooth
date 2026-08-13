@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../controllers/patient_controller/main_patient_controller.dart';
 import '../../controllers/guest_controllers/main_guest_controller.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/bottom_navigation_bar_icon.dart';

@@ -95,13 +95,13 @@ class _PendingPostsScreenState extends State<PendingPostsScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.cardColor, // ✅
                             border: Border.all(
-                              color: AppColors.warning.withOpacity(0.5),
+                              color: AppColors.warning.withValues(alpha: 0.5),
                               width: 2,
                             ),
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.warning.withOpacity(0.1),
+                                color: AppColors.warning.withValues(alpha: 0.1),
                                 blurRadius: 6,
                                 offset: const Offset(0, 2),
                               ),

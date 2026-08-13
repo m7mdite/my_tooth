@@ -42,7 +42,6 @@ class LoginControllerImp extends LoginController {
 
   void _checkForRegistrationEmail() {
     final arguments = Get.arguments;
-    print("Arguments received: $arguments");
 
     if (arguments != null && arguments['email'] != null) {
       email.text = arguments['email'];
@@ -61,18 +60,15 @@ class LoginControllerImp extends LoginController {
   @override
   login() async {
     await fillMap();
-    print("Data to send: $data");
     var formData = formStateLogin.currentState;
     if (formData!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
       try {
         var response = await authRemote.login(data);
-        print("${response.runtimeType}");
         statusRequest = handlingData(response);
         if (statusRequest == StatusRequest.success) {
         await  toHome(response);
-          print("id ${response['data']['_id']}");
         webSocketService.connect(response['data']['_id']);
         } else {
           Get.snackbar(
@@ -86,7 +82,6 @@ class LoginControllerImp extends LoginController {
       } catch (e) {
         statusRequest = StatusRequest.serverFailure;
         update();
-        print("Exception in register: $e");
       }
     }
   }
@@ -105,12 +100,10 @@ class LoginControllerImp extends LoginController {
 
   @override
   toHome(Map<String, dynamic> response) async {
-    print(  "Response in toHome: ${response.runtimeType}");
     if (response.containsKey('status') && response['status'] == "success") {
       if (response['data'].containsKey('is_admin') && response['data']['is_admin'] == true) {
         await  storage.saveAllFromJson(response['data']);
         await  storage.saveToken(response['token']);
-        print(response['token']);
         await  storage.saveRole('admin');
         Get.snackbar('  نجاح التسجيل', 'اهلا بك مديري',
             backgroundColor: AppColors.success, colorText: AppColors.white);
@@ -119,15 +112,12 @@ class LoginControllerImp extends LoginController {
           arguments: {'role': 'admin'},
         );
       } else {
-        print(response['token']);
 
-        // student or patient or super
+       
         await  storage.saveAllFromJson(response['data']);
         await  storage.saveToken(response['token']);
 
         if (response['data']['role'] == 'student') {
-          // authService.saveIsVerified(response['data']['is_verified']);
-          print("$response");
           Get.offAndToNamed(AppRroute.mainScreenStudent);
         } else if (response['data']['role'] == 'patient') {
           Get.offAndToNamed(AppRroute.mainScreenPatient);

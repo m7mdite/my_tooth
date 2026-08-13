@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../../models/admin_models/lesson_model.dart';
@@ -117,7 +116,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
   }) {
     final bool hasLesson = period1Lesson != null || period2Lesson != null;
 
-    final Color? cellColor = isOccupiedByOther
+    final Color cellColor = isOccupiedByOther
         ? AppColors.error100
         : (hasLesson
             ? AppColors.primary50
@@ -394,7 +393,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                   ),
                                 ),
                               );
-                            }).toList(),
+                            }),
                           ],
                         ),
                         // === الجزء القابل للتمرير (القاعات) ===
@@ -481,7 +480,7 @@ class WeeklyScheduleScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                   );
-                                }).toList(),
+                                }),
                               ],
                             ),
                           ),

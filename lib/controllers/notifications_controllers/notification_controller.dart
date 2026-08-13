@@ -41,7 +41,7 @@ class NotificationController extends GetxController {
       snackPosition: SnackPosition.TOP,
       duration: const Duration(seconds: 4),
       margin: const EdgeInsets.all(10),
-      backgroundColor: Get.theme.primaryColor.withOpacity(0.9),
+      backgroundColor: Get.theme.primaryColor.withValues(alpha: 0.9),
       colorText: AppColors.white,
     );
   }
@@ -107,7 +107,6 @@ class NotificationController extends GetxController {
         break;
 
       case 'updatecasetype':
-        // TODO: حدد الوجهة المناسبة لهذا النوع من الإشعارات
         Get.toNamed('/notifications');
         break;
 

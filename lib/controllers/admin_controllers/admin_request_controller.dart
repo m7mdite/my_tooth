@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/controllers/admin_controllers/admin_users_controller.dart';
-import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
-import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/services/functions/show_snack.dart';
 
 import '../../models/admin_models/course_model.dart';
@@ -50,6 +48,9 @@ abstract class AdminRequestController extends GetxController {
   void removeLessonFromQueue(int index); // يحذف درساً من القائمة
   void submitLessons(); // يرسل كل الدروس المضافة
   void clearLessonsQueue(); // (اختياري) لمسح القائمة بعد الإرسال
+  Future<void> deleteRequest(String id);
+  Future<void> rejectRequest(String id);
+  Future<void> acceptRequestForOverseer(String id, String overseerId);
 }
 
 class AdminRequestControllerImpl extends AdminRequestController {
@@ -354,7 +355,6 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.addTreatment(data);
     statusRequest = handlingData(response);
-    print("$statusRequest");
     if (statusRequest == StatusRequest.success) {
       // print("${response}");
       Get.back();
@@ -420,7 +420,6 @@ class AdminRequestControllerImpl extends AdminRequestController {
           .map((treatment) => TreatmentModel.fromJson(treatment))
           .toList();
       // print("${response['data']}");
-      print(" ${treatments.length} treatments loaded successfully");
 
       showsnack(title: "Success", message: "Treatments loaded successfully");
     }
@@ -496,7 +495,6 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.getAllCategory();
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       categorys = (response['data'] as List)
           .map((c) => {
@@ -504,8 +502,6 @@ class AdminRequestControllerImpl extends AdminRequestController {
                 "category": c['category'] as String,
               })
           .toList();
-      // print("${response['data']}");
-      print(" ${categorys.length} categorys loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
@@ -541,14 +537,10 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.getCompletedRequests();
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       finishedRequests = (response['data'] as List)
           .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
-      // print("${response['data']}");
-      print(
-          " ${finishedRequests.length} in-processing requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
@@ -560,14 +552,10 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.getAllInProcessingRequests();
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       inProcessingRequests = (response['data'] as List)
           .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
-      // print("${response['data']}");
-      print(
-          " ${inProcessingRequests.length} in-processing requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
@@ -579,13 +567,10 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.getAllPendingRequests();
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       pendingRequests = (response['data'] as List)
           .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
-      // print("${response['data']}");
-      print(" ${pendingRequests.length} pending requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
@@ -597,14 +582,10 @@ class AdminRequestControllerImpl extends AdminRequestController {
     update();
     var response = await adminRemote.getAllRejectedRequests();
     statusRequest = handlingData(response);
-    print("$response");
     if (statusRequest == StatusRequest.success) {
       rejectedRequests = (response['data'] as List)
           .map((c) => TreatmentRequestModel.fromJson(c))
           .toList();
-      // print("${response['data']}");
-      print(
-          " ${rejectedRequests.length} rejected requests loaded successfully");
       showsnack(title: response['status'], message: response['message']);
     }
     update();
@@ -715,240 +696,315 @@ class AdminRequestControllerImpl extends AdminRequestController {
   }
 
   // دالة لفتح حوار إضافة درس لخلية محددة (اليوم والفترة محددان)
-void showAddLessonDialog(BuildContext context, String day, String period) {
-  // نعيد تعيين الحقول المؤقتة (اختياري) لتفادي تداخل القيم السابقة
-  selectedCourseId = '';
-  selectedOverseers = [];
-  hall = '';
+  void showAddLessonDialog(BuildContext context, String day, String period) {
+    // نعيد تعيين الحقول المؤقتة (اختياري) لتفادي تداخل القيم السابقة
+    selectedCourseId = '';
+    selectedOverseers = [];
+    hall = '';
 
-  Get.dialog(
-    AlertDialog(
-      title: Text("إضافة درس في $day - $period"),
-      content: StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // اختيار المادة
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "المادة"),
-                value: selectedCourseId.isEmpty ? null : selectedCourseId,
-                items: courses.map((course) {
-                  return DropdownMenuItem<String>(
-                    value: course.sId,
-                    child: Text(course.courseName ?? ""),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCourseId = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              // اختيار المشرفين (متعدد)
-              DropdownSearch<ProfileModel>.multiSelection(
-                items: (filter, infiniteScrollProps) {
-                  if (overSeers.isEmpty) return [];
-                  if (filter.isEmpty) return overSeers.toList();
-                  return overSeers.where((overseer) =>
-                      overseer.firstName != null &&
-                      overseer.firstName!
-                          .toLowerCase()
-                          .contains(filter.toLowerCase())).toList();
-                },
-                compareFn: (item1, item2) => item1.user == item2.user,
-                onChanged: (List<ProfileModel>? selected) {
-                  setState(() {
-                    if (selected != null) {
-                      selectedOverseers = selected;
-                    }
-                  });
-                },
-                selectedItems: selectedOverseers,
-                dropdownBuilder: (context, selectedItems) {
-                  if (selectedItems.isEmpty) {
-                    return Text("اختر المشرفين...", style: TextStyle(color: AppColors.grey));
-                  }
-                  return Text("تم اختيار ${selectedItems.length} مشرف");
-                },
-                itemAsString: (ProfileModel? p) => "${p!.firstName} ${p.lastName}",
-                popupProps: PopupPropsMultiSelection.menu(
-                  showSearchBox: true,
-                  searchDelay: Duration(milliseconds: 500),
+    Get.dialog(
+      AlertDialog(
+        title: Text("إضافة درس في $day - $period"),
+        content: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // اختيار المادة
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(labelText: "المادة"),
+                  value: selectedCourseId.isEmpty ? null : selectedCourseId,
+                  items: courses.map((course) {
+                    return DropdownMenuItem<String>(
+                      value: course.sId,
+                      child: Text(course.courseName ?? ""),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCourseId = value!;
+                    });
+                  },
                 ),
-              ),
-              SizedBox(height: 10),
-              // اختيار القاعة
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "القاعة"),
-                value: hall.isEmpty ? null : hall,
-                items: AppConstants.hall.map((h) {
-                  return DropdownMenuItem<String>(value: h, child: Text(h));
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    hall = value!;
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      ),
-      actions: [
-        TextButton(onPressed: () => Get.back(), child: Text("إلغاء")),
-        ElevatedButton(
-          onPressed: () {
-            // التحقق من اكتمال البيانات
-            if (selectedCourseId.isEmpty ||
-                selectedOverseers.isEmpty ||
-                hall.isEmpty) {
-              Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
-              return;
-            }
-            // بناء الدرس وإضافته للقائمة
-            Map<String, dynamic> lesson = {
-              "course": selectedCourseId,
-              "category": selectedCategoryId,
-              "overseers": selectedOverseers.map((o) => o.user).toList(),
-              "time": "$day-$period",
-              "hall": hall,
-            };
-            // التحقق من عدم وجود درس مكرر في نفس الخلية
-            bool exists = lessonsQueue.any((l) => l['time'] == '$day-$period');
-            if (exists) {
-              Get.snackbar("تنبيه", "يوجد درس مسبق في هذه الخلية، قم بحذفه أولاً");
-              return;
-            }
-            lessonsQueue.add(lesson);
-            update();
-            Get.back();
-            Get.snackbar("تم", "تم إضافة الدرس");
+                SizedBox(height: 10),
+                // اختيار المشرفين (متعدد)
+                DropdownSearch<ProfileModel>.multiSelection(
+                  items: (filter, infiniteScrollProps) {
+                    if (overSeers.isEmpty) return [];
+                    if (filter.isEmpty) return overSeers.toList();
+                    return overSeers
+                        .where((overseer) =>
+                            overseer.firstName != null &&
+                            overseer.firstName!
+                                .toLowerCase()
+                                .contains(filter.toLowerCase()))
+                        .toList();
+                  },
+                  compareFn: (item1, item2) => item1.user == item2.user,
+                  onChanged: (List<ProfileModel>? selected) {
+                    setState(() {
+                      if (selected != null) {
+                        selectedOverseers = selected;
+                      }
+                    });
+                  },
+                  selectedItems: selectedOverseers,
+                  dropdownBuilder: (context, selectedItems) {
+                    if (selectedItems.isEmpty) {
+                      return Text("اختر المشرفين...",
+                          style: TextStyle(color: AppColors.grey));
+                    }
+                    return Text("تم اختيار ${selectedItems.length} مشرف");
+                  },
+                  itemAsString: (ProfileModel? p) =>
+                      "${p!.firstName} ${p.lastName}",
+                  popupProps: PopupPropsMultiSelection.menu(
+                    showSearchBox: true,
+                    searchDelay: Duration(milliseconds: 500),
+                  ),
+                ),
+                SizedBox(height: 10),
+                // اختيار القاعة
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(labelText: "القاعة"),
+                  value: hall.isEmpty ? null : hall,
+                  items: AppConstants.hall.map((h) {
+                    return DropdownMenuItem<String>(value: h, child: Text(h));
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      hall = value!;
+                    });
+                  },
+                ),
+              ],
+            );
           },
-          child: Text("إضافة"),
         ),
-      ],
-    ),
-    barrierDismissible: false,
-  );
-}
-Future<void> updateLesson(String id, Map data) async {
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: Text("إلغاء")),
+          ElevatedButton(
+            onPressed: () {
+              // التحقق من اكتمال البيانات
+              if (selectedCourseId.isEmpty ||
+                  selectedOverseers.isEmpty ||
+                  hall.isEmpty) {
+                Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
+                return;
+              }
+              // بناء الدرس وإضافته للقائمة
+              Map<String, dynamic> lesson = {
+                "course": selectedCourseId,
+                "category": selectedCategoryId,
+                "overseers": selectedOverseers.map((o) => o.user).toList(),
+                "time": "$day-$period",
+                "hall": hall,
+              };
+              // التحقق من عدم وجود درس مكرر في نفس الخلية
+              bool exists =
+                  lessonsQueue.any((l) => l['time'] == '$day-$period');
+              if (exists) {
+                Get.snackbar(
+                    "تنبيه", "يوجد درس مسبق في هذه الخلية، قم بحذفه أولاً");
+                return;
+              }
+              lessonsQueue.add(lesson);
+              update();
+              Get.back();
+              Get.snackbar("تم", "تم إضافة الدرس");
+            },
+            child: Text("إضافة"),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  Future<void> updateLesson(String id, Map data) async {
+    statusRequest = StatusRequest.loading;
+    update();
+    var response = await adminRemote.updateLesson(id, data);
+    statusRequest = handlingData(response);
+    if (statusRequest == StatusRequest.success) {
+      Get.snackbar("نجاح", response['message'] ?? "تم التعديل بنجاح");
+      getSchedule(); // تحديث الجدول
+    } else {
+      Get.snackbar("خطأ", response['message'] ?? "فشل التعديل");
+    }
+    update();
+  }
+
+  void showEditLessonDialog(BuildContext context, LessonModel lesson) {
+    String tempCourseId = lesson.course?.sId ?? '';
+    String tempCategoryId = lesson.category?.sId ?? '';
+    List<String> tempOverseerIds = lesson.overseers
+            ?.map((o) => o.user ?? '')
+            .where((id) => id.isNotEmpty)
+            .toList() ??
+        [];
+    String tempHall = lesson.hall ?? '';
+
+    Get.dialog(
+      AlertDialog(
+        title: Text("تعديل درس في ${lesson.day} - ${lesson.period}"),
+        content: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // المادة
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: "المادة"),
+                  value: tempCourseId.isEmpty ? null : tempCourseId,
+                  items: courses
+                      .map((c) => DropdownMenuItem<String>(
+                            value: c.sId,
+                            child: Text(c.courseName ?? ""),
+                          ))
+                      .toList(),
+                  onChanged: (val) => setState(() => tempCourseId = val!),
+                ),
+                const SizedBox(height: 10),
+                // الفئة
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: "الفئة"),
+                  value: tempCategoryId.isEmpty ? null : tempCategoryId,
+                  items: categorys
+                      .map((c) => DropdownMenuItem<String>(
+                            value: c['id'],
+                            child: Text(c['category'] ?? ""),
+                          ))
+                      .toList(),
+                  onChanged: (val) => setState(() => tempCategoryId = val!),
+                ),
+                const SizedBox(height: 10),
+                // المشرفين (متعدد)
+                DropdownSearch<ProfileModel>.multiSelection(
+                  items: (filter, infiniteScrollProps) {
+                    if (overSeers.isEmpty) return [];
+                    if (filter.isEmpty) return overSeers.toList();
+                    return overSeers
+                        .where((o) =>
+                            o.firstName != null &&
+                            o.firstName!
+                                .toLowerCase()
+                                .contains(filter.toLowerCase()))
+                        .toList();
+                  },
+                  compareFn: (item1, item2) => item1.user == item2.user,
+                  onChanged: (List<ProfileModel>? selected) {
+                    setState(() {
+                      if (selected != null) {
+                        tempOverseerIds = selected
+                            .map((o) => o.user ?? '')
+                            .where((id) => id.isNotEmpty)
+                            .toList();
+                      }
+                    });
+                  },
+                  selectedItems: overSeers
+                      .where((o) => tempOverseerIds.contains(o.user))
+                      .toList(),
+                  dropdownBuilder: (context, selectedItems) {
+                    if (selectedItems.isEmpty) {
+                      return const Text("اختر المشرفين...");
+                    }
+                    return Text("تم اختيار ${selectedItems.length} مشرف");
+                  },
+                  itemAsString: (ProfileModel? p) =>
+                      "${p!.firstName} ${p.lastName}",
+                  popupProps: PopupPropsMultiSelection.menu(
+                    showSearchBox: true,
+                    searchDelay: const Duration(milliseconds: 500),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // القاعة
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: "القاعة"),
+                  value: tempHall.isEmpty ? null : tempHall,
+                  items: AppConstants.hall
+                      .map((h) => DropdownMenuItem<String>(
+                            value: h,
+                            child: Text(h),
+                          ))
+                      .toList(),
+                  onChanged: (val) => setState(() => tempHall = val!),
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: const Text("إلغاء")),
+          ElevatedButton(
+            onPressed: () {
+              if (tempCourseId.isEmpty ||
+                  tempOverseerIds.isEmpty ||
+                  tempHall.isEmpty) {
+                Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
+                return;
+              }
+              Map<String, dynamic> data = {
+                "course": tempCourseId,
+                "category": tempCategoryId,
+                "overseers": tempOverseerIds,
+                "hall": tempHall,
+                // الوقت لا نغيره (يبقى كما هو)
+              };
+              updateLesson(lesson.sId!, data);
+              Get.back();
+            },
+            child: const Text("تعديل"),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+  @override
+Future<void> deleteRequest(String id) async {
   statusRequest = StatusRequest.loading;
   update();
-  var response = await adminRemote.updateLesson(id, data);
+  var response = await adminRemote.deleteTreatmentRequest(id);
   statusRequest = handlingData(response);
   if (statusRequest == StatusRequest.success) {
-    Get.snackbar("نجاح", response['message'] ?? "تم التعديل بنجاح");
-    getSchedule(); // تحديث الجدول
+    pendingRequests.removeWhere((r) => r.sId == id);
+    showsnack(title: "نجاح", message: response['message'] ?? "تم حذف الطلب بنجاح");
   } else {
-    Get.snackbar("خطأ", response['message'] ?? "فشل التعديل");
+    showsnack(title: "خطأ", message: response['message'] ?? "فشل حذف الطلب");
   }
   update();
 }
 
-void showEditLessonDialog(BuildContext context, LessonModel lesson) {
-  String tempCourseId = lesson.course?.sId ?? '';
-  String tempCategoryId = lesson.category?.sId ?? '';
-  List<String> tempOverseerIds = lesson.overseers?.map((o) => o.user ?? '').where((id) => id.isNotEmpty).toList() ?? [];
-  String tempHall = lesson.hall ?? '';
+@override
+Future<void> rejectRequest(String id) async {
+  statusRequest = StatusRequest.loading;
+  update();
+  var response = await adminRemote.updateTreatmentRequest(id, {"status": "rejected"});
+  statusRequest = handlingData(response);
+  if (statusRequest == StatusRequest.success) {
+    pendingRequests.removeWhere((r) => r.sId == id);
+    showsnack(title: "نجاح", message: "تم رفض الطلب");
+  } else {
+    showsnack(title: "خطأ", message: response['message'] ?? "فشل رفض الطلب");
+  }
+  update();
+}
 
-  Get.dialog(
-    AlertDialog(
-      title: Text("تعديل درس في ${lesson.day} - ${lesson.period}"),
-      content: StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // المادة
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: "المادة"),
-                value: tempCourseId.isEmpty ? null : tempCourseId,
-                items: courses.map((c) => DropdownMenuItem<String>(
-                  value: c.sId,
-                  child: Text(c.courseName ?? ""),
-                )).toList(),
-                onChanged: (val) => setState(() => tempCourseId = val!),
-              ),
-              const SizedBox(height: 10),
-              // الفئة
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: "الفئة"),
-                value: tempCategoryId.isEmpty ? null : tempCategoryId,
-                items: categorys.map((c) => DropdownMenuItem<String>(
-                  value: c['id'],
-                  child: Text(c['category'] ?? ""),
-                )).toList(),
-                onChanged: (val) => setState(() => tempCategoryId = val!),
-              ),
-              const SizedBox(height: 10),
-              // المشرفين (متعدد)
-              DropdownSearch<ProfileModel>.multiSelection(
-                items: (filter, infiniteScrollProps) {
-                  if (overSeers.isEmpty) return [];
-                  if (filter.isEmpty) return overSeers.toList();
-                  return overSeers.where((o) =>
-                      o.firstName != null &&
-                      o.firstName!.toLowerCase().contains(filter.toLowerCase())).toList();
-                },
-                compareFn: (item1, item2) => item1.user == item2.user,
-                onChanged: (List<ProfileModel>? selected) {
-                  setState(() {
-                    if (selected != null) {
-                      tempOverseerIds = selected.map((o) => o.user ?? '').where((id) => id.isNotEmpty).toList();
-                    }
-                  });
-                },
-                selectedItems: overSeers.where((o) => tempOverseerIds.contains(o.user)).toList(),
-                dropdownBuilder: (context, selectedItems) {
-                  if (selectedItems.isEmpty) return const Text("اختر المشرفين...");
-                  return Text("تم اختيار ${selectedItems.length} مشرف");
-                },
-                itemAsString: (ProfileModel? p) => "${p!.firstName} ${p.lastName}",
-                popupProps: PopupPropsMultiSelection.menu(
-                  showSearchBox: true,
-                  searchDelay: const Duration(milliseconds: 500),
-                ),
-              ),
-              const SizedBox(height: 10),
-              // القاعة
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: "القاعة"),
-                value: tempHall.isEmpty ? null : tempHall,
-                items: AppConstants.hall.map((h) => DropdownMenuItem<String>(
-                  value: h,
-                  child: Text(h),
-                )).toList(),
-                onChanged: (val) => setState(() => tempHall = val!),
-              ),
-            ],
-          );
-        },
-      ),
-      actions: [
-        TextButton(onPressed: () => Get.back(), child: const Text("إلغاء")),
-        ElevatedButton(
-          onPressed: () {
-            if (tempCourseId.isEmpty || tempOverseerIds.isEmpty || tempHall.isEmpty) {
-              Get.snackbar("خطأ", "يرجى ملء جميع الحقول");
-              return;
-            }
-            Map<String, dynamic> data = {
-              "course": tempCourseId,
-              "category": tempCategoryId,
-              "overseers": tempOverseerIds,
-              "hall": tempHall,
-              // الوقت لا نغيره (يبقى كما هو)
-            };
-            updateLesson(lesson.sId!, data);
-            Get.back();
-          },
-          child: const Text("تعديل"),
-        ),
-      ],
-    ),
-    barrierDismissible: false,
-  );
+@override
+Future<void> acceptRequestForOverseer(String id, String overseerId) async {
+  statusRequest = StatusRequest.loading;
+  update();
+  var response = await adminRemote.acceptRequest(id, overseerId);
+  statusRequest = handlingData(response);
+  if (statusRequest == StatusRequest.success) {
+    pendingRequests.removeWhere((r) => r.sId == id);
+    showsnack(title: "نجاح", message: "تم قبول الطلب");
+  } else {
+    showsnack(title: "خطأ", message: response['message'] ?? "فشل قبول الطلب");
+  }
+  update();
 }
 }

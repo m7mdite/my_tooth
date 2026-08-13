@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
+import 'package:gr_flutter/views/widgets/requests/show_request.dart';
 import '../../../models/requests_models/treatment_request_model.dart';
 import '../botton_controller.dart';
 import '../dialog/submit_dialog.dart';
@@ -14,7 +14,7 @@ class StudentDunningRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShowRequestProcessing(
+    return ShowRequest(
       requestModel: requestModel,
       children: [
         Container(

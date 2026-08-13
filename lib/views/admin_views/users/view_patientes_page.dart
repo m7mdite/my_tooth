@@ -49,7 +49,7 @@ class ViewPatientesPage extends StatelessWidget {
                       backgroundImage: (patient.profilePhoto != null &&
                               patient.profilePhoto!.url != null &&
                               patient.profilePhoto!.url!.isNotEmpty)
-                          ? NetworkImage("${patient.profilePhoto!.url!}")
+                          ? NetworkImage(patient.profilePhoto!.url!)
                           : null,
                       child: (patient.profilePhoto == null ||
                               patient.profilePhoto!.url == null ||

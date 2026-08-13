@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/auth_controllers/auth_controller.dart';
-import 'package:gr_flutter/app_route.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import '../../utils/app_constants/colors_constant.dart';
-import '../../utils/app_constants/app_images_constant.dart'; // ✅ مضاف
+import '../../utils/app_constants/app_images_constant.dart'; 
 import 'login_form.dart';
 import 'register_form.dart';
 
@@ -42,7 +41,7 @@ class AuthScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.2),
+                  color: AppColors.white24,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Obx(
@@ -105,7 +104,7 @@ class AuthScreen extends StatelessWidget {
             boxShadow: isActive
                 ? [
                     BoxShadow(
-                      color: AppColors.black.withOpacity(0.1),
+                      color: AppColors.black12,
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     )
@@ -134,18 +133,18 @@ class AuthScreen extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.white.withOpacity(0.2), AppColors.white.withOpacity(0.1)],
+          colors: [AppColors.white24, AppColors.white24],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
         borderRadius: AppThemeConstants.borderRadius,
         border: Border.all(
-          color: AppColors.white.withOpacity(0.5),
+          color: AppColors.white54,
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.white.withOpacity(0.1),
+            color: AppColors.white24,
             blurRadius: 10,
             spreadRadius: 1,
             offset: const Offset(0, 2),

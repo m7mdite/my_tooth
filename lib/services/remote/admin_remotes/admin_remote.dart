@@ -193,4 +193,38 @@ class AdminRemote {
     return response.fold((l) => l, (r) => r);
     
   }
+  // حذف طلب علاج (Patient/Admin) — DELETE /api/request/:id
+deleteTreatmentRequest(String id) async {
+  var response = await crud.deleteData(ApiLink.requests, id);
+  return response.fold((l) => l, (r) => r);
+}
+
+// تحديث/رفض طلب — PUT /api/request/:id
+// ⚠️ لاحظ: الراوت بالباك اند PUT وليس POST، تأكد إنه crud عنده putData
+// وإلا عدّل الميثود بالباك اند لتقبل POST متل باقي التحديثات عندك
+updateTreatmentRequest(String id, Map data) async {
+  var response = await crud.postData('${ApiLink.requests}/$id', data);
+  return response.fold((l) => l, (r) => r);
+}
+
+// قبول الطلب وتعيين مشرف — POST /api/request/accept/:id/:overseer
+acceptRequest(String id, String overseerId) async {
+  var response =
+      await crud.postData('${ApiLink.acceptRequest}/$id/$overseerId', {});
+  return response.fold((l) => l, (r) => r);
+}
+
+// إعادة تعيين مشرف — PUT /api/request/reassign-overseer/:id/:overseer
+reassignOverseer(String id, String overseerId) async {
+  var response = await crud
+      .postData('${ApiLink.reassignOverseer}/$id/$overseerId', {});
+  return response.fold((l) => l, (r) => r);
+}
+
+// جلب مشرفين كورس معيّن — GET /api/request/course-overseers/:id
+getCourseOverseers(String courseId) async {
+  var response =
+      await crud.getData('${ApiLink.courseOverseers}/$courseId');
+  return response.fold((l) => l, (r) => r);
+}
 }

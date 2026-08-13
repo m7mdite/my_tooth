@@ -9,7 +9,6 @@ class PublicRemote {
     var response = await crud.getData(
       "${ApiLink.getOtherProfile}/$id",
     );
-    print("$response ${ApiLink.getOtherProfile}/$id");
     return response.fold((l) => l, (r) => r);
   }
 

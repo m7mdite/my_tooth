@@ -26,7 +26,6 @@ class ConversationsController extends GetxController {
     var response = await _conversationRemote.getUserConversations();
     statusRequest= handlingData(response);
     if(statusRequest == StatusRequest.success){
-      print("$response");
 
       conversations.value = (response['data'] as List)
           .map((item) => ConversationModel.fromJson(item))

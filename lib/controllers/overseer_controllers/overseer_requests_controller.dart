@@ -59,7 +59,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     getProcessingRequest();
     update();
     super.onInit();
-    // يمكنك هنا جلب البيانات أو تهيئة المتغيرات اللازمة
   }
 
   @override
@@ -69,7 +68,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     update();
     var response = await requestRemote.getTreatmentRequestsForOverseer();
     statusRequest = handlingData(response);
-    print("++++++++++++++++++++ $response");
     if (statusRequest == StatusRequest.success) {
       requestList = (response['data'] as List)
           .map((e) => TreatmentRequestModel.fromJson(e))
@@ -164,7 +162,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
         request.sId!,
         selectnewTreatment!.caseType!.sId!);
     statusRequest = handlingData(response);
-    print("===============$response");
     if (statusRequest == StatusRequest.success) {
       showsnack(
           title: response['status'] ?? "tm",
@@ -184,7 +181,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
     update();
     var response = await requestRemote.getTreatments();
     statusRequest = handlingData(response);
-    print("----------------------- $response");
     if (statusRequest == StatusRequest.success) {
       treatments = (response['data'] as List)
           .map((item) => TreatmentModel.fromJson(item))
@@ -233,7 +229,6 @@ class OverseerRequestsControllerImpl extends OverseerRequestsController {
       "feedback": textEditingControllerFeedback.text,
     }, request.sId!);
     statusRequest = handlingData(response);
-    print("dddddddddddddddddddddddddddddddddddd $response");
     if (statusRequest == StatusRequest.success) {
       showsnack(
         title: response['status'] ?? "tm",

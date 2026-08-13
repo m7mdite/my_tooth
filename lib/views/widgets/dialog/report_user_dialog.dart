@@ -40,7 +40,7 @@ class _ReportUserDialogState extends State<ReportUserDialog> {
     setState(() => _isSubmitting = false);
     if (success) {
       Get.close(1);
-      Get.back(); // إغلاق الديالوج
+      Get.back(); 
       Get.snackbar('تم', 'تم إرسال البلاغ بنجاح', snackPosition: SnackPosition.BOTTOM);
     } else {
       Get.snackbar('خطأ', 'فشل إرسال البلاغ، حاول مجدداً', snackPosition: SnackPosition.BOTTOM);

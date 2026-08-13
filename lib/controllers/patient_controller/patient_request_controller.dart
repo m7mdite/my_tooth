@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/requests_controllers/fill_request_controller.dart';
-import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
-import 'package:gr_flutter/models/requests_models/treatment_request_processing_s_model.dart';
 import 'package:gr_flutter/services/functions/show_snack.dart';
 import 'package:gr_flutter/views/patient_views/dialog_request/dialog_update_request.dart';
 import 'package:gr_flutter/views/widgets/requests/show_request.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
 import 'package:gr_flutter/views/widgets/dialog/submit_dialog.dart';
 
 import '../../models/requests_models/treatment_request_model.dart';
@@ -79,7 +76,7 @@ class PatientRequestControllerImp extends PatientRequestController {
       refreshData();
       Get.close(1);
     }
-    update;
+    update();
   }
 
   @override
@@ -105,7 +102,7 @@ class PatientRequestControllerImp extends PatientRequestController {
       refreshData();
       Get.close(1);
     }
-    update;
+    update();
   }
 
   @override
@@ -146,7 +143,7 @@ class PatientRequestControllerImp extends PatientRequestController {
   showRequest(TreatmentRequestModel request) {
     // i = index;
     Get.dialog(
-      ShowRequestProcessing(
+      ShowRequest(
         requestModel: request,
         children: [
           Row(
@@ -290,7 +287,6 @@ class PatientRequestControllerImp extends PatientRequestController {
     statusRequest = StatusRequest.loading;
     update();
     var response = await requestRemote.deleteRequest(id);
-    print("$response");
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       Get.snackbar("done", "مشي الحال");
@@ -353,7 +349,6 @@ class PatientRequestControllerImp extends PatientRequestController {
     var response = await requestRemote.getCompletedRequest();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("$response");
       requestListCompleted = (response['data'] as List)
           .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
@@ -368,7 +363,6 @@ class PatientRequestControllerImp extends PatientRequestController {
     var response = await requestRemote.getProcessingRequest();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("حقخسس     $response");
       requestListProcessing = (response['data'] as List)
           .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
@@ -383,7 +377,6 @@ class PatientRequestControllerImp extends PatientRequestController {
     var response = await requestRemote.getPendingPatientRequest();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("$response");
       requestListPending = (response['data'] as List)
           .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
@@ -398,7 +391,6 @@ class PatientRequestControllerImp extends PatientRequestController {
     var response = await requestRemote.getRejectedPatientRequest();
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
-      print("$response");
       requestListRejected = (response['data'] as List)
           .map((item) => TreatmentRequestModel.fromJson(item))
           .toList();
@@ -408,6 +400,6 @@ class PatientRequestControllerImp extends PatientRequestController {
   
   @override
   showProcessingRequest(TreatmentRequestModel request) {
-    Get.dialog(ShowRequestProcessing(requestModel: request));
+    Get.dialog(ShowRequest(requestModel: request));
   }
 }

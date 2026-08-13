@@ -77,7 +77,7 @@ class SubmitVerifyStudent extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    "${studentModel!.document!}",
+                    studentModel!.document!,
                     fit: BoxFit.cover,
                     height: 160,
                     errorBuilder: (context, error, stackTrace) =>

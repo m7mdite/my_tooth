@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
 import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/status_request.dart';
 import '../../utils/app_constants/app_images_constant.dart';
 import '../../utils/app_constants/colors_constant.dart';
@@ -124,7 +123,6 @@ class PublicProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // محتوى الصفحة (معلومات إضافية)
                   SliverList(
                     delegate: SliverChildListDelegate([
                       Padding(
@@ -132,7 +130,6 @@ class PublicProfileScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // أزرار مراسلة وإبلاغ
                             Row(
                               children: [
                                 Expanded(
@@ -166,7 +163,6 @@ class PublicProfileScreen extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 32),
-                            // معلومات الاتصال
                             if (profile.phoneNumber != null && profile.phoneNumber!.isNotEmpty) ...[
                               _sectionTitle('معلومات الاتصال'),
                               const SizedBox(height: 8),
@@ -175,7 +171,6 @@ class PublicProfileScreen extends StatelessWidget {
                               ]),
                               const SizedBox(height: 24),
                             ],
-                            // معلومات أكاديمية (للطالب)
                             if (profile.role == 'student') ...[
                               _sectionTitle('معلومات أكاديمية'),
                               const SizedBox(height: 8),
@@ -189,7 +184,6 @@ class PublicProfileScreen extends StatelessWidget {
                               ]),
                               const SizedBox(height: 24),
                             ],
-                            // معلومات صحية (للمريض)
                             if (profile.role == 'patient') ...[
                               _sectionTitle('معلومات صحية'),
                               const SizedBox(height: 8),

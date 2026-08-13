@@ -37,7 +37,7 @@ class TreatmentRequestModel {
   // fromJson موحد يتعامل مع كلا النوعين
   factory TreatmentRequestModel.fromJson(Map<String, dynamic> json) {
     // التحقق من وجود stage_evaluations لتحديد النوع
-    final hasStageEvaluations = json.containsKey('stage_evaluations');
+    // final hasStageEvaluations = json.containsKey('stage_evaluations');
 
     return TreatmentRequestModel(
       sId: json['_id'],
@@ -188,7 +188,7 @@ String toString() {
   String? getPatientFullName() {
     if (patient != null) {
       final parts = [patient!.firstName, patient!.fatherName, patient!.lastName]
-          .where((part) => part != null && part!.isNotEmpty)
+          .where((part) => part != null && part.isNotEmpty)
           .join(' ');
       return parts.isNotEmpty ? parts : null;
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../utils/app_constants/app_images_constant.dart';
+import '../../utils/app_constants/app_theme_constants.dart';
 import '../../utils/app_constants/colors_constant.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -29,7 +29,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 20,),
             children: [
-              // زر العودة (اختياري) أو يمكنك الاعتماد على زر الرجوع في الـ AppBar
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -40,7 +39,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10),
-              // العنوان الرئيسي (مثل صورة البروفايل لكن بدون صورة)
               Center(
                 child: Container(
                   padding: EdgeInsets.all(15),
@@ -49,7 +47,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)
                     ],
-                    color: AppColors.white.withOpacity(0.1),
+                    color: AppColors.white.withValues(alpha: 0.1),
                     border: Border.all(color: AppColors.white, width: 2),
                   ),
                   child: Icon(Icons.privacy_tip_outlined, color: AppColors.white, size: 60),
@@ -68,17 +66,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              // محتوى السياسة في حاوية قابلة للتمرير (لأن النص طويل)
               Container(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.95),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.elliptical(50, 10),
-                    bottomLeft: Radius.elliptical(10, 50),
-                    topRight: Radius.elliptical(10, 50),
-                    bottomRight: Radius.elliptical(50, 10),
-                  ),
+                  color: AppColors.white.withValues(alpha: 0.95),
+                  borderRadius: AppThemeConstants.borderRadius,
                   border: Border.all(color: AppColors.primary, width: 1.5),
                   boxShadow: [BoxShadow(color: AppColors.black12, blurRadius: 10)],
                 ),

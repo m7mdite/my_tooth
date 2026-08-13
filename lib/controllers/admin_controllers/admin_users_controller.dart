@@ -109,11 +109,7 @@ class AdminUsersControllerImpl extends AdminUsersController {
       overSeers = response['data']
           .map<ProfileModel>((json) => ProfileModel.fromJson(json))
           .toList();
-      for (var overSeer in overSeers) {
-        print(
-            "OverSeer: ${overSeer.firstName} ${overSeer.lastName}, Email: ${overSeer.user}, Bio: ${overSeer.bio}");
-      }
-      print("${overSeers.length} OverSeers fetched successfully");
+      
     } else {
       showsnack(title: response['status'], message: response['message']);
     }
@@ -130,18 +126,13 @@ class AdminUsersControllerImpl extends AdminUsersController {
       students = response['data']
           .map<ProfileModel>((json) => ProfileModel.fromJson(json))
           .toList();
-      for (var student in students) {
-        print(
-            "Student: ${student.firstName} ${student.lastName}, Email: ${student.universityNumber}, Bio: ${student.bio}");
-      }
-      print("${students.length} Students fetched successfully");
+     
     } else {
       showsnack(title: response['status'], message: response['message']);
     }
     update();
 
-    // .then((response) {
-    //   statusRequest = handlingData(response);
+    
   }
 
   @override
@@ -159,8 +150,6 @@ class AdminUsersControllerImpl extends AdminUsersController {
       patients = response['data']
           .map<ProfileModel>((json) => ProfileModel.fromJson(json))
           .toList();
-
-      print("${patients.length} Patients fetched successfully");
     } else {
       Get.snackbar("Error", "Failed to fetch Patients");
     }
@@ -182,14 +171,11 @@ class AdminUsersControllerImpl extends AdminUsersController {
     statusRequest = StatusRequest.loading;
     update();
     var response = await adminRemote.getAllVerifyStudents();
-    print(response);
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       verifyStudents = response['data']
           .map<VeifyStudentModel>((json) => VeifyStudentModel.fromJson(json))
           .toList();
-
-      print("${verifyStudents.length} Verify Students fetched successfully");
     } else {
       Get.snackbar("Error", "Failed to fetch Verify Students");
     }

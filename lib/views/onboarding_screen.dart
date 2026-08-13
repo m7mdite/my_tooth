@@ -86,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    // final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Stack(
@@ -151,7 +151,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               child: Text(
                 "تخطي",
                 style: TextStyle(
-                  color: AppColors.white.withOpacity(0.7),
+                  color: AppColors.white70,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   shadows: [Shadow(blurRadius: 8, color: AppColors.background)],
@@ -182,7 +182,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         boxShadow: isActive
             ? [
                 BoxShadow(
-                  color: AppColors.primary400.withOpacity(0.4),
+                  color: AppColors.primary400,
                   blurRadius: 10,
                 ),
               ]
@@ -215,7 +215,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     color: (isLast
                             ? AppColors.success.shade400
                             : AppColors.primary400)
-                        .withOpacity(0.5),
+                        ,
                     blurRadius: 16,
                     offset: const Offset(0, 4),
                   ),

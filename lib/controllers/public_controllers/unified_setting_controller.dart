@@ -270,8 +270,9 @@ class UnifiedSettingController extends GetxController {
       await localStorage.saveLastName(data['last_name']);
       await localStorage.savePhoneNumber(phoneNumber.value);
       await localStorage.saveBio(bio.value);
-      if (role.value == 'student')
+      if (role.value == 'student') {
         await localStorage.saveUniversityNumber(universityNumber.value);
+      }
       if (role.value == 'patient') {
         await localStorage.saveAge(age.value);
         await localStorage.saveGender(gender.value);

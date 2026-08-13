@@ -1,9 +1,7 @@
 // views/chat_screen.dart
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/ai_controllers/ai_chat_controller.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../../utils/app_constants/app_images_constant.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 import '../custom_app_bar.dart';
@@ -65,25 +63,25 @@ class AiChatScreen extends StatelessWidget {
                     },
                   )),
             ),
-            // حقل الإدخال - تصميم زجاجي عصري
+            
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.white.withOpacity(0.85),
+                color: AppColors.white.withValues(alpha: 0.85),
                 borderRadius: BorderRadius.circular(40),
                 border: Border.all(
-                  color: AppColors.white.withOpacity(0.5),
+                  color: AppColors.white.withValues(alpha: 0.5),
                   width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.black.withOpacity(0.1),
+                    color: AppColors.black.withValues(alpha: 0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
                   BoxShadow(
-                    color: AppColors.primary200.withOpacity(0.2),
+                    color: AppColors.primary200.withValues(alpha: 0.2),
                     blurRadius: 30,
                     offset: const Offset(0, 4),
                   ),
@@ -193,38 +191,4 @@ class AiChatScreen extends StatelessWidget {
     );
   }
 
-  void _showQuickSettings(AiChatController controller) {
-    showModalBottomSheet(
-      context: Get.context!,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.speed),
-              title: const Text('سرعة الرد'),
-              subtitle: Obx(() => Slider(
-                    value: controller.temperature.value,
-                    onChanged: (v) => controller.temperature.value = v,
-                    min: 0,
-                    max: 1,
-                  )),
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete_sweep),
-              title: const Text('مسح المحادثة'),
-              onTap: () {
-                Get.back();
-                _showClearDialog(controller);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

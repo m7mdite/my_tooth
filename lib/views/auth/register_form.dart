@@ -18,12 +18,12 @@ class RegisterForm extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.92),
+          color: AppColors.white.withValues(alpha: 0.92),
           borderRadius:AppThemeConstants.borderRadius,
           border: Border.all(color: AppColors.white, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.1),
+              color: AppColors.black.withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -102,17 +102,17 @@ class RegisterForm extends StatelessWidget {
                           controller.gender.value = set.first;
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
+                          backgroundColor: WidgetStateProperty.resolveWith(
                             (states) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return AppColors.primary100;
                               }
                               return AppColors.grey.shade200;
                             },
                           ),
-                          foregroundColor: MaterialStateProperty.resolveWith(
+                          foregroundColor: WidgetStateProperty.resolveWith(
                             (states) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return AppColors.primary700;
                               }
                               return AppColors.black87;
@@ -143,17 +143,17 @@ class RegisterForm extends StatelessWidget {
                           controller.role.value = set.first;
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
+                          backgroundColor: WidgetStateProperty.resolveWith(
                             (states) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return AppColors.primary100;
                               }
                               return AppColors.grey.shade200;
                             },
                           ),
-                          foregroundColor: MaterialStateProperty.resolveWith(
+                          foregroundColor: WidgetStateProperty.resolveWith(
                             (states) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return AppColors.primary700;
                               }
                               return AppColors.black87;
@@ -197,7 +197,7 @@ class RegisterForm extends StatelessWidget {
                     border: Border.all(color: AppColors.primary,strokeAlign: 10),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.success.shade300.withOpacity(0.4),
+                        color: AppColors.success.shade300,
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),

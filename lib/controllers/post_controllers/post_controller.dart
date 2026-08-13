@@ -124,7 +124,6 @@ class PostController extends GetxController {
 
   Future<void> likePost(String postId) async {
     var response = await remote.likePost(postId);
-    print('Like Response: $response'); // طباعة الرد للتحقق
     if (handlingData(response) == StatusRequest.success) {
       _updateLikeCountsEverywhere(
         postId,
@@ -199,7 +198,6 @@ class PostController extends GetxController {
 
   Future<void> likeComment(String commentId) async {
     var response = await remote.likeComment(commentId);
-    print("$response");
     if (response['status'] == 'success') {
       int index = postComments.indexWhere((c) => c.id == commentId);
       if (index != -1) {

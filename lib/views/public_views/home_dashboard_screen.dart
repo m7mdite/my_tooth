@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:gr_flutter/controllers/overseer_controllers/main_overseer_controller.dart';
+import 'package:gr_flutter/controllers/patient_controller/patient_request_controller.dart';
 import 'package:gr_flutter/controllers/public_controllers/unified_setting_controller.dart';
+import 'package:gr_flutter/controllers/student_controllers/main_student_controller.dart';
 import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
+import 'package:gr_flutter/views/patient_views/dialog_request/dialog_send_request.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
 import 'package:gr_flutter/app_route.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 
 import '../../controllers/home_dashboard_controller.dart';
 import '../../models/dashboard_model.dart';
@@ -29,7 +30,6 @@ class HomeDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String role = settingController.role.value;
     return Scaffold(
       backgroundColor: AppColors.background, // ✅
       appBar: CustomAppBar(
@@ -100,47 +100,73 @@ class HomeDashboardScreen extends StatelessWidget {
         }),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: role == "admin"
-          ? InkWell(
+      // ✅ كل الأزرار (إشعار الأدمن + أزرار الدور المختلفة) صارت حصراً
+      // هون جوا floatingActionButton، مكدّسة فوق بعض بـ Column، بدل ما
+      // تكون موزعة بين FAB وقسم منفصل بالجسم.
+      floatingActionButton: Obx(() {
+        final role = settingController.role.value;
+        final isAdmin = controller.isAdmin.value;
+
+        final List<Widget> fabButtons = [];
+
+        if (isAdmin) {
+          fabButtons.add(_floatingPillButton(
+            icon: Icons.notifications_active,
+            label: "إرسال إشعار للجميع",
+            color: AppColors.primary,
+            onTap: () {
+              Get.dialog(
+                const AdminNotifyDialog(),
+                barrierDismissible: false,
+              );
+            },
+          ));
+          
+        } else {
+          if (role == 'patient') {
+            fabButtons.add(_floatingPillButton(
+              icon: Icons.add_circle_outline,
+              label: "تقديم طلب علاج",
+              color: AppColors.primary,
+              onTap: _openCreateRequestDialog,
+            ));
+          } else if (role == 'student') {
+            fabButtons.add(_floatingPillButton(
+              icon: Icons.history_edu_sharp,
+              label: "عرض الطلبات",
+              color: AppColors.primary,
               onTap: () {
-                Get.dialog(
-                  const AdminNotifyDialog(),
-                  barrierDismissible: false,
-                );
+                if (Get.isRegistered<MainStudentControllerImp>()) {
+                  Get.find<MainStudentControllerImp>().toPage(1);
+                }
               },
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    color: AppColors.surface.withValues(alpha: 0.9), // ✅ بدل white24
-                    border: Border.all(
-                        width: 1, color: AppColors.primary, strokeAlign: 10),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.elliptical(100, 10),
-                      bottomLeft: Radius.elliptical(10, 100),
-                      topRight: Radius.elliptical(10, 100),
-                      bottomRight: Radius.elliptical(100, 10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.2), // ✅ بدل white
-                        blurRadius: 3,
-                        spreadRadius: 3,
-                      )
-                    ]),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.notifications_active, color: AppColors.primary), // ✅
-                    const SizedBox(width: 8),
-                    Text(
-                      "إرسال إشعار للجميع",
-                      style: TextStyle(color: AppColors.textPrimary), // ✅
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : null,
+            ));
+          } else if (role == 'overseer') {
+            fabButtons.add(_floatingPillButton(
+              icon: Icons.history_edu_sharp,
+              label: "طلبات المعالجة",
+              color: AppColors.primary,
+              onTap: () {
+                if (Get.isRegistered<MainOverseerControllerImp>()) {
+                  Get.find<MainOverseerControllerImp>().toPage(1);
+                }
+              },
+            ));
+          }
+        }
+
+        if (fabButtons.isEmpty) return const SizedBox.shrink();
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (int i = 0; i < fabButtons.length; i++) ...[
+              if (i > 0) const SizedBox(height: 10),
+              fabButtons[i],
+            ],
+          ],
+        );
+      }),
       body: RefreshIndicator(
         onRefresh: () async {
           controller.onInit();
@@ -159,6 +185,9 @@ class HomeDashboardScreen extends StatelessWidget {
             );
           }
           final dashboard = controller.dashboard.value!;
+          // ✅ قراءة role هون (جوا الـ Obx) بدل متغير ثابت بره، حتى
+          // القسم يتحدث تلقائياً هو كمان لما تتحمل بيانات الدور.
+          final role = settingController.role.value;
           return Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -182,8 +211,17 @@ class HomeDashboardScreen extends StatelessWidget {
                         dashboard.adv!.data!.isNotEmpty)
                       _buildAdvSection(dashboard.adv!.data!),
 
-                    // ===== 3. أزرار التنقل =====
-                    _buildQuickActions(),
+                    // ===== 3. المساعد الذكي (لغير الأدمن) =====
+                    if (role != 'admin') _buildAiChatSection(),
+                    if (role == 'admin')
+                      _floatingPillButton(
+                        icon: Icons.campaign,
+                        label: "إدارة الإعلانات",
+                        color: AppColors.primary,
+                        onTap:() => Get.to(() => AdvertisementManagementScreen())
+                      ),
+
+                      
 
                     // ===== 4. أفضل البوستات =====
                     if (dashboard.topPosts != null &&
@@ -536,7 +574,9 @@ class HomeDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickActions() {
+  /// ✅ رجع لمكانه الأصلي كقسم بالجسم (بدل ما كان مؤقتاً جوا
+  /// floatingActionButton)، ويظهر لغير الأدمن بس.
+  Widget _buildAiChatSection() {
     return AnimationConfiguration.staggeredList(
       position: 2,
       duration: const Duration(milliseconds: 600),
@@ -545,41 +585,66 @@ class HomeDashboardScreen extends StatelessWidget {
         child: FadeInAnimation(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Obx(() {
-              final isAdmin = controller.isAdmin.value;
-
-              return Row(
-                children: [
-                  if (!isAdmin)
-                    Expanded(
-                      child: _actionButton(
-                        icon: Icons.chat,
-                        label: 'المساعد الذكي',
-                        color: AppColors.success,
-                        onTap: () => Get.toNamed(AppRroute.aiChat),
-                      ),
-                    ),
-                  if (isAdmin) ...[
-                    Expanded(
-                      child: _actionButton(
-                        icon: Icons.ad_units,
-                        label: 'إدارة الإعلانات',
-                        color: AppColors.purple.shade700,
-                        onTap: () =>
-                            Get.to(() => AdvertisementManagementScreen()),
-                      ),
+            child: InkWell(
+              onTap: () => Get.toNamed(AppRroute.aiChat),
+              borderRadius: AppThemeConstants.borderRadius,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.surface.withValues(alpha: 0.95),
+                  borderRadius: AppThemeConstants.borderRadius,
+                  border: Border.all(color: AppColors.success, width: 1.2),
+                  boxShadow: [
+                    BoxShadow(
+                        color: AppColors.black.withValues(alpha: 0.05),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2))
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.chat, color: AppColors.success, size: 28),
+                    const SizedBox(width: 12),
+                    Text(
+                      'المساعد الذكي',
+                      style: TextStyle(
+                          color: AppColors.success,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
                   ],
-                ],
-              );
-            }),
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _actionButton({
+  /// فتح ديالوغ "تقديم طلب علاج" مباشرة من الصفحة الرئيسية (نفس آلية
+  /// PatientRequestScreen). PatientRequestControllerImp بينسجل تلقائياً
+  /// من ضمن listPage تبع MainPatientControllerImp وقت بناء الصفحة
+  /// الرئيسية نفسها، فبيكون جاهز هون بدون الحاجة نفتح تبويب الطلبات أول.
+  void _openCreateRequestDialog() {
+    if (!Get.isRegistered<PatientRequestControllerImp>()) {
+      Get.snackbar('تنبيه', 'الرجاء الانتظار قليلاً ثم إعادة المحاولة');
+      return;
+    }
+    final patientController = Get.find<PatientRequestControllerImp>();
+    Get.dialog(
+      DialogSendRequest(
+        send: () => patientController.sendRequest(),
+        cancel: () => patientController.cancelSendRequest(),
+      ),
+    );
+  }
+
+  /// زر بشكل حبة دواء (pill) للاستخدام حصراً جوا floatingActionButton —
+  /// نفس ستايل زر الأدمن القديم "إرسال إشعار للجميع"، بس بلون قابل
+  /// للتخصيص عشان يميّز كل إجراء عن التاني.
+  Widget _floatingPillButton({
     required IconData icon,
     required String label,
     required Color color,
@@ -587,28 +652,41 @@ class HomeDashboardScreen extends StatelessWidget {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.elliptical(100, 10),
+        bottomLeft: Radius.elliptical(10, 100),
+        topRight: Radius.elliptical(10, 100),
+        bottomRight: Radius.elliptical(100, 10),
+      ),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface.withValues(alpha: 0.95), // ✅ بدل AppColors.white
-          borderRadius: AppThemeConstants.borderRadius,
-          border: Border.all(color: color, width: 1.2),
+          color: AppColors.surface.withValues(alpha: 0.9),
+          border: Border.all(width: 1, color: color, strokeAlign: 10),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.elliptical(100, 10),
+            bottomLeft: Radius.elliptical(10, 100),
+            topRight: Radius.elliptical(10, 100),
+            bottomRight: Radius.elliptical(100, 10),
+          ),
           boxShadow: [
             BoxShadow(
-                color: AppColors.black.withValues(alpha: 0.05),
-                blurRadius: 6,
-                offset: const Offset(0, 2))
+              color: color.withValues(alpha: 0.2),
+              blurRadius: 3,
+              spreadRadius: 3,
+            )
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 28),
-            const SizedBox(width: 12),
-            Text(label,
-                style: TextStyle(
-                    color: color, fontSize: 16, fontWeight: FontWeight.w600)),
+            Icon(icon, color: color),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                  color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+            ),
           ],
         ),
       ),

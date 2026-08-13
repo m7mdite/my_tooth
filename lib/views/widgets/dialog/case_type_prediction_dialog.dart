@@ -5,9 +5,6 @@ import 'package:get/get.dart';
 import '../../../models/requests_models/case_type_prediction_result_model.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 
-/// ديالوغ عرض نتيجة التنبؤ بنوع المعالجة المتوقع.
-/// ملاحظة: هاي نتيجة تقديرية بالذكاء الاصطناعي فقط، مش تشخيص نهائي —
-/// المريض ما زال حر يختار نوع المعالجة يدوياً بالفورم زي ما هو.
 class CaseTypePredictionDialog extends StatelessWidget {
   final CaseTypePredictionResult result;
 

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/models/conversations_models/conversation_model.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/utils/app_constants/app_images_constant.dart';
-import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 import '../../controllers/conversations_controllers/chat_controller.dart';
@@ -97,7 +95,7 @@ class ChatScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
-                            color: AppColors.surface.withOpacity(0.8), // ✅
+                            color: AppColors.surface, // ✅
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -131,11 +129,11 @@ class ChatScreen extends StatelessWidget {
 
     // ✅ ألوان الفقاعة حسب الثيم
     final Color myBubbleColor = AppColors.isDark
-        ? AppColors.primary.withOpacity(0.85)
+        ? AppColors.primary.withValues(alpha: 0.85)
         : const Color.fromARGB(217, 68, 137, 255);
 
     final Color otherBubbleColor = AppColors.isDark
-        ? AppColors.surface.withOpacity(0.85)
+        ? AppColors.surface.withValues(alpha: 0.85)
         : const Color.fromARGB(149, 255, 255, 255);
 
     return Row(
@@ -178,7 +176,7 @@ class ChatScreen extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.black.withOpacity(0.05),
+                  color: AppColors.black.withValues(alpha: 0.05),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -234,7 +232,7 @@ class ChatScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
-                        image: NetworkImage("${message.content}"),
+                        image: NetworkImage(message.content),
                         fit: BoxFit.cover,
                       ),
                     ),

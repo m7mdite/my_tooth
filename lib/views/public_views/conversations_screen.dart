@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gr_flutter/services/local_storge/local_user_storage.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import '../../controllers/conversations_controllers/conversations_controller.dart';
 import '../../controllers/theme_controller.dart';
 import '../../models/conversations_models/conversation_model.dart';
@@ -223,9 +222,9 @@ class ConversationsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

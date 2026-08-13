@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/views/widgets/requests/show_request_processing.dart';
+import 'package:gr_flutter/views/widgets/requests/show_request.dart';
 
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../widgets/custom_app_bar.dart';
@@ -27,7 +27,7 @@ class ViewInProcessingRequestsPage extends StatelessWidget {
               return CardRequestProcessing(
                 requestModel: controller.inProcessingRequests[index],
                 onTap: () {
-                  Get.dialog(ShowRequestProcessing(
+                  Get.dialog(ShowRequest(
                       requestModel: controller.inProcessingRequests[index]));
                 },
               );

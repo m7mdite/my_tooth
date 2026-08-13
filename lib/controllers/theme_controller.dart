@@ -28,7 +28,6 @@ class ThemeController extends GetxController {
       orElse: () => AppThemeType.blue,
       
     );
-    print('🎨 Loaded theme: ${currentTheme.name}');
   }
 
   bool get isDark => currentTheme == AppThemeType.dark;

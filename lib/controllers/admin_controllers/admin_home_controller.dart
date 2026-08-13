@@ -28,7 +28,6 @@ class AdminHomeController extends AdminHomeCntr{
     statusRequest.value = StatusRequest.loading;
     var response = await remote.getAllAdvertisements();
     statusRequest.value = handlingData(response);
-    print("$response");
     if (statusRequest.value == StatusRequest.success) {
        List<dynamic> data = response['data'] ?? [];
       advertisements.value = data.map((json) => AdvertisementModel.fromJson(json)).toList();

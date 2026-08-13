@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/public_controllers/public_controller.dart';
 import 'package:gr_flutter/controllers/conversations_controllers/conversations_controller.dart';
 import 'package:gr_flutter/services/functions/show_image_preview.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 
 import '../../controllers/theme_controller.dart';
 import '../../models/public_models/profile_model.dart';
@@ -31,7 +32,7 @@ class ViewOtherProfile extends StatelessWidget {
     return GetBuilder<ThemeController>(
       builder: (_) {
         return Scaffold(
-          backgroundColor: AppColors.background, // ✅
+          backgroundColor: AppColors.background, 
           body: GetBuilder<PublicController>(
             builder: (_) {
               return ListView(
@@ -115,7 +116,7 @@ class ViewOtherProfile extends StatelessWidget {
                         label: const Text("مراسلة"),
                         icon: const Icon(Icons.message),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary, // ✅
+                          backgroundColor: AppColors.primary, 
                           iconColor: AppColors.white,
                           foregroundColor: AppColors.white,
                           elevation: 5,
@@ -124,12 +125,7 @@ class ViewOtherProfile extends StatelessWidget {
                           side: BorderSide(
                               color: AppColors.primary, width: 2, strokeAlign: 3),
                           shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.elliptical(1, 10),
-                              topRight: Radius.elliptical(10, 1),
-                              bottomLeft: Radius.elliptical(10, 1),
-                              bottomRight: Radius.elliptical(1, 10),
-                            ),
+                            borderRadius: AppThemeConstants.borderRadius,
                           ),
                         ),
                       ),
@@ -155,12 +151,7 @@ class ViewOtherProfile extends StatelessWidget {
                               width: 2,
                               strokeAlign: 3),
                           shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.elliptical(1, 10),
-                              topRight: Radius.elliptical(10, 1),
-                              bottomLeft: Radius.elliptical(10, 1),
-                              bottomRight: Radius.elliptical(1, 10),
-                            ),
+                            borderRadius: AppThemeConstants.borderRadius, 
                           ),
                         ),
                       ),
@@ -168,7 +159,7 @@ class ViewOtherProfile extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  _divider(), // ✅ دالة مساعدة
+                  _divider(), 
 
                   const SizedBox(height: 10),
 
@@ -286,7 +277,7 @@ class ViewOtherProfile extends StatelessWidget {
         color: AppColors.borderColor, // ✅
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -305,7 +296,7 @@ class ViewOtherProfile extends StatelessWidget {
         color: AppColors.borderColor, // ✅
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 10,
             spreadRadius: 2,
           ),

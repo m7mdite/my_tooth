@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:gr_flutter/controllers/student_controllers/student_requests_controller.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 import 'package:gr_flutter/views/widgets/requests/card_request_processing.dart';
-import '../../../utils/app_constants/colors_constant.dart';
-import '../../../utils/app_constants/status_request.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/requests/show_request_processing.dart';
+import '../../utils/app_constants/colors_constant.dart';
+import '../../utils/app_constants/status_request.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/requests/show_request.dart';
 
 class ShowOwnedStudentRequest extends StatelessWidget {
   const ShowOwnedStudentRequest({super.key});
@@ -107,7 +107,7 @@ class ShowOwnedStudentRequest extends StatelessWidget {
                                   requestModel: controller.completedRequests[index],
                                   onTap: () {
                                     Get.dialog(
-                                      ShowRequestProcessing(
+                                      ShowRequest(
                                         requestModel: controller.completedRequests[index],
                                       ),
                                     );

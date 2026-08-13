@@ -6,7 +6,7 @@ import 'package:gr_flutter/controllers/public_controllers/unified_setting_contro
 import 'package:gr_flutter/views/public_views/posts/post_card.dart';
 import 'package:gr_flutter/views/public_views/posts/create_post_screen.dart';
 import 'package:gr_flutter/views/widgets/custom_photo_app_bar.dart';
-import 'package:gr_flutter/views/widgets/pending_posts_button.dart';
+import 'package:gr_flutter/views/widgets/posts/pending_posts_button.dart';
 import '../../../app_route.dart';
 import '../../../controllers/theme_controller.dart';
 import '../../../services/local_storge/local_user_storage.dart';

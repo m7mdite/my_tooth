@@ -175,7 +175,6 @@ class RequestRemote {
 
   getTreatmentRequestsForOverseer() async {
     var response = await crud.getData(ApiLink.treatmentRequestsForOverseer);
-    print("object $response");
     return response.fold((l) => l, (r) => r);
   }
 

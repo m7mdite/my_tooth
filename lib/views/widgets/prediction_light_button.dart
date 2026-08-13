@@ -33,13 +33,13 @@ class PredictionLightButton extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: color.withOpacity(isLoading ? 0.08 : 0.15),
+              color: color.withValues(alpha: isLoading ? 0.08 : 0.15),
               border: Border.all(color: color, width: 2),
               boxShadow: isLoading
                   ? []
                   : [
                       BoxShadow(
-                        color: color.withOpacity(0.55),
+                        color: color.withValues(alpha: 0.55),
                         blurRadius: 18,
                         spreadRadius: 2,
                       ),

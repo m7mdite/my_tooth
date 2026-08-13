@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../views/public_views/home_dashboard_screen.dart';
 import '../../views/public_views/posts/feed_screen.dart';
 import '../../views/public_views/settings/unified_setting_screen.dart';
-import '../../views/student_views/page_of_main/student_requests_screen.dart';
+import '../../views/student_views/student_requests_screen.dart';
 
 abstract class MainStudentController extends GetxController {}
 

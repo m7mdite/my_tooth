@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:gr_flutter/utils/app_constants/app_theme_constants.dart';
 import 'package:gr_flutter/views/widgets/default_no_data.dart';
 
-import '../../../controllers/public_controllers/unified_setting_controller.dart';
-import '../../../controllers/student_controllers/student_requests_controller.dart';
-import '../../../controllers/theme_controller.dart';
-import '../../../utils/app_constants/colors_constant.dart';
-import '../../public_views/conversations_screen.dart';
-import '../../public_views/notifications_view.dart';
-import '../../public_views/settings/unified_profile_screen.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/custom_icon_app_bar.dart';
-import '../../widgets/custom_photo_app_bar.dart';
-import '../../widgets/requests/card_request_processing.dart';
+import '../../controllers/public_controllers/unified_setting_controller.dart';
+import '../../controllers/student_controllers/student_requests_controller.dart';
+import '../../controllers/theme_controller.dart';
+import '../../utils/app_constants/colors_constant.dart';
+import '../public_views/conversations_screen.dart';
+import '../public_views/notifications_view.dart';
+import '../public_views/settings/unified_profile_screen.dart';
+import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_icon_app_bar.dart';
+import '../widgets/custom_photo_app_bar.dart';
+import '../widgets/requests/card_request_processing.dart';
 
 class StudentRequestsScreen extends StatelessWidget {
   final StudentRequestsControllerImp controller =
@@ -60,20 +61,15 @@ class StudentRequestsScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withOpacity(0.9), // ✅ بدل white24
+                    color: AppColors.surface.withValues(alpha: 0.9), 
                     border: Border.all(
                         width: 1,
                         color: AppColors.primary,
                         strokeAlign: 10),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.elliptical(100, 10),
-                      bottomLeft: Radius.elliptical(10, 100),
-                      topRight: Radius.elliptical(10, 100),
-                      bottomRight: Radius.elliptical(100, 10),
-                    ),
+                    borderRadius: AppThemeConstants.borderRadius,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.2), // ✅
+                        color: AppColors.primary.withValues(alpha: 0.2), 
                         blurRadius: 3,
                         spreadRadius: 3,
                       )

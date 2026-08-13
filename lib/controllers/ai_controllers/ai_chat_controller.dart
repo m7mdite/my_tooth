@@ -63,7 +63,7 @@ class AiChatController extends AiChatContr {
         _chatStorage.write(_roleKey, role);
       }
     } catch (e) {
-      print('Error saving messages: $e');
+      // 
     }
   }
 
@@ -83,7 +83,7 @@ class AiChatController extends AiChatContr {
             .toList();
       }
     } catch (e) {
-      print('Error loading messages: $e');
+      // 
     }
     return [];
   }
@@ -109,7 +109,6 @@ class AiChatController extends AiChatContr {
     final storedRole = loadStoredRole();
     if (storedRole != null) {
       role = storedRole;
-      print('✅ Role loaded from storage: $role');
     } else {
       await getRoleFromLocal();
     }
@@ -120,7 +119,6 @@ class AiChatController extends AiChatContr {
     final savedMessages = loadMessages();
     if (savedMessages.isNotEmpty) {
       messages.value = savedMessages;
-      print('✅ Loaded ${messages.length} messages from storage');
     } else {
       addWelcomeMessage();
       saveMessages();
@@ -212,12 +210,10 @@ class AiChatController extends AiChatContr {
     final storage = Get.find<LocalUserStorage>();
     role = await storage.getRole();
     role ??= "patient";
-    print("Role from local storage: $role");
   }
 
   @override
   void setFirstMessag() {
-    print("Setting first message for role: $role");
     if (role == "patient") {
       firstUserMessage = ChatMessage(
         text: AiConstants.helloPatient,

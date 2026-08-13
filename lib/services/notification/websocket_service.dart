@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../controllers/conversations_controllers/chat_controller.dart';
 import '../../controllers/conversations_controllers/conversations_controller.dart';
@@ -25,7 +25,7 @@ class WebSocketService extends GetxService {
 
 
   // late IO.Socket _socket;
-IO.Socket? _socket;
+io.Socket? _socket;
   final RxString connectionStatus = 'غير متصل'.obs;
   final RxBool isConnected = false.obs;
 
@@ -248,9 +248,9 @@ IO.Socket? _socket;
   await _ensureController();
 
   try {
-    _socket = IO.io(
+    _socket = io.io(
       _kSocketBaseUrl,
-      IO.OptionBuilder()
+      io.OptionBuilder()
           .setTransports(['websocket'])
           .setQuery({'userId': userId})
           .disableAutoConnect()
@@ -317,7 +317,6 @@ IO.Socket? _socket;
   /// بالبرداية + صوت) + إضافة لصفحة الإشعارات، بدل Snackbar داخلي بس
   /// كان بيختفي إذا التطبيق مو مفتوح بالفورغراوند.
   Future<void> _handleNotify(dynamic data) async {
-    print('📩 notify: $data');
     final title = data['title'] ?? 'إشعار جديد';
   final body = data['body'] ?? 'لديك إشعار جديد';
 

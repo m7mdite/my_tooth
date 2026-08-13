@@ -17,17 +17,17 @@ class MainScreenStudent extends StatelessWidget {
     return GetBuilder<ThemeController>(
       builder: (_) {
         return Scaffold(
-          backgroundColor: AppColors.background, // ✅
+          backgroundColor: AppColors.background, 
           bottomNavigationBar: GetBuilder<MainStudentControllerImp>(
             builder: (_) {
               return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primaryAccent,       // ✅ يتغير حسب الثيم
-                      AppColors.primaryLightAccent,  // ✅
-                      AppColors.surface.withOpacity(0.9), // ✅ بدل white70
-                      AppColors.surface,             // ✅ بدل white
+                      AppColors.primaryAccent,       
+                      AppColors.primaryLightAccent,  
+                      AppColors.surface.withValues(alpha: 0.9), 
+                      AppColors.surface,            
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

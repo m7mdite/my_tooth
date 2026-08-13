@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import '../../../models/requests_models/prediction_result_model.dart';
 import '../../../utils/app_constants/colors_constant.dart';
 
-/// ديالوغ عرض نتيجة التنبؤ بإمكانية علاج الحالة.
-/// ملاحظة: هاي نتيجة تقديرية بالذكاء الاصطناعي فقط، مش تشخيص نهائي —
-/// القرار الفعلي يرجع دائماً للمشرف المختص بعد مراجعة الطلب.
+
 class PredictionResultDialog extends StatelessWidget {
   final PredictionResult result;
 

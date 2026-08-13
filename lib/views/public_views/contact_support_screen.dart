@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/controllers/public_controllers/support_controller.dart'; // سننشئه
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
+import 'package:gr_flutter/controllers/public_controllers/support_controller.dart'; 
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 
 import '../../utils/app_constants/app_images_constant.dart';
@@ -41,7 +40,7 @@ class ContactSupportScreen extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(color: AppColors.primary, blurRadius: 20, spreadRadius: 1)
                       ],
-                      color: AppColors.white.withOpacity(0.1),
+                      color: AppColors.white.withValues(alpha: 0.1),
                       border: Border.all(color: AppColors.white, width: 2),
                     ),
                     child: Icon(Icons.support_agent_outlined, color: AppColors.white, size: 60),
@@ -64,7 +63,7 @@ class ContactSupportScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppColors.white.withOpacity(0.95),
+                    color: AppColors.white.withValues(alpha: 0.95),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.elliptical(50, 10),
                       bottomLeft: Radius.elliptical(10, 50),

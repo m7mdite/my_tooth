@@ -7,7 +7,6 @@ import '../../utils/app_constants/app_theme.dart';
 import '../../utils/app_constants/colors_constant.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  // 🆕 أصبح title اختيارياً (String?)
   final String? title;
   final List<Widget>? actions;
   final bool automaticallyImplyLeading;
@@ -19,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
   final double? elevation;
   final Widget? leading;
-  final Widget? titleWidget; // موجود مسبقاً
+  final Widget? titleWidget; 
   final bool showVerifiedBadge;
   final double titleSize;
   final List<BoxShadow>? titleShadows;
@@ -27,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     super.key,
-    this.title, // الآن اختياري
+    this.title, 
     this.actions,
     this.automaticallyImplyLeading = true,
     this.onLeadingPressed,
@@ -37,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = true,
     this.elevation = 0,
     this.leading,
-    this.titleWidget, // يمكن تمرير Widget مخصص
+    this.titleWidget, 
     this.showVerifiedBadge = false,
     this.titleSize = 20,
     this.titleShadows,
@@ -48,13 +47,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final localStorage = Get.find<LocalUserStorage>();
-    final bool isStudent = localStorage.getRole() == 'student';
+    final bool isStudent = localStorage.getRoleSync() == 'student';
     final bool isVerified = localStorage.isVerified();
 
     final effectiveGradient =
         backgroundGradient ?? AppGradients.arcticFrostGradient;
 
-    // 🔹 بناء Widget العنوان (إما من titleWidget أو من title كنص)
+   
     Widget titleWidgetToDisplay = titleWidget ?? _buildTitleText();
 
     return AppBar(
@@ -65,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         shadows: titleShadows ??
              [
               BoxShadow(
-                color: AppColors.surface.withOpacity(0.5),
+                color: AppColors.surface.withValues(alpha: 0.5),
                 blurRadius: 10,
               ),
             ],
@@ -99,7 +98,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? Container(
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.white.withOpacity(0.2),
+                    color: AppColors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(

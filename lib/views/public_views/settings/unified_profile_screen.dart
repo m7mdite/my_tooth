@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:gr_flutter/services/functions/show_image_preview.dart';
-import 'package:gr_flutter/utils/app_constants/app_constants.dart';
 import 'package:gr_flutter/views/widgets/custom_app_bar.dart';
 import 'package:gr_flutter/views/widgets/custom_icon_app_bar.dart';
 

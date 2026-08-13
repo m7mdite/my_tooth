@@ -13,19 +13,18 @@ class LocalUserStorage extends GetxService {
   final SecureStorageService _secureStorage = Get.find<SecureStorageService>();
   String? _cachedToken;
   String? _cachedRole;
+  // أضف هذا الـ getter المتزامن
+String? getRoleSync() => _cachedRole ?? _box.read(_roleKey);
 
   bool get _useSecureStorage => !kIsWeb && !Platform.isWindows;
 
 // ==============================================================
   Future<void> saveSeenOnboarding() async {
-    print('✅ Saving has_seen_onboarding = true');
     await _box.write('has_seen_onboarding', true);
-    print('✅ Saved successfully');
   }
 
   Future<bool> hasSeenOnboarding() async {
     final value = _box.read('has_seen_onboarding') ?? false;
-    print('📖 Reading has_seen_onboarding = $value');
     return value;
   }
 
@@ -205,19 +204,23 @@ class LocalUserStorage extends GetxService {
       if (json['_id'] != null) await saveId(json['_id']);
       if (json['user'] != null) await saveUserId(json['user']);
       if (json['first_name'] != null) await saveFirstName(json['first_name']);
-      if (json['father_name'] != null)
+      if (json['father_name'] != null) {
         await saveFatherName(json['father_name']);
+      }
       if (json['last_name'] != null) await saveLastName(json['last_name']);
       if (json['email'] != null) await saveEmail(json['email']);
       if (json['bio'] != null) await saveBio(json['bio']);
       if (json['gender'] != null) await saveGender(json['gender']);
       if (json['age'] != null) await saveAge(json['age'].toString());
-      if (json['phone_number'] != null)
+      if (json['phone_number'] != null) {
         await savePhoneNumber(json['phone_number']);
-      if (json['university_number'] != null)
+      }
+      if (json['university_number'] != null) {
         await saveUniversityNumber(json['university_number']);
-      if (json['is_verified'] != null)
+      }
+      if (json['is_verified'] != null) {
         await saveIsVerified(json['is_verified']);
+      }
       if (json['__v'] != null) await saveV(json['__v']);
 
       if (json['category'] != null) {
@@ -228,10 +231,12 @@ class LocalUserStorage extends GetxService {
         }
       }
 
-      if (json['count_cases_finishds'] != null)
+      if (json['count_cases_finishds'] != null) {
         await saveCompletedCases(json['count_cases_finishds']);
-      if (json['count_cases_in_process'] != null)
+      }
+      if (json['count_cases_in_process'] != null) {
         await saveInProgressCases(json['count_cases_in_process']);
+      }
 
       if (json['profile_photo'] != null) {
         final photo = json['profile_photo'];

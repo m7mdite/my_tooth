@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../controllers/admin_controllers/admin_request_controller.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/requests/card_request_processing.dart';
-import '../../widgets/requests/show_request_processing.dart';
+import '../../widgets/requests/show_request.dart';
 
 class ViewRejectedRequestsPage extends StatelessWidget {
   final AdminRequestControllerImpl controller =
@@ -27,7 +27,7 @@ class ViewRejectedRequestsPage extends StatelessWidget {
               return CardRequestProcessing(
                 requestModel: controller.rejectedRequests[index],
                 onTap: () {
-                  Get.dialog(ShowRequestProcessing(
+                  Get.dialog(ShowRequest(
                       requestModel: controller.rejectedRequests[index]));
                 },
               );

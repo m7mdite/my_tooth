@@ -32,12 +32,12 @@ class CustomPhotoAppBar extends StatelessWidget {
               color: AppColors.white,
               spreadRadius: 5,
               blurRadius: 5,
-              offset: Offset(0, -3), // تغيير اتجاه الظل
+              offset: Offset(0, -3), 
             )
           ]),
       child: CircleAvatar(
         backgroundImage:
-            pic.isNotEmpty ? NetworkImage("$pic") : null,
+            pic.isNotEmpty ? NetworkImage(pic) : null,
         backgroundColor: AppColors.primary,
         child: pic.isEmpty
             ? (role == "student"

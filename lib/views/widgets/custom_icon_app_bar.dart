@@ -28,24 +28,20 @@ class CustomIconAppBar extends StatelessWidget {
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          // color: AppColors.primary,
           color: reverseColors ? AppColors.white : AppColors.primaryLightAccent,
-          // border: Border.all(
-          //     color: reverseColors ? AppColors.white : AppColors.primaryLightAccent,
-          //     width: 1,
-          //     strokeAlign: 5),
+          
           boxShadow: [
             BoxShadow(
               color: reverseColors ? AppColors.primaryLightAccent : AppColors.white,
               spreadRadius: 5,
               blurRadius: 5,
-              offset: Offset(0, 3), // تغيير اتجاه الظل
+              offset: Offset(0, 3), 
             ),
             BoxShadow(
               color: reverseColors ? AppColors.primaryLightAccent : AppColors.white,
               spreadRadius: 5,
               blurRadius: 5,
-              offset: Offset(0, -3), // تغيير اتجاه الظل
+              offset: Offset(0, -3), 
             ),
           ],
         ),

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gr_flutter/models/requests_models/pending_request_model.dart';
 import 'package:gr_flutter/views/widgets/botton_controller.dart';
 import 'package:gr_flutter/views/widgets/dialog/case_type_prediction_dialog.dart';
 import 'package:gr_flutter/views/widgets/dialog/prediction_result_dialog.dart';
@@ -109,17 +108,12 @@ class FillRequestControllerImp extends FillRequestController {
     if (!validateForm()) {
       return false;
     }
-    print("${treatmentRequestModel.toJson()}");
-    print("${treatmentRequestModel.toJson().runtimeType}");
     final formData = treatmentRequestModel.toJson();
 
-    print("formData: $formData");
     statusRequest = StatusRequest.loading;
 
     try {
-      print("$formData ======================================== ");
       final response = await requestData.sendRequestData(formData, image);
-      print("$response");
       statusRequest = handlingData(response);
       if (statusRequest == StatusRequest.success) {
         Get.snackbar(
@@ -420,7 +414,6 @@ class FillRequestControllerImp extends FillRequestController {
 
     try {
       final response = await requestData.updateRequestData(formData, image, id);
-      print("$response");
       statusRequest = handlingData(response);
       if (statusRequest == StatusRequest.success) {
         Get.snackbar(
